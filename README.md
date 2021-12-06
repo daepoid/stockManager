@@ -1,0 +1,2 @@
+# stockManager
+Store stock management
