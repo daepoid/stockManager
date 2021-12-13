@@ -2,7 +2,7 @@ package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.ItemType;
-import daepoid.stockManager.repository.ItemRepository;
+import daepoid.stockManager.repository.jpa.JpaItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,14 +14,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemService {
 
-    private final ItemRepository itemRepository;
+    private final JpaItemRepository itemRepository;
 
     public void saveItem(Item item) {
         itemRepository.save(item);
     }
 
     public Item findItem(Long itemId) {
-        return itemRepository.findItem(itemId);
+        return itemRepository.findById(itemId);
     }
 
     public List<Item> findItems() {

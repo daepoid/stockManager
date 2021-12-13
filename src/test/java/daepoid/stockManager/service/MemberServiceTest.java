@@ -2,6 +2,7 @@ package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.domain.member.RoleType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,14 +22,16 @@ class MemberServiceTest {
     @Test
     public void saveMember_findMember() throws Exception {
         // given
+        String loginId = "admin";
         String name = "user";
         String password = "1234";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         RoleType roleType = RoleType.TEST;
+        MemberStatus memberStatus = MemberStatus.WORK;
 
-        Member member = Member.createMember(name, password, phoneNumber, gradeType, roleType);
-        memberService.saveMember(member);
+        Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);
+        memberService.join(member);
 
         // when
         Member findMember = memberService.findMember(member.getId());
@@ -38,19 +41,44 @@ class MemberServiceTest {
     }
 
     @Test
-    public void findMemberByName() throws Exception {
+    public void findMembers() throws Exception {
         // given
+        String loginId = "admin";
         String name = "user";
         String password = "1234";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         RoleType roleType = RoleType.TEST;
+        MemberStatus memberStatus = MemberStatus.WORK;
 
-        Member member = Member.createMember(name, password, phoneNumber, gradeType, roleType);
-        memberService.saveMember(member);
+        Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);
+        memberService.join(member);
 
         // when
-        List<Member> findMember = memberService.findMemberByName(name);
+        List<Member> findMembers = memberService.findMembers();
+
+        // then
+        Assertions.assertThat(findMembers.contains(member)).isEqualTo(true);
+        Assertions.assertThat(findMembers.size()).isEqualTo(1);
+    }
+
+
+    @Test
+    public void findMemberByName() throws Exception {
+        // given
+        String loginId = "admin";
+        String name = "user";
+        String password = "1234";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.CEO;
+        RoleType roleType = RoleType.TEST;
+        MemberStatus memberStatus = MemberStatus.WORK;
+
+        Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);
+        memberService.join(member);
+
+        // when
+        List<Member> findMember = memberService.findMembersByName(name);
 
         // then
         Assertions.assertThat(findMember.contains(member)).isEqualTo(true);
@@ -60,17 +88,19 @@ class MemberServiceTest {
     @Test
     public void findMemberByPhoneNumber() throws Exception {
         // given
+        String loginId = "admin";
         String name = "user";
         String password = "1234";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         RoleType roleType = RoleType.TEST;
+        MemberStatus memberStatus = MemberStatus.WORK;
 
-        Member member = Member.createMember(name, password, phoneNumber, gradeType, roleType);
-        memberService.saveMember(member);
+        Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);
+        memberService.join(member);
 
         // when
-        List<Member> findMember = memberService.findMemberByPhoneNumber(phoneNumber);
+        List<Member> findMember = memberService.findMembersByPhoneNumber(phoneNumber);
 
         // then
         Assertions.assertThat(findMember.contains(member)).isEqualTo(true);
@@ -80,14 +110,16 @@ class MemberServiceTest {
     @Test
     public void findMembersByGradeType() throws Exception {
         // given
+        String loginId = "admin";
         String name = "user";
         String password = "1234";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         RoleType roleType = RoleType.TEST;
+        MemberStatus memberStatus = MemberStatus.WORK;
 
-        Member member = Member.createMember(name, password, phoneNumber, gradeType, roleType);
-        memberService.saveMember(member);
+        Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);
+        memberService.join(member);
 
         // when
         List<Member> findMember = memberService.findMembersByGradeType(gradeType);

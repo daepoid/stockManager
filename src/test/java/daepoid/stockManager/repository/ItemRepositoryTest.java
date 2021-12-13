@@ -3,6 +3,7 @@ package daepoid.stockManager.repository;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
+import daepoid.stockManager.repository.jpa.JpaItemRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Transactional
 class ItemRepositoryTest {
 
     @Autowired
-    private ItemRepository itemRepository;
+    private JpaItemRepository itemRepository;
 
     @Test
     public void saveItem_findItem_성공() throws Exception {
@@ -34,7 +33,7 @@ class ItemRepositoryTest {
         itemRepository.save(item);
 
         // when
-        Item findItem = itemRepository.findItem(item.getId());
+        Item findItem = itemRepository.findById(item.getId());
 
         // then
         Assertions.assertThat(findItem).isEqualTo(item);

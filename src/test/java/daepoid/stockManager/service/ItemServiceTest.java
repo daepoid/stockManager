@@ -36,10 +36,8 @@ class ItemServiceTest {
         // when
         Item findItem = itemService.findItem(item.getId());
 
-
         // then
         Assertions.assertThat(findItem).isEqualTo(findItem);
-
     }
 
     @Test

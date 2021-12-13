@@ -2,48 +2,24 @@ package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
+import daepoid.stockManager.domain.member.MemberStatus;
+import daepoid.stockManager.domain.member.RoleType;
 
-import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
-@Slf4j
-@Repository
-@RequiredArgsConstructor
-public class MemberRepository {
+public interface MemberRepository {
 
-    private final EntityManager em;
+    Long save(Member member);
+    void removeMember(Member member);
+    void removeById(Long id);
 
-    public void saveMember(Member member) {
-        em.persist(member);
-    }
-
-    public Member findMember(Long id) {
-        return em.find(Member.class, id);
-    }
-
-    public List<Member> findAll() {
-        return em.createQuery("select m from Member m", Member.class)
-                .getResultList();
-    }
-
-    public List<Member> findByName(String name) {
-        return em.createQuery("select m from Member m where m.name = :name", Member.class)
-                .setParameter("name", name)
-                .getResultList();
-    }
-
-    public List<Member> findByPhoneNumber(String phoneNumber) {
-        return em.createQuery("select m from Member m where m.phoneNumber = :phoneNumber", Member.class)
-                .setParameter("phoneNumber", phoneNumber)
-                .getResultList();
-    }
-
-    public List<Member> findByGradeType(GradeType gradeType) {
-        return em.createQuery("select m from Member m where m.gradeType = :gradeType", Member.class)
-                .setParameter("gradeType", gradeType)
-                .getResultList();
-    }
+    Optional<Member> findById(Long id);
+    List<Member> findAll();
+    List<Member> findByLoginId(String loginId);
+    List<Member> findByName(String name);
+    List<Member> findByPhoneNumber(String phoneNumber);
+    List<Member> findByGradeType(GradeType gradeType);
+    List<Member> findByMemberStatus(MemberStatus memberStatus);
+    List<Member> findByRoles(RoleType... roleType);
 }
