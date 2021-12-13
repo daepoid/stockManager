@@ -2,6 +2,9 @@ package daepoid.stockManager.repository.memory;
 
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.ItemType;
+import daepoid.stockManager.domain.item.UnitType;
+import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,7 @@ public class MemoryItemRepository implements ItemRepository {
     private static final HashMap<Long, Item> store = new HashMap<>();
     private static Long sequence = 0L;
 
+    //==생성 로직==//
     @Override
     public Long save(Item item) {
         item.changeId(++sequence);
@@ -27,16 +31,7 @@ public class MemoryItemRepository implements ItemRepository {
         return item.getId();
     }
 
-    @Override
-    public void removeByItem(Item item) {
-        store.remove(item.getId(), item);
-    }
-
-    @Override
-    public void removeById(Long id) {
-        store.remove(id, store.get(id));
-    }
-
+    //==조회 로직==//
     @Override
     public Item findById(Long itemId) {
         return store.get(itemId);
@@ -77,5 +72,47 @@ public class MemoryItemRepository implements ItemRepository {
                 .stream()
                 .filter(item -> item.getQuantity() < quantity)
                 .collect(Collectors.toList());
+    }
+
+    //==수정 로직==//
+    @Override
+    public void changeName(Long itemId, String name) {
+        store.get(itemId).changeName(name);
+    }
+
+    @Override
+    public void changeItemType(Long itemId, ItemType itemType) {
+        store.get(itemId).changeItemType(itemType);
+    }
+
+    @Override
+    public void changePrice(Long itemId, Integer price) {
+        store.get(itemId).changePrice(price);
+    }
+
+    @Override
+    public void changePackageCount(Long itemId, Integer packageCount) {
+        store.get(itemId).changePackageCount(packageCount);
+    }
+
+    @Override
+    public void changeQuantity(Long itemId, Double quantity) {
+        store.get(itemId).changeQuantity(quantity);
+    }
+
+    @Override
+    public void changeUnitType(Long itemId, UnitType unitType) {
+        store.get(itemId).changeUnitType(unitType);
+    }
+
+    //==삭제 로직==//
+    @Override
+    public void removeByItem(Item item) {
+        store.remove(item.getId(), item);
+    }
+
+    @Override
+    public void removeById(Long id) {
+        store.remove(id, store.get(id));
     }
 }

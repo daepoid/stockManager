@@ -2,6 +2,7 @@ package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,20 +25,14 @@ public class MemberService {
     private final JpaMemberRepository memberRepository;
 //    private final MemoryMemberRepository memberRepository;
 
+    //==생성 로직==//
     @Transactional
     public Long join(Member member) {
-
-        // 중복확인 로직 보류
-//        // 전화번호 중복인 경우 가입 불가
-//        // 전화번호, 이름 등 필수값들 확인은 이전에 완료
-//        List<Member> findMembers = memberRepository.findByPhoneNumber(member.getPhoneNumber());
-//        if(findMembers.size() > 0) {
-//            throw new IllegalStateException("사용자 전화번호가 중복입니다.");
-//        }
         memberRepository.save(member);
         return member.getId();
     }
 
+    //==조회 로직==//
     public Member findMember(Long memberId) {
         return memberRepository.findById(memberId).orElse(null);
     }
@@ -66,22 +61,30 @@ public class MemberService {
         return memberRepository.findByGradeType(gradeType);
     }
 
-    /**
-     * 간편 로그인을 개발해야하는 경우 로그인 부분을 따로 분리하여 개발 가능
-     * @param loginId
-     * @param password
-     * @return
-     */
-    public Member login(String loginId, String password) {
-        List<Member> findMembers = memberRepository.findByLoginId(loginId);
-        if(findMembers.size() != 1) {
-            return null;
-        }
+    //==수정 로직==//
 
-        Member member = findMembers.get(0);
-        if(member.getPassword().equals(password)) {
-            return member;
-        }
-        return null;
+    @Transactional
+    public void changeMemberInfo(Long memberId, String name, String phoneNumber) {
+        memberRepository.changeName(memberId, name);
+        memberRepository.changePhoneNumber(memberId, phoneNumber);
     }
+
+    @Transactional
+    public void changePassword(Long memberId, String password) {
+        memberRepository.changePassword(memberId, password);
+    }
+
+    @Transactional
+    public void changeGradeType(Long memberId, GradeType gradeType) {
+        memberRepository.changeGradeType(memberId, gradeType);
+    }
+
+    @Transactional
+    public void changeMemberStatus(Long memberId, MemberStatus memberStatus) {
+        memberRepository.changeMemberStatus(memberId, memberStatus);
+    }
+
+    //==삭제 로직==//
+
+
 }

@@ -70,7 +70,7 @@ public class MemberController {
      * 회원 관리
      */
     @GetMapping("")
-    public String list(Model model) {
+    public String memberList(Model model) {
         model.addAttribute("members", memberService.findMembers());
         return "members/memberList";
     }

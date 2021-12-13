@@ -2,6 +2,7 @@ package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.ItemType;
+import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,23 +18,14 @@ public class JpaItemRepository implements ItemRepository {
 
     private final EntityManager em;
 
+    //==생성 로직==//
     @Override
     public Long save(Item item) {
         em.persist(item);
         return item.getId();
     }
 
-    @Override
-    public void removeByItem(Item item) {
-        em.remove(item);
-    }
-
-    @Override
-    public void removeById(Long id) {
-        Item item = em.find(Item.class, id);
-        em.remove(item);
-    }
-
+    //==조회 로직==//
     @Override
     public Item findById(Long itemId) {
         return em.find(Item.class, itemId);
@@ -73,5 +65,54 @@ public class JpaItemRepository implements ItemRepository {
                 .setParameter("quantity", quantity)
                 .getResultList();
 
+    }
+
+    //==수정 로직==//
+    @Override
+    public void changeName(Long itemId, String name) {
+        Item item = em.find(Item.class, itemId);
+        item.changeName(name);
+    }
+
+    @Override
+    public void changeItemType(Long itemId, ItemType itemType) {
+        Item item = em.find(Item.class, itemId);
+        item.changeItemType(itemType);
+    }
+
+    @Override
+    public void changePrice(Long itemId, Integer price) {
+        Item item = em.find(Item.class, itemId);
+        item.changePrice(price);
+    }
+
+    @Override
+    public void changePackageCount(Long itemId, Integer packageCount) {
+        Item item = em.find(Item.class, itemId);
+        item.changePackageCount(packageCount);
+    }
+
+    @Override
+    public void changeQuantity(Long itemId, Double quantity) {
+        Item item = em.find(Item.class, itemId);
+        item.changeQuantity(quantity);
+    }
+
+    @Override
+    public void changeUnitType(Long itemId, UnitType unitType) {
+        Item item = em.find(Item.class, itemId);
+        item.changeUnitType(unitType);
+    }
+
+    //==삭제 로직==//
+    @Override
+    public void removeByItem(Item item) {
+        em.remove(item);
+    }
+
+    @Override
+    public void removeById(Long id) {
+        Item item = em.find(Item.class, id);
+        em.remove(item);
     }
 }

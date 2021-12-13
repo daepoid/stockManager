@@ -10,17 +10,23 @@
             <tr>
                 <th>#</th>
                 <th>상품명</th>
+                <th>아이템 특성</th>
                 <th>가격</th>
-                <th>재고수량</th>
+                <th>패키지 수량</th>
+                <th>재고 수량</th>
+                <th>재고 수량 단위</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="item : ${items}">
+            <tr th:each="item : ${itemList}">
                 <td th:text="${item.id}"></td>
                 <td th:text="${item.name}"></td>
+                <td th:text="${item.itemType}"></td>
                 <td th:text="${item.price}"></td>
-                <td th:text="${item.stockQuantity}"></td>
+                <td th:text="${item.packageCount}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.unitType}"></td>
                 <td>
                     <a href="#" th:href="@{/items/{id}/edit (id=${item.id})}"
                        class="btn btn-primary" role="button">수정</a>

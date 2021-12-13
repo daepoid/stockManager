@@ -8,6 +8,7 @@ import daepoid.stockManager.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -20,6 +21,7 @@ public class JpaMemberRepository implements MemberRepository {
 
     private final EntityManager em;
 
+    //==생성 로직==//
     @Override
     public Long save(Member member) {
         em.persist(member);
@@ -27,21 +29,7 @@ public class JpaMemberRepository implements MemberRepository {
         return member.getId();
     }
 
-    /**
-     * member를 받아서 삭제하는 것이 맞는지 아니면 Id를 받아서 삭제하는 것이 맞는지 확인 필요
-     * @param member
-     */
-    @Override
-    public void removeMember(Member member) {
-        em.remove(member);
-    }
-
-    @Override
-    public void removeById(Long id) {
-        Member member = em.find(Member.class, id);
-        em.remove(member);
-    }
-
+    //==조회 로직==//
     @Override
     public Optional<Member> findById(Long id) {
         return Optional.of(em.find(Member.class, id));
@@ -91,5 +79,50 @@ public class JpaMemberRepository implements MemberRepository {
     @Override
     public List<Member> findByRoles(RoleType... roleType) {
         return null;
+    }
+
+    //==수정 로직==//
+    @Override
+    public void changeName(Long memberId, String name) {
+        Member member = em.find(Member.class, memberId);
+        member.changeName(name);
+    }
+
+    @Override
+    public void changePassword(Long memberId, String password) {
+        Member member = em.find(Member.class, memberId);
+        member.changePassword(password);
+    }
+
+    @Override
+    public void changePhoneNumber(Long memberId, String phoneNumber) {
+        Member member = em.find(Member.class, memberId);
+        member.changePhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public void changeGradeType(Long memberId, GradeType gradeType) {
+        Member member = em.find(Member.class, memberId);
+        member.changeGradeType(gradeType);
+    }
+
+    @Override
+    public void changeMemberStatus(Long memberId, MemberStatus memberStatus) {
+        Member member = em.find(Member.class, memberId);
+        member.changeMemberStatus(memberStatus);
+    }
+
+    //==삭제 로직==//
+    @Override
+    @Transactional
+    public void removeMember(Member member) {
+        em.remove(member);
+    }
+
+    @Override
+    @Transactional
+    public void removeById(Long id) {
+        Member member = em.find(Member.class, id);
+        em.remove(member);
     }
 }

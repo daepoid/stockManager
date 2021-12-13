@@ -21,6 +21,12 @@ public class MemoryMemberRepository implements MemberRepository {
     private static final Map<Long, Member> store = new HashMap<>();
     private static Long sequence = 0L;
 
+    //==개발 로직==//
+    public void clearStore() {
+        store.clear();
+    }
+
+    //==생성 로직==//
     @Override
     public Long save(Member member) {
         member.changeId(++sequence);
@@ -28,17 +34,7 @@ public class MemoryMemberRepository implements MemberRepository {
         return member.getId();
     }
 
-    @Override
-    public void removeMember(Member member) {
-        store.remove(member.getId(), member);
-    }
-
-    @Override
-    public void removeById(Long id) {
-        Member member = store.get(id);
-        store.remove(id, member);
-    }
-
+    //==조회 로직==//
     @Override
     public Optional<Member> findById(Long id) {
         return Optional.of(store.get(id));
@@ -102,7 +98,45 @@ public class MemoryMemberRepository implements MemberRepository {
         return null;
     }
 
-    public void clearStore() {
-        store.clear();
+
+    //==수정 로직==//
+    @Override
+    public void changeName(Long memberId, String name) {
+        store.get(memberId).changeName(name);
+    }
+
+    @Override
+    public void changePassword(Long memberId, String password) {
+        store.get(memberId).changePassword(password);
+    }
+
+    @Override
+    public void changePhoneNumber(Long memberId, String phoneNumber) {
+        store.get(memberId).changePhoneNumber(phoneNumber);
+
+    }
+
+    @Override
+    public void changeGradeType(Long memberId, GradeType gradeType) {
+        store.get(memberId).changeGradeType(gradeType);
+
+    }
+
+    @Override
+    public void changeMemberStatus(Long memberId, MemberStatus memberStatus) {
+        store.get(memberId).changeMemberStatus(memberStatus);
+
+    }
+
+    //==삭제 로직==//
+    @Override
+    public void removeMember(Member member) {
+        store.remove(member.getId(), member);
+    }
+
+    @Override
+    public void removeById(Long id) {
+        Member member = store.get(id);
+        store.remove(id, member);
     }
 }

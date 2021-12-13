@@ -10,10 +10,10 @@ import java.util.Optional;
 
 public interface MemberRepository {
 
+    //==생성 로직==//
     Long save(Member member);
-    void removeMember(Member member);
-    void removeById(Long id);
 
+    //==조회 로직==//
     Optional<Member> findById(Long id);
     List<Member> findAll();
     List<Member> findByLoginId(String loginId);
@@ -22,4 +22,15 @@ public interface MemberRepository {
     List<Member> findByGradeType(GradeType gradeType);
     List<Member> findByMemberStatus(MemberStatus memberStatus);
     List<Member> findByRoles(RoleType... roleType);
+
+    //==수정 로직==//
+    void changeName(Long memberId, String name);
+    void changePassword(Long memberId, String password);
+    void changePhoneNumber(Long memberId, String phoneNumber);
+    void changeGradeType(Long memberId, GradeType gradeType);
+    void changeMemberStatus(Long memberId, MemberStatus memberStatus);
+
+    //==삭제 로직==//
+    void removeMember(Member member);
+    void removeById(Long id);
 }

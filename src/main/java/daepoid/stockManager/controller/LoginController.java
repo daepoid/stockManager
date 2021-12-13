@@ -2,6 +2,7 @@ package daepoid.stockManager.controller;
 
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.dto.LoginMemberDTO;
+import daepoid.stockManager.service.LoginService;
 import daepoid.stockManager.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final MemberService memberService;
+    private final LoginService loginService;
 
     /**
      * 회원 로그인
@@ -41,7 +42,7 @@ public class LoginController {
             return "members/loginMemberForm";
         }
 
-        Member loginMember = memberService.login(loginMemberDTO.getLoginId(), loginMemberDTO.getPassword());
+        Member loginMember = loginService.login(loginMemberDTO.getLoginId(), loginMemberDTO.getPassword());
         if(loginMember == null) {
             return "members/loginMemberForm";
         }
