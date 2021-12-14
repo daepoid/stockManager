@@ -46,11 +46,12 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findByLoginId(String loginId) {
+    public Member findByLoginId(String loginId) {
         return store.values()
                 .stream()
                 .filter(member -> member.getLoginId().equals(loginId))
-                .collect(Collectors.toList());
+                .findAny()
+                .orElse(null);
     }
 
     @Override
@@ -68,11 +69,12 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findByPhoneNumber(String phoneNumber) {
+    public Member findByPhoneNumber(String phoneNumber) {
         return store.values()
                 .stream()
                 .filter(member -> member.getPhoneNumber().equals(phoneNumber))
-                .collect(Collectors.toList());
+                .findAny()
+                .orElse(null);
     }
 
     // gradeType equals 확인

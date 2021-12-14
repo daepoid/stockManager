@@ -30,9 +30,9 @@ class JpaMemberRepositoryTest {
         RoleType roleType = RoleType.TEST;
         MemberStatus memberStatus = MemberStatus.WORK;
 
-        Member member = Member.createMember(name, password, phoneNumber, gradeType, memberStatus, roleType);
+        Member member = Member.createMember(name, password, phoneNumber);
         memberRepository.save(member);
-        Member fakeMember = Member.createMember("", "", "", GradeType.PART_TIME, MemberStatus.RETIRE);
+        Member fakeMember = Member.createMember("", "", "");
 
         // when
         Member findMember = memberRepository.findById(member.getId()).orElse(fakeMember);
@@ -97,10 +97,10 @@ class JpaMemberRepositoryTest {
         memberRepository.save(member);
 
         // when
-        List<Member> findMembers = memberRepository.findByPhoneNumber(phoneNumber);
+        Member findMember = memberRepository.findByPhoneNumber(phoneNumber);
 
         // then
-        Assertions.assertThat(findMembers.contains(member)).isEqualTo(true);
+        Assertions.assertThat(findMember).isEqualTo(member);
     }
 
     @Test

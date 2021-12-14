@@ -16,9 +16,9 @@ public interface MemberRepository {
     //==조회 로직==//
     Optional<Member> findById(Long id);
     List<Member> findAll();
-    List<Member> findByLoginId(String loginId);
+    Member findByLoginId(String loginId);
     List<Member> findByName(String name);
-    List<Member> findByPhoneNumber(String phoneNumber);
+    Member findByPhoneNumber(String phoneNumber);
     List<Member> findByGradeType(GradeType gradeType);
     List<Member> findByMemberStatus(MemberStatus memberStatus);
     List<Member> findByRoles(RoleType... roleType);

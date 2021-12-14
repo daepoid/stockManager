@@ -100,11 +100,10 @@ class MemberServiceTest {
         memberService.join(member);
 
         // when
-        List<Member> findMember = memberService.findMembersByPhoneNumber(phoneNumber);
+        Member findMember = memberService.findMemberByPhoneNumber(phoneNumber);
 
         // then
-        Assertions.assertThat(findMember.contains(member)).isEqualTo(true);
-        Assertions.assertThat(findMember.size()).isEqualTo(1);
+        Assertions.assertThat(findMember).isEqualTo(member);
     }
 
     @Test

@@ -23,17 +23,16 @@ public class LoginService {
      * @param password
      * @return
      */
-    public Member login(String loginId, String password) {
-        List<Member> findMembers = memberRepository.findByLoginId(loginId);
-        if(findMembers.size() != 1) {
-            return null;
+    public Boolean login(String loginId, String password) {
+        Member findMember = memberRepository.findByLoginId(loginId);
+        if(findMember == null) {
+            return false;
         }
 
-        Member member = findMembers.get(0);
-        if(member.getPassword().equals(password)) {
-            return member;
+        if(findMember.getPassword().equals(password)) {
+            return true;
         }
-        return null;
+        return false;
     }
 
 }

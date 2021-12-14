@@ -36,10 +36,12 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findByLoginId(String loginId) {
+    public Member findByLoginId(String loginId) {
         return em.createQuery("select m from Member m where m.loginId = :loginId", Member.class)
                 .setParameter("loginId", loginId)
-                .getResultList();
+                .getResultList()
+                .stream().findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -56,10 +58,12 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findByPhoneNumber(String phoneNumber) {
+    public Member findByPhoneNumber(String phoneNumber) {
         return em.createQuery("select m from Member m where m.phoneNumber = :phoneNumber", Member.class)
                 .setParameter("phoneNumber", phoneNumber)
-                .getResultList();
+                .getResultList()
+                .stream().findFirst()
+                .orElse(null);
     }
 
     @Override

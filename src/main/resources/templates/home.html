@@ -8,27 +8,16 @@
 <body>
 
 <div class="container">
-    <div th:replace="fragments/bodyHeader::bodyHeader" />
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <div class="jumbotron">
         <h1>재고 관리 시스템</h1>
         <p class="lead">회원 기능 (회원 가입과 목록은 관리자만 확인 가능)</p>
         <p>
             <a class="btn btn-lg btn-secondary" href="/login">로그인</a>
             <a class="btn btn-lg btn-secondary" href="/members/new">회원 가입</a>
-            <a class="btn btn-lg btn-secondary" href="/members">회원 목록</a>
-        </p>
-        <p class="lead">재고 관련 기능 (로그인 후에 권한에 따라 보이도록)</p>
-        <p>
-            <a class="btn btn-lg btn-dark" href="/items/new">재고 상품 등록</a>
-            <a class="btn btn-lg btn-dark" href="/items">재고 상품 목록</a>
-        </p>
-        <p class="lead">관리자 메뉴 (권한에 따라 보이도록)</p>
-        <p>
-            <a class="btn btn-lg btn-info" href="/items">재고 관리</a>
-            <a class="btn btn-lg btn-info" href="/items">재고 목록</a>
         </p>
     </div>
-    <div th:replace="fragments/footer::footer" />
+    <div th:replace="fragments/footer::footer"></div>
 </div> <!-- /container -->
 </body>
 </html>

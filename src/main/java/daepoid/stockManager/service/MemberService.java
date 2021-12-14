@@ -38,11 +38,7 @@ public class MemberService {
     }
 
     public Member findMemberByLoginId(String loginId) {
-        List<Member> findMembers = memberRepository.findByLoginId(loginId);
-        if(findMembers.size() != 1) {
-            return null;
-        }
-        return findMembers.get(0);
+        return memberRepository.findByLoginId(loginId);
     }
 
     public List<Member> findMembers() {
@@ -53,7 +49,7 @@ public class MemberService {
         return memberRepository.findByName(name);
     }
 
-    public List<Member> findMembersByPhoneNumber(String phoneNumber) {
+    public Member findMemberByPhoneNumber(String phoneNumber) {
         return memberRepository.findByPhoneNumber(phoneNumber);
     }
 

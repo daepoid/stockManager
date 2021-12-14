@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header::header">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Hello</title>
+</head>
+
+<body>
+
+<div class="container">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
+    <div class="jumbotron">
+        <h1>재고 관리 시스템</h1>
+        <h4 class="mb-3" th:text="|로그인: ${loginMemberDTO.loginId}|">로그인 사용자 아이디</h4>
+
+        <p class="lead">재고 관련 기능 (권한에 따라 보이는 재고 상품이 다름)</p>
+        <p>
+            <a class="btn btn-lg btn-dark" href="/items">재고 상품 목록</a>
+        </p>
+
+        <p class="lead">관리자 메뉴 (권한에 따라 보이도록 - 스프링 시큐리티 이용)</p>
+        <p>
+            <a th:if="" class="btn btn-lg btn-info" href="/members">직원 관리</a>
+            <a class="btn btn-lg btn-dark" href="/items/new">재고 상품 등록</a>
+        </p>
+    </div>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+</html>
