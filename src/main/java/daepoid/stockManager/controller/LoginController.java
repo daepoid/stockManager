@@ -45,7 +45,8 @@ public class LoginController {
             return "members/loginMemberForm";
         }
 
-        if(loginService.login(loginMemberDTO.getLoginId(), loginMemberDTO.getPassword()) == null) {
+        // 로그인 결과가 false 일때
+        if(!loginService.login(loginMemberDTO.getLoginId(), loginMemberDTO.getPassword())) {
             log.info("로그인 실패 loginMember");
             bindingResult.reject("loginFail", "아이디 또는 비밀번호를 확인해주세요");
             return "members/loginMemberForm";

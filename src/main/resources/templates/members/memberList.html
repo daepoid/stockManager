@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="fragments/header :: header" />
+<head th:replace="fragments/header :: header"></head>
 <body>
 <div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
     <div>
         <table class="table table-striped">
             <thead>
@@ -15,6 +15,7 @@
                 <th>직급</th>
                 <th>재직상태</th>
                 <th>역할</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -26,11 +27,15 @@
                 <td th:text="${member.gradeType}"></td>
                 <td th:text="${member.memberStatus}"></td>
                 <td th:text="${member.roles}"></td>
+                <td>
+                    <a href="#" th:href="@{/members/{id}/edit (id=${member.id})}"
+                       class="btn btn-primary" role="button">수정</a>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div th:replace="fragments/footer :: footer" />
+    <div th:replace="fragments/footer :: footer"></div>
 </div> <!-- /container -->
 </body>
 </html>

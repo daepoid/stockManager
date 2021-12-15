@@ -15,13 +15,14 @@
 
         <p class="lead">재고 관련 기능 (권한에 따라 보이는 재고 상품이 다름)</p>
         <p>
-            <a class="btn btn-lg btn-dark" href="/items">재고 상품 목록</a>
+            <a class="btn btn-lg btn-dark" href="/items">재고 관리</a>
+            <a class="btn btn-lg btn-dark" href="/recipe">레시피</a>
         </p>
 
         <p class="lead">관리자 메뉴 (권한에 따라 보이도록 - 스프링 시큐리티 이용)</p>
         <p>
-            <a th:if="" class="btn btn-lg btn-info" href="/members">직원 관리</a>
-            <a class="btn btn-lg btn-dark" href="/items/new">재고 상품 등록</a>
+            <a class="btn btn-lg btn-info" href="/members">직원 정보 관리</a>
+            <a class="btn btn-lg btn-info" href="/recipe">레시피 관리</a>
         </p>
     </div>
     <div th:replace="fragments/footer::footer"></div>

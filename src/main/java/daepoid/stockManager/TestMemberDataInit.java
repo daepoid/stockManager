@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor
-public class AdminDataInit {
+public class TestMemberDataInit {
 
     private final MemberService memberService;
 
