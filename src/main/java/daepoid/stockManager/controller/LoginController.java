@@ -54,13 +54,14 @@ public class LoginController {
 
         log.info("로그인 성공 loginMember");
 
-        // 세션 처리
-
         // 세션이 있으면 있는 세션 반환하고 세션이 없으면 새로운 세션을 생성
         // getSession(false)일 떄 세션이 없으면 새로운 세션을 생성하지 않음
         HttpSession session = request.getSession();
+        log.info("session = {}", session);
 
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMemberDTO);
+        log.info("session.getAttribute = {}", session.getAttribute(SessionConst.LOGIN_MEMBER));
+        log.info("redirectURL = {}", redirectURL);
         return "redirect:" + redirectURL;
     }
 

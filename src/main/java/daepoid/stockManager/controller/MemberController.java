@@ -33,11 +33,10 @@ public class MemberController {
 
     @PostMapping("/new")
     public String joinMember(@Valid @ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO, BindingResult bindingResult) {
-//    public String joinMember(@ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO) {
-//        if(bindingResult.hasErrors()) {
-//            log.info("login Error = {}", bindingResult);
-//            return "members/memberJoinForm";
-//        }
+        if(bindingResult.hasErrors()) {
+            log.info("login Error = {}", bindingResult);
+            return "members/memberJoinForm";
+        }
 
         // 패스워드와 패스워드 확인이 동일하지 않음
         if(!joinMemberDTO.getPassword().equals(joinMemberDTO.getPasswordCheck())) {

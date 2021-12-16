@@ -1,17 +1,16 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="fragments/header :: header">
-    <title>재고 물품 리스트</title>
+<head th:replace="fragments/header::header">
+    <title>레시피 리스트</title>
 </head>
 
 <body>
 <div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <div>
         <table class="table table-striped">
             <thead>
             <tr>
-<!--                <th>#</th>-->
                 <th>상품명</th>
                 <th>아이템 특성</th>
                 <th>가격</th>
@@ -24,23 +23,22 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="item : ${itemList}">
-<!--                <td th:text="${item.id}"></td>-->
-                <td th:text="${item.name}"></td>
-                <td th:text="${item.itemType}"></td>
-                <td th:text="${item.price}"></td>
-                <td th:text="${item.packageCount}"></td>
-                <td th:text="${item.quantity}"></td>
-                <td th:text="${item.unitType}"></td>
+            <tr th:each="recipe : ${recipeList}">
+                <td th:text="${recipe.name}"></td>
+                <td th:text="${recipe.itemType}"></td>
+                <td th:text="${recipe.price}"></td>
+                <td th:text="${recipe.packageCount}"></td>
+                <td th:text="${recipe.quantity}"></td>
+                <td th:text="${recipe.unitType}"></td>
                 <td>
-                    <a href="#" th:href="@{/items/{id}/edit (id=${item.id})}"
+                    <a href="#" th:href="@{/items/{id}/edit (id=${recipe.id})}"
                        class="w-100 btn btn-secondary btn-lg" role="button">수정</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div th:replace="fragments/footer :: footer"></div>
+    <div th:replace="fragments/footer::footer"></div>
 </div> <!-- /container -->
 </body>
 </html>
