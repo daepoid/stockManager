@@ -35,7 +35,7 @@ public class MemberController {
     public String joinMember(@Valid @ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             log.info("login Error = {}", bindingResult);
-            return "members/memberJoinForm";
+            return "members/joinMemberForm";
         }
 
         // 패스워드와 패스워드 확인이 동일하지 않음

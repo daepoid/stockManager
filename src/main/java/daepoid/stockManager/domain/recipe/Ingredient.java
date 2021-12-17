@@ -2,16 +2,14 @@ package daepoid.stockManager.domain.recipe;
 
 import daepoid.stockManager.domain.item.UnitType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
 public class Ingredient {
 
     @Id @GeneratedValue
@@ -34,7 +32,13 @@ public class Ingredient {
     private Double loss;
 
     // 투입 재료 가격 => 재료 양 * 단위 가격
+    // 사용하지 않을 수 있음
     private Double portionPrice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
+
 
     public Ingredient(String name, Integer quantity, UnitType unitType,Double unitPrice, Double loss) {
         this.name = name;
@@ -43,5 +47,50 @@ public class Ingredient {
         this.unitPrice = unitPrice;
         this.loss = loss;
         this.portionPrice = quantity * unitPrice;
+    }
+
+    public void changeId(Long id) {
+        this.id = id;
+    }
+
+    public void changeName(String name) {
+        this.name = name;
+    }
+
+    public void changeQuantity(Integer quantity) {
+        this.quantity = quantity;
+        updatePortionPrice();
+    }
+
+    public void changeUnitType(UnitType unitType) {
+        this.unitType = unitType;
+    }
+
+    public void changeUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+        updatePortionPrice();
+    }
+
+    public void changeLoss(Double loss) {
+        this.loss = loss;
+    }
+
+    public Double getPortionPrice() {
+        return getQuantity() * getUnitPrice();
+    }
+
+    public void updatePortionPrice() {
+        this.portionPrice = getPortionPrice();
+    }
+
+    public static Ingredient createIngredient(String name, Integer quantity, UnitType unitType, Double unitPrice, Double loss) {
+        Ingredient ingredient = new Ingredient();
+        ingredient.changeName(name);
+        ingredient.changeQuantity(quantity);
+        ingredient.changeUnitType(unitType);
+        ingredient.changeUnitPrice(unitPrice);
+        ingredient.changeLoss(loss);
+
+        return ingredient;
     }
 }

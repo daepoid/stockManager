@@ -11,27 +11,29 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>상품명</th>
-                <th>아이템 특성</th>
+                <th>레시피 이름</th>
                 <th>가격</th>
-                <th>패키지 수량(박스)</th>
-                <th>재고 수량</th>
+                <th>단위 가격</th>
+                <th>무게</th>
+                <th>접시</th>
                 <th>재고 수량 단위</th>
+                <th>주의</th>
                 <td>
-                    <a href="/items/new" class="btn btn-primary" role="button">추가</a>
+                    <a href="/recipes/new" class="btn btn-primary" role="button">추가</a>
                 </td>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="recipe : ${recipeList}">
+            <tr th:each="recipe : ${recipes}">
                 <td th:text="${recipe.name}"></td>
-                <td th:text="${recipe.itemType}"></td>
                 <td th:text="${recipe.price}"></td>
-                <td th:text="${recipe.packageCount}"></td>
-                <td th:text="${recipe.quantity}"></td>
-                <td th:text="${recipe.unitType}"></td>
+                <td th:text="${recipe.unitPrice}"></td>
+                <td th:text="${recipe.weight}"></td>
+                <td th:text="${recipe.dishType}"></td>
+                <td th:text="${recipe.ingredients}"></td>
+                <td th:text="${recipe.notes}"></td>
                 <td>
-                    <a href="#" th:href="@{/items/{id}/edit (id=${recipe.id})}"
+                    <a href="#" th:href="@{/recipes/{id}/edit (id=${recipe.id})}"
                        class="w-100 btn btn-secondary btn-lg" role="button">수정</a>
                 </td>
             </tr>
