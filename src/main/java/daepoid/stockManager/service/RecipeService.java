@@ -26,8 +26,7 @@ public class RecipeService {
     //==생성 로직==//
     @Transactional
     public Long saveRecipe(Recipe recipe) {
-        recipeRepository.save(recipe);
-        return recipe.getId();
+        return recipeRepository.save(recipe);
     }
 
     //==조회 로직==//

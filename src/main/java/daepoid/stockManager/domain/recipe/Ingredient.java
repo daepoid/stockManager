@@ -40,7 +40,7 @@ public class Ingredient {
     private Recipe recipe;
 
 
-    public Ingredient(String name, Integer quantity, UnitType unitType,Double unitPrice, Double loss) {
+    public Ingredient(String name, Integer quantity, UnitType unitType, Double unitPrice, Double loss) {
         this.name = name;
         this.quantity = quantity;
         this.unitType = unitType;
@@ -59,7 +59,7 @@ public class Ingredient {
 
     public void changeQuantity(Integer quantity) {
         this.quantity = quantity;
-        updatePortionPrice();
+//        updatePortionPrice();
     }
 
     public void changeUnitType(UnitType unitType) {
@@ -68,7 +68,7 @@ public class Ingredient {
 
     public void changeUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
-        updatePortionPrice();
+//        updatePortionPrice();
     }
 
     public void changeLoss(Double loss) {
@@ -90,6 +90,7 @@ public class Ingredient {
         ingredient.changeUnitType(unitType);
         ingredient.changeUnitPrice(unitPrice);
         ingredient.changeLoss(loss);
+        ingredient.updatePortionPrice();
 
         return ingredient;
     }

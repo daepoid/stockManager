@@ -88,4 +88,24 @@ public class Recipe {
         recipe.changeNotes(notes);
         return recipe;
     }
+
+    public static Recipe createRecipe(String name,
+                                      Integer price,
+                                      Double unitPrice,
+                                      Double weight,
+                                      DishType dishType,
+                                      String notes,
+                                      Ingredient... ingredients) {
+        Recipe recipe = new Recipe();
+        recipe.changeName(name);
+        recipe.changePrice(price);
+        recipe.changeUnitPrice(unitPrice);
+        recipe.changeWeight(weight);
+        recipe.changeDishType(dishType);
+        recipe.changeNotes(notes);
+        for (Ingredient ingredient : ingredients) {
+            recipe.addIngredient(ingredient);
+        }
+        return recipe;
+    }
 }

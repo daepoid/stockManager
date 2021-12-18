@@ -52,6 +52,7 @@ public class EditMemberDTO {
     @Enumerated(EnumType.STRING)
     private Collection<RoleType> roles = new ArrayList<>();
 
+
     public EditMemberDTO(Member member) {
         this.id = member.getId();
         this.loginId = member.getLoginId();

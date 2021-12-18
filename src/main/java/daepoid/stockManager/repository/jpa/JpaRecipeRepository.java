@@ -30,7 +30,7 @@ public class JpaRecipeRepository implements RecipeRepository {
     //==조회 로직==//
     @Override
     public Optional<Recipe> findById(Long id) {
-        return Optional.empty();
+        return Optional.of(em.find(Recipe.class, id));
     }
 
     @Override
