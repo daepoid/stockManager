@@ -28,8 +28,8 @@ public interface RecipeRepository {
     void changeUnitPrice(Long recipeId, Double unitPrice);
     void changeWeight(Long recipeId, Double weight);
     void changeDishType(Long recipeId, DishType dishType);
-    void addIngredient(Long recipeId, Ingredient ingredient);
-    void removeIngredient(Long recipeId, Ingredient ingredient);
+    boolean addIngredient(Long recipeId, Ingredient ingredient);
+    boolean removeIngredient(Long recipeId, Ingredient ingredient);
     void changeNotes(Long recipeId, String notes);
 
     //==삭제 로직==//

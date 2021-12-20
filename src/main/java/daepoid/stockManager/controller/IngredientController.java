@@ -20,18 +20,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class IngredientController {
 
-    private final IngredientService ingredientService;
     private final RecipeService recipeService;
+    private final IngredientService ingredientService;
 
     @GetMapping("/recipes/{recipeId}/ingredients")
     public String ingredientsList(@PathVariable("recipeId") Long recipeId, Model model) {
-        model.addAttribute("ingredients", ingredientService.findIngredients());
+        model.addAttribute("ingredients", ingredientService.findIngredientsByRecipe(recipeId));
         return "ingredients/ingredientList";
     }
 
@@ -52,17 +53,23 @@ public class IngredientController {
             log.info("bindingResult = {}", bindingResult);
             return "ingredients/createIngredientForm";
         }
-        log.info("recipeId = {}", recipeId);
-        recipeService.addIngredient(recipeId, Ingredient.createIngredient(
+
+        Long ingredientId = ingredientService.saveIngredient(Ingredient.createIngredient(
                 createIngredientDTO.getName(),
                 createIngredientDTO.getQuantity(),
                 createIngredientDTO.getUnitType(),
                 createIngredientDTO.getUnitPrice(),
                 createIngredientDTO.getLoss()
         ));
-        log.info("recipeService = {}", recipeService.findRecipe(recipeId).getIngredients());
+        Ingredient ingredient = ingredientService.findIngredient(ingredientId);
+        ingredient.changeRecipe(recipeService.findRecipe(recipeId));
+
+        List<Ingredient> ingredients = ingredientService.findIngredientsByRecipe(recipeId);
+        Recipe recipe = recipeService.findRecipe(recipeId);
+        recipe.changeIngredients(ingredients);
+
         redirectAttributes.addAttribute("recipeId", recipeId);
-        return "redirect:/recipes/{recipeId}/ingredients";
+        return "redirect:/recipes/{recipeId}/edit";
     }
 
     // ingredient는 recipe에 종속적이다. 따라서 저장된 ingredient를

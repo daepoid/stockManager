@@ -115,15 +115,22 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public void addIngredient(Long recipeId, Ingredient ingredient) {
-        em.find(Recipe.class, recipeId)
-                .addIngredient(ingredient);
+    public boolean addIngredient(Long recipeId, Ingredient ingredient) {
+        Recipe recipe = em.find(Recipe.class, recipeId);
+        List<Ingredient> ingredients = recipe.getIngredients();
+        ingredients.add(ingredient);
+        recipe.setIngredients(ingredients);
+        return true;
     }
 
     @Override
-    public void removeIngredient(Long recipeId, Ingredient ingredient) {
-        em.find(Recipe.class, recipeId)
-                .removeIngredient(ingredient);
+    public boolean removeIngredient(Long recipeId, Ingredient ingredient) {
+        Recipe recipe = em.find(Recipe.class, recipeId);
+        if(recipe != null) {
+            recipe.removeIngredient(ingredient);
+            return true;
+        }
+        return false;
     }
 
     @Override

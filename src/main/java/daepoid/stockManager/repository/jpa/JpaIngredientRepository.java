@@ -32,4 +32,11 @@ public class JpaIngredientRepository implements IngredientRepository {
         return em.createQuery("select i from Ingredient i", Ingredient.class)
                 .getResultList();
     }
+
+    @Override
+    public List<Ingredient> findIngredientsByRecipe(Long recipeId) {
+        return em.createQuery("select i from Ingredient i where i.recipe.id = :recipeId", Ingredient.class)
+                .setParameter("recipeId", recipeId)
+                .getResultList();
+    }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 public class Recipe {
 
     @Id
@@ -52,6 +53,10 @@ public class Recipe {
 
     public void changeWeight(Double weight) {
         this.weight = weight;
+    }
+
+    public void changeIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public void addIngredient(Ingredient ingredient) {

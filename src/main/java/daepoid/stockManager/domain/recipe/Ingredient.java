@@ -75,6 +75,10 @@ public class Ingredient {
         this.loss = loss;
     }
 
+    public void changeRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
     public Double getPortionPrice() {
         return getQuantity() * getUnitPrice();
     }

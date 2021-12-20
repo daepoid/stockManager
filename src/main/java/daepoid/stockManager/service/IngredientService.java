@@ -5,17 +5,20 @@ import daepoid.stockManager.repository.jpa.JpaIngredientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class IngredientService {
 
     private final JpaIngredientRepository ingredientRepository;
 
     //==생성 메서드==//
+    @Transactional
     public Long saveIngredient(Ingredient ingredient) {
         return ingredientRepository.saveIngredient(ingredient);
     }
@@ -27,5 +30,9 @@ public class IngredientService {
 
     public List<Ingredient> findIngredients() {
         return ingredientRepository.findIngredients();
+    }
+
+    public List<Ingredient> findIngredientsByRecipe(Long recipeId) {
+        return ingredientRepository.findIngredientsByRecipe(recipeId);
     }
 }

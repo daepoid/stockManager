@@ -103,13 +103,21 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public void addIngredient(Long recipeId, Ingredient ingredient) {
-        store.get(recipeId).addIngredient(ingredient);
+    public boolean addIngredient(Long recipeId, Ingredient ingredient) {
+        if(store.get(recipeId) != null){
+            store.get(recipeId).addIngredient(ingredient);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void removeIngredient(Long recipeId, Ingredient ingredient) {
-        store.get(recipeId).removeIngredient(ingredient);
+    public boolean removeIngredient(Long recipeId, Ingredient ingredient) {
+        if(store.get(recipeId) != null) {
+            store.get(recipeId).removeIngredient(ingredient);
+            return true;
+        }
+        return false;
     }
 
     @Override

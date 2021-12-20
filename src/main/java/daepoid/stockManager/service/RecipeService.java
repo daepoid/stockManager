@@ -17,7 +17,8 @@ import java.util.List;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class RecipeService {
 
@@ -54,6 +55,11 @@ public class RecipeService {
         return recipeRepository.findByWeight(weight);
     }
 
+    public List<Ingredient> findIngredientsByRecipe(Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId).get();
+        return recipe.getIngredients();
+    }
+
     public List<Recipe> findRecipesByIngredient(Ingredient ingredient) {
         return recipeRepository.findByIngredient(ingredient);
     }
@@ -85,8 +91,16 @@ public class RecipeService {
     }
 
     @Transactional
+    public void changeIngredient(Long recipeId, List<Ingredient> ingredients) {
+        Recipe recipe = recipeRepository.findById(recipeId).get();
+        recipe.changeIngredients(ingredients);
+    }
+
+    @Transactional
     public void addIngredient(Long recipeId, Ingredient ingredient) {
-        recipeRepository.addIngredient(recipeId, ingredient);
+        Recipe recipe = recipeRepository.findById(recipeId).get();
+        recipe.getIngredients().add(ingredient);
+//        recipeRepository.addIngredient(recipeId, ingredient);
     }
 
     @Transactional

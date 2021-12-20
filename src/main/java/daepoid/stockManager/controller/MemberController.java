@@ -52,6 +52,7 @@ public class MemberController {
         Member member = Member.createMember(joinMemberDTO.getLoginId(), joinMemberDTO.getName(), joinMemberDTO.getPassword(), joinMemberDTO.getPhoneNumber());
 
         Long memberId = memberService.join(member);
+        log.info("memberId = {}", memberId);
         return "redirect:/";
     }
 

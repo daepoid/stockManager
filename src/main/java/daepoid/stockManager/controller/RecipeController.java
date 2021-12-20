@@ -42,6 +42,8 @@ public class RecipeController {
                                  Model model) {
         Recipe recipe = recipeService.findRecipe(recipeId);
         log.info("recipe = {}", recipe);
+        log.info("recipe ingredients = {}", recipe.getIngredients());
+        log.info("recipe ingredients size = {}", recipe.getIngredients().size());
         model.addAttribute("editRecipeDTO", new EditRecipeDTO(recipe));
         return "recipe/editRecipeForm";
     }

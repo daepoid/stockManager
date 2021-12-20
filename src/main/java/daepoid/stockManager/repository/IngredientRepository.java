@@ -16,4 +16,5 @@ public interface IngredientRepository {
     //==조회 메서드==//
     Ingredient findIngredient(Long ingredientId);
     List<Ingredient> findIngredients();
+    List<Ingredient> findIngredientsByRecipe(Long recipeId);
 }
