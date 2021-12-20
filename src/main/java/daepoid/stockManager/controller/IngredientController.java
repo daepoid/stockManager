@@ -1,11 +1,16 @@
 package daepoid.stockManager.controller;
 
 
+import daepoid.stockManager.SessionConst;
+import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.recipe.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.dto.CreateIngredientDTO;
 import daepoid.stockManager.dto.CreateItemDTO;
+import daepoid.stockManager.dto.LoginMemberDTO;
 import daepoid.stockManager.service.IngredientService;
+import daepoid.stockManager.service.MemberService;
 import daepoid.stockManager.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +34,17 @@ public class IngredientController {
 
     private final RecipeService recipeService;
     private final IngredientService ingredientService;
+    private final MemberService memberService;
 
     @GetMapping("/recipes/{recipeId}/ingredients")
-    public String ingredientsList(@PathVariable("recipeId") Long recipeId, Model model) {
+    public String ingredientsList(@PathVariable("recipeId") Long recipeId, Model model, HttpServletRequest request) {
         model.addAttribute("ingredients", ingredientService.findIngredientsByRecipe(recipeId));
+        LoginMemberDTO loginMemberDTO = (LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
+        Member member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
+
+        if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
+            return "ingredients/adminIngredientList";
+        }
         return "ingredients/ingredientList";
     }
 
@@ -54,15 +66,16 @@ public class IngredientController {
             return "ingredients/createIngredientForm";
         }
 
-        Long ingredientId = ingredientService.saveIngredient(Ingredient.createIngredient(
+        Ingredient ingredient = Ingredient.createIngredient(
                 createIngredientDTO.getName(),
                 createIngredientDTO.getQuantity(),
                 createIngredientDTO.getUnitType(),
                 createIngredientDTO.getUnitPrice(),
                 createIngredientDTO.getLoss()
-        ));
-        Ingredient ingredient = ingredientService.findIngredient(ingredientId);
+        );
         ingredient.changeRecipe(recipeService.findRecipe(recipeId));
+
+        Long ingredientId = ingredientService.saveIngredient(ingredient);
 
         List<Ingredient> ingredients = ingredientService.findIngredientsByRecipe(recipeId);
         Recipe recipe = recipeService.findRecipe(recipeId);

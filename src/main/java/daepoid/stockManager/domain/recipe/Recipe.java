@@ -17,6 +17,9 @@ public class Recipe {
     @Column(name = "recipe_id")
     private Long id;
 
+    @Column(unique = true)
+    private Long recipeNumber;
+
     private String name;
 
     private Integer price;
@@ -34,6 +37,11 @@ public class Recipe {
 
     @Lob
     private String notes;
+
+    // unique 조건일 때 같은 걸로 바꾸면 어떻게 되는가?
+    public void changeRecipeNumber(Long recipeNumber) {
+        this.recipeNumber = recipeNumber;
+    }
 
     public void changeId(Long id) {
         this.id = id;

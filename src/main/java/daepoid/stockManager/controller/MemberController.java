@@ -1,8 +1,10 @@
 package daepoid.stockManager.controller;
 
+import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.dto.EditMemberDTO;
 import daepoid.stockManager.dto.JoinMemberDTO;
+import daepoid.stockManager.dto.LoginMemberDTO;
 import daepoid.stockManager.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -27,7 +30,10 @@ public class MemberController {
      * @return
      */
     @GetMapping("/new")
-    public String joinMemberForm(@ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO) {
+    public String joinMemberForm(@ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO,
+                                 HttpServletRequest request) {
+        LoginMemberDTO loginMemberDTO = (LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
+
         return "members/joinMemberForm";
     }
 

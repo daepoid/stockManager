@@ -17,6 +17,10 @@
                 <th>단위 가격</th>
                 <th>로스율</th>
                 <th>portionPrice</th>
+                <td>
+                    <a th:href="@{/recipes/{recipeId}/ingredients/new (recipeId=${recipeId})}"
+                       class="btn btn-primary" role="button">추가</a>
+                </td>
             </tr>
             </thead>
             <tbody>
@@ -27,6 +31,10 @@
                 <td th:text="${ingredient.unitPrice}"></td>
                 <td th:text="${ingredient.loss}"></td>
                 <td th:text="${ingredient.portionPrice}"></td>
+                <td>
+                    <a href="#" th:href="@{/recipes/{recipeId}/ingredients/{ingredientId}/edit (recipeId=${ingredient.recipe.id}, ingredientId=${ingredient.id})}"
+                       class="w-100 btn btn-secondary btn-lg" role="button">수정</a>
+                </td>
             </tr>
             </tbody>
         </table>

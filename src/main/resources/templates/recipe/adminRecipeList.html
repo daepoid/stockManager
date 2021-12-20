@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="fragments/header::header">
-    <title>레시피 리스트</title>
+    <title>관리자 레시피 리스트</title>
 </head>
 
 <body>
@@ -11,24 +11,26 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>레시피 번호</th>
                 <th>레시피 이름</th>
                 <th>가격</th>
                 <th>단위 가격</th>
                 <th>무게</th>
                 <th>접시</th>
+<!--                <th>ingredients</th>-->
                 <th>주의</th>
-                <th>#</th>
+                <td>
+                    <a href="/recipes/new" class="btn btn-primary" role="button">추가</a>
+                </td>
             </tr>
             </thead>
             <tbody>
             <tr th:each="recipe : ${recipes}">
-                <td th:text="${recipe.recipeNumber}"></td>
                 <td th:text="${recipe.name}"></td>
                 <td th:text="${recipe.price}"></td>
                 <td th:text="${recipe.unitPrice}"></td>
                 <td th:text="${recipe.weight}"></td>
                 <td th:text="${recipe.dishType}"></td>
+<!--                <td th:text="${recipe.ingredients}"></td>-->
                 <td th:text="${recipe.notes}"></td>
                 <td>
                     <a href="#" th:href="@{/recipes/{id}/edit (id=${recipe.id})}"
