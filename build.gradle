@@ -20,11 +20,20 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.1'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.5.6'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.1'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.1'
 	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.1'
-	compileOnly 'org.projectlombok:lombok:1.18.22'
+
+	// mongoDB 추가 시작
+//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.6.1'
+	// mongoDB 추가 완료
+
+	// mariaDB 추가 시작
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.3'
+	// mariaDB 추가 완료
+
 	runtimeOnly 'com.h2database:h2:2.0.202'
+	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.1'
 }

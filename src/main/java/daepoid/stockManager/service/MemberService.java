@@ -83,4 +83,6 @@ public class MemberService {
     //==삭제 로직==//
 
 
+    //==비즈니스 로직==//
+
 }

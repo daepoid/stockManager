@@ -13,13 +13,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Slf4j
@@ -33,6 +31,7 @@ public class RecipeController {
 
     @GetMapping("/new")
     public String createRecipeForm(@ModelAttribute("createRecipeDTO") CreateRecipeDTO createRecipeDTO) {
+        log.info("Create Recipe Form");
         return "recipe/createRecipeForm";
     }
 
@@ -47,23 +46,35 @@ public class RecipeController {
 
     @GetMapping("/{recipeId}/edit")
     public String editRecipeForm(@PathVariable("recipeId") Long recipeId,
-                                 Model model) {
+                                 Model model,
+                                 HttpServletRequest request) {
         Recipe recipe = recipeService.findRecipe(recipeId);
-        log.info("recipe = {}", recipe);
-        log.info("recipe ingredients = {}", recipe.getIngredients());
-        log.info("recipe ingredients size = {}", recipe.getIngredients().size());
         model.addAttribute("editRecipeDTO", new EditRecipeDTO(recipe));
-        return "recipe/editRecipeForm";
+
+        Member member = memberService.findMemberByLoginId(((LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER)).getLoginId());
+        if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
+            return "recipe/authorize/editRecipeForm";
+        }
+
+        return "recipe/non-authorize/editRecipeForm";
     }
 
     @PostMapping("/{recipeId}/edit")
     public String editRecipe(@PathVariable("recipeId") Long recipeId,
                              @Valid @ModelAttribute("editRecipeDTO") EditRecipeDTO editRecipeDTO,
-                             BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
-            log.info("editRecipe = {}", bindingResult);
-            return "recipe/editRecipeForm";
-        }
+                             BindingResult bindingResult,
+                             HttpServletRequest request) {
+
+//        if(bindingResult.hasErrors()) {
+//            log.info("editRecipe = {}", bindingResult);
+//            Member member = memberService.findMemberByLoginId(((LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER)).getLoginId());
+//            if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
+//                return "recipe/authorize/editRecipeForm";
+//            }
+//            return "recipe/non-authorize/editRecipeForm";
+//        }
+//
+//        log.info("request.getRequestURI = {}", request.getRequestURI());
 
         return "redirect:/recipes";
     }
@@ -72,12 +83,11 @@ public class RecipeController {
     public String recipeList(Model model, HttpServletRequest request) {
         model.addAttribute("recipes", recipeService.findRecipes());
 
-        LoginMemberDTO loginMemberDTO = (LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
-        Member member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
+        Member member = memberService.findMemberByLoginId(((LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER)).getLoginId());
         if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
-            return "recipe/adminRecipeList";
+            return "recipe/authorize/recipeList";
         }
-        return "recipe/recipeList";
-//        return "recipe/adminRecipeList";
+
+        return "recipe/non-authorize/recipeList";
     }
 }

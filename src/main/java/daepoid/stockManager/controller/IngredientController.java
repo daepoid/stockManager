@@ -7,7 +7,6 @@ import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.recipe.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.dto.CreateIngredientDTO;
-import daepoid.stockManager.dto.CreateItemDTO;
 import daepoid.stockManager.dto.LoginMemberDTO;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.MemberService;
@@ -43,9 +42,9 @@ public class IngredientController {
         Member member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
 
         if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
-            return "ingredients/adminIngredientList";
+            return "ingredients/authorize/ingredientList";
         }
-        return "ingredients/ingredientList";
+        return "ingredients/non-authorize/ingredientList";
     }
 
     @GetMapping("/recipes/{recipeId}/ingredients/new")

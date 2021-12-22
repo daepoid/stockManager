@@ -1,5 +1,6 @@
 package daepoid.stockManager;
 
+import daepoid.stockManager.inteceptor.GradeCheckInterceptor;
 import daepoid.stockManager.inteceptor.LogInterceptor;
 import daepoid.stockManager.inteceptor.LoginCheckInterceptor;
 import daepoid.stockManager.inteceptor.LoginMemberArgumentResolver;

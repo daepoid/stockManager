@@ -1,6 +1,7 @@
 package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
+import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.dto.EditMemberDTO;
 import daepoid.stockManager.dto.JoinMemberDTO;
@@ -33,7 +34,10 @@ public class MemberController {
     public String joinMemberForm(@ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO,
                                  HttpServletRequest request) {
         LoginMemberDTO loginMemberDTO = (LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
+        Member member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
+        if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
 
+        }
         return "members/joinMemberForm";
     }
 
