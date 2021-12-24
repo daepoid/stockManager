@@ -32,6 +32,11 @@ dependencies {
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.3'
 	// mariaDB 추가 완료
 
+	// spring security 추가 시작
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	// spring security 추가 완료
+
 	runtimeOnly 'com.h2database:h2:2.0.202'
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
