@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
 <head th:replace="fragments/header::header">
     <title>레시피 수정</title>
 </head>
@@ -11,6 +13,8 @@
         <input type="hidden" th:field="*{id}" />
         <div>
             <label for="name">레시피 이름</label>
+            <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                    type="submit" class="btn btn-primary">Submit</button>
             <input type="text" id="name" th:field="*{name}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{name}"></div>
@@ -50,8 +54,8 @@
         </div>
         <div>
             <label for="notes">주의</label>
-            <input type="text" id="notes" th:field="*{notes}"
-                   class="form-control" th:errorclass="field-error">
+            <textarea type="text" id="notes" th:field="*{notes}"
+                   class="form-control" th:errorclass="field-error"></textarea>
             <div class="field-error" th:errors="*{notes}"></div>
         </div>
     </form>

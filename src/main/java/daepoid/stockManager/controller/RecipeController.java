@@ -6,8 +6,6 @@ import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.dto.CreateRecipeDTO;
 import daepoid.stockManager.dto.EditRecipeDTO;
-import daepoid.stockManager.dto.LoginMemberDTO;
-import daepoid.stockManager.dto.SecurityLoginMemberDTO;
 import daepoid.stockManager.service.MemberService;
 import daepoid.stockManager.service.RecipeService;
 import lombok.RequiredArgsConstructor;
@@ -57,10 +55,10 @@ public class RecipeController {
         Member member = memberService.findMemberByLoginId(loginId);
 
         if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
-            return "recipe/authorize/editRecipeForm";
+            return "recipe/editRecipeForm";
         }
 
-        return "recipe/non-authorize/editRecipeForm";
+        return "recipe/editRecipeForm";
     }
 
     @PostMapping("/{recipeId}/edit")
@@ -91,9 +89,9 @@ public class RecipeController {
         Member member = memberService.findMemberByLoginId(loginId);
 
         if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
-            return "recipe/authorize/recipeList";
+            return "recipe/recipeList";
         }
 
-        return "recipe/non-authorize/recipeList";
+        return "recipe/recipeList";
     }
 }

@@ -67,8 +67,8 @@
         </div>
         <div>
             <label for="notes">주의</label>
-            <input type="text" id="notes" th:field="*{notes}"
-                   class="form-control" th:errorclass="field-error">
+            <textarea type="text" id="notes" th:field="*{notes}"
+                   class="form-control" th:errorclass="field-error"></textarea>
             <div class="field-error" th:errors="*{notes}"></div>
         </div>
         <hr class="my-4">

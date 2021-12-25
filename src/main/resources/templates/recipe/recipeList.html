@@ -17,7 +17,7 @@
                 <th>무게</th>
                 <th>접시</th>
 <!--                <th>ingredients</th>-->
-                <th>주의</th>
+<!--                <th>주의</th>-->
                 <td>
                     <a href="/recipes/new" class="btn btn-primary" role="button">추가</a>
                 </td>
@@ -31,10 +31,10 @@
                 <td th:text="${recipe.weight}"></td>
                 <td th:text="${recipe.dishType}"></td>
 <!--                <td th:text="${recipe.ingredients}"></td>-->
-                <td th:text="${recipe.notes}"></td>
+<!--                <td th:textarea="${recipe.notes}"></td>-->
                 <td>
                     <a href="#" th:href="@{/recipes/{id}/edit (id=${recipe.id})}"
-                       class="w-100 btn btn-secondary btn-lg" role="button">수정</a>
+                       class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
                 </td>
             </tr>
             </tbody>
