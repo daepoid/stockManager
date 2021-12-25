@@ -1,4 +1,4 @@
-package daepoid.stockManager;
+package daepoid.stockManager.testData;
 
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.domain.recipe.DishType;

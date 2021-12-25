@@ -1,4 +1,4 @@
-package daepoid.stockManager;
+package daepoid.stockManager.testData;
 
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.ItemType;

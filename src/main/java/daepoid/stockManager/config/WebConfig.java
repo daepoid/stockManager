@@ -1,4 +1,4 @@
-package daepoid.stockManager;
+package daepoid.stockManager.config;
 
 import daepoid.stockManager.inteceptor.GradeCheckInterceptor;
 import daepoid.stockManager.inteceptor.LogInterceptor;
@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
-@Configuration
+//@Configuration
 public class WebConfig implements WebMvcConfigurer {
 
     @Override

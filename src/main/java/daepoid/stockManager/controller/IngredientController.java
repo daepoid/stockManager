@@ -38,8 +38,8 @@ public class IngredientController {
     @GetMapping("/recipes/{recipeId}/ingredients")
     public String ingredientsList(@PathVariable("recipeId") Long recipeId, Model model, HttpServletRequest request) {
         model.addAttribute("ingredients", ingredientService.findIngredientsByRecipe(recipeId));
-        LoginMemberDTO loginMemberDTO = (LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
-        Member member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Member member = memberService.findMemberByLoginId(loginId);
 
         if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
             return "ingredients/authorize/ingredientList";

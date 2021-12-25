@@ -7,6 +7,7 @@ import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.dto.CreateRecipeDTO;
 import daepoid.stockManager.dto.EditRecipeDTO;
 import daepoid.stockManager.dto.LoginMemberDTO;
+import daepoid.stockManager.dto.SecurityLoginMemberDTO;
 import daepoid.stockManager.service.MemberService;
 import daepoid.stockManager.service.RecipeService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -51,7 +53,9 @@ public class RecipeController {
         Recipe recipe = recipeService.findRecipe(recipeId);
         model.addAttribute("editRecipeDTO", new EditRecipeDTO(recipe));
 
-        Member member = memberService.findMemberByLoginId(((LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER)).getLoginId());
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Member member = memberService.findMemberByLoginId(loginId);
+
         if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
             return "recipe/authorize/editRecipeForm";
         }
@@ -82,8 +86,10 @@ public class RecipeController {
     @GetMapping("")
     public String recipeList(Model model, HttpServletRequest request) {
         model.addAttribute("recipes", recipeService.findRecipes());
+        HttpSession session = request.getSession(false);
+        String loginId = (String) session.getAttribute(SessionConst.SECURITY_LOGIN);
+        Member member = memberService.findMemberByLoginId(loginId);
 
-        Member member = memberService.findMemberByLoginId(((LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER)).getLoginId());
         if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
             return "recipe/authorize/recipeList";
         }

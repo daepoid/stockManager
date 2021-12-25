@@ -1,16 +1,18 @@
 package daepoid.stockManager.domain.member;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
@@ -72,18 +74,6 @@ public class Member {
         return member;
     }
 
-    public static Member createMember(String loginId, String name, String password, String phoneNumber, GradeType gradeType, MemberStatus memberStatus) {
-        Member member = new Member();
-        member.changeLoginId(loginId);
-        member.changeName(name);
-        member.changePassword(password);
-        member.changePhoneNumber(phoneNumber);
-        member.changeGradeType(gradeType);
-        member.changeMemberStatus(memberStatus);
-
-        return member;
-    }
-
     public static Member createMember(String loginId, String name, String password, String phoneNumber, GradeType gradeType, MemberStatus memberStatus, RoleType... roleTypes) {
         Member member = new Member();
         member.changeLoginId(loginId);
@@ -99,6 +89,17 @@ public class Member {
         member.changeMemberStatus(memberStatus);
 
         return member;
+    }
+
+    @Builder
+    public Member(String loginId, String name, String password, String phoneNumber, GradeType gradeType, MemberStatus memberStatus, List<RoleType> roles) {
+        this.loginId = loginId;
+        this.name = name;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.gradeType = gradeType;
+        this.memberStatus = memberStatus;
+        this.roles = roles;
     }
 
     //==개발 로직==//
