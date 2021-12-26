@@ -25,28 +25,27 @@ public class HomeController {
 //    }
 
 //    @GetMapping("/")
-    public String loginHome(@Login LoginMemberDTO loginMemberDTO, Model model) {
-        log.info("loginHome loginMember = {}", loginMemberDTO);
-
-        if(loginMemberDTO.getLoginId() == null) {
-            log.info("로그인하지 않았습니다.");
-            return "home";
-        }
-
-        model.addAttribute("loginMemberDTO", loginMemberDTO);
-        return "loginHome";
-    }
+//    public String loginHome(@Login LoginMemberDTO loginMemberDTO, Model model) {
+//        log.info("loginHome loginMember = {}", loginMemberDTO);
+//
+//        if(loginMemberDTO.getLoginId() == null) {
+//            log.info("로그인하지 않았습니다.");
+//            return "home";
+//        }
+//
+//        model.addAttribute("loginMemberDTO", loginMemberDTO);
+//        return "loginHome";
+//    }
 
     @GetMapping("/")
     public String securityLoginHome(Model model, HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        log.info("loginId = {}", loginId);
 
         if(loginId == null) {
-            log.info("로그인하지 않았습니다.");
             return "home";
         }
 
+        log.info("{}님 로그인", loginId);
         model.addAttribute("loginId", loginId);
         return "loginHome";
     }

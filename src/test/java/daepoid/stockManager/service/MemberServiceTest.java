@@ -27,7 +27,7 @@ class MemberServiceTest {
         String password = "1234";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
-        RoleType roleType = RoleType.TEST;
+        RoleType roleType = RoleType.TEST1;
         MemberStatus memberStatus = MemberStatus.WORK;
 
         Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);
@@ -48,7 +48,7 @@ class MemberServiceTest {
         String password = "1234";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
-        RoleType roleType = RoleType.TEST;
+        RoleType roleType = RoleType.TEST1;
         MemberStatus memberStatus = MemberStatus.WORK;
 
         Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);
@@ -71,7 +71,7 @@ class MemberServiceTest {
         String password = "1234";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
-        RoleType roleType = RoleType.TEST;
+        RoleType roleType = RoleType.TEST1;
         MemberStatus memberStatus = MemberStatus.WORK;
 
         Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);
@@ -93,7 +93,7 @@ class MemberServiceTest {
         String password = "1234";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
-        RoleType roleType = RoleType.TEST;
+        RoleType roleType = RoleType.TEST1;
         MemberStatus memberStatus = MemberStatus.WORK;
 
         Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);
@@ -114,7 +114,7 @@ class MemberServiceTest {
         String password = "1234";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
-        RoleType roleType = RoleType.TEST;
+        RoleType roleType = RoleType.TEST1;
         MemberStatus memberStatus = MemberStatus.WORK;
 
         Member member = Member.createMember(loginId, name, password, phoneNumber, gradeType, memberStatus, roleType);

@@ -19,28 +19,64 @@ public class TestMemberDataInit {
 
     @PostConstruct
     public void init() {
-        Member member1 = Member.builder()
+        Member member_CEO = Member.builder()
                 .loginId("ceo")
                 .password(passwordEncoder.encode("123"))
-                .name("name_ceo")
+                .name("ceo_name")
+                .phoneNumber("01012341234")
                 .gradeType(GradeType.CEO)
+                .memberStatus(MemberStatus.WORK)
                 .build();
-        memberService.join(member1);
+        memberService.join(member_CEO);
 
-        Member member2 = Member.builder()
+        Member memberMANAGER = Member.builder()
                 .loginId("manager")
                 .password(passwordEncoder.encode("123"))
-                .name("name_manager")
+                .name("manager_name")
+                .phoneNumber("01012341234")
                 .gradeType(GradeType.MANAGER)
+                .memberStatus(MemberStatus.WORK)
                 .build();
-        memberService.join(member2);
+        memberService.join(memberMANAGER);
 
-        Member member3 = Member.builder()
+        Member member_CHEF = Member.builder()
+                .loginId("chef")
+                .password(passwordEncoder.encode("123"))
+                .name("chef_name")
+                .phoneNumber("01012341234")
+                .gradeType(GradeType.CHEF)
+                .memberStatus(MemberStatus.WORK)
+                .build();
+        memberService.join(member_CHEF);
+
+        Member member_COOK = Member.builder()
                 .loginId("cook")
                 .password(passwordEncoder.encode("123"))
-                .name("name_cook")
+                .name("cook_name")
+                .phoneNumber("01012341234")
                 .gradeType(GradeType.COOK)
+                .memberStatus(MemberStatus.WORK)
                 .build();
-        memberService.join(member3);
+        memberService.join(member_COOK);
+
+        Member member_PART_TIME = Member.builder()
+                .loginId("part_time")
+                .password(passwordEncoder.encode("123"))
+                .name("part_time_name")
+                .phoneNumber("01012341234")
+                .gradeType(GradeType.PART_TIME)
+                .memberStatus(MemberStatus.WORK)
+                .build();
+        memberService.join(member_PART_TIME);
+
+        Member member_UNDEFINED = Member.builder()
+                .loginId("undefined")
+                .password(passwordEncoder.encode("123"))
+                .name("undefined_name")
+                .phoneNumber("01012341234")
+                .gradeType(GradeType.UNDEFINED)
+                .memberStatus(MemberStatus.WORK)
+                .build();
+        memberService.join(member_UNDEFINED);
     }
 }

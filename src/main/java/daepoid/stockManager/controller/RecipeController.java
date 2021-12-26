@@ -50,14 +50,6 @@ public class RecipeController {
                                  HttpServletRequest request) {
         Recipe recipe = recipeService.findRecipe(recipeId);
         model.addAttribute("editRecipeDTO", new EditRecipeDTO(recipe));
-
-        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Member member = memberService.findMemberByLoginId(loginId);
-
-        if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
-            return "recipe/editRecipeForm";
-        }
-
         return "recipe/editRecipeForm";
     }
 
@@ -84,14 +76,6 @@ public class RecipeController {
     @GetMapping("")
     public String recipeList(Model model, HttpServletRequest request) {
         model.addAttribute("recipes", recipeService.findRecipes());
-        HttpSession session = request.getSession(false);
-        String loginId = (String) session.getAttribute(SessionConst.SECURITY_LOGIN);
-        Member member = memberService.findMemberByLoginId(loginId);
-
-        if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
-            return "recipe/recipeList";
-        }
-
         return "recipe/recipeList";
     }
 }

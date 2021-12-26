@@ -71,6 +71,8 @@ public class Member {
         member.changeName(name);
         member.changePassword(password);
         member.changePhoneNumber(phoneNumber);
+        member.changeMemberStatus(MemberStatus.WORK);
+        member.changeGradeType(GradeType.UNDEFINED);
         return member;
     }
 

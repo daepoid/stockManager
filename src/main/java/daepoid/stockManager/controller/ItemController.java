@@ -35,7 +35,7 @@ public class ItemController {
                                  RedirectAttributes redirectAttributes,
                                  HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            log.info("bindingResult = {}", bindingResult);
+//            log.info("bindingResult = {}", bindingResult);
             return "items/createItemForm";
         }
 
@@ -53,7 +53,6 @@ public class ItemController {
         itemService.saveItem(item);
 
         redirectAttributes.addAttribute("itemId", item.getId());
-//        return "redirect:/items/{itemId}";
         return "redirect:/items";
     }
 
@@ -73,7 +72,7 @@ public class ItemController {
                            RedirectAttributes redirectAttributes,
                            HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            log.info("bindingResult = {}", bindingResult);
+//            log.info("bindingResult = {}", bindingResult);
             return "items/editItemForm";
         }
 
@@ -83,8 +82,6 @@ public class ItemController {
         itemService.changePackageCount(itemId, editItemDTO.getPackageCount());
         itemService.changeQuantity(itemId, editItemDTO.getQuantity(), editItemDTO.getUnitType());
 
-//        redirectAttributes.addAttribute("itemId", itemId);
-//        return "redirect:/items/{itemId}/edit";
         return "redirect:/items";
     }
 

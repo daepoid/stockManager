@@ -1,13 +1,10 @@
 package daepoid.stockManager.controller;
 
 
-import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.recipe.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.dto.CreateIngredientDTO;
-import daepoid.stockManager.dto.LoginMemberDTO;
+import daepoid.stockManager.dto.EditIngredientDTO;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.MemberService;
 import daepoid.stockManager.service.RecipeService;
@@ -38,13 +35,7 @@ public class IngredientController {
     @GetMapping("/recipes/{recipeId}/ingredients")
     public String ingredientsList(@PathVariable("recipeId") Long recipeId, Model model, HttpServletRequest request) {
         model.addAttribute("ingredients", ingredientService.findIngredientsByRecipe(recipeId));
-        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Member member = memberService.findMemberByLoginId(loginId);
-
-        if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
-            return "ingredients/authorize/ingredientList";
-        }
-        return "ingredients/non-authorize/ingredientList";
+        return "ingredients/ingredientList";
     }
 
     @GetMapping("/recipes/{recipeId}/ingredients/new")
@@ -61,7 +52,6 @@ public class IngredientController {
                                     HttpServletRequest request) {
 
         if(bindingResult.hasErrors()) {
-            log.info("bindingResult = {}", bindingResult);
             return "ingredients/createIngredientForm";
         }
 
@@ -73,13 +63,11 @@ public class IngredientController {
                 createIngredientDTO.getLoss()
         );
         ingredient.changeRecipe(recipeService.findRecipe(recipeId));
-
         Long ingredientId = ingredientService.saveIngredient(ingredient);
 
-        List<Ingredient> ingredients = ingredientService.findIngredientsByRecipe(recipeId);
+//        List<Ingredient> ingredients = ingredientService.findIngredientsByRecipe(recipeId);
         Recipe recipe = recipeService.findRecipe(recipeId);
-        recipe.changeIngredients(ingredients);
-
+        recipe.addIngredient(ingredient);
         redirectAttributes.addAttribute("recipeId", recipeId);
         return "redirect:/recipes/{recipeId}/edit";
     }
@@ -90,14 +78,30 @@ public class IngredientController {
                                       @PathVariable("ingredientId") Long ingredientId,
                                       Model model) {
 
+        Ingredient ingredient = ingredientService.findIngredient(ingredientId);
+        model.addAttribute("editIngredientDTO", new EditIngredientDTO(ingredient));
         return "ingredients/editIngredientForm";
     }
 
     @PostMapping("/recipes/{recipeId}/ingredients/{ingredientId}/edit")
     public String editIngredients(@PathVariable("recipeId") Long recipeId,
                                   @PathVariable("ingredientId") Long ingredientId,
-                                  RedirectAttributes redirectAttributes
-                                  ) {
+                                  @Valid @ModelAttribute("editIngredientDTO") EditIngredientDTO editIngredientDTO,
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes) {
+
+        if(bindingResult.hasErrors()) {
+            return "ingredients/editIngredientForm";
+        }
+
+        Ingredient ingredient = ingredientService.findIngredient(ingredientId);
+        ingredient.changeName(editIngredientDTO.getName());
+        ingredient.changeQuantity(editIngredientDTO.getQuantity());
+        ingredient.changeUnitType(editIngredientDTO.getUnitType());
+        ingredient.changeUnitPrice(editIngredientDTO.getUnitPrice());
+        ingredient.changeLoss(editIngredientDTO.getLoss());
+        ingredient.updatePortionPrice();
+
         redirectAttributes.addAttribute("recipeId", recipeId);
         return "redirect:/recipes/{recipeId}/ingredients";
     }

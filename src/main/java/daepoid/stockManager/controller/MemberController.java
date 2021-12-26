@@ -33,11 +33,8 @@ public class MemberController {
     @GetMapping("/new")
     public String joinMemberForm(@ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO,
                                  HttpServletRequest request) {
-        LoginMemberDTO loginMemberDTO = (LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
-        Member member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
-        if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
-
-        }
+//        LoginMemberDTO loginMemberDTO = (LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
+//        Member member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
         return "members/joinMemberForm";
     }
 
