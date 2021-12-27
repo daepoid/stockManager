@@ -21,20 +21,24 @@ public class Member {
     private Long id;
 
     // 로그인 아이디
+//    @Column(length = 40, nullable = false, unique = true)
     private String loginId;
 
     // 이름
+//    @Column(length = 20, nullable = false)
     private String name;
 
     // 비민번호, 로그인 시 사용
+//    @Column(length = 20, nullable = false, unique = true)
     private String password;
 
     // 전화번호 '01012341234' 형태로 저장됨
-    // 로그인시 아이디의 대용으로 사용 가능
+//    @Column(length = 12, nullable = false, unique = true)
     private String phoneNumber;
 
     // 직급
     @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
     private GradeType gradeType = GradeType.UNDEFINED;
 
     // 근무 시간
@@ -45,6 +49,7 @@ public class Member {
 
     // 직원 상태 {재직, 휴직, 퇴직}
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private MemberStatus memberStatus = MemberStatus.WORK;
 
     // 직급 이외에 특별한 권한을 부여, 특정 물품에 대한 주문 발주 등등...
@@ -52,7 +57,6 @@ public class Member {
     @ElementCollection(targetClass = RoleType.class)
     @Enumerated(EnumType.STRING)
     private Collection<RoleType> roles = new ArrayList<>();
-
 
 
 //    // 엔티티를 이용하는 방법으로 일단 개발

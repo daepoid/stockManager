@@ -1,6 +1,9 @@
 package daepoid.stockManager.config;
 
+import daepoid.stockManager.handler.LoginFailureHandler;
 import daepoid.stockManager.handler.LoginSuccessHandler;
+import daepoid.stockManager.service.MemberService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private MemberService memberService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -45,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // form을 통한 로그인 활성화, custom login form page를 보여줗 url을 지정
             .formLogin()
                 .loginPage("/login")
+                .failureHandler(new LoginFailureHandler())
 //                .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("loginId")
