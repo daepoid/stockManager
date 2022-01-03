@@ -18,27 +18,15 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class HomeController {
 
-//    @GetMapping("/")
-//    public String home() {
-//        log.info("Home Controller");
-//        return "home";
-//    }
-
-//    @GetMapping("/")
-//    public String loginHome(@Login LoginMemberDTO loginMemberDTO, Model model) {
-//        log.info("loginHome loginMember = {}", loginMemberDTO);
-//
-//        if(loginMemberDTO.getLoginId() == null) {
-//            log.info("로그인하지 않았습니다.");
-//            return "home";
-//        }
-//
-//        model.addAttribute("loginMemberDTO", loginMemberDTO);
-//        return "loginHome";
-//    }
-
     @GetMapping("/")
     public String securityLoginHome(Model model, HttpServletRequest request) {
+        // 세션이 없는 경우
+        if(request.getSession(false) == null) {
+            request.getSession();
+            return "home";
+        }
+
+        // 세션이 있지만 로그인 정보가 없는 경우
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
 
         if(loginId == null) {

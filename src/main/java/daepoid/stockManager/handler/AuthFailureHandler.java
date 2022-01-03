@@ -3,6 +3,7 @@ package daepoid.stockManager.handler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
@@ -15,8 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@Getter
-@Setter
+//@Getter
+//@Setter
+@Configuration
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Override

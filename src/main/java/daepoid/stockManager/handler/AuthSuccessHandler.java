@@ -2,6 +2,7 @@ package daepoid.stockManager.handler;
 
 import daepoid.stockManager.SessionConst;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
+@Configuration
 public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
