@@ -2,9 +2,7 @@ package daepoid.stockManager.config;
 
 import daepoid.stockManager.handler.AuthFailureHandler;
 import daepoid.stockManager.handler.AuthSuccessHandler;
-import daepoid.stockManager.service.MemberService;
 import daepoid.stockManager.service.SecurityLoginService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -46,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(securityLoginService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(securityLoginService)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Override

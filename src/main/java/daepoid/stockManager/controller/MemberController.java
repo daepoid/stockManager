@@ -3,12 +3,14 @@ package daepoid.stockManager.controller;
 import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.dto.EditMemberDTO;
 import daepoid.stockManager.dto.JoinMemberDTO;
 import daepoid.stockManager.dto.LoginMemberDTO;
 import daepoid.stockManager.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,7 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원 가입
@@ -31,17 +34,15 @@ public class MemberController {
      * @return
      */
     @GetMapping("/new")
-    public String joinMemberForm(@ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO,
-                                 HttpServletRequest request) {
-//        LoginMemberDTO loginMemberDTO = (LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
-//        Member member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
+    public String joinMemberForm(@ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO) {
         return "members/joinMemberForm";
     }
 
     @PostMapping("/new")
-    public String joinMember(@Valid @ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO, BindingResult bindingResult) {
+    public String joinMember(@Valid @ModelAttribute("joinMemberDTO") JoinMemberDTO joinMemberDTO,
+                             BindingResult bindingResult) {
+
         if(bindingResult.hasErrors()) {
-            log.info("login Error = {}", bindingResult);
             return "members/joinMemberForm";
         }
 
@@ -50,16 +51,22 @@ public class MemberController {
             return "members/joinMemberForm";
         }
 
-        Member findMember = memberService.findMemberByLoginId(joinMemberDTO.getLoginId());
-        if(findMember != null) {
+        // 이미 동일한 로그인 아이디가 존재하는 경우
+        if(memberService.findMemberByLoginId(joinMemberDTO.getLoginId()) != null) {
             return "members/joinMemberForm";
         }
 
-        // 회원 가입은 자유롭게 가능하나 인증을 해주는 방법이 있어야 한다.
-        Member member = Member.createMember(joinMemberDTO.getLoginId(), joinMemberDTO.getName(), joinMemberDTO.getPassword(), joinMemberDTO.getPhoneNumber());
+        Member member = Member.builder()
+                .loginId(joinMemberDTO.getLoginId())
+                .name(joinMemberDTO.getName())
+                .password(passwordEncoder.encode(joinMemberDTO.getPassword()))
+                .phoneNumber(joinMemberDTO.getPhoneNumber())
+                .gradeType(GradeType.UNDEFINED)
+                .memberStatus(MemberStatus.UNDEFINED)
+                .build();
 
         Long memberId = memberService.join(member);
-        log.info("memberId = {}", memberId);
+        log.info("회원가입 성공 / 아이디: {} / 이름: {} / 전화번호: {}", member.getLoginId(), member.getName(), member.getPhoneNumber());
         return "redirect:/";
     }
 

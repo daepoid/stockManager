@@ -21,46 +21,30 @@ public class Member {
     private Long id;
 
     // 로그인 아이디
-//    @Column(length = 40, nullable = false, unique = true)
     private String loginId;
 
-    // 이름
-//    @Column(length = 20, nullable = false)
-    private String name;
-
     // 비민번호, 로그인 시 사용
-//    @Column(length = 20, nullable = false, unique = true)
     private String password;
 
+    // 이름
+    private String name;
+
     // 전화번호 '01012341234' 형태로 저장됨
-//    @Column(length = 12, nullable = false, unique = true)
     private String phoneNumber;
 
     // 직급
     @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
     private GradeType gradeType = GradeType.UNDEFINED;
-
-    // 근무 시간
-
-
-    // 근무 요일
-
 
     // 직원 상태 {재직, 휴직, 퇴직}
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private MemberStatus memberStatus = MemberStatus.WORK;
+    private MemberStatus memberStatus = MemberStatus.UNDEFINED;
 
     // 직급 이외에 특별한 권한을 부여, 특정 물품에 대한 주문 발주 등등...
     // https://www.inflearn.com/questions/21303
     @ElementCollection(targetClass = RoleType.class)
     @Enumerated(EnumType.STRING)
     private Collection<RoleType> roles = new ArrayList<>();
-
-
-//    // 엔티티를 이용하는 방법으로 일단 개발
-//    private List<MemberRole> memberRole = new ArrayList<>();
 
     //==연관 관계 메서드==//
     public void addRole(RoleType roleType) {
@@ -69,39 +53,11 @@ public class Member {
 
 
     //==생성 메서드==//
-    public static Member createMember(String loginId, String name, String password, String phoneNumber) {
-        Member member = new Member();
-        member.changeLoginId(loginId);
-        member.changeName(name);
-        member.changePassword(password);
-        member.changePhoneNumber(phoneNumber);
-        member.changeMemberStatus(MemberStatus.WORK);
-        member.changeGradeType(GradeType.UNDEFINED);
-        return member;
-    }
-
-    public static Member createMember(String loginId, String name, String password, String phoneNumber, GradeType gradeType, MemberStatus memberStatus, RoleType... roleTypes) {
-        Member member = new Member();
-        member.changeLoginId(loginId);
-        member.changeName(name);
-        member.changePassword(password);
-        member.changePhoneNumber(phoneNumber);
-        member.changeGradeType(gradeType);
-
-        for (RoleType roleType : roleTypes) {
-            member.addRole(roleType);
-        }
-
-        member.changeMemberStatus(memberStatus);
-
-        return member;
-    }
-
     @Builder
     public Member(String loginId, String name, String password, String phoneNumber, GradeType gradeType, MemberStatus memberStatus, List<RoleType> roles) {
         this.loginId = loginId;
-        this.name = name;
         this.password = password;
+        this.name = name;
         this.phoneNumber = phoneNumber;
         this.gradeType = gradeType;
         this.memberStatus = memberStatus;
