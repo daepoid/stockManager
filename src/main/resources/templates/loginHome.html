@@ -4,7 +4,7 @@
       lang="en">
 <head th:replace="fragments/header::header">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Hello</title>
+    <title>Home</title>
 </head>
 <body>
 
@@ -19,14 +19,14 @@
         <div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')">
             <p class="lead">재고 관련 기능</p>
             <p>
-                <a class="btn btn-lg btn-dark" href="/items">재고 관리</a>
-                <a class="btn btn-lg btn-dark" href="/recipes">레시피</a>
+                <a class="btn btn-lg btn-dark" href="/items" th:href="@{/items}">재고 관리</a>
+                <a class="btn btn-lg btn-dark" href="/recipes" th:href="@{/recipes}">레시피</a>
             </p>
         </div>
         <div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
             <p class="lead">관리자 메뉴</p>
             <p>
-                <a class="btn btn-lg btn-info" href="/members">직원 정보 관리</a>
+                <a class="btn btn-lg btn-info" href="/members" th:href="@{/members}">직원 정보 관리</a>
             </p>
         </div>
     </div>

@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header"></head>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header :: header">
+    <title>회원 정보 수정</title>
+</head>
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
@@ -51,7 +53,7 @@
                 </option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">수정</button>
     </form>
     <div th:replace="fragments/footer :: footer"></div>
 </div> <!-- /container -->

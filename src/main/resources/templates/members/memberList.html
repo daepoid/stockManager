@@ -2,13 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
-<head th:replace="fragments/header :: header">
-    <title>Member</title>
+<head th:replace="fragments/header::header">
+    <title>직원 리스트</title>
 </head>
 <body>
-<div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-     class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <div>
         <table class="table table-striped">
             <thead>
@@ -19,8 +18,11 @@
                 <th>전화번호</th>
                 <th>직급</th>
                 <th>재직상태</th>
-                <th>역할</th>
-                <th></th>
+<!--                <th>역할</th>-->
+                <td>
+                    <a href="#" th:href="@{/members/new}"
+                       class="w-100 btn btn-primary btn-sm" role="button">추가</a>
+                </td>
             </tr>
             </thead>
             <tbody>
@@ -31,16 +33,16 @@
                 <td th:text="${member.phoneNumber}"></td>
                 <td th:text="${member.gradeType}"></td>
                 <td th:text="${member.memberStatus}"></td>
-                <td th:text="${member.roles}"></td>
+<!--                <td th:text="${member.roles}"></td>-->
                 <td>
                     <a href="#" th:href="@{/members/{id}/edit (id=${member.id})}"
-                       class="btn btn-primary" role="button">수정</a>
+                       class="w-100 btn btn-primary vtn-sm" role="button">수정</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div th:replace="fragments/footer :: footer"></div>
+    <div th:replace="fragments/footer::footer"></div>
 </div> <!-- /container -->
 </body>
 </html>
