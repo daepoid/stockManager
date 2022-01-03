@@ -20,20 +20,30 @@ public class Recipe {
     @Column(unique = true)
     private Long recipeNumber;
 
+    // 레시피 이름
     private String name;
 
+    // 판매 가격
     private Integer price;
+
 
     private Double unitPrice;
 
+    // 요리 무게
     private Double weight;
 
+    // 접시 유형
     @Enumerated(EnumType.STRING)
     private DishType dishType;
 
-    // Ingredient
+    // 레시피 필요 재료
     @OneToMany(mappedBy = "recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
+
+    // 레시피 생산 단가
+    private Double cost = 0.0;
+
+    private Double netIncome = 0.0;
 
     @Lob
     private String notes;

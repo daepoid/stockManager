@@ -3,6 +3,15 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
 <head th:replace="fragments/header::header">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
     <title>레시피 수정</title>
 </head>
 <body>
@@ -12,9 +21,13 @@
         <!-- id -->
         <input type="hidden" th:field="*{id}" />
         <div>
+            <label for="recipeNumber">레시피 번호</label>
+            <input type="text" id="recipeNumber" th:field="*{recipeNumber}"
+                   class="form-control" th:errorclass="field-error" readonly>
+            <div class="field-error" th:errors="*{recipeNumber}"></div>
+        </div>
+        <div>
             <label for="name">레시피 이름</label>
-            <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-                    type="submit" class="btn btn-primary">Submit</button>
             <input type="text" id="name" th:field="*{name}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{name}"></div>
@@ -25,12 +38,13 @@
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{price}"></div>
         </div>
-        <div>
-            <label for="unitPrice">단위 가격</label>
-            <input type="text" id="unitPrice" th:field="*{unitPrice}"
-                   class="form-control" th:errorclass="field-error">
-            <div class="field-error" th:errors="*{unitPrice}"></div>
-        </div>
+        <!--        실시간으로 업데이트 가능하게 만들까?-->
+        <!--        <div>-->
+        <!--            <label for="unitPrice">단위 가격</label>-->
+        <!--            <input type="text" id="unitPrice" th:field="*{unitPrice}"-->
+        <!--                   class="form-control" th:errorclass="field-error">-->
+        <!--            <div class="field-error" th:errors="*{unitPrice}"></div>-->
+        <!--        </div>-->
         <div>
             <label for="weight">무게</label>
             <input type="text" id="weight" th:field="*{weight}"
@@ -46,6 +60,7 @@
                         th:text="${dishType}">option
                 </option>
             </select>
+            <div class="field-error" th:errors="*{dishType}"></div>
         </div>
         <div>
             <label th:for="ingredients">재료</label>
@@ -59,8 +74,12 @@
                    class="form-control" th:errorclass="field-error"></textarea>
             <div class="field-error" th:errors="*{notes}"></div>
         </div>
+        <div>
+            <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                    type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
+        </div>
     </form>
-    <div th:replace="fragments/footer :: footer"></div>
+    <div th:replace="fragments/footer::footer"></div>
 </div> <!-- /container -->
 </body>
 </html>

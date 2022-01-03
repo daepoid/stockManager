@@ -21,6 +21,8 @@ public class EditRecipeDTO {
 
     private Long id;
 
+    private Long recipeNumber;
+
     private String name;
 
     private Integer price;

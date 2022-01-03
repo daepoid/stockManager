@@ -13,28 +13,31 @@
         <table class="table table-striped">
             <thead>
             <tr>
+                <th>#</th>
                 <th>레시피 이름</th>
                 <th>가격</th>
-                <th>단위 가격</th>
                 <th>무게</th>
+                <th>단위 가격</th>
                 <th>접시</th>
-<!--                <th>ingredients</th>-->
-<!--                <th>주의</th>-->
+                <th>코스트</th>
+                <th>판매 순이익</th>
                 <td>
                     <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-                       href="/recipes/new" class="btn btn-primary" role="button">추가</a>
+                       href="/recipes/new" th:href="@{/recipes/new}"
+                       class="w-100 btn btn-primary btn-sm" role="button">추가</a>
                 </td>
             </tr>
             </thead>
             <tbody>
             <tr th:each="recipe : ${recipes}">
+                <td th:text="${recipe.recipeNumber}"></td>
                 <td th:text="${recipe.name}"></td>
                 <td th:text="${recipe.price}"></td>
-                <td th:text="${recipe.unitPrice}"></td>
                 <td th:text="${recipe.weight}"></td>
+                <td th:text="${#numbers.formatDecimal(recipe.price / recipe.weight, 0, 2)}"></td>
                 <td th:text="${recipe.dishType}"></td>
-<!--                <td th:text="${recipe.ingredients}"></td>-->
-<!--                <td th:textarea="${recipe.notes}"></td>-->
+                <td th:text="${recipe.cost}"></td>
+                <td th:text="${recipe.netIncome}"></td>
                 <td>
                     <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')"
                        href="#" th:href="@{/recipes/{id}/edit (id=${recipe.id})}"

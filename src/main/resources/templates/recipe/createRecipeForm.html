@@ -1,9 +1,11 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
 <head>
     <meta charset="utf-8">
     <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+          href="../../static/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
             max-width: 560px;
@@ -13,6 +15,7 @@
             color: #dc3545;
         }
     </style>
+    <title>레시피 생성</title>
 </head>
 <body>
 <div class="container">
@@ -25,6 +28,12 @@
             <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                th:text="${err}">전체 오류 메시지</p>
         </div>
+        <div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
+            <label for="recipeNumber">레시피 번호</label>
+            <input type="text" id="recipeNumber" th:field="*{recipeNumber}"
+                   class="form-control" th:errorclass="field-error" readonly>
+            <div class="field-error" th:errors="*{recipeNumber}"></div>
+        </div>
         <div>
             <label for="name">레시피 이름</label>
             <input type="text" id="name" th:field="*{name}"
@@ -33,16 +42,16 @@
         </div>
         <div>
             <label for="price">판매 가격</label>
-            <input type="password" id="price" th:field="*{price}"
+            <input type="text" id="price" th:field="*{price}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{price}"></div>
         </div>
-        <div>
-            <label for="unitPrice">단위 가격</label>
-            <input type="password" id="unitPrice" th:field="*{unitPrice}"
-                   class="form-control" th:errorclass="field-error">
-            <div class="field-error" th:errors="*{unitPrice}"></div>
-        </div>
+<!--        <div>-->
+<!--            <label for="unitPrice">단위 가격</label>-->
+<!--            <input type="text" id="unitPrice" th:field="*{unitPrice}"-->
+<!--                   class="form-control" th:errorclass="field-error">-->
+<!--            <div class="field-error" th:errors="*{unitPrice}"></div>-->
+<!--        </div>-->
         <div>
             <label for="weight">무게</label>
             <input type="text" id="weight" th:field="*{weight}"
@@ -58,13 +67,14 @@
                         th:text="${dishType}">option
                 </option>
             </select>
+            <div class="field-error" th:errors="*{dishType}"></div>
         </div>
-        <div>
-            <label for="ingredients">재료</label>
-            <input type="text" id="ingredients" th:field="*{ingredients}"
-                   class="form-control" th:errorclass="field-error">
-            <div class="field-error" th:errors="*{ingredients}"></div>
-        </div>
+<!--        <div>-->
+<!--            <label for="ingredients">재료</label>-->
+<!--            <input type="text" id="ingredients" th:field="*{ingredients}"-->
+<!--                   class="form-control" th:errorclass="field-error">-->
+<!--            <div class="field-error" th:errors="*{ingredients}"></div>-->
+<!--        </div>-->
         <div>
             <label for="notes">주의</label>
             <textarea type="text" id="notes" th:field="*{notes}"

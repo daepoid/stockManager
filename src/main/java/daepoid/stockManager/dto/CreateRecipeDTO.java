@@ -21,6 +21,8 @@ public class CreateRecipeDTO {
 
     private Long id;
 
+    private Long recipeNumber;
+
     private String name;
 
     private Integer price;
@@ -36,7 +38,6 @@ public class CreateRecipeDTO {
     private List<Ingredient> ingredients = new ArrayList<>();
 
     private String notes;
-
 
     public CreateRecipeDTO(Recipe recipe) {
 
