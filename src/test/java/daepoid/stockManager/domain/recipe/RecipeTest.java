@@ -1,5 +1,6 @@
 package daepoid.stockManager.domain.recipe;
 
+import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.UnitType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

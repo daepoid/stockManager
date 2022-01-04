@@ -1,9 +1,10 @@
-package daepoid.stockManager.domain.recipe;
+package daepoid.stockManager.domain.ingredient;
 
+import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.UnitType;
+import daepoid.stockManager.domain.recipe.Recipe;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -15,6 +16,11 @@ public class Ingredient {
     @Id @GeneratedValue
     @Column(name = "ingredient_id")
     private Long id;
+
+    // 재료 이름
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    private Item item;
 
     // 재료 이름
     private String name;
@@ -79,12 +85,12 @@ public class Ingredient {
         this.recipe = recipe;
     }
 
-    public Double getPortionPrice() {
+    public Double getCost() {
         return getQuantity() * getUnitPrice();
     }
 
     public void updatePortionPrice() {
-        this.portionPrice = getPortionPrice();
+        this.portionPrice = getCost();
     }
 
     public static Ingredient createIngredient(String name, Integer quantity, UnitType unitType, Double unitPrice, Double loss) {

@@ -1,12 +1,17 @@
 package daepoid.stockManager.domain.item;
 
-import lombok.Getter;
-import lombok.Setter;
+import daepoid.stockManager.domain.ingredient.Ingredient;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+@Slf4j
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
     @Id @GeneratedValue
@@ -19,33 +24,36 @@ public class Item {
     // 재료 특성
     private ItemType itemType;
 
-    // 재료 가격 평균
+    // 재료 개당 가격 평균
     private Integer price;
 
-    // 패키지 수량
-    private Integer packageCount;
-
-    // 재고 수량
+    // 수량
     private Double quantity;
 
-    // 재고 수량 단위 (g, ml, ...)
+    // 단위 (g, ml, ...)
     private UnitType unitType;
+
+    // 패키지 수량 (개, 박스, 통)
+    private Integer packageCount;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<Ingredient> ingredients = new ArrayList<>();
 
     // 주의 사항
 
     // 거래처
 
     //==생성 메서드==//
-    public static Item createItem(String name, ItemType itemType, Integer price, Integer packageCount, Double quantity, UnitType unitType) {
-        Item item = new Item();
-        item.changeName(name);
-        item.changeItemType(itemType);
-        item.changePrice(price);
-        item.changePackageCount(packageCount);
-        item.changeQuantity(quantity);
-        item.changeUnitType(unitType);
-
-        return item;
+    @Builder
+    public Item(String name, ItemType itemType, Integer price, Double quantity,
+                UnitType unitType, Integer packageCount, List<Ingredient> ingredients) {
+        this.name = name;
+        this.itemType = itemType;
+        this.price = price;
+        this.quantity = quantity;
+        this.unitType = unitType;
+        this.packageCount = packageCount;
+        this.ingredients = ingredients;
     }
 
     //==개발 로직==//
@@ -54,7 +62,6 @@ public class Item {
     }
 
     //==비즈니스 로직==//
-
     public void changeName(String name) {
         this.name = name;
     }
@@ -67,10 +74,6 @@ public class Item {
         this.price = price;
     }
 
-    public void changePackageCount(Integer packageCount) {
-        this.packageCount = packageCount;
-    }
-
     public void changeQuantity(Double quantity) {
         this.quantity = quantity;
     }
@@ -79,10 +82,24 @@ public class Item {
         this.unitType = unitType;
     }
 
+    public void changePackageCount(Integer packageCount) {
+        this.packageCount = packageCount;
+    }
+
+    public void changeIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void addIngredient(Ingredient ingredient) {
+        this.ingredients.add(ingredient);
+    }
 
     //==조회 로직==//
-
     public Double getTotalPrice() {
         return price * quantity;
+    }
+
+    public boolean containsIngredient(Ingredient ingredient) {
+        return this.ingredients.contains(ingredient);
     }
 }

@@ -18,7 +18,7 @@
     <title>레시피 생성</title>
 </head>
 <body>
-<div class="container">
+<div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
     <div class="py-5 text-center">
         <h2>레시피 생성</h2>
     </div>
@@ -28,10 +28,10 @@
             <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                th:text="${err}">전체 오류 메시지</p>
         </div>
-        <div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
+        <div>
             <label for="recipeNumber">레시피 번호</label>
             <input type="text" id="recipeNumber" th:field="*{recipeNumber}"
-                   class="form-control" th:errorclass="field-error" readonly>
+                   class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{recipeNumber}"></div>
         </div>
         <div>

@@ -1,12 +1,8 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.domain.recipe.DishType;
-import daepoid.stockManager.domain.recipe.Ingredient;
+import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.repository.RecipeRepository;
 import daepoid.stockManager.repository.jpa.JpaRecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,10 +43,6 @@ public class RecipeService {
         return recipeRepository.findByPrice(price);
     }
 
-    public List<Recipe> findRecipesByUnitPrice(Double unitPrice) {
-        return recipeRepository.findByUnitPrice(unitPrice);
-    }
-
     public List<Recipe> findRecipesByWeight(Double weight) {
         return recipeRepository.findByWeight(weight);
     }
@@ -71,6 +63,14 @@ public class RecipeService {
 
     //==수정 로직==//
     @Transactional
+    public void changeRecipeNumber(Long recipeId, String recipeNumber) {
+        Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+        if(recipe != null) {
+            recipe.changeRecipeNumber(recipeNumber);
+        }
+    }
+
+    @Transactional
     public void changeRecipeName(Long recipeId, String name) {
         recipeRepository.changeName(recipeId, name);
     }
@@ -78,11 +78,6 @@ public class RecipeService {
     @Transactional
     public void changePrice(Long recipeId, Integer price) {
         recipeRepository.changePrice(recipeId, price);
-    }
-
-    @Transactional
-    public void changeUnitPrice(Long recipeId, Double unitPrice) {
-        recipeRepository.changeUnitPrice(recipeId, unitPrice);
     }
 
     @Transactional

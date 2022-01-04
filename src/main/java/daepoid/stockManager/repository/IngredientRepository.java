@@ -1,11 +1,7 @@
 package daepoid.stockManager.repository;
 
-import daepoid.stockManager.domain.recipe.Ingredient;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
+import daepoid.stockManager.domain.ingredient.Ingredient;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface IngredientRepository {

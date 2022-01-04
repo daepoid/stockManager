@@ -1,7 +1,7 @@
 package daepoid.stockManager.repository.memory;
 
 import daepoid.stockManager.domain.recipe.DishType;
-import daepoid.stockManager.domain.recipe.Ingredient;
+import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.RecipeRepository;
 import org.springframework.stereotype.Repository;
@@ -49,13 +49,6 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public List<Recipe> findByUnitPrice(Double unitPrice) {
-        return store.values().stream()
-                .filter(recipe -> recipe.getUnitPrice().equals(unitPrice))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<Recipe> findByWeight(Double weight) {
         return store.values().stream()
                 .filter(recipe -> recipe.getWeight().equals(weight))
@@ -77,6 +70,13 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     //==수정 로직==//
+
+
+    @Override
+    public void changeRecipeNumber(Long recipeId, String recipeNumber) {
+        store.get(recipeId).changeRecipeNumber(recipeNumber);
+    }
+
     @Override
     public void changeName(Long recipeId, String name) {
         store.get(recipeId).changeName(name);
@@ -85,11 +85,6 @@ public class MemoryRecipeRepository implements RecipeRepository {
     @Override
     public void changePrice(Long recipeId, Integer price) {
         store.get(recipeId).changePrice(price);
-    }
-
-    @Override
-    public void changeUnitPrice(Long recipeId, Double unitPrice) {
-        store.get(recipeId).changeUnitPrice(unitPrice);
     }
 
     @Override

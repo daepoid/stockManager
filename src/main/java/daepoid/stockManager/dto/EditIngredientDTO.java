@@ -1,7 +1,7 @@
 package daepoid.stockManager.dto;
 
 import daepoid.stockManager.domain.item.UnitType;
-import daepoid.stockManager.domain.recipe.Ingredient;
+import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,7 +37,7 @@ public class EditIngredientDTO {
         this.unitType = ingredient.getUnitType();
         this.unitPrice = ingredient.getUnitPrice();
         this.loss = ingredient.getLoss();
-        this.portionPrice = ingredient.getPortionPrice();
+        this.portionPrice = ingredient.getCost();
         this.recipe = ingredient.getRecipe();
     }
 }

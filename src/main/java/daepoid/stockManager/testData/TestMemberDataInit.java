@@ -19,64 +19,58 @@ public class TestMemberDataInit {
 
     @PostConstruct
     public void init() {
-        Member member_CEO = Member.builder()
+        memberService.join(Member.builder()
                 .loginId("ceo")
                 .password(passwordEncoder.encode("123"))
                 .name("ceo_name")
-                .phoneNumber("01012341234")
+                .phoneNumber("01011111111")
                 .gradeType(GradeType.CEO)
                 .memberStatus(MemberStatus.WORK)
-                .build();
-        memberService.join(member_CEO);
+                .build());
 
-        Member memberMANAGER = Member.builder()
+        memberService.join(Member.builder()
                 .loginId("manager")
                 .password(passwordEncoder.encode("123"))
                 .name("manager_name")
-                .phoneNumber("01012341234")
+                .phoneNumber("01022222222")
                 .gradeType(GradeType.MANAGER)
                 .memberStatus(MemberStatus.WORK)
-                .build();
-        memberService.join(memberMANAGER);
+                .build());
 
-        Member member_CHEF = Member.builder()
+        memberService.join(Member.builder()
                 .loginId("chef")
                 .password(passwordEncoder.encode("123"))
                 .name("chef_name")
-                .phoneNumber("01012341234")
+                .phoneNumber("01033333333")
                 .gradeType(GradeType.CHEF)
                 .memberStatus(MemberStatus.WORK)
-                .build();
-        memberService.join(member_CHEF);
+                .build());
 
-        Member member_COOK = Member.builder()
+        memberService.join(Member.builder()
                 .loginId("cook")
                 .password(passwordEncoder.encode("123"))
                 .name("cook_name")
-                .phoneNumber("01012341234")
+                .phoneNumber("01044444444")
                 .gradeType(GradeType.COOK)
                 .memberStatus(MemberStatus.WORK)
-                .build();
-        memberService.join(member_COOK);
+                .build());
 
-        Member member_PART_TIME = Member.builder()
+        memberService.join(Member.builder()
                 .loginId("part_time")
                 .password(passwordEncoder.encode("123"))
                 .name("part_time_name")
-                .phoneNumber("01012341234")
+                .phoneNumber("01055555555")
                 .gradeType(GradeType.PART_TIME)
                 .memberStatus(MemberStatus.WORK)
-                .build();
-        memberService.join(member_PART_TIME);
+                .build());
 
-        Member member_UNDEFINED = Member.builder()
+        memberService.join(Member.builder()
                 .loginId("undefined")
                 .password(passwordEncoder.encode("123"))
                 .name("undefined_name")
-                .phoneNumber("01012341234")
+                .phoneNumber("01066666666")
                 .gradeType(GradeType.UNDEFINED)
                 .memberStatus(MemberStatus.WORK)
-                .build();
-        memberService.join(member_UNDEFINED);
+                .build());
     }
 }

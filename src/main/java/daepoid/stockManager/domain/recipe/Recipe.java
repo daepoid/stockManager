@@ -1,15 +1,18 @@
 package daepoid.stockManager.domain.recipe;
 
-import lombok.Getter;
-import lombok.Setter;
+import daepoid.stockManager.domain.ingredient.Ingredient;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Entity
 @Getter
-@Setter
+//@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Recipe {
 
     @Id
@@ -17,17 +20,16 @@ public class Recipe {
     @Column(name = "recipe_id")
     private Long id;
 
-    @Column(unique = true)
-    private Long recipeNumber;
+//    // 레시피 번호
+//    @Column(unique = true)
+    private String recipeNumber;
 
     // 레시피 이름
+    // 매장에서 사용되는 레시피가 무한하지 않고, 관리자가 등록을 하기 때문에 중복 검사를 하지 않는다.
     private String name;
 
     // 판매 가격
     private Integer price;
-
-
-    private Double unitPrice;
 
     // 요리 무게
     private Double weight;
@@ -37,7 +39,7 @@ public class Recipe {
     private DishType dishType;
 
     // 레시피 필요 재료
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Ingredient> ingredients = new ArrayList<>();
 
     // 레시피 생산 단가
@@ -45,16 +47,33 @@ public class Recipe {
 
     private Double netIncome = 0.0;
 
+    // 레시피 방법 또는 주의점
     @Lob
     private String notes;
 
-    // unique 조건일 때 같은 걸로 바꾸면 어떻게 되는가?
-    public void changeRecipeNumber(Long recipeNumber) {
+    @Builder
+    public Recipe(String recipeNumber, String name, Integer price, Double weight, DishType dishType,
+                  Double cost, Double netIncome, List<Ingredient> ingredients, String notes) {
         this.recipeNumber = recipeNumber;
+        this.name = name;
+        this.price = price;
+        this.weight = weight;
+        this.dishType = dishType;
+        this.cost = cost;
+        this.netIncome = netIncome;
+        this.ingredients = ingredients;
+        this.notes = notes;
     }
 
+    //==개발 로직==//
     public void changeId(Long id) {
         this.id = id;
+    }
+
+    //==비즈니스 로직 (setter 제거)==//
+    // unique 조건일 때 같은 걸로 바꾸면 어떻게 되는가?
+    public void changeRecipeNumber(String recipeNumber) {
+        this.recipeNumber = recipeNumber;
     }
 
     public void changeName(String name) {
@@ -65,24 +84,12 @@ public class Recipe {
         this.price = price;
     }
 
-    public void changeUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
     public void changeWeight(Double weight) {
         this.weight = weight;
     }
 
     public void changeIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
-    }
-
-    public void addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
-    }
-
-    public Boolean removeIngredient(Ingredient ingredient) {
-        return this.ingredients.remove(ingredient);
     }
 
     public void changeDishType(DishType dishType) {
@@ -93,42 +100,67 @@ public class Recipe {
         this.notes = notes;
     }
 
+    public void changeCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public void changeNetIncome(Double netIncome) {
+        this.netIncome = netIncome;
+    }
+
+    //==연관 관계 메서드==//
+    public void addIngredient(Ingredient ingredient) {
+        this.ingredients.add(ingredient);
+    }
+
+    public Boolean removeIngredient(Ingredient ingredient) {
+        return this.ingredients.remove(ingredient);
+    }
 
     //==서비스 로직==//
-    public Double getTotalPrice() {
+    public Double getTotalCost() {
         return ingredients.stream()
-                .mapToDouble(Ingredient::getPortionPrice)
+                .mapToDouble(Ingredient::getCost)
                 .sum();
     }
 
-    public static Recipe createRecipe(String name, Integer price, Double unitPrice, Double weight, DishType dishType, String notes) {
-        Recipe recipe = new Recipe();
-        recipe.changeName(name);
-        recipe.changePrice(price);
-        recipe.changeUnitPrice(unitPrice);
-        recipe.changeWeight(weight);
-        recipe.changeDishType(dishType);
-        recipe.changeNotes(notes);
-        return recipe;
+    public void updateCost() {
+        this.cost = getTotalCost();
+        if(price == null || cost == null) {
+            netIncome = 0.0;
+        } else {
+            this.netIncome = this.price - this.cost;
+        }
     }
 
-    public static Recipe createRecipe(String name,
-                                      Integer price,
-                                      Double unitPrice,
-                                      Double weight,
-                                      DishType dishType,
-                                      String notes,
-                                      Ingredient... ingredients) {
-        Recipe recipe = new Recipe();
-        recipe.changeName(name);
-        recipe.changePrice(price);
-        recipe.changeUnitPrice(unitPrice);
-        recipe.changeWeight(weight);
-        recipe.changeDishType(dishType);
-        recipe.changeNotes(notes);
-        for (Ingredient ingredient : ingredients) {
-            recipe.addIngredient(ingredient);
-        }
-        return recipe;
-    }
+//    public static Recipe createRecipe(String name, Integer price, Double unitPrice, Double weight, DishType dishType, String notes) {
+//        Recipe recipe = new Recipe();
+//        recipe.changeName(name);
+//        recipe.changePrice(price);
+//        recipe.changeUnitPrice(unitPrice);
+//        recipe.changeWeight(weight);
+//        recipe.changeDishType(dishType);
+//        recipe.changeNotes(notes);
+//        return recipe;
+//    }
+//
+//    public static Recipe createRecipe(String name,
+//                                      Integer price,
+//                                      Double unitPrice,
+//                                      Double weight,
+//                                      DishType dishType,
+//                                      String notes,
+//                                      Ingredient... ingredients) {
+//        Recipe recipe = new Recipe();
+//        recipe.changeName(name);
+//        recipe.changePrice(price);
+//        recipe.changeUnitPrice(unitPrice);
+//        recipe.changeWeight(weight);
+//        recipe.changeDishType(dishType);
+//        recipe.changeNotes(notes);
+//        for (Ingredient ingredient : ingredients) {
+//            recipe.addIngredient(ingredient);
+//        }
+//        return recipe;
+//    }
 }

@@ -1,7 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.recipe.DishType;
-import daepoid.stockManager.domain.recipe.Ingredient;
+import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
 
 import java.util.List;
@@ -17,15 +17,14 @@ public interface RecipeRepository {
     List<Recipe> findAll();
     Optional<Recipe> findByName(String name);
     List<Recipe> findByPrice(Integer price);
-    List<Recipe> findByUnitPrice(Double unitPrice);
     List<Recipe> findByWeight(Double weight);
     List<Recipe> findByIngredient(Ingredient ingredient);
     List<Recipe> findByDishType(DishType dishType);
 
     //==수정 로직==//
+    void changeRecipeNumber(Long recipeId, String recipeNumber);
     void changeName(Long recipeId, String name);
     void changePrice(Long recipeId, Integer price);
-    void changeUnitPrice(Long recipeId, Double unitPrice);
     void changeWeight(Long recipeId, Double weight);
     void changeDishType(Long recipeId, DishType dishType);
     boolean addIngredient(Long recipeId, Ingredient ingredient);

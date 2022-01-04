@@ -41,13 +41,27 @@ public class RecipeController {
             log.info("login Error = {}", bindingResult);
             return "recipe/createRecipeForm";
         }
+
+        // Recipe 생성
+        Recipe recipe = Recipe.builder()
+                .recipeNumber(createRecipeDTO.getRecipeNumber())
+                .name(createRecipeDTO.getName())
+                .price(createRecipeDTO.getPrice())
+                .weight(createRecipeDTO.getWeight())
+                .dishType(createRecipeDTO.getDishType())
+                .cost(0.0)
+                .netIncome(createRecipeDTO.getPrice() - 0.0)
+//                .ingredients()
+                .notes(createRecipeDTO.getNotes())
+                .build();
+
+        // Recipe RecipeService를 통해 DB에 등록
+        recipeService.saveRecipe(recipe);
         return "redirect:/recipes";
     }
 
     @GetMapping("/{recipeId}/edit")
-    public String editRecipeForm(@PathVariable("recipeId") Long recipeId,
-                                 Model model,
-                                 HttpServletRequest request) {
+    public String editRecipeForm(@PathVariable("recipeId") Long recipeId, Model model) {
         Recipe recipe = recipeService.findRecipe(recipeId);
         model.addAttribute("editRecipeDTO", new EditRecipeDTO(recipe));
         return "recipe/editRecipeForm";
@@ -56,25 +70,23 @@ public class RecipeController {
     @PostMapping("/{recipeId}/edit")
     public String editRecipe(@PathVariable("recipeId") Long recipeId,
                              @Valid @ModelAttribute("editRecipeDTO") EditRecipeDTO editRecipeDTO,
-                             BindingResult bindingResult,
-                             HttpServletRequest request) {
+                             BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "recipe/editRecipeForm";
+        }
 
-//        if(bindingResult.hasErrors()) {
-//            log.info("editRecipe = {}", bindingResult);
-//            Member member = memberService.findMemberByLoginId(((LoginMemberDTO) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER)).getLoginId());
-//            if(member.getGradeType().equals(GradeType.CEO) || member.getGradeType().equals(GradeType.MANAGER)) {
-//                return "recipe/authorize/editRecipeForm";
-//            }
-//            return "recipe/non-authorize/editRecipeForm";
-//        }
-//
-//        log.info("request.getRequestURI = {}", request.getRequestURI());
+        recipeService.changeRecipeNumber(recipeId, editRecipeDTO.getRecipeNumber());
+        recipeService.changeRecipeName(recipeId, editRecipeDTO.getName());
+        recipeService.changePrice(recipeId, editRecipeDTO.getPrice());
+        recipeService.changeWeight(recipeId, editRecipeDTO.getWeight());
+        recipeService.changeDishType(recipeId, editRecipeDTO.getDishType());
+        recipeService.changeNotes(recipeId, editRecipeDTO.getNotes());
 
         return "redirect:/recipes";
     }
 
     @GetMapping("")
-    public String recipeList(Model model, HttpServletRequest request) {
+    public String recipeList(Model model) {
         model.addAttribute("recipes", recipeService.findRecipes());
         return "recipe/recipeList";
     }

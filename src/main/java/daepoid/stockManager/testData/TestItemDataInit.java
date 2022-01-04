@@ -17,15 +17,49 @@ public class TestItemDataInit {
 
     @PostConstruct
     public void init() {
-        itemService.saveItem(Item.createItem("item1", ItemType.BOTTLE, 1000, 110, 99.0, UnitType.l));
-        itemService.saveItem(Item.createItem("item2", ItemType.BOTTLE, 2000, 210, 88.0, UnitType.ml));
-        itemService.saveItem(Item.createItem("item3", ItemType.POWDER, 3000, 310, 77.0, UnitType.kg));
-        itemService.saveItem(Item.createItem("item4", ItemType.POWDER, 4000, 410, 66.0, UnitType.g));
-        itemService.saveItem(Item.createItem("item5", ItemType.SPICE, 5000, 510, 55.0, UnitType.g));
-        itemService.saveItem(Item.createItem("item6", ItemType.SPICE, 6000, 610, 44.0, UnitType.mg));
-        itemService.saveItem(Item.createItem("item7", ItemType.VEGETABLE, 7000, 710, 33.0, UnitType.kg));
-        itemService.saveItem(Item.createItem("item8", ItemType.VEGETABLE, 8000, 810, 22.0, UnitType.kg));
-        itemService.saveItem(Item.createItem("item9", ItemType.MEAT, 9000, 910, 11.0, UnitType.kg));
-        itemService.saveItem(Item.createItem("item10", ItemType.MEAT, 10000, 1010, 10.0, UnitType.kg));
+        itemService.saveItem(Item.builder()
+                .name("stock item 1")
+                .itemType(ItemType.BOTTLE)
+                .price(1000)
+                .quantity(110.0)
+                .unitType(UnitType.l)
+                .packageCount(110)
+                .build());
+
+        itemService.saveItem(Item.builder()
+                .name("stock item 2")
+                .itemType(ItemType.SPICE)
+                .price(1000)
+                .quantity(110.0)
+                .unitType(UnitType.mg)
+                .packageCount(110)
+                .build());
+
+        itemService.saveItem(Item.builder()
+                .name("stock item 3")
+                .itemType(ItemType.VEGETABLE)
+                .price(1000)
+                .quantity(110.0)
+                .unitType(UnitType.g)
+                .packageCount(110)
+                .build());
+
+        itemService.saveItem(Item.builder()
+                .name("stock item 4")
+                .itemType(ItemType.MEAT)
+                .price(1000)
+                .quantity(110.0)
+                .unitType(UnitType.kg)
+                .packageCount(110)
+                .build());
+
+        itemService.saveItem(Item.builder()
+                .name("stock item 5")
+                .itemType(ItemType.POWDER)
+                .price(1000)
+                .quantity(110.0)
+                .unitType(UnitType.g)
+                .packageCount(110)
+                .build());
     }
 }

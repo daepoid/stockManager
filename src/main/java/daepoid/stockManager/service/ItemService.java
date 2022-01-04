@@ -21,8 +21,9 @@ public class ItemService {
 
     //==생성 로직==//
     @Transactional
-    public void saveItem(Item item) {
+    public Long saveItem(Item item) {
         itemRepository.save(item);
+        return item.getId();
     }
 
     //==조회 로직==//

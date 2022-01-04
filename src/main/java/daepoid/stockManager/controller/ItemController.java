@@ -35,7 +35,6 @@ public class ItemController {
                                  RedirectAttributes redirectAttributes,
                                  HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-//            log.info("bindingResult = {}", bindingResult);
             return "items/createItemForm";
         }
 
@@ -43,23 +42,21 @@ public class ItemController {
             return "items/createItemForm";
         }
 
-        Item item = Item.createItem(
-                createItemDTO.getName(),
-                createItemDTO.getItemType(),
-                createItemDTO.getPrice(),
-                createItemDTO.getPackageCount(),
-                createItemDTO.getQuantity(),
-                createItemDTO.getUnitType());
-        itemService.saveItem(item);
+        Long itemId = itemService.saveItem(Item.builder()
+                .name(createItemDTO.getName())
+                .itemType(createItemDTO.getItemType())
+                .price(createItemDTO.getPrice())
+                .quantity(createItemDTO.getQuantity())
+                .unitType(createItemDTO.getUnitType())
+                .packageCount(createItemDTO.getPackageCount())
+                .build());
 
-        redirectAttributes.addAttribute("itemId", item.getId());
+        redirectAttributes.addAttribute("itemId", itemId);
         return "redirect:/items";
     }
 
     @GetMapping("/{itemId}/edit")
-    public String editItemForm(@PathVariable("itemId") Long itemId,
-                               Model model,
-                               HttpServletRequest request) {
+    public String editItemForm(@PathVariable("itemId") Long itemId, Model model) {
 
         model.addAttribute("editItemDTO", new EditItemDTO(itemService.findItem(itemId)));
         return "items/editItemForm";
@@ -68,11 +65,8 @@ public class ItemController {
     @PostMapping("/{itemId}/edit")
     public String editItem(@PathVariable("itemId") Long itemId,
                            @Valid @ModelAttribute("editItemDTO") EditItemDTO editItemDTO,
-                           BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes,
-                           HttpServletRequest request) {
+                           BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-//            log.info("bindingResult = {}", bindingResult);
             return "items/editItemForm";
         }
 
