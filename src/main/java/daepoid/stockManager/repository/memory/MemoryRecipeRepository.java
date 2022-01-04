@@ -70,8 +70,6 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     //==수정 로직==//
-
-
     @Override
     public void changeRecipeNumber(Long recipeId, String recipeNumber) {
         store.get(recipeId).changeRecipeNumber(recipeNumber);
@@ -98,6 +96,11 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
+    public void changeIngredient(Long recipeId, List<Ingredient> ingredients) {
+        store.get(recipeId).changeIngredients(ingredients);
+    }
+
+    @Override
     public boolean addIngredient(Long recipeId, Ingredient ingredient) {
         if(store.get(recipeId) != null){
             store.get(recipeId).addIngredient(ingredient);
@@ -113,6 +116,11 @@ public class MemoryRecipeRepository implements RecipeRepository {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void updateCost(Long recipeId) {
+        store.get(recipeId).updateCost();
     }
 
     @Override

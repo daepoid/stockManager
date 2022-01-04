@@ -53,8 +53,12 @@ public class ItemService {
 
     //==수정 로직==//
     @Transactional
-    public void changeInfo(Long itemId, String name, ItemType itemType) {
+    public void changeName(Long itemId, String name) {
         itemRepository.changeName(itemId, name);
+    }
+
+    @Transactional
+    public void changeItemType(Long itemId, ItemType itemType) {
         itemRepository.changeItemType(itemId, itemType);
     }
 
@@ -69,8 +73,12 @@ public class ItemService {
     }
     
     @Transactional
-    public void changeQuantity(Long itemId, Double quantity, UnitType unitType) {
+    public void changeQuantity(Long itemId, Double quantity) {
         itemRepository.changeQuantity(itemId, quantity);
+    }
+
+    @Transactional
+    public void changeUnitType(Long itemId, UnitType unitType) {
         itemRepository.changeUnitType(itemId, unitType);
     }
 

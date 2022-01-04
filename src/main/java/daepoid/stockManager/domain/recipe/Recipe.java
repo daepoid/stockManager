@@ -126,6 +126,7 @@ public class Recipe {
 
     public void updateCost() {
         this.cost = getTotalCost();
+        log.info("cost = {}", cost);
         if(price == null || cost == null) {
             netIncome = 0.0;
         } else {

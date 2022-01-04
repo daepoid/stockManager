@@ -32,8 +32,7 @@ public class ItemController {
     @PostMapping("/new")
     public String createItemForm(@Valid @ModelAttribute("createItemDTO") CreateItemDTO createItemDTO,
                                  BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes,
-                                 HttpServletRequest request) {
+                                 RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "items/createItemForm";
         }
@@ -57,7 +56,6 @@ public class ItemController {
 
     @GetMapping("/{itemId}/edit")
     public String editItemForm(@PathVariable("itemId") Long itemId, Model model) {
-
         model.addAttribute("editItemDTO", new EditItemDTO(itemService.findItem(itemId)));
         return "items/editItemForm";
     }
@@ -66,16 +64,18 @@ public class ItemController {
     public String editItem(@PathVariable("itemId") Long itemId,
                            @Valid @ModelAttribute("editItemDTO") EditItemDTO editItemDTO,
                            BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             return "items/editItemForm";
         }
 
         // 수정
-        itemService.changeInfo(itemId, editItemDTO.getName(), editItemDTO.getItemType());
+        itemService.changeName(itemId, editItemDTO.getName());
+        itemService.changeItemType(itemId, editItemDTO.getItemType());
         itemService.changePrice(itemId, editItemDTO.getPrice());
         itemService.changePackageCount(itemId, editItemDTO.getPackageCount());
-        itemService.changeQuantity(itemId, editItemDTO.getQuantity(), editItemDTO.getUnitType());
-
+        itemService.changeQuantity(itemId, editItemDTO.getQuantity());
+        itemService.changeUnitType(itemId, editItemDTO.getUnitType());
         return "redirect:/items";
     }
 

@@ -51,7 +51,6 @@ public class Member {
         this.roles.add(roleType);
     }
 
-
     //==생성 메서드==//
     @Builder
     public Member(String loginId, String name, String password, String phoneNumber, GradeType gradeType, MemberStatus memberStatus, List<RoleType> roles) {

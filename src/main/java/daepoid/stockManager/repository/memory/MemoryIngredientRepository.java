@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository.memory;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,19 +29,72 @@ public class MemoryIngredientRepository implements IngredientRepository {
     }
 
     @Override
-    public Ingredient findIngredient(Long ingredientId) {
+    public Ingredient findById(Long ingredientId) {
         return store.get(ingredientId);
     }
 
     @Override
-    public List<Ingredient> findIngredients() {
+    public List<Ingredient> findAll() {
         return new ArrayList<>(store.values());
     }
 
     @Override
-    public List<Ingredient> findIngredientsByRecipe(Long recipeId) {
+    public List<Ingredient> findByRecipe(Long recipeId) {
         return store.values().stream()
                 .filter(ingredient -> ingredient.getRecipe().getId().equals(recipeId))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Ingredient> findByName(String name) {
+        return store.values().stream()
+                .filter(ingredient -> ingredient.getName().equals(name))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Ingredient> findByUnitType(UnitType unitType) {
+        return store.values().stream()
+                .filter(ingredient -> ingredient.getUnitType().equals(unitType))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void changeName(Long ingredientId, String name) {
+        store.get(ingredientId).changeName(name);
+    }
+
+    @Override
+    public void changeQuantity(Long ingredientId, Integer quantity) {
+        store.get(ingredientId).changeQuantity(quantity);
+    }
+
+    @Override
+    public void changeUnitType(Long ingredientId, UnitType unitType) {
+        store.get(ingredientId).changeUnitType(unitType);
+
+    }
+
+    @Override
+    public void changeUnitPrice(Long ingredientId, Double unitPrice) {
+        store.get(ingredientId).changeUnitPrice(unitPrice);
+
+    }
+
+    @Override
+    public void changeLoss(Long ingredientId, Double loss) {
+        store.get(ingredientId).changeLoss(loss);
+
+    }
+
+    @Override
+    public void changeCost(Long ingredientId, Double cost) {
+        store.get(ingredientId).changeCost(cost);
+
+    }
+
+    @Override
+    public void updateCost(Long ingredientId) {
+        store.get(ingredientId).updateCost();
     }
 }

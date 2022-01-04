@@ -1,5 +1,6 @@
 package daepoid.stockManager.dto;
 
+import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
@@ -13,6 +14,10 @@ import lombok.NoArgsConstructor;
 public class EditIngredientDTO {
 
     // 재료 이름
+    private Long itemId;
+
+    private Item item;
+
     private String name;
 
     // 재료 양
@@ -27,17 +32,19 @@ public class EditIngredientDTO {
     // 로스율
     private Double loss;
 
-    private Double portionPrice;
+    private Double cost;
 
     private Recipe recipe;
 
     public EditIngredientDTO(Ingredient ingredient) {
         this.name = ingredient.getName();
+
         this.quantity = ingredient.getQuantity();
         this.unitType = ingredient.getUnitType();
         this.unitPrice = ingredient.getUnitPrice();
+
         this.loss = ingredient.getLoss();
-        this.portionPrice = ingredient.getCost();
+        this.cost = ingredient.getCost();
         this.recipe = ingredient.getRecipe();
     }
 }

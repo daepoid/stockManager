@@ -17,8 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateRecipeDTO {
 
-    private Long id;
-
     private String recipeNumber;
 
     private String name;
@@ -27,17 +25,11 @@ public class CreateRecipeDTO {
 
     private Double weight;
 
-//    private Double unitPrice;
-
     @Enumerated(EnumType.STRING)
     private DishType dishType;
 
-//    private Double cost;
-//
-//    private Double netIncome;
-
-    // Ingredient
-    private List<Ingredient> ingredients = new ArrayList<>();
+//    // Ingredient
+//    private List<Ingredient> ingredients = new ArrayList<>();
 
     private String notes;
 }

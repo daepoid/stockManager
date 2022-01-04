@@ -22,7 +22,7 @@ class IngredientServiceTest {
         ingredientRepository.saveIngredient(ingredient);
 
         System.out.println("ingredient = " + ingredient);
-        Assertions.assertThat(ingredient).isEqualTo(ingredientRepository.findIngredient(ingredient.getId()));
+        Assertions.assertThat(ingredient).isEqualTo(ingredientRepository.findById(ingredient.getId()));
     }
 
     @Test

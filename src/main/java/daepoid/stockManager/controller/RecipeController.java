@@ -81,6 +81,7 @@ public class RecipeController {
         recipeService.changeWeight(recipeId, editRecipeDTO.getWeight());
         recipeService.changeDishType(recipeId, editRecipeDTO.getDishType());
         recipeService.changeNotes(recipeId, editRecipeDTO.getNotes());
+        recipeService.updateCost(recipeId);
 
         return "redirect:/recipes";
     }

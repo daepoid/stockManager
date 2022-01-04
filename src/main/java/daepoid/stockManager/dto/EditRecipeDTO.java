@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EditRecipeDTO {
 
+    // IngredientController에서 사용하기 위해 생성
     private Long id;
 
     private String recipeNumber;
@@ -30,6 +31,9 @@ public class EditRecipeDTO {
     @Enumerated(EnumType.STRING)
     private DishType dishType;
 
+//    // Ingredient
+//    private List<Ingredient> ingredients = new ArrayList<>();
+
     private String notes;
 
     public EditRecipeDTO(Recipe recipe) {
@@ -39,6 +43,7 @@ public class EditRecipeDTO {
         this.price = recipe.getPrice();
         this.weight = recipe.getWeight();
         this.dishType = recipe.getDishType();
+//        this.ingredients = recipe.getIngredients();
         this.notes = recipe.getNotes();
     }
 }

@@ -109,6 +109,15 @@ public class RecipeService {
     }
 
     @Transactional
+    public void updateCost(Long recipeId) {
+        recipeRepository.updateCost(recipeId);
+//        Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+//        if(recipe != null) {
+//            recipe.updateCost();
+//        }
+    }
+
+    @Transactional
     public void changeNotes(Long recipeId, String notes) {
         recipeRepository.changeNotes(recipeId, notes);
     }

@@ -6,7 +6,6 @@ import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.dto.CreateIngredientDTO;
 import daepoid.stockManager.dto.EditIngredientDTO;
 import daepoid.stockManager.service.IngredientService;
-import daepoid.stockManager.service.MemberService;
 import daepoid.stockManager.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +28,10 @@ public class IngredientController {
 
     private final RecipeService recipeService;
     private final IngredientService ingredientService;
-    private final MemberService memberService;
 
     @GetMapping("/recipes/{recipeId}/ingredients")
     public String ingredientsList(@PathVariable("recipeId") Long recipeId, Model model, HttpServletRequest request) {
-        model.addAttribute("ingredients", ingredientService.findIngredientsByRecipe(recipeId));
+        model.addAttribute("ingredients", ingredientService.findByRecipe(recipeId));
         return "ingredients/ingredientList";
     }
 
@@ -47,26 +45,25 @@ public class IngredientController {
     public String createIngredients(@PathVariable("recipeId") Long recipeId,
                                     @Valid @ModelAttribute("createIngredientDTO") CreateIngredientDTO createIngredientDTO,
                                     BindingResult bindingResult,
-                                    RedirectAttributes redirectAttributes,
-                                    HttpServletRequest request) {
+                                    RedirectAttributes redirectAttributes) {
 
         if(bindingResult.hasErrors()) {
             return "ingredients/createIngredientForm";
         }
 
-        Ingredient ingredient = Ingredient.createIngredient(
-                createIngredientDTO.getName(),
-                createIngredientDTO.getQuantity(),
-                createIngredientDTO.getUnitType(),
-                createIngredientDTO.getUnitPrice(),
-                createIngredientDTO.getLoss()
-        );
-        ingredient.changeRecipe(recipeService.findRecipe(recipeId));
-        Long ingredientId = ingredientService.saveIngredient(ingredient);
-
-//        List<Ingredient> ingredients = ingredientService.findIngredientsByRecipe(recipeId);
         Recipe recipe = recipeService.findRecipe(recipeId);
-        recipe.addIngredient(ingredient);
+        Ingredient ingredient = Ingredient.builder()
+                .name(createIngredientDTO.getName())
+                .quantity(createIngredientDTO.getQuantity())
+                .unitType(createIngredientDTO.getUnitType())
+                .unitPrice(createIngredientDTO.getUnitPrice())
+                .loss(createIngredientDTO.getLoss())
+                .cost(createIngredientDTO.getQuantity() * createIngredientDTO.getUnitPrice())
+                .recipe(recipe)
+                .build();
+
+        ingredientService.saveIngredient(ingredient);
+        recipeService.updateCost(recipe.getId());
         redirectAttributes.addAttribute("recipeId", recipeId);
         return "redirect:/recipes/{recipeId}/edit";
     }
@@ -93,13 +90,15 @@ public class IngredientController {
             return "ingredients/editIngredientForm";
         }
 
-        Ingredient ingredient = ingredientService.findIngredient(ingredientId);
-        ingredient.changeName(editIngredientDTO.getName());
-        ingredient.changeQuantity(editIngredientDTO.getQuantity());
-        ingredient.changeUnitType(editIngredientDTO.getUnitType());
-        ingredient.changeUnitPrice(editIngredientDTO.getUnitPrice());
-        ingredient.changeLoss(editIngredientDTO.getLoss());
-        ingredient.updatePortionPrice();
+        log.info("editIngredientDTO = {}", editIngredientDTO);
+
+//        Ingredient ingredient = ingredientService.findIngredient(ingredientId);
+        ingredientService.changeName(ingredientId, editIngredientDTO.getName());
+        ingredientService.changeQuantity(ingredientId, editIngredientDTO.getQuantity());
+        ingredientService.changeUnitType(ingredientId, editIngredientDTO.getUnitType());
+        ingredientService.changeUnitPrice(ingredientId, editIngredientDTO.getUnitPrice());
+        ingredientService.changeLoss(ingredientId, editIngredientDTO.getLoss());
+        ingredientService.updateCost(ingredientId);
 
         redirectAttributes.addAttribute("recipeId", recipeId);
         return "redirect:/recipes/{recipeId}/ingredients";

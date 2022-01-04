@@ -6,7 +6,7 @@
     <title>재고 아이템 추가</title>
 </head>
 <body>
-<div class="container">
+<div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
     <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
     <form th:action="@{/items/new}" th:object="${createItemDTO}" method="post">
         <div class="form-group">

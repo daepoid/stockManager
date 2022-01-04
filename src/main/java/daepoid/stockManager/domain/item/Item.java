@@ -93,13 +93,4 @@ public class Item {
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
     }
-
-    //==조회 로직==//
-    public Double getTotalPrice() {
-        return price * quantity;
-    }
-
-    public boolean containsIngredient(Ingredient ingredient) {
-        return this.ingredients.contains(ingredient);
-    }
 }

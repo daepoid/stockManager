@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+          href="../../static/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
             max-width: 560px;
@@ -18,7 +18,7 @@
     <title>재료 수정</title>
 </head>
 <body>
-<div class="container">
+<div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
     <div class="py-5 text-center">
         <h2>재료 수정</h2>
     </div>
@@ -33,12 +33,14 @@
             <input type="text" id="name" th:field="*{name}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{name}"></div>
+            <p></p>
         </div>
         <div>
             <label for="quantity">재료 수량</label>
             <input type="text" id="quantity" th:field="*{quantity}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{quantity}"></div>
+            <p></p>
         </div>
         <div class="form-group">
             <label th:for="unitType">단위</label>
@@ -49,31 +51,36 @@
                         th:text="${unitType}">option
                 </option>
             </select>
+            <p></p>
         </div>
         <div>
             <label for="unitPrice">단위 가격</label>
             <input type="text" id="unitPrice" th:field="*{unitPrice}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{unitPrice}"></div>
+            <p></p>
         </div>
         <div>
             <label for="loss">로스율</label>
             <input type="text" id="loss" th:field="*{loss}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{loss}"></div>
+            <p></p>
         </div>
         <div>
-            <label for="portionPrice">portion price</label>
-            <input type="text" id="portionPrice" class="form-control"
-                   th:field="*{portionPrice}" th:errorclass="field-error" readonly>
-            <div class="field-error" th:errors="*{portionPrice}"></div>
+            <label for="cost">코스트</label>
+            <input type="text" id="cost" class="form-control"
+                   th:field="*{cost}" th:errorclass="field-error" readonly>
+            <div class="field-error" th:errors="*{cost}"></div>
+            <p></p>
         </div>
         <hr class="my-4">
-        <div class="row">
+        <div class="row" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
             <div class="col">
                 <button class="w-100 btn btn-primary btn-lg"
                         type="submit">재료 수정</button>
             </div>
+            <p></p>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         onclick="location.href='ingredientList.html'"

@@ -1,9 +1,11 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
 <head>
     <meta charset="utf-8">
     <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+          href="../../static/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
             max-width: 560px;
@@ -16,7 +18,7 @@
     <title>재료 생성</title>
 </head>
 <body>
-<div class="container">
+<div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
     <div class="py-5 text-center">
         <h2>재료 생성</h2>
     </div>
@@ -69,7 +71,7 @@
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         onclick="location.href='ingredientList.html'"
-                        th:onclick="|location.href='@{/}'|"
+                        th:onclick="|location.href='@{/recipes}'|"
                         type="button">취소</button>
             </div>
         </div>

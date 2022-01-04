@@ -13,16 +13,16 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>레시피 이름</th>
+                <th>재료 이름</th>
                 <th>수량</th>
-                <th>단위 타입</th>
+                <th>단위</th>
                 <th>단위 가격</th>
                 <th>로스율</th>
-                <th>portionPrice</th>
+                <th>코스트</th>
                 <td>
                     <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
                        th:href="@{/recipes/{recipeId}/ingredients/new (recipeId=${recipeId})}"
-                       class="btn btn-primary" role="button">추가</a>
+                       class="w-100 btn btn-primary btn-sm" role="button">추가</a>
                 </td>
             </tr>
             </thead>
@@ -36,7 +36,7 @@
                 <td th:text="${ingredient.cost}"></td>
                 <td>
                     <a href="#" th:href="@{/recipes/{recipeId}/ingredients/{ingredientId}/edit (recipeId=${ingredient.recipe.id}, ingredientId=${ingredient.id})}"
-                       class="w-100 btn btn-secondary btn-lg" role="button">수정</a>
+                       class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
                 </td>
             </tr>
             </tbody>

@@ -108,12 +108,13 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public boolean addIngredient(Long recipeId, Ingredient ingredient) {
-//        Recipe recipe = em.find(Recipe.class, recipeId);
-//        List<Ingredient> ingredients = recipe.getIngredients();
-//        ingredients.add(ingredient);
-//        return true;
+    public void changeIngredient(Long recipeId, List<Ingredient> ingredients) {
+        em.find(Recipe.class, recipeId)
+                .changeIngredients(ingredients);
+    }
 
+    @Override
+    public boolean addIngredient(Long recipeId, Ingredient ingredient) {
         Recipe recipe = em.find(Recipe.class, recipeId);
         recipe.addIngredient(ingredient);
         return true;
@@ -127,6 +128,12 @@ public class JpaRecipeRepository implements RecipeRepository {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void updateCost(Long recipeId) {
+        em.find(Recipe.class, recipeId)
+                .updateCost();
     }
 
     @Override

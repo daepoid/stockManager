@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,20 +24,70 @@ public class JpaIngredientRepository implements IngredientRepository {
     }
 
     @Override
-    public Ingredient findIngredient(Long ingredientId) {
+    public Ingredient findById(Long ingredientId) {
         return em.find(Ingredient.class, ingredientId);
     }
 
     @Override
-    public List<Ingredient> findIngredients() {
+    public List<Ingredient> findAll() {
         return em.createQuery("select i from Ingredient i", Ingredient.class)
                 .getResultList();
     }
 
     @Override
-    public List<Ingredient> findIngredientsByRecipe(Long recipeId) {
+    public List<Ingredient> findByRecipe(Long recipeId) {
         return em.createQuery("select i from Ingredient i where i.recipe.id = :recipeId", Ingredient.class)
                 .setParameter("recipeId", recipeId)
                 .getResultList();
+    }
+
+    @Override
+    public List<Ingredient> findByName(String name) {
+        return em.createQuery("select i from Ingredient i where i.name = :name", Ingredient.class)
+                .setParameter("name", name)
+                .getResultList();
+    }
+
+    @Override
+    public List<Ingredient> findByUnitType(UnitType unitType) {
+        return em.createQuery("select i from Ingredient i where i.unitType = :unitType", Ingredient.class)
+                .setParameter("unitType", unitType)
+                .getResultList();
+    }
+
+    @Override
+    public void changeName(Long ingredientId, String name) {
+        em.find(Ingredient.class, ingredientId).changeName(name);
+    }
+
+    @Override
+    public void changeQuantity(Long ingredientId, Integer quantity) {
+        em.find(Ingredient.class, ingredientId).changeQuantity(quantity);
+    }
+
+    @Override
+    public void changeUnitType(Long ingredientId, UnitType unitType) {
+        em.find(Ingredient.class, ingredientId).changeUnitType(unitType);
+
+    }
+
+    @Override
+    public void changeUnitPrice(Long ingredientId, Double unitPrice) {
+        em.find(Ingredient.class, ingredientId).changeUnitPrice(unitPrice);
+    }
+
+    @Override
+    public void changeLoss(Long ingredientId, Double loss) {
+        em.find(Ingredient.class, ingredientId).changeLoss(loss);
+    }
+
+    @Override
+    public void changeCost(Long ingredientId, Double cost) {
+        em.find(Ingredient.class, ingredientId).changeLoss(cost);
+    }
+
+    @Override
+    public void updateCost(Long ingredientId) {
+        em.find(Ingredient.class, ingredientId).updateCost();
     }
 }
