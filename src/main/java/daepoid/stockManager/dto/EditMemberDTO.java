@@ -17,7 +17,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class EditMemberDTO {
 
-//    private Long id;
+    private Long id;
 
     // 로그인 아이디
     private String loginId;
@@ -49,7 +49,7 @@ public class EditMemberDTO {
 
 
     public EditMemberDTO(Member member) {
-//        this.id = member.getId();
+        this.id = member.getId();
         this.loginId = member.getLoginId();
         this.name = member.getName();
         this.password = member.getPassword();

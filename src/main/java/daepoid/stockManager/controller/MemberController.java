@@ -84,22 +84,34 @@ public class MemberController {
     @PostMapping("/{memberId}/edit")
     public String editMember(@PathVariable("memberId") Long memberId,
                              @Valid @ModelAttribute("editMemberDTO") EditMemberDTO editMemberDTO,
-                             BindingResult bindingResult) {
+                             BindingResult bindingResult,
+                             HttpServletRequest request) {
         if(bindingResult.hasErrors()) {
             log.info("bindingResult = {}", bindingResult);
             return "members/editMemberForm";
+        }
+
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Member loginMember = memberService.findMemberByLoginId(loginId);
+        log.info("loginMember = {}", loginMember);
+        if(!loginMember.getGradeType().equals(GradeType.CEO) && !loginMember.getGradeType().equals(GradeType.MANAGER)) {
+            Member member = memberService.findMember(memberId);
+            if(editMemberDTO.getPassword() == null){
+                return "members/editMemberForm";
+            }
+            if(!member.getPassword().equals(passwordEncoder.encode(editMemberDTO.getPassword()))) {
+                return "members/editMemberForm";
+            }
         }
 
         // 관리자는 비밀번호 없이 변경할 수 있어야한다.
         // 사용자는 비밀번호를 입력하여 변경하고, 자신의 이름과 전화번호 또는 비밀번호를 변경할 수 있다.
         // 모든 변경기록이 로그로 남아야하고, 로그는 파일로 따로 저장되어야 한다.
 
-        memberService.changeMemberInfo(memberId, editMemberDTO.getName(), editMemberDTO.getPhoneNumber());
+        memberService.changeName(memberId, editMemberDTO.getName());
+        memberService.changePhoneNumber(memberId, editMemberDTO.getPhoneNumber());
         memberService.changeGradeType(memberId, editMemberDTO.getGradeType());
         memberService.changeMemberStatus(memberId, editMemberDTO.getMemberStatus());
-
-        // 주의: Role 변경내용이 없음
-
         return "redirect:/members";
     }
 

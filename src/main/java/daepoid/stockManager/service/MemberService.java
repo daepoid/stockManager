@@ -60,8 +60,12 @@ public class MemberService {
     //==수정 로직==//
 
     @Transactional
-    public void changeMemberInfo(Long memberId, String name, String phoneNumber) {
+    public void changeName(Long memberId, String name) {
         memberRepository.changeName(memberId, name);
+    }
+
+    @Transactional
+    public void changePhoneNumber(Long memberId, String phoneNumber) {
         memberRepository.changePhoneNumber(memberId, phoneNumber);
     }
 
