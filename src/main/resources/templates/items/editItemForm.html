@@ -6,7 +6,7 @@
     <title>재고 정리</title>
 </head>
 <body>
-<div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
+<div class="container">
     <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <form th:object="${editItemDTO}" method="post">
         <!-- id -->
@@ -52,10 +52,20 @@
             </select>
         </div>
         <div>
-            <button type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
+            <button sec:authorize="hasAnyRole('ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')"
+                    class="w-100 btn btn-secondary btn-sm"
+                    onclick="location.href='itemList.html'"
+                    th:onclick="|location.href='@{/items}'|"
+                    type="button">리스트로 돌아가기</button>
         </div>
         <div>
-            <button class="w-100 btn btn-secondary btn-sm"
+            <button type="submit" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                    class="w-100 btn btn-primary btn-lg">수정</button>
+            <p></p>
+        </div>
+        <div>
+            <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                    class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='itemList.html'"
                     th:onclick="|location.href='@{/items}'|"
                     type="button">취소</button>

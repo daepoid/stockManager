@@ -75,11 +75,11 @@
         </div>
         <div>
             <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-                    type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
+                    type="submit" class="w-100 btn btn-primary btn-lg">수정</button>
             <p></p>
         </div>
         <div>
-            <button class="w-100 btn btn-secondary btn-sm"
+            <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='recipeList.html'"
                     th:onclick="|location.href='@{/recipes}'|"
                     type="button">취소</button>

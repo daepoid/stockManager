@@ -65,7 +65,7 @@ public class IngredientController {
         ingredientService.saveIngredient(ingredient);
         recipeService.updateCost(recipe.getId());
         redirectAttributes.addAttribute("recipeId", recipeId);
-        return "redirect:/recipes/{recipeId}/edit";
+        return "redirect:/recipes/{recipeId}/ingredients";
     }
 
     // ingredient는 recipe에 종속적이다. 따라서 저장된 ingredient를
@@ -90,9 +90,6 @@ public class IngredientController {
             return "ingredients/editIngredientForm";
         }
 
-        log.info("editIngredientDTO = {}", editIngredientDTO);
-
-//        Ingredient ingredient = ingredientService.findIngredient(ingredientId);
         ingredientService.changeName(ingredientId, editIngredientDTO.getName());
         ingredientService.changeQuantity(ingredientId, editIngredientDTO.getQuantity());
         ingredientService.changeUnitType(ingredientId, editIngredientDTO.getUnitType());
