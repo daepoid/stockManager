@@ -4,9 +4,7 @@ import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
-import daepoid.stockManager.dto.EditMemberDTO;
-import daepoid.stockManager.dto.JoinMemberDTO;
-import daepoid.stockManager.dto.LoginMemberDTO;
+import daepoid.stockManager.dto.*;
 import daepoid.stockManager.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +66,62 @@ public class MemberController {
         Long memberId = memberService.join(member);
         log.info("회원가입 성공 / 아이디: {} / 이름: {} / 전화번호: {}", member.getLoginId(), member.getName(), member.getPhoneNumber());
         return "redirect:/";
+    }
+
+    @GetMapping("/myInfo")
+    public String editMyInfoForm(Model model, HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Member loginMember = memberService.findMemberByLoginId(loginId);
+        model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(loginMember));
+        return "members/editMyInfoForm";
+    }
+
+    @PostMapping("/myInfo")
+    public String editMyInfo(@ModelAttribute("editMyInfoDTO") EditMyInfoDTO editMyInfoDTO,
+                             HttpServletRequest request) {
+
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Member loginMember = memberService.findMemberByLoginId(loginId);
+        if(!passwordEncoder.matches(editMyInfoDTO.getPassword(), loginMember.getPassword())) {
+            return "members/editMyInfoForm";
+        }
+
+        memberService.changeName(loginMember.getId(), editMyInfoDTO.getName());
+        memberService.changePhoneNumber(loginMember.getId(), editMyInfoDTO.getPhoneNumber());
+        log.info("{}님이 정보를 수정하였습니다. => 이름: {} / 전화번호: {} -> 이름: {} / 전화번호: {}",
+                loginMember.getLoginId(),
+                loginMember.getName(), loginMember.getPhoneNumber(),
+                editMyInfoDTO.getName(), editMyInfoDTO.getPhoneNumber());
+        
+        return "redirect:/";
+    }
+
+    @GetMapping("/myInfo/passwordChange")
+    public String editMyPasswordForm(@ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO) {
+        return "members/editMyPasswordForm";
+    }
+
+    @PostMapping("/myInfo/passwordChange")
+    public String editMyPassword(@ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO,
+                                 BindingResult bindingResult,
+                                 HttpServletRequest request) {
+        if(bindingResult.hasErrors()) {
+            return "members/editMyPasswordForm";
+        }
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Member loginMember = memberService.findMemberByLoginId(loginId);
+        if(!passwordEncoder.matches(editMyPasswordDTO.getPassword(), loginMember.getPassword())) {
+            return "members/editMyPasswordForm";
+        }
+
+        // 새로운 비밀번호가 조건을 만족하지 못함
+
+        if(!editMyPasswordDTO.getNewPassword().equals(editMyPasswordDTO.getNewPasswordConfirm())) {
+            // 입력한 비밀번호와 비밀번호 확인이 다르다.
+            return "members/editMyPasswordForm";
+        }
+        memberService.changePassword(loginMember.getId(), passwordEncoder.encode(editMyPasswordDTO.getNewPassword()));
+        return "redirect:/members/myInfo";
     }
 
     @GetMapping("/{memberId}/edit")

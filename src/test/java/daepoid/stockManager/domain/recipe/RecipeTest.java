@@ -37,13 +37,13 @@ class RecipeTest {
     void changeWeight() {
     }
 
-    @Test
-    void addIngredient() {
-        Recipe recipe = new Recipe();
-        em.persist(recipe);
-        recipe.addIngredient(Ingredient.createIngredient("name", 100, UnitType.kg, 10.1, 0.0));
-        Assertions.assertThat(recipe.getIngredients().size()).isEqualTo(1);
-    }
+//    @Test
+//    void addIngredient() {
+//        Recipe recipe = new Recipe();
+//        em.persist(recipe);
+//        recipe.addIngredient(Ingredient.createIngredient("name", 100, UnitType.kg, 10.1, 0.0));
+//        Assertions.assertThat(recipe.getIngredients().size()).isEqualTo(1);
+//    }
 
     @Test
     void removeIngredient() {
