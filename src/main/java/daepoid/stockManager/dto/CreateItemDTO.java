@@ -32,5 +32,4 @@ public class CreateItemDTO {
     // 재고 수량 단위 (g, ml, ...)
     @NotNull
     private UnitType unitType;
-
 }

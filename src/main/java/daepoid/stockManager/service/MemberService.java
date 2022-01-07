@@ -4,8 +4,10 @@ import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,10 +1,11 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.repository.DataJpaMemberRepository;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -4,8 +4,10 @@ import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaRecipeRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +15,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-//@Transactional(readOnly = true)
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RecipeService {
 

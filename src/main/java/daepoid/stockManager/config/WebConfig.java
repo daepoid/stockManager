@@ -1,10 +1,9 @@
 package daepoid.stockManager.config;
 
-import daepoid.stockManager.inteceptor.GradeCheckInterceptor;
 import daepoid.stockManager.inteceptor.LogInterceptor;
 import daepoid.stockManager.inteceptor.LoginCheckInterceptor;
 import daepoid.stockManager.inteceptor.LoginMemberArgumentResolver;
-import org.springframework.context.annotation.Configuration;
+
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -16,7 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-//        WebMvcConfigurer.super.addArgumentResolvers(resolvers);
         resolvers.add(new LoginMemberArgumentResolver());
     }
 

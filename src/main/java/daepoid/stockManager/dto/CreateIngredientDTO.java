@@ -30,9 +30,4 @@ public class CreateIngredientDTO {
 
     // 로스율
     private Double loss;
-
-//    public CreateIngredientDTO(Long selectedItemId, String selectedItemName) {
-//        this.itemId = selectedItemId;
-//        this.name = selectedItemName;
-//    }
 }

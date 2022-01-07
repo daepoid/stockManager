@@ -1,13 +1,12 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.repository.MemberRepository;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service

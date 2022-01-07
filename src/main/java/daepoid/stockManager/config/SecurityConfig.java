@@ -3,8 +3,10 @@ package daepoid.stockManager.config;
 import daepoid.stockManager.handler.AuthFailureHandler;
 import daepoid.stockManager.handler.AuthSuccessHandler;
 import daepoid.stockManager.service.SecurityLoginService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,18 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final SecurityLoginService securityLoginService;
     private final AuthSuccessHandler authSuccessHandler;
     private final AuthFailureHandler authFailureHandler;
-
-//    @Bean
-//    public AuthSuccessHandler authSuccessHandler() {
-//        log.info("loginSuccessHandler");
-//        return new AuthSuccessHandler();
-//    }
-//
-//    @Bean
-//    public AuthFailureHandler authFailureHandler() {
-//        log.info("loginFailureHandler");
-//        return new AuthFailureHandler();
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

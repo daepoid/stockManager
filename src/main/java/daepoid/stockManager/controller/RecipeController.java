@@ -1,23 +1,18 @@
 package daepoid.stockManager.controller;
 
-import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.dto.CreateRecipeDTO;
 import daepoid.stockManager.dto.EditRecipeDTO;
-import daepoid.stockManager.service.MemberService;
 import daepoid.stockManager.service.RecipeService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -27,7 +22,6 @@ import javax.validation.Valid;
 public class RecipeController {
 
     private final RecipeService recipeService;
-    private final MemberService memberService;
 
     @GetMapping("/new")
     public String createRecipeForm(@ModelAttribute("createRecipeDTO") CreateRecipeDTO createRecipeDTO) {

@@ -5,9 +5,10 @@ import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.dto.LoginMemberDTO;
 import daepoid.stockManager.service.MemberService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
+@RequiredArgsConstructor
 public class GradeCheckInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private MemberService memberService;
+    private final MemberService memberService;
 
     @Override
     public boolean preHandle(HttpServletRequest request,

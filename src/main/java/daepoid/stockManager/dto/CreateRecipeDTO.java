@@ -28,8 +28,5 @@ public class CreateRecipeDTO {
     @Enumerated(EnumType.STRING)
     private DishType dishType;
 
-//    // Ingredient
-//    private List<Ingredient> ingredients = new ArrayList<>();
-
     private String notes;
 }

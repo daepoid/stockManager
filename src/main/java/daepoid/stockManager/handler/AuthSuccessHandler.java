@@ -22,10 +22,6 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        //requestURI로 다시 보내주기 위해 URI가 잘 넘어오는지 확인해야한다.
-        String requestURI = request.getRequestURI();
-        log.info("onAuthenticationSuccess requestURI = {}", requestURI);
-
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.SECURITY_LOGIN, authentication.getName());
         response.sendRedirect("/");

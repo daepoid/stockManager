@@ -27,7 +27,6 @@ public class JoinMemberDTO {
     private String passwordCheck;
 
     // 전화번호 '01012341234' 형태로 저장됨
-    // 로그인시 아이디의 대용으로 사용 가능
     @NotNull
     private String phoneNumber;
 

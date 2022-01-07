@@ -4,7 +4,9 @@ import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.service.MemberService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
