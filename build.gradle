@@ -46,6 +46,12 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
+
+//	// queryDSL
+//	implementation group: 'com.mysema.querydsl', name: 'querydsl-jpa', version: '3.6.3'
+//	implementation group: 'com.mysema.querydsl', name: 'querydsl-apt', version: '3.6.3'
+
+
 }
 
 test {

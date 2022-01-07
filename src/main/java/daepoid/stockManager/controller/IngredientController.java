@@ -72,8 +72,7 @@ public class IngredientController {
     @GetMapping("/{ingredientId}/edit")
     public String editIngredientsForm(@PathVariable("recipeId") Long recipeId,
                                       @PathVariable("ingredientId") Long ingredientId,
-                                      Model model,
-                                      HttpServletRequest request) {
+                                      Model model) {
         Ingredient ingredient = ingredientService.findIngredient(ingredientId);
         model.addAttribute("editIngredientDTO", new EditIngredientDTO(ingredient));
         model.addAttribute("items", itemService.findItems());

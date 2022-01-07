@@ -61,6 +61,11 @@ public class Ingredient {
     }
 
     //==조회 로직==//
+    public String getName() {
+        this.name = item.getName();
+        return name;
+    }
+
     public Double getCost() {
         updateCost();
         return this.cost;
@@ -93,7 +98,6 @@ public class Ingredient {
 
     public void changeQuantity(Integer quantity) {
         this.quantity = quantity;
-//        updatePortionPrice();
     }
 
     public void changeUnitType(UnitType unitType) {
@@ -102,7 +106,6 @@ public class Ingredient {
 
     public void changeUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
-//        updatePortionPrice();
     }
 
     public void changeLoss(Double loss) {
@@ -116,16 +119,4 @@ public class Ingredient {
     public void changeRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
-
-//    public static Ingredient createIngredient(String name, Integer quantity, UnitType unitType, Double unitPrice, Double loss) {
-//        Ingredient ingredient = new Ingredient();
-//        ingredient.changeName(name);
-//        ingredient.changeQuantity(quantity);
-//        ingredient.changeUnitType(unitType);
-//        ingredient.changeUnitPrice(unitPrice);
-//        ingredient.changeLoss(loss);
-//        ingredient.updatePortionPrice();
-//
-//        return ingredient;
-//    }
 }
