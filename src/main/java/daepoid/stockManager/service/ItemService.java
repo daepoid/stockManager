@@ -1,6 +1,7 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.item.Item;
+import daepoid.stockManager.domain.item.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.jpa.JpaItemRepository;
@@ -49,6 +50,10 @@ public class ItemService {
 
     public List<Item> findByQuantity(Double quantity) {
         return itemRepository.findByQuantity(quantity);
+    }
+
+    public List<Item> findByItemSearch(ItemSearch itemSearch) {
+        return itemRepository.findByItemSearch(itemSearch);
     }
 
     //==수정 로직==//

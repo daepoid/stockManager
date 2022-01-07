@@ -1,14 +1,17 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.item.Item;
+import daepoid.stockManager.domain.item.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Slf4j
@@ -65,6 +68,39 @@ public class JpaItemRepository implements ItemRepository {
                 .setParameter("quantity", quantity)
                 .getResultList();
 
+    }
+
+    @Override
+    public List<Item> findByItemSearch(ItemSearch itemSearch) {
+        // language=JPAQL
+        String jpql = "select i From Item i";
+
+        boolean isFirstCondition = true;
+        // 재고 타입 검색
+        if (itemSearch.getItemType() != null) {
+            jpql += " where i.itemType = :itemType";
+            isFirstCondition = false;
+        }
+
+        // 재고 이름 검색
+        if (StringUtils.hasText(itemSearch.getName())) {
+            if (isFirstCondition) {
+                jpql += " where";
+                isFirstCondition = false;
+            } else {
+                jpql += " and";
+            }
+            jpql += " i.name like :name";
+        }
+        TypedQuery<Item> query = em.createQuery(jpql, Item.class).setMaxResults(1000); //최대 1000건
+
+        if (itemSearch.getItemType() != null) {
+            query = query.setParameter("itemType", itemSearch.getItemType());
+        }
+        if (StringUtils.hasText(itemSearch.getName())) {
+            query = query.setParameter("name", itemSearch.getName());
+        }
+        return query.getResultList();
     }
 
     //==수정 로직==//

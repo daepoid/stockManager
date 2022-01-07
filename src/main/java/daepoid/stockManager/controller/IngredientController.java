@@ -1,59 +1,62 @@
 package daepoid.stockManager.controller;
 
 
+import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.item.Item;
+import daepoid.stockManager.domain.item.ItemSearch;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.dto.CreateIngredientDTO;
 import daepoid.stockManager.dto.EditIngredientDTO;
 import daepoid.stockManager.service.IngredientService;
+import daepoid.stockManager.service.ItemService;
 import daepoid.stockManager.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
+@RequestMapping("/recipes/{recipeId}/ingredients")
 @RequiredArgsConstructor
 public class IngredientController {
 
     private final RecipeService recipeService;
     private final IngredientService ingredientService;
+    private final ItemService itemService;
 
-    @GetMapping("/recipes/{recipeId}/ingredients")
+    @GetMapping("")
     public String ingredientsList(@PathVariable("recipeId") Long recipeId, Model model, HttpServletRequest request) {
         model.addAttribute("ingredients", ingredientService.findByRecipe(recipeId));
         return "ingredients/ingredientList";
     }
 
-    @GetMapping("/recipes/{recipeId}/ingredients/new")
+    @GetMapping("/new")
     public String createIngredientsForm(@PathVariable("recipeId") Long recipeId,
-                                        @ModelAttribute("createIngredientDTO") CreateIngredientDTO createIngredientDTO) {
+                                        @ModelAttribute("createIngredientDTO") CreateIngredientDTO createIngredientDTO,
+                                        Model model) {
+        model.addAttribute("items", itemService.findItems());
         return "ingredients/createIngredientForm";
     }
 
-    @PostMapping("/recipes/{recipeId}/ingredients/new")
+    @PostMapping("/new")
     public String createIngredients(@PathVariable("recipeId") Long recipeId,
-                                    @Valid @ModelAttribute("createIngredientDTO") CreateIngredientDTO createIngredientDTO,
-                                    BindingResult bindingResult,
+                                    @ModelAttribute("createIngredientDTO") CreateIngredientDTO createIngredientDTO,
                                     RedirectAttributes redirectAttributes) {
 
-        if(bindingResult.hasErrors()) {
-            return "ingredients/createIngredientForm";
-        }
-
         Recipe recipe = recipeService.findRecipe(recipeId);
+        Item item = itemService.findItem(createIngredientDTO.getItemId());
         Ingredient ingredient = Ingredient.builder()
-                .name(createIngredientDTO.getName())
+                .item(item)
+                .name(item.getName())
                 .quantity(createIngredientDTO.getQuantity())
                 .unitType(createIngredientDTO.getUnitType())
                 .unitPrice(createIngredientDTO.getUnitPrice())
@@ -61,25 +64,25 @@ public class IngredientController {
                 .cost(createIngredientDTO.getQuantity() * createIngredientDTO.getUnitPrice())
                 .recipe(recipe)
                 .build();
-
         ingredientService.saveIngredient(ingredient);
+
         recipeService.updateCost(recipe.getId());
         redirectAttributes.addAttribute("recipeId", recipeId);
         return "redirect:/recipes/{recipeId}/ingredients";
     }
 
-    // ingredient는 recipe에 종속적이다. 따라서 저장된 ingredient를
-    @GetMapping("/recipes/{recipeId}/ingredients/{ingredientId}/edit")
+    @GetMapping("/{ingredientId}/edit")
     public String editIngredientsForm(@PathVariable("recipeId") Long recipeId,
                                       @PathVariable("ingredientId") Long ingredientId,
-                                      Model model) {
-
+                                      Model model,
+                                      HttpServletRequest request) {
         Ingredient ingredient = ingredientService.findIngredient(ingredientId);
         model.addAttribute("editIngredientDTO", new EditIngredientDTO(ingredient));
+        model.addAttribute("items", itemService.findItems());
         return "ingredients/editIngredientForm";
     }
 
-    @PostMapping("/recipes/{recipeId}/ingredients/{ingredientId}/edit")
+    @PostMapping("/{ingredientId}/edit")
     public String editIngredients(@PathVariable("recipeId") Long recipeId,
                                   @PathVariable("ingredientId") Long ingredientId,
                                   @Valid @ModelAttribute("editIngredientDTO") EditIngredientDTO editIngredientDTO,
@@ -90,7 +93,9 @@ public class IngredientController {
             return "ingredients/editIngredientForm";
         }
 
-        ingredientService.changeName(ingredientId, editIngredientDTO.getName());
+        Item item = itemService.findItem(editIngredientDTO.getItemId());
+        ingredientService.changeItem(ingredientId, item);
+        ingredientService.changeName(ingredientId, item.getName());
         ingredientService.changeQuantity(ingredientId, editIngredientDTO.getQuantity());
         ingredientService.changeUnitType(ingredientId, editIngredientDTO.getUnitType());
         ingredientService.changeUnitPrice(ingredientId, editIngredientDTO.getUnitPrice());
@@ -100,5 +105,4 @@ public class IngredientController {
         redirectAttributes.addAttribute("recipeId", recipeId);
         return "redirect:/recipes/{recipeId}/ingredients";
     }
-
 }

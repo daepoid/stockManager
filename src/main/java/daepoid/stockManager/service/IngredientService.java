@@ -1,7 +1,9 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.UnitType;
+import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaIngredientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +49,11 @@ public class IngredientService {
 
     //==수정 메서드==//
     @Transactional
+    public void changeItem(Long ingredientId, Item item) {
+        ingredientRepository.findById(ingredientId).changeItem(item);
+    }
+
+    @Transactional
     public void changeName(Long ingredientId, String name) {
         ingredientRepository.findById(ingredientId).changeName(name);
     }
@@ -74,6 +81,11 @@ public class IngredientService {
     @Transactional
     public void changeCost(Long ingredientId, Double cost) {
         ingredientRepository.findById(ingredientId).changeCost(cost);
+    }
+
+    @Transactional
+    public void changeRecipe(Long ingredientId, Recipe recipe) {
+        ingredientRepository.findById(ingredientId).changeRecipe(recipe);
     }
 
     @Transactional

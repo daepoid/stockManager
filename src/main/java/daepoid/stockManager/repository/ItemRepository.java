@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.item.Item;
+import daepoid.stockManager.domain.item.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.domain.member.GradeType;
@@ -27,6 +28,8 @@ public interface ItemRepository {
 
     // 일정 수량 이하인 경우에 찾아서 반환한다.
     List<Item> findByQuantity(Double quantity);
+
+    List<Item> findByItemSearch(ItemSearch itemSearch);
 
     //==수정 로직==//
     void changeName(Long itemId, String name);

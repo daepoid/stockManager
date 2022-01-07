@@ -16,8 +16,6 @@ public class EditIngredientDTO {
     // 재료 이름
     private Long itemId;
 
-    private Item item;
-
     private String name;
 
     // 재료 양
@@ -37,6 +35,7 @@ public class EditIngredientDTO {
     private Recipe recipe;
 
     public EditIngredientDTO(Ingredient ingredient) {
+        this.itemId = ingredient.getItem().getId();
         this.name = ingredient.getName();
 
         this.quantity = ingredient.getQuantity();

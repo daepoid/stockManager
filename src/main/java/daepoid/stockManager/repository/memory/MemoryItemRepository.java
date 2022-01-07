@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository.memory;
 
 import daepoid.stockManager.domain.item.Item;
+import daepoid.stockManager.domain.item.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.domain.member.GradeType;
@@ -72,6 +73,11 @@ public class MemoryItemRepository implements ItemRepository {
                 .stream()
                 .filter(item -> item.getQuantity() < quantity)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Item> findByItemSearch(ItemSearch itemSearch) {
+        return null;
     }
 
     //==수정 로직==//

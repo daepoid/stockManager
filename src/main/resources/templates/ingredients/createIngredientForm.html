@@ -29,10 +29,12 @@
                th:text="${err}">전체 오류 메시지</p>
         </div>
         <div>
-            <label for="name">재료 이름</label>
-            <input type="text" id="name" th:field="*{name}"
-                   class="form-control" th:errorclass="field-error">
-            <div class="field-error" th:errors="*{name}"></div>
+            <label for="itemId">재료</label>
+            <select id="itemId" th:field="*{itemId}" class="form-control">
+                <option th:each="item : ${items}"
+                        th:value="${item.id}"
+                        th:text="${item.name}">재료 이름</option>
+            </select>
         </div>
         <div>
             <label for="quantity">재료 수량</label>
