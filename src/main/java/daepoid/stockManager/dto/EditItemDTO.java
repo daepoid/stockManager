@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -14,31 +15,31 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class EditItemDTO {
 
-//    @NotNull
+    @NotNull
     private Long id;
 
     // 재료 이름
-//    @NotNull
+    @NotBlank
     private String name;
 
     // 재료 특성
-//    @NotNull
+    @NotNull
     private ItemType itemType;
 
     // 재료 가격 평균
-//    @NotNull
+    @NotNull
     private Integer price;
 
     // 패키지 수량
-//    @NotNull
+    @NotNull
     private Integer packageCount;
 
     // 재고 수량
-//    @NotNull
+    @NotNull
     private Double quantity;
 
     // 재고 수량 단위 (g, ml, ...)
-//    @NotNull
+    @NotNull
     private UnitType unitType;
 
     public EditItemDTO (Item item) {

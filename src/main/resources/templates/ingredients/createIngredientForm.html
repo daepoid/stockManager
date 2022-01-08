@@ -31,10 +31,12 @@
         <div>
             <label for="itemId">재료</label>
             <select id="itemId" th:field="*{itemId}" class="form-control">
+                <option value="">재료 이름</option>
                 <option th:each="item : ${items}"
                         th:value="${item.id}"
                         th:text="${item.name}">재료 이름</option>
             </select>
+            <div class="field-error" th:errors="*{itemId}"></div>
         </div>
         <div>
             <label for="quantity">재료 수량</label>
@@ -51,6 +53,7 @@
                         th:text="${unitType}">option
                 </option>
             </select>
+            <div class="field-error" th:errors="*{unitType}"></div>
         </div>
         <div>
             <label for="unitPrice">단위 가격</label>

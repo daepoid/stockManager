@@ -8,30 +8,44 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EditIngredientDTO {
 
     // 재료 이름
+    // ingredient.getItem().getId();
+    @NotNull
     private Long itemId;
 
+    // ingredient.getName();
+    @NotBlank
     private String name;
 
+
     // 재료 양
+    @NotNull
     private Integer quantity;
 
     // 재료 양 단위
+    @NotNull
     private UnitType unitType;
 
     // 단위 가격
+    @NotNull
     private Double unitPrice;
 
     // 로스율
+    @NotNull
     private Double loss;
 
+    @NotNull
     private Double cost;
 
+    @NotNull
     private Recipe recipe;
 
     public EditIngredientDTO(Ingredient ingredient) {

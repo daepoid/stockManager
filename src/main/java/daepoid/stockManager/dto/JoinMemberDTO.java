@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -12,22 +13,22 @@ import javax.validation.constraints.NotNull;
 public class JoinMemberDTO {
 
     // 로그인 아이디
-    @NotNull
+    @NotBlank
     private String loginId;
 
     // 이름
-    @NotNull
+    @NotBlank
     private String name;
 
     // 비민번호, 로그인 시 사용
-    @NotNull
+    @NotBlank
     private String password;
 
-    @NotNull
+    @NotBlank
     private String passwordCheck;
 
     // 전화번호 '01012341234' 형태로 저장됨
-    @NotNull
+    @NotBlank
     private String phoneNumber;
 
 }

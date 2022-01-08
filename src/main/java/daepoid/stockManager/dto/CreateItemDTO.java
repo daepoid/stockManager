@@ -4,13 +4,14 @@ import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
 public class CreateItemDTO {
 
     // 재료 이름
-    @NotNull
+    @NotBlank
     private String name;
 
     // 재료 특성

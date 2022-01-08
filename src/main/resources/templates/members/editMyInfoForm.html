@@ -50,17 +50,17 @@
             <p></p>
         </div>
         <div>
-            <button type="submit" class="w-100 btn btn-primary btn-lg">수정</button>
+            <button type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
             <p></p>
         </div>
         <div>
-            <button class="w-100 btn btn-secondary btn-lg"
+            <button class="w-100 btn btn-secondary btn-sm"
                     onclick="location.href='loginHome.html'"
                     th:onclick="|location.href='@{/}'|"
                     type="button">취소</button>
         </div>
     </form>
-    <div th:replace="fragments/footer :: footer"></div>
+    <div th:replace="fragments/footer::footer"></div>
 </div> <!-- /container -->
 </body>
 </html>

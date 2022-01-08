@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +20,18 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateRecipeDTO {
 
+    @NotBlank
     private String recipeNumber;
 
+    @NotBlank
     private String name;
 
+    @NotNull
     private Integer price;
 
     private Double weight;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private DishType dishType;
 

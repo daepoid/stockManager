@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +22,18 @@ public class EditRecipeDTO {
     // IngredientController에서 사용하기 위해 생성
     private Long id;
 
+    @NotBlank
     private String recipeNumber;
 
+    @NotBlank
     private String name;
 
+    @NotNull
     private Integer price;
 
     private Double weight;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private DishType dishType;
 

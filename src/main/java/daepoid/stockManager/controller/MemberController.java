@@ -79,12 +79,19 @@ public class MemberController {
     }
 
     @PostMapping("/myInfo")
-    public String editMyInfo(@ModelAttribute("editMyInfoDTO") EditMyInfoDTO editMyInfoDTO,
+    public String editMyInfo(@Valid @ModelAttribute("editMyInfoDTO") EditMyInfoDTO editMyInfoDTO,
+                             BindingResult bindingResult,
                              HttpServletRequest request) {
+
+        if(bindingResult.hasErrors()) {
+            return "members/editMyInfoForm";
+        }
 
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         Member loginMember = memberService.findMemberByLoginId(loginId);
         if(!passwordEncoder.matches(editMyInfoDTO.getPassword(), loginMember.getPassword())) {
+            log.info("정보 수정 실패");
+            bindingResult.reject("passwordInvalid", "비밀번호가 틀렸습니다.");
             return "members/editMyInfoForm";
         }
 
@@ -104,7 +111,7 @@ public class MemberController {
     }
 
     @PostMapping("/myInfo/passwordChange")
-    public String editMyPassword(@ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO,
+    public String editMyPassword(@Valid @ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO,
                                  BindingResult bindingResult,
                                  HttpServletRequest request) {
         if(bindingResult.hasErrors()) {
@@ -127,8 +134,8 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}/edit")
-    public String editMemberForm(@PathVariable("memberId") Long memberId,
-                                 Model model) {
+    public String editMemberByAdminForm(@PathVariable("memberId") Long memberId,
+                                        Model model) {
         model.addAttribute("editMemberDTO", new EditMemberDTO(memberService.findMember(memberId)));
 
         // 권한 등급이 관리자인 경우, 사용자인 경우, 권한이 없는 경우
@@ -138,31 +145,25 @@ public class MemberController {
     }
 
     @PostMapping("/{memberId}/edit")
-    public String editMember(@PathVariable("memberId") Long memberId,
-                             @Valid @ModelAttribute("editMemberDTO") EditMemberDTO editMemberDTO,
-                             BindingResult bindingResult,
-                             HttpServletRequest request) {
+    public String editMemberByAdmin(@PathVariable("memberId") Long memberId,
+                                    @Valid @ModelAttribute("editMemberDTO") EditMemberDTO editMemberDTO,
+                                    BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             log.info("bindingResult = {}", bindingResult);
             return "members/editMemberForm";
         }
 
-        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Member loginMember = memberService.findMemberByLoginId(loginId);
-        log.info("loginMember = {}", loginMember);
-        if(!loginMember.getGradeType().equals(GradeType.CEO) && !loginMember.getGradeType().equals(GradeType.MANAGER)) {
-            Member member = memberService.findMember(memberId);
-            if(editMemberDTO.getPassword() == null){
-                return "members/editMemberForm";
-            }
-            if(!member.getPassword().equals(passwordEncoder.encode(editMemberDTO.getPassword()))) {
-                return "members/editMemberForm";
-            }
-        }
-
-        // 관리자는 비밀번호 없이 변경할 수 있어야한다.
-        // 사용자는 비밀번호를 입력하여 변경하고, 자신의 이름과 전화번호 또는 비밀번호를 변경할 수 있다.
+        // 어차피 SecurityConfig 부분에서 관리자인지 체크해야한다.
+        // 왜냐? 관리자는 비밀번호 없이 회원의 정보를 변경할 수 있도록 만든다.
         // 모든 변경기록이 로그로 남아야하고, 로그는 파일로 따로 저장되어야 한다.
+
+        Member member = memberService.findMember(memberId);
+        log.info("관리자 페이지에서 {}님 정보 수정 \n{} => {}\n{} => {}\n{} => {}\n{} => {}",
+                member.getName(),
+                member.getName(), editMemberDTO.getName(),
+                member.getPhoneNumber(), editMemberDTO.getPhoneNumber(),
+                member.getGradeType(), editMemberDTO.getGradeType(),
+                member.getMemberStatus(), editMemberDTO.getMemberStatus());
 
         memberService.changeName(memberId, editMemberDTO.getName());
         memberService.changePhoneNumber(memberId, editMemberDTO.getPhoneNumber());

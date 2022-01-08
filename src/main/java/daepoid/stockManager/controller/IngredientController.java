@@ -38,18 +38,23 @@ public class IngredientController {
     }
 
     @GetMapping("/new")
-    public String createIngredientsForm(@PathVariable("recipeId") Long recipeId,
-                                        @ModelAttribute("createIngredientDTO") CreateIngredientDTO createIngredientDTO,
-                                        Model model) {
+    public String createIngredientsForm(@PathVariable("recipeId") Long recipeId, Model model) {
+        model.addAttribute("createIngredientDTO", new CreateIngredientDTO());
         model.addAttribute("items", itemService.findItems());
         return "ingredients/createIngredientForm";
     }
 
     @PostMapping("/new")
     public String createIngredients(@PathVariable("recipeId") Long recipeId,
-                                    @ModelAttribute("createIngredientDTO") CreateIngredientDTO createIngredientDTO,
+                                    @Valid @ModelAttribute("createIngredientDTO") CreateIngredientDTO createIngredientDTO,
+                                    BindingResult bindingResult,
+                                    Model model,
                                     RedirectAttributes redirectAttributes) {
 
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("items", itemService.findItems());
+            return "ingredients/createIngredientForm";
+        }
         Recipe recipe = recipeService.findRecipe(recipeId);
         Item item = itemService.findItem(createIngredientDTO.getItemId());
         Ingredient ingredient = Ingredient.builder()
@@ -84,9 +89,11 @@ public class IngredientController {
                                   @PathVariable("ingredientId") Long ingredientId,
                                   @Valid @ModelAttribute("editIngredientDTO") EditIngredientDTO editIngredientDTO,
                                   BindingResult bindingResult,
+                                  Model model,
                                   RedirectAttributes redirectAttributes) {
 
         if(bindingResult.hasErrors()) {
+            model.addAttribute("items", itemService.findItems());
             return "ingredients/editIngredientForm";
         }
 
