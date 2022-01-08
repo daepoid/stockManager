@@ -23,6 +23,22 @@ public class RecipeController {
 
     private final RecipeService recipeService;
 
+    /**
+     * 레시피 리스트
+     * @param model
+     * @return
+     */
+    @GetMapping("")
+    public String recipeList(Model model) {
+        model.addAttribute("recipes", recipeService.findRecipes());
+        return "recipe/recipeList";
+    }
+
+    /**
+     * 레시피 생성
+     * @param createRecipeDTO
+     * @return
+     */
     @GetMapping("/new")
     public String createRecipeForm(@ModelAttribute("createRecipeDTO") CreateRecipeDTO createRecipeDTO) {
         log.info("Create Recipe Form");
@@ -54,6 +70,12 @@ public class RecipeController {
         return "redirect:/recipes";
     }
 
+    /**
+     * 레시피 수정 및 레시피 정보 보기
+     * @param recipeId
+     * @param model
+     * @return
+     */
     @GetMapping("/{recipeId}/edit")
     public String editRecipeForm(@PathVariable("recipeId") Long recipeId, Model model) {
         Recipe recipe = recipeService.findRecipe(recipeId);
@@ -78,11 +100,5 @@ public class RecipeController {
         recipeService.updateCost(recipeId);
 
         return "redirect:/recipes";
-    }
-
-    @GetMapping("")
-    public String recipeList(Model model) {
-        model.addAttribute("recipes", recipeService.findRecipes());
-        return "recipe/recipeList";
     }
 }

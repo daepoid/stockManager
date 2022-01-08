@@ -24,6 +24,22 @@ public class ItemController {
 
     private final ItemService itemService;
 
+    /**
+     * 재고 품목 리스트
+     * @param model
+     * @return
+     */
+    @GetMapping("")
+    public String itemList(Model model) {
+        model.addAttribute("itemList", itemService.findItems());
+        return "items/itemList";
+    }
+
+    /**
+     * 재고 품목 생성
+     * @param createItemDTO
+     * @return
+     */
     @GetMapping("/new")
     public String createItemForm(@ModelAttribute("createItemDTO") CreateItemDTO createItemDTO) {
         return "items/createItemForm";
@@ -54,6 +70,12 @@ public class ItemController {
         return "redirect:/items";
     }
 
+    /**
+     * 재고 품목 수정 및 재고 품목 정보 보기
+     * @param itemId
+     * @param model
+     * @return
+     */
     @GetMapping("/{itemId}/edit")
     public String editItemForm(@PathVariable("itemId") Long itemId, Model model) {
         model.addAttribute("editItemDTO", new EditItemDTO(itemService.findItem(itemId)));
@@ -77,11 +99,5 @@ public class ItemController {
         itemService.changeQuantity(itemId, editItemDTO.getQuantity());
         itemService.changeUnitType(itemId, editItemDTO.getUnitType());
         return "redirect:/items";
-    }
-
-    @GetMapping("")
-    public String itemList(Model model) {
-        model.addAttribute("itemList", itemService.findItems());
-        return "items/itemList";
     }
 }

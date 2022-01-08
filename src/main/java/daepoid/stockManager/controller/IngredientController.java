@@ -31,12 +31,25 @@ public class IngredientController {
     private final IngredientService ingredientService;
     private final ItemService itemService;
 
+    /**
+     * 재료 리스트
+     * @param recipeId
+     * @param model
+     * @param request
+     * @return
+     */
     @GetMapping("")
     public String ingredientsList(@PathVariable("recipeId") Long recipeId, Model model, HttpServletRequest request) {
         model.addAttribute("ingredients", ingredientService.findByRecipe(recipeId));
         return "ingredients/ingredientList";
     }
 
+    /**
+     * 레시피 재료 정보 생성
+     * @param recipeId
+     * @param model
+     * @return
+     */
     @GetMapping("/new")
     public String createIngredientsForm(@PathVariable("recipeId") Long recipeId, Model model) {
         model.addAttribute("createIngredientDTO", new CreateIngredientDTO());
@@ -74,6 +87,13 @@ public class IngredientController {
         return "redirect:/recipes/{recipeId}/ingredients";
     }
 
+    /**
+     * 레시피 재료 정보 수정 및 레시피 재료 정보 보기
+     * @param recipeId
+     * @param ingredientId
+     * @param model
+     * @return
+     */
     @GetMapping("/{ingredientId}/edit")
     public String editIngredientsForm(@PathVariable("recipeId") Long recipeId,
                                       @PathVariable("ingredientId") Long ingredientId,

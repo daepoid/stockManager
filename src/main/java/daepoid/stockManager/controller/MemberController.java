@@ -29,7 +29,18 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 회원 가입
+     * 직원 리스트
+     * @param model
+     * @return
+     */
+    @GetMapping("")
+    public String memberList(Model model) {
+        model.addAttribute("members", memberService.findMembers());
+        return "members/memberList";
+    }
+
+    /**
+     * 직원 회원 가입
      * @param joinMemberDTO
      * @return
      */
@@ -70,6 +81,12 @@ public class MemberController {
         return "redirect:/";
     }
 
+    /**
+     * 직원 개인정보 변경
+     * @param model
+     * @param request
+     * @return
+     */
     @GetMapping("/myInfo")
     public String editMyInfoForm(Model model, HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
@@ -105,6 +122,11 @@ public class MemberController {
         return "redirect:/";
     }
 
+    /**
+     * 직원 개인정보 변경 - 비밀번호 변경
+     * @param editMyPasswordDTO
+     * @return
+     */
     @GetMapping("/myInfo/passwordChange")
     public String editMyPasswordForm(@ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO) {
         return "members/editMyPasswordForm";
@@ -133,6 +155,12 @@ public class MemberController {
         return "redirect:/members/myInfo";
     }
 
+    /**
+     * 직원 개인정보 변경 - 관리자 권한
+     * @param memberId
+     * @param model
+     * @return
+     */
     @GetMapping("/{memberId}/edit")
     public String editMemberByAdminForm(@PathVariable("memberId") Long memberId,
                                         Model model) {
@@ -170,14 +198,5 @@ public class MemberController {
         memberService.changeGradeType(memberId, editMemberDTO.getGradeType());
         memberService.changeMemberStatus(memberId, editMemberDTO.getMemberStatus());
         return "redirect:/members";
-    }
-
-    /**
-     * 회원 관리
-     */
-    @GetMapping("")
-    public String memberList(Model model) {
-        model.addAttribute("members", memberService.findMembers());
-        return "members/memberList";
     }
 }

@@ -14,6 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class HomeController {
 
+    /**
+     * 스프링 시큐리티 이용시 보여줄 홈 화면
+     * @param model
+     * @param request
+     * @return
+     */
     @GetMapping("/")
     public String securityLoginHome(Model model, HttpServletRequest request) {
         // 세션이 없는 경우

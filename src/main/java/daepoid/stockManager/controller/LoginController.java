@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @Controller
 public class LoginController {
 
+    /**
+     * 로그인 페이지
+     * @param loginMemberDTO
+     * @return
+     */
     @GetMapping("/login")
     public String loginMemberForm(@ModelAttribute("loginMemberDTO") LoginMemberDTO loginMemberDTO) {
         return "members/loginMemberForm";
