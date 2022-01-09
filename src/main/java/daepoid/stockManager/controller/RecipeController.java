@@ -31,7 +31,7 @@ public class RecipeController {
     @GetMapping("")
     public String recipeList(Model model) {
         model.addAttribute("recipes", recipeService.findRecipes());
-        return "recipe/recipeList";
+        return "recipes/recipeList";
     }
 
     /**
@@ -42,14 +42,14 @@ public class RecipeController {
     @GetMapping("/new")
     public String createRecipeForm(@ModelAttribute("createRecipeDTO") CreateRecipeDTO createRecipeDTO) {
         log.info("Create Recipe Form");
-        return "recipe/createRecipeForm";
+        return "recipes/createRecipeForm";
     }
 
     @PostMapping("/new")
     public String createRecipe(@Valid @ModelAttribute("createRecipeDTO") CreateRecipeDTO createRecipeDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             log.info("login Error = {}", bindingResult);
-            return "recipe/createRecipeForm";
+            return "recipes/createRecipeForm";
         }
 
         // Recipe 생성
@@ -80,7 +80,7 @@ public class RecipeController {
     public String editRecipeForm(@PathVariable("recipeId") Long recipeId, Model model) {
         Recipe recipe = recipeService.findRecipe(recipeId);
         model.addAttribute("editRecipeDTO", new EditRecipeDTO(recipe));
-        return "recipe/editRecipeForm";
+        return "recipes/editRecipeForm";
     }
 
     @PostMapping("/{recipeId}/edit")
@@ -88,7 +88,7 @@ public class RecipeController {
                              @Valid @ModelAttribute("editRecipeDTO") EditRecipeDTO editRecipeDTO,
                              BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            return "recipe/editRecipeForm";
+            return "recipes/editRecipeForm";
         }
 
         recipeService.changeRecipeNumber(recipeId, editRecipeDTO.getRecipeNumber());

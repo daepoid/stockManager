@@ -1,5 +1,6 @@
 package daepoid.stockManager.domain.member;
 
+import daepoid.stockManager.domain.duty.Duty;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +41,10 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.UNDEFINED;
 
+    @ManyToMany(mappedBy="members")
+    private List<Duty> duties = new ArrayList<>();
+
+
     // 직급 이외에 특별한 권한을 부여, 특정 물품에 대한 주문 발주 등등...
     // https://www.inflearn.com/questions/21303
     @ElementCollection(targetClass = RoleType.class)
@@ -53,7 +58,7 @@ public class Member {
 
     //==생성 메서드==//
     @Builder
-    public Member(String loginId, String name, String password, String phoneNumber, GradeType gradeType, MemberStatus memberStatus, List<RoleType> roles) {
+    public Member(String loginId, String name, String password, String phoneNumber, GradeType gradeType, MemberStatus memberStatus, List<RoleType> roles, List<Duty> duties) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -61,6 +66,7 @@ public class Member {
         this.gradeType = gradeType;
         this.memberStatus = memberStatus;
         this.roles = roles;
+        this.duties = duties;
     }
 
     //==개발 로직==//
@@ -98,5 +104,18 @@ public class Member {
     // 재직 상태 변경
     public void changeMemberStatus(MemberStatus memberStatus) {
         this.memberStatus = memberStatus;
+    }
+
+    // 직무 변경
+    public void changeDuties(List<Duty> duties) {
+        this.duties = duties;
+    }
+
+    public void addDuty(Duty duty) {
+        this.duties.add(duty);
+    }
+
+    public void removeDuty(Duty duty) {
+        this.duties.remove(duty);
     }
 }

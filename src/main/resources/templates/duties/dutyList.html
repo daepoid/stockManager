@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="fragments/header::header">
+    <title>직무 리스트</title>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>직무 이름</th>
+                <th>직무 인센티브</th>
+                <th>직무 할당자</th>
+                <td>
+                    <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                       href="/duties/new" class="w-100 btn btn-primary btn-sm" role="button">추가</a>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="duty : ${duties}">
+                <td th:text="${duty.name}"></td>
+                <td th:text="${duty.incentive}"></td>
+                <td th:text="${duty.members}"></td>
+                <td>
+                    <a href="#" th:href="@{/duties/{dutyId}/edit (dutyId=${duty.id})}"
+                       class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+</html>

@@ -36,14 +36,14 @@
         </div>
         <div>
             <label for="price">판매 가격</label>
-            <input type="text" id="price" th:field="*{price}"
+            <input type="number" id="price" th:field="*{price}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{price}"></div>
             <p></p>
         </div>
         <div>
             <label for="weight">무게</label>
-            <input type="text" id="weight" th:field="*{weight}"
+            <input type="number" id="weight" th:field="*{weight}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{weight}"></div>
             <p></p>

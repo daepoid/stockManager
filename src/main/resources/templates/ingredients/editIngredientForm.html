@@ -33,7 +33,7 @@
         </div>
         <div>
             <label for="quantity">재료 수량</label>
-            <input type="text" id="quantity" th:field="*{quantity}"
+            <input type="number" id="quantity" th:field="*{quantity}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{quantity}"></div>
             <p></p>
@@ -51,21 +51,21 @@
         </div>
         <div>
             <label for="unitPrice">단위 가격</label>
-            <input type="text" id="unitPrice" th:field="*{unitPrice}"
+            <input type="number" id="unitPrice" th:field="*{unitPrice}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{unitPrice}"></div>
             <p></p>
         </div>
         <div>
             <label for="loss">로스율</label>
-            <input type="text" id="loss" th:field="*{loss}"
+            <input type="number" id="loss" th:field="*{loss}"
                    class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{loss}"></div>
             <p></p>
         </div>
         <div>
             <label for="cost">코스트</label>
-            <input type="text" id="cost" class="form-control"
+            <input type="number" id="cost" class="form-control"
                    th:field="*{cost}" th:errorclass="field-error" readonly>
             <div class="field-error" th:errors="*{cost}"></div>
             <p></p>
