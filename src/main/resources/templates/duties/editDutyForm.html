@@ -36,11 +36,11 @@
         </div>
         <div>
             <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-                    type="submit" class="w-100 btn btn-primary btn-lg">수정</button>
+                    type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
             <p></p>
         </div>
         <div>
-            <button class="w-100 btn btn-secondary btn-lg"
+            <button class="w-100 btn btn-secondary btn-sm"
                     onclick="location.href='dutyList.html'"
                     th:onclick="|location.href='@{/duties}'|"
                     type="button">취소</button>

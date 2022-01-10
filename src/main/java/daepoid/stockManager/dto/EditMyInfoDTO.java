@@ -1,5 +1,6 @@
 package daepoid.stockManager.dto;
 
+import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -32,10 +35,14 @@ public class EditMyInfoDTO {
     @NotBlank
     private String password;
 
+    @NotNull
+    private List<Duty> duties = new ArrayList<>();
+
     public EditMyInfoDTO(Member member) {
         this.id = member.getId();
         this.loginId = member.getLoginId();
         this.name = member.getName();
         this.phoneNumber = member.getPhoneNumber();
+        this.duties = member.getDuties();
     }
 }

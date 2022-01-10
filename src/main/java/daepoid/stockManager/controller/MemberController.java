@@ -90,17 +90,19 @@ public class MemberController {
     @GetMapping("/myInfo")
     public String editMyInfoForm(Model model, HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Member loginMember = memberService.findMemberByLoginId(loginId);
-        model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(loginMember));
+        model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(memberService.findMemberByLoginId(loginId)));
         return "members/editMyInfoForm";
     }
 
     @PostMapping("/myInfo")
     public String editMyInfo(@Valid @ModelAttribute("editMyInfoDTO") EditMyInfoDTO editMyInfoDTO,
                              BindingResult bindingResult,
+                             Model model,
                              HttpServletRequest request) {
 
         if(bindingResult.hasErrors()) {
+            String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+            model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(memberService.findMemberByLoginId(loginId)));
             return "members/editMyInfoForm";
         }
 
@@ -184,7 +186,6 @@ public class MemberController {
         // 어차피 SecurityConfig 부분에서 관리자인지 체크해야한다.
         // 왜냐? 관리자는 비밀번호 없이 회원의 정보를 변경할 수 있도록 만든다.
         // 모든 변경기록이 로그로 남아야하고, 로그는 파일로 따로 저장되어야 한다.
-
         Member member = memberService.findMember(memberId);
         log.info("관리자 페이지에서 {}님 정보 수정 \n{} => {}\n{} => {}\n{} => {}\n{} => {}",
                 member.getName(),

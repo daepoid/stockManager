@@ -15,18 +15,23 @@
             <tr>
                 <th>직무 이름</th>
                 <th>직무 인센티브</th>
+                <th>직무 할당 인원</th>
                 <th>직무 할당자</th>
-                <td>
+                <th>
                     <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
                        href="/duties/new" class="w-100 btn btn-primary btn-sm" role="button">추가</a>
-                </td>
+                </th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="duty : ${duties}">
                 <td th:text="${duty.name}"></td>
                 <td th:text="${duty.incentive}"></td>
-                <td th:text="${duty.members}"></td>
+                <td th:text="${duty.members.size()}"></td>
+                <td>
+                    <a href="#" th:href="@{/duties/{dutyId} (dutyId=${duty.id})}"
+                       class="w-100 btn btn-secondary btn-sm" role="button">보기</a>
+                </td>
                 <td>
                     <a href="#" th:href="@{/duties/{dutyId}/edit (dutyId=${duty.id})}"
                        class="w-100 btn btn-secondary btn-sm" role="button">수정</a>

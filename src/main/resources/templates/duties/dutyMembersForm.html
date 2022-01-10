@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="fragments/header::header">
+    <title>직무 리스트</title>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+<!--                <th>직무 이름</th>-->
+                <th>직무 할당자 이름</th>
+                <th>직무 할당자 직급</th>
+                <th>직무 책임자</th>
+                <th>
+                    <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                       th:href="@{/duties/{dutyId}/new (dutyId=${dutyId})}"
+                       class="w-100 btn btn-primary btn-sm" role="button">추가</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member : ${dutyMembers}">
+                <td th:text="${member.name}"></td>
+                <td th:text="${member.gradeType}"></td>
+                <td th:text="${member.gradeType}"></td>
+                <td>
+                    <a href="#" th:href="'javascript:cancel(' +${dutyId}+ ','+${member.id}+')'"
+                       class="w-100 btn btn-danger btn-sm">제거</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+<script>
+    function cancel(dutyId, memberId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/duties/" + dutyId + "/" + memberId + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>
