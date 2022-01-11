@@ -45,7 +45,7 @@
             <div class="field-error" th:errors="*{password}"></div>
         </div>
         <div>
-            <a href="#" th:href="@{/members/myInfo/passwordChange}"
+            <a href="#" th:href="@{/{loginId}/myInfo/passwordChange (loginId=${loginId})}"
                class="w-100 btn btn-secondary btn-sm" role="button">비밀번호 변경하기</a>
             <p></p>
         </div>

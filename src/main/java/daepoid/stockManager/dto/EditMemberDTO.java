@@ -1,5 +1,6 @@
 package daepoid.stockManager.dto;
 
+import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -48,6 +50,9 @@ public class EditMemberDTO {
     @Enumerated(EnumType.STRING)
     private Collection<RoleType> roles = new ArrayList<>();
 
+    @NotNull
+    private List<Duty> duties = new ArrayList<>();
+
     public EditMemberDTO(Member member) {
         this.id = member.getId();
         this.loginId = member.getLoginId();
@@ -57,5 +62,6 @@ public class EditMemberDTO {
         this.gradeType = member.getGradeType();
         this.memberStatus = member.getMemberStatus();
         this.roles = member.getRoles();
+        this.duties = member.getDuties();
     }
 }

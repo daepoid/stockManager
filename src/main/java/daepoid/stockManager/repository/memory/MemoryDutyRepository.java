@@ -83,7 +83,7 @@ public class MemoryDutyRepository implements DutyRepository {
     }
 
     @Override
-    public void changeMembers(Long dutyId, List<Member> members) {
+    public void changeMembers(Long dutyId, Set<Member> members) {
         store.get(dutyId).changeDutyMembers(members);
     }
 

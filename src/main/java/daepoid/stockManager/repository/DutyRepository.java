@@ -5,6 +5,7 @@ import daepoid.stockManager.domain.member.Member;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface DutyRepository {
 
@@ -24,7 +25,7 @@ public interface DutyRepository {
     //==수정 로직==//
     void changeId(Long dutyId, Long id);
     void changeName(Long dutyId, String name);
-    void changeMembers(Long dutyId, List<Member> members);
+    void changeMembers(Long dutyId, Set<Member> members);
     void addMember(Long dutyId, Member member);
     void removeMember(Long dutyId, Member member);
     void changeIncentive(Long dutyId, Double incentive);

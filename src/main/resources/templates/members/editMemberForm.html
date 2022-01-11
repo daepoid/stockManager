@@ -15,10 +15,9 @@
     <title>회원 정보 수정</title>
 </head>
 <body>
-<div class="container">
+<div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
     <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <form th:object="${editMemberDTO}" method="post">
-        <!-- id -->
         <input type="hidden" th:field="*{id}" />
         <div class="form-group">
             <label for="loginId">로그인 ID</label>
@@ -26,12 +25,6 @@
                    class="form-control" th:errorclass="field-error" readonly>
             <div class="field-error" th:errors="*{loginId}"></div>
         </div>
-<!--        <div class="form-group">-->
-<!--            <label for="password">비밀번호</label>-->
-<!--            <input type="password" id="password" th:field="*{password}"-->
-<!--                   class="form-control" th:errorclass="field-error">-->
-<!--            <div class="field-error" th:errors="*{password}"></div>-->
-<!--        </div>-->
         <div class="form-group">
             <label for="name">이름</label>
             <input type="text" id="name" th:field="*{name}"
@@ -64,18 +57,49 @@
                 </option>
             </select>
         </div>
-        <div>
-            <button type="submit" class="w-100 btn btn-primary btn-lg">수정</button>
+        <div class="form-group">
+            <label>직원 할당 직무</label>
+            <table class="table table-striped">
+                <tr>
+                    <th>직무 이름</th>
+                    <th>직무 인센티브</th>
+                    <th>
+                        <a class="w-100 btn btn-primary btn-sm"
+                           href="/duties/new" role="button">추가</a>
+                    </th>
+                </tr>
+                <tr th:each="duty : *{duties}">
+                    <td th:text="${duty.name}"></td>
+                    <td th:text="${duty.incentive}"></td>
+                    <td>
+                        <a href="#" th:href="'javascript:cancel(' +${duty.id}+ ','+*{id}+')'"
+                           class="w-100 btn btn-danger btn-sm">제거</a>
+                    </td>
+                </tr>
+            </table>
             <p></p>
         </div>
         <div>
-            <button class="w-100 btn btn-secondary btn-lg"
+            <button type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
+            <p></p>
+        </div>
+        <div>
+            <button class="w-100 btn btn-secondary btn-sm"
                     onclick="location.href='memberList.html'"
                     th:onclick="|location.href='@{/members}'|"
                     type="button">취소</button>
         </div>
     </form>
-    <div th:replace="fragments/footer :: footer"></div>
+    <div th:replace="fragments/footer::footer"></div>
 </div> <!-- /container -->
 </body>
+<script>
+    function cancel(dutyId, memberId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/duties/" + dutyId + "/" + memberId + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </html>

@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -29,12 +29,12 @@ public class EditDutyDTO {
     private Double incentive;
 
     // 직무 할당자
-    private List<Member> members = new ArrayList<>();
+    private Set<Member> members = new HashSet<>();
 
     public EditDutyDTO(Duty duty) {
         this.id = duty.getId();
         this.name = duty.getName();
         this.incentive = duty.getIncentive();
-//        this.members = duty.getMembers();
+        this.members = duty.getMembers();
     }
 }

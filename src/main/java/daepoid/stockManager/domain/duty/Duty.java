@@ -10,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Entity
@@ -39,11 +41,11 @@ public class Duty {
             joinColumns=@JoinColumn(name="duty_id"),
             inverseJoinColumns=@JoinColumn(name="member_id")
     )
-    private List<Member> members = new ArrayList<>();
+    private Set<Member> members = new HashSet<>();
 
     //==생성 메서드(빌더)==//
     @Builder
-    public Duty(String name, Double incentive, List<Member> members) {
+    public Duty(String name, Double incentive, Set<Member> members) {
         this.name = name;
         this.incentive = incentive;
         this.members = members;
@@ -59,7 +61,7 @@ public class Duty {
         this.name = name;
     }
 
-    public void changeDutyMembers(List<Member> members) {
+    public void changeDutyMembers(Set<Member> members) {
         this.members = members;
     }
 

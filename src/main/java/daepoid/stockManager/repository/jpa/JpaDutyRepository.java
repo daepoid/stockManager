@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -87,7 +88,7 @@ public class JpaDutyRepository implements DutyRepository {
     }
 
     @Override
-    public void changeMembers(Long dutyId, List<Member> members) {
+    public void changeMembers(Long dutyId, Set<Member> members) {
         Duty duty = em.find(Duty.class, dutyId);
         duty.changeDutyMembers(members);
     }

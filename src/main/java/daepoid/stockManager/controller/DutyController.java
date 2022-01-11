@@ -1,7 +1,6 @@
 package daepoid.stockManager.controller;
 
 import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.dto.CreateDutyDTO;
 import daepoid.stockManager.dto.CreateDutyMemberDTO;
 import daepoid.stockManager.dto.EditDutyDTO;
@@ -64,16 +63,28 @@ public class DutyController {
     }
 
     /**
-     * 직무 리스트에서 [보기] 버튼을 통해 직무 할당자 리스트 보기
+     * 직무 리스트에서 직무 정보 수정 메뉴로 이동
      * @param dutyId
      * @param model
      * @return
      */
     @GetMapping("/{dutyId}")
-    public String dutyMembersForm(@PathVariable("dutyId") Long dutyId, Model model) {
-        Duty duty = dutyService.findDuty(dutyId);
-        model.addAttribute("dutyMembers", duty.getMembers());
-        return "duties/dutyMembersForm";
+    public String editDutyForm(@PathVariable("dutyId") Long dutyId, Model model) {
+        model.addAttribute("editDutyDTO", new EditDutyDTO(dutyService.findDuty(dutyId)));
+        return "duties/editDutyForm";
+    }
+
+    @PostMapping("/{dutyId}")
+    public String editDuty(@PathVariable("dutyId") Long dutyId,
+                           @ModelAttribute("editDutyDTO") EditDutyDTO editDutyDTO,
+                           BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "duties/editDutyForm";
+        }
+
+        dutyService.changeName(dutyId, editDutyDTO.getName());
+        dutyService.changeIncentive(dutyId, editDutyDTO.getIncentive());
+        return "redirect:/duties";
     }
 
     /**
@@ -83,33 +94,30 @@ public class DutyController {
      * @return
      */
     @GetMapping("/{dutyId}/new")
-    public String createDutyMemberForm(@PathVariable("dutyId") Long dutyId,
-                                       Model model) {
+    public String addDutyMemberForm(@PathVariable("dutyId") Long dutyId,
+                                    Model model) {
         model.addAttribute("members", memberService.findMembers());
         model.addAttribute("createDutyMemberDTO", new CreateDutyMemberDTO(dutyService.findDuty(dutyId).getName()));
-        return "duties/createDutyMemberForm";
+        return "duties/addDutyMemberForm";
     }
 
     @PostMapping("/{dutyId}/new")
-    public String createDutyMember(@PathVariable("dutyId") Long dutyId,
-                                   @Valid @ModelAttribute("createDutyMemberDTO") CreateDutyMemberDTO createDutyMemberDTO,
-                                   BindingResult bindingResult,
-                                   Model model,
-                                   RedirectAttributes redirectAttributes) {
+    public String addDutyMember(@PathVariable("dutyId") Long dutyId,
+                                @Valid @ModelAttribute("createDutyMemberDTO") CreateDutyMemberDTO createDutyMemberDTO,
+                                BindingResult bindingResult,
+                                Model model,
+                                RedirectAttributes redirectAttributes) {
+
         if(bindingResult.hasErrors()) {
             model.addAttribute("members", memberService.findMembers());
-            return "duties/createDutyMemberForm";
+            return "duties/addDutyMemberForm";
         }
 
         dutyService.addMember(dutyId, memberService.findMember(createDutyMemberDTO.getMemberId()));
 
-//        Duty duty = dutyService.findDuty(dutyId);
-//        duty.addDutyMember(memberService.findMember(createDutyMemberDTO.getMemberId()));
-
         redirectAttributes.addAttribute("dutyId", dutyId);
         return "redirect:/duties/{dutyId}";
     }
-
 
     /**
      * 직무 리스트에서 [보기] 버튼을 통해 직무 할당자 리스트에 직무 할당자를 제거
@@ -123,32 +131,5 @@ public class DutyController {
         dutyService.removeMember(dutyId, memberService.findMember(memberId));
         redirectAttributes.addAttribute("dutyId", dutyId);
         return "redirect:/duties/{dutyId}";
-    }
-
-    /**
-     * 직무 리스트에서 직무 정보 수정 메뉴로 이동
-     * @param dutyId
-     * @param model
-     * @return
-     */
-    @GetMapping("/{dutyId}/edit")
-    public String editDutyForm(@PathVariable("dutyId") Long dutyId, Model model) {
-        model.addAttribute("editDutyDTO", new EditDutyDTO(dutyService.findDuty(dutyId)));
-        return "duties/editDutyForm";
-    }
-
-    @PostMapping("/{dutyId}/edit")
-    public String editDuty(@PathVariable("dutyId") Long dutyId,
-                           @ModelAttribute("editDutyDTO") EditDutyDTO editDutyDTO,
-                           BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
-            return "duties/editDutyForm";
-        }
-
-        dutyService.changeName(dutyId, editDutyDTO.getName());
-        dutyService.changeIncentive(dutyId, editDutyDTO.getIncentive());
-        dutyService.changeMembers(dutyId, editDutyDTO.getMembers());
-
-        return "redirect:/duties";
     }
 }

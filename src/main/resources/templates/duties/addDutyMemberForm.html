@@ -55,7 +55,7 @@
         <div>
             <button class="w-100 btn btn-secondary btn-sm"
                     onclick="location.href='dutyList.html'"
-                    th:onclick="|location.href='@{/duties/dutyId (dutyId=${dutyId})}'|"
+                    th:onclick="|location.href='@{/duties/{dutyId} (dutyId=${dutyId})}'|"
                     type="button">취소</button>
         </div>
     </form>

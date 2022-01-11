@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -68,7 +69,7 @@ public class DutyService {
     }
 
     @Transactional
-    public void changeMembers(Long dutyId, List<Member> members) {
+    public void changeMembers(Long dutyId, Set<Member> members) {
         Duty duty = dutyRepository.findById(dutyId).get();
         duty.changeDutyMembers(members);
     }

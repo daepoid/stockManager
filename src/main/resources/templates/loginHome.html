@@ -29,13 +29,13 @@
             <p class="lead">직원 메뉴</p>
             <p>
                 <a class="btn btn-lg btn-info"
-                   href="/members/myInfo" th:href="@{/members/myInfo}">개인 정보 관리</a>
+                   th:href="@{/{loginId}/myInfo (loginId=${loginId})}">개인 정보 관리</a>
             </p>
         </div>
         <div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
             <p class="lead">관리자 메뉴</p>
             <p>
-                <a class="btn btn-lg btn-info" href="/duties" th:href="@{/duties}">직무 리스트</a>
+                <a class="btn btn-lg btn-info" href="/duties" th:href="@{/duties}">직무 정보 관리</a>
                 <a class="btn btn-lg btn-info" href="/members" th:href="@{/members}">직원 정보 관리</a>
             </p>
         </div>
