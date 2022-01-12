@@ -61,10 +61,53 @@
             <p></p>
         </div>
         <div>
-            <label th:for="ingredients">재료</label>
-            <a href="#" th:href="@{/recipes/{id}/ingredients (id = *{id})}"
-               class="w-100 btn btn-secondary btn-sm" role="button">재료 확인</a>
+            <label for="cost">코스트</label>
+            <input type="number" id="cost" th:field="*{cost}"
+                   class="form-control" th:errorclass="field-error" readonly>
+            <div class="field-error" th:errors="*{cost}"></div>
             <p></p>
+        </div>
+        <div>
+            <label for="netIncome">판매 이익</label>
+            <input type="number" id="netIncome" th:field="*{netIncome}"
+                   class="form-control" th:errorclass="field-error" readonly>
+            <div class="field-error" th:errors="*{netIncome}"></div>
+            <p></p>
+        </div>
+        <div>
+            <label th:for="ingredients">재료</label>
+            <table class="table table-striped">
+                <tr>
+                    <th>재료 이름</th>
+                    <th>수량</th>
+                    <th>단위</th>
+                    <th>단위 가격</th>
+                    <th>로스율</th>
+                    <th>코스트</th>
+                    <th>
+                        <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                           th:href="@{/recipes/{recipeId}/ingredients/new (recipeId=${recipeId})}"
+                           class="w-100 btn btn-primary btn-sm" role="button">추가</a>
+                    </th>
+                    <th></th>
+                </tr>
+                <tr th:each="ingredient : *{ingredients}">
+                    <td th:text="${ingredient.name}"></td>
+                    <td th:text="${ingredient.quantity}"></td>
+                    <td th:text="${ingredient.unitType}"></td>
+                    <td th:text="${ingredient.unitPrice}"></td>
+                    <td th:text="${ingredient.loss}"></td>
+                    <td th:text="${ingredient.cost}"></td>
+                    <td>
+                        <a href="#" th:href="@{/recipes/{recipeId}/ingredients/{ingredientId} (recipeId=${ingredient.recipe.id}, ingredientId=${ingredient.id})}"
+                           class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
+                    </td>
+                    <td>
+                        <a href="#" th:href="'javascript:cancel(' +*{id}+ ','+${ingredient.id}+')'"
+                           class="w-100 btn btn-danger btn-sm">제거</a>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div>
             <label for="notes">주의</label>
@@ -73,19 +116,30 @@
             <div class="field-error" th:errors="*{notes}"></div>
             <p></p>
         </div>
-        <div>
-            <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-                    type="submit" class="w-100 btn btn-primary btn-lg">수정</button>
-            <p></p>
-        </div>
-        <div>
-            <button class="w-100 btn btn-secondary btn-lg"
-                    onclick="location.href='recipeList.html'"
-                    th:onclick="|location.href='@{/recipes}'|"
-                    type="button">취소</button>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                        type="submit" class="w-100 btn btn-primary btn-lg">수정</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='recipeList.html'"
+                        th:onclick="|location.href='@{/recipes}'|"
+                        type="button">취소</button>
+            </div>
         </div>
     </form>
     <div th:replace="fragments/footer::footer"></div>
 </div> <!-- /container -->
 </body>
+<script>
+    function cancel(recipeId, ingredientId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/recipes/" + recipeId + "/" + ingredientId + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </html>

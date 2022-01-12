@@ -71,15 +71,14 @@
             <p></p>
         </div>
         <hr class="my-4">
-        <div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
-            <div>
+        <div class="row" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
+            <div class="col">
                 <button type="submit" class="w-100 btn btn-primary btn-lg">재료 수정</button>
-                <p></p>
             </div>
-            <div>
+            <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         onclick="location.href='memberList.html'"
-                        th:onclick="|location.href='@{/recipes/{recipeId}/ingredients (recipeId=${recipeId})}'|"
+                        th:onclick="|location.href='@{/recipes/{recipeId} (recipeId=${recipeId})}'|"
                         type="button">취소</button>
             </div>
         </div>

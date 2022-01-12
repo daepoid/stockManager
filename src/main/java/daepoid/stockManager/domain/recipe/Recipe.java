@@ -118,19 +118,22 @@ public class Recipe {
     }
 
     //==서비스 로직==//
-    public Double getTotalCost() {
-        return ingredients.stream()
+    public Double getCost() {
+        this.cost = ingredients.stream()
                 .mapToDouble(Ingredient::getCost)
                 .sum();
+        return this.cost;
     }
 
     public void updateCost() {
-        this.cost = getTotalCost();
-        log.info("cost = {}", cost);
-        if(price == null || cost == null) {
-            netIncome = 0.0;
-        } else {
-            this.netIncome = this.price - this.cost;
-        }
+        this.netIncome = this.price - getCost();
+    }
+
+    public boolean hasIngredient(String itemName) {
+        Ingredient find = ingredients.stream()
+                .filter(ingredient -> ingredient.getName().equals(itemName))
+                .findAny()
+                .orElse(null);
+        return find != null;
     }
 }

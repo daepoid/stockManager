@@ -3,6 +3,7 @@ package daepoid.stockManager.service;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.repository.jpa.JpaIngredientRepository;
 import daepoid.stockManager.repository.jpa.JpaRecipeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -87,6 +88,11 @@ public class RecipeService {
     }
 
     @Transactional
+    public void changeCost(Long recipeId, Double cost) {
+        recipeRepository.changeCost(recipeId, cost);
+    }
+
+    @Transactional
     public void changeIngredient(Long recipeId, List<Ingredient> ingredients) {
         Recipe recipe = recipeRepository.findById(recipeId).get();
         recipe.changeIngredients(ingredients);
@@ -111,7 +117,11 @@ public class RecipeService {
 
     @Transactional
     public void updateCost(Long recipeId) {
-        recipeRepository.updateCost(recipeId);
+        double sum = recipeRepository.findById(recipeId).get()
+                .getIngredients().stream()
+                .mapToDouble(Ingredient::getCost)
+                .sum();
+        recipeRepository.changeCost(recipeId, sum);
     }
 
     @Transactional
@@ -120,5 +130,4 @@ public class RecipeService {
     }
 
     //==삭제 로직==//
-
 }

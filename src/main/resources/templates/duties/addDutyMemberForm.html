@@ -45,18 +45,18 @@
             </select>
             <div class="field-error" th:errors="*{memberId}"></div>
         </div>
-
         <hr class="my-4">
-        <div>
-            <button class="w-100 btn btn-primary btn-sm"
-                    type="submit">추가</button>
-            <p></p>
-        </div>
-        <div>
-            <button class="w-100 btn btn-secondary btn-sm"
-                    onclick="location.href='dutyList.html'"
-                    th:onclick="|location.href='@{/duties/{dutyId} (dutyId=${dutyId})}'|"
-                    type="button">취소</button>
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-sm"
+                        type="submit">추가</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-sm"
+                        onclick="location.href='dutyList.html'"
+                        th:onclick="|location.href='@{/duties/{dutyId} (dutyId=${dutyId})}'|"
+                        type="button">취소</button>
+            </div>
         </div>
     </form>
     <div th:replace="fragments/footer::footer"></div>

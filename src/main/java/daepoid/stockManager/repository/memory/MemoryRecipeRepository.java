@@ -119,6 +119,12 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
+    public void changeCost(Long recipeId, Double cost) {
+        store.get(recipeId).changeCost(cost);
+        store.get(recipeId).changeNetIncome(store.get(recipeId).getPrice() - cost);
+    }
+
+    @Override
     public void updateCost(Long recipeId) {
         store.get(recipeId).updateCost();
     }

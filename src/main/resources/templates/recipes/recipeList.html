@@ -20,7 +20,7 @@
                 <th>단위 가격</th>
                 <th>접시</th>
                 <th>코스트</th>
-                <th>판매 순이익</th>
+                <th>판매 이익</th>
                 <td>
                     <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
                        href="/recipes/new" th:href="@{/recipes/new}"
@@ -40,7 +40,7 @@
                 <td th:text="${recipe.netIncome}"></td>
                 <td>
                     <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')"
-                       href="#" th:href="@{/recipes/{id}/edit (id=${recipe.id})}"
+                       href="#" th:href="@{/recipes/{recipeId} (recipeId=${recipe.id})}"
                        class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
                 </td>
             </tr>

@@ -131,6 +131,13 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
+    public void changeCost(Long recipeId, Double cost) {
+        Recipe recipe = em.find(Recipe.class, recipeId);
+        recipe.changeCost(cost);
+        recipe.changeNetIncome(recipe.getPrice() - cost);
+    }
+
+    @Override
     public void updateCost(Long recipeId) {
         em.find(Recipe.class, recipeId)
                 .updateCost();

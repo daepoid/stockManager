@@ -28,6 +28,6 @@ public interface IngredientRepository {
     void updateCost(Long ingredientId);
 
     //==삭제 메서드==//
-
+    void deleteIngredient(Long ingredientId);
 
 }

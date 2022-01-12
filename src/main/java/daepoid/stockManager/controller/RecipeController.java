@@ -3,6 +3,7 @@ package daepoid.stockManager.controller;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.dto.CreateRecipeDTO;
 import daepoid.stockManager.dto.EditRecipeDTO;
+import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.RecipeService;
 
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -22,6 +24,7 @@ import javax.validation.Valid;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final IngredientService ingredientService;
 
     /**
      * 레시피 리스트
@@ -41,14 +44,12 @@ public class RecipeController {
      */
     @GetMapping("/new")
     public String createRecipeForm(@ModelAttribute("createRecipeDTO") CreateRecipeDTO createRecipeDTO) {
-        log.info("Create Recipe Form");
         return "recipes/createRecipeForm";
     }
 
     @PostMapping("/new")
     public String createRecipe(@Valid @ModelAttribute("createRecipeDTO") CreateRecipeDTO createRecipeDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            log.info("login Error = {}", bindingResult);
             return "recipes/createRecipeForm";
         }
 
@@ -65,7 +66,6 @@ public class RecipeController {
                 .notes(createRecipeDTO.getNotes())
                 .build();
 
-        // Recipe RecipeService를 통해 DB에 등록
         recipeService.saveRecipe(recipe);
         return "redirect:/recipes";
     }
@@ -76,14 +76,15 @@ public class RecipeController {
      * @param model
      * @return
      */
-    @GetMapping("/{recipeId}/edit")
+    @GetMapping("/{recipeId}")
     public String editRecipeForm(@PathVariable("recipeId") Long recipeId, Model model) {
         Recipe recipe = recipeService.findRecipe(recipeId);
+        recipeService.updateCost(recipeId);
         model.addAttribute("editRecipeDTO", new EditRecipeDTO(recipe));
         return "recipes/editRecipeForm";
     }
 
-    @PostMapping("/{recipeId}/edit")
+    @PostMapping("/{recipeId}")
     public String editRecipe(@PathVariable("recipeId") Long recipeId,
                              @Valid @ModelAttribute("editRecipeDTO") EditRecipeDTO editRecipeDTO,
                              BindingResult bindingResult) {
@@ -100,5 +101,15 @@ public class RecipeController {
         recipeService.updateCost(recipeId);
 
         return "redirect:/recipes";
+    }
+
+    @PostMapping("/{recipeId}/{ingredientId}/cancel")
+    public String editRecipe(@PathVariable("recipeId") Long recipeId,
+                             @PathVariable("ingredientId") Long ingredientId,
+                             RedirectAttributes redirectAttributes) {
+
+        ingredientService.deleteIngredient(ingredientId);
+        redirectAttributes.addAttribute("recipeId", recipeId);
+        return "redirect:/recipes/{recipeId}";
     }
 }

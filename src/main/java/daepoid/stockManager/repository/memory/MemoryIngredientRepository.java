@@ -97,4 +97,10 @@ public class MemoryIngredientRepository implements IngredientRepository {
     public void updateCost(Long ingredientId) {
         store.get(ingredientId).updateCost();
     }
+
+    //==삭제 메서드==//
+    @Override
+    public void deleteIngredient(Long ingredientId) {
+        store.remove(ingredientId);
+    }
 }

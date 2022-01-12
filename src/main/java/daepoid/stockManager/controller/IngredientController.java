@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -68,8 +69,15 @@ public class IngredientController {
             model.addAttribute("items", itemService.findItems());
             return "ingredients/createIngredientForm";
         }
+
+        // 레시피에 같은 재료가 들어가는 것으로 선택된 경우 문제가 있다고 판단한다.
         Recipe recipe = recipeService.findRecipe(recipeId);
         Item item = itemService.findItem(createIngredientDTO.getItemId());
+        if(recipe.hasIngredient(item.getName())) {
+            model.addAttribute("items", itemService.findItems());
+            return "ingredients/createIngredientForm";
+        }
+
         Ingredient ingredient = Ingredient.builder()
                 .item(item)
                 .name(item.getName())
@@ -82,9 +90,8 @@ public class IngredientController {
                 .build();
         ingredientService.saveIngredient(ingredient);
 
-        recipeService.updateCost(recipe.getId());
         redirectAttributes.addAttribute("recipeId", recipeId);
-        return "redirect:/recipes/{recipeId}/ingredients";
+        return "redirect:/recipes/{recipeId}";
     }
 
     /**
@@ -94,7 +101,7 @@ public class IngredientController {
      * @param model
      * @return
      */
-    @GetMapping("/{ingredientId}/edit")
+    @GetMapping("/{ingredientId}")
     public String editIngredientsForm(@PathVariable("recipeId") Long recipeId,
                                       @PathVariable("ingredientId") Long ingredientId,
                                       Model model) {
@@ -104,7 +111,7 @@ public class IngredientController {
         return "ingredients/editIngredientForm";
     }
 
-    @PostMapping("/{ingredientId}/edit")
+    @PostMapping("/{ingredientId}")
     public String editIngredients(@PathVariable("recipeId") Long recipeId,
                                   @PathVariable("ingredientId") Long ingredientId,
                                   @Valid @ModelAttribute("editIngredientDTO") EditIngredientDTO editIngredientDTO,
@@ -118,8 +125,22 @@ public class IngredientController {
         }
 
         Item item = itemService.findItem(editIngredientDTO.getItemId());
+
+        // 수정 시 변경하기 위해 선택한 재고(editIngredientDTO.getItem())가
+        // 이미 존재하는 경우 변경할 수 없어야 한다.
+        Ingredient duplicateIngredient = recipeService.findRecipe(recipeId).getIngredients().stream()
+                .filter(ingredient -> ingredient.getItem().equals(item) && !ingredient.getId().equals(ingredientId))
+                .findAny()
+                .orElse(null);
+
+        if(duplicateIngredient != null) {
+            model.addAttribute("items", itemService.findItems());
+            return "ingredients/editIngredientForm";
+        }
+
         ingredientService.changeItem(ingredientId, item);
         ingredientService.changeName(ingredientId, item.getName());
+
         ingredientService.changeQuantity(ingredientId, editIngredientDTO.getQuantity());
         ingredientService.changeUnitType(ingredientId, editIngredientDTO.getUnitType());
         ingredientService.changeUnitPrice(ingredientId, editIngredientDTO.getUnitPrice());
@@ -127,6 +148,6 @@ public class IngredientController {
         ingredientService.updateCost(ingredientId);
 
         redirectAttributes.addAttribute("recipeId", recipeId);
-        return "redirect:/recipes/{recipeId}/ingredients";
+        return "redirect:/recipes/{recipeId}";
     }
 }

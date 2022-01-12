@@ -90,4 +90,9 @@ public class JpaIngredientRepository implements IngredientRepository {
     public void updateCost(Long ingredientId) {
         em.find(Ingredient.class, ingredientId).updateCost();
     }
+
+    @Override
+    public void deleteIngredient(Long ingredientId) {
+        em.remove(em.find(Ingredient.class, ingredientId));
+    }
 }

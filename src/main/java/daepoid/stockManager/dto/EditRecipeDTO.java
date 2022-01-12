@@ -39,6 +39,12 @@ public class EditRecipeDTO {
 
     private String notes;
 
+    private List<Ingredient> ingredients = new ArrayList<>();
+
+    private Double cost = 0.0;
+
+    private Double netIncome = 0.0;
+
     public EditRecipeDTO(Recipe recipe) {
         this.id = recipe.getId();
         this.recipeNumber = recipe.getRecipeNumber();
@@ -46,6 +52,13 @@ public class EditRecipeDTO {
         this.price = recipe.getPrice();
         this.weight = recipe.getWeight();
         this.dishType = recipe.getDishType();
+
+        this.cost = recipe.getCost();
+        this.netIncome = recipe.getNetIncome();
+
+        this.ingredients = recipe.getIngredients();
+
         this.notes = recipe.getNotes();
+
     }
 }

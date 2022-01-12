@@ -94,4 +94,9 @@ public class IngredientService {
     public void updateCost(Long ingredientId) {
         ingredientRepository.findById(ingredientId).updateCost();
     }
+
+    @Transactional
+    public void deleteIngredient(Long ingredientId) {
+        ingredientRepository.deleteIngredient(ingredientId);
+    }
 }

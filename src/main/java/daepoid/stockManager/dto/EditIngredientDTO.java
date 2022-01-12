@@ -22,9 +22,6 @@ public class EditIngredientDTO {
     private Long itemId;
 
     // ingredient.getName();
-    @NotBlank
-    private String name;
-
 
     // 재료 양
     @NotNull
@@ -45,12 +42,8 @@ public class EditIngredientDTO {
     @NotNull
     private Double cost;
 
-    @NotNull
-    private Recipe recipe;
-
     public EditIngredientDTO(Ingredient ingredient) {
         this.itemId = ingredient.getItem().getId();
-        this.name = ingredient.getName();
 
         this.quantity = ingredient.getQuantity();
         this.unitType = ingredient.getUnitType();
@@ -58,6 +51,5 @@ public class EditIngredientDTO {
 
         this.loss = ingredient.getLoss();
         this.cost = ingredient.getCost();
-        this.recipe = ingredient.getRecipe();
     }
 }

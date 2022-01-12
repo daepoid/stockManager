@@ -57,16 +57,18 @@
                 </tr>
             </table>
         </div>
-        <div>
-            <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-                    type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
-            <p></p>
-        </div>
-        <div>
-            <button class="w-100 btn btn-secondary btn-sm"
-                    onclick="location.href='dutyList.html'"
-                    th:onclick="|location.href='@{/duties}'|"
-                    type="button">취소</button>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                        type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-sm"
+                        onclick="location.href='dutyList.html'"
+                        th:onclick="|location.href='@{/duties}'|"
+                        type="button">취소</button>
+            </div>
         </div>
     </form>
     <div th:replace="fragments/footer::footer"></div>

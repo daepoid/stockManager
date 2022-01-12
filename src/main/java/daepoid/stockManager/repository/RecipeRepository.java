@@ -30,6 +30,7 @@ public interface RecipeRepository {
     void changeIngredient(Long recipeId, List<Ingredient> ingredients);
     boolean addIngredient(Long recipeId, Ingredient ingredient);
     boolean removeIngredient(Long recipeId, Ingredient ingredient);
+    void changeCost(Long recipeId, Double cost);
     void updateCost(Long recipeId);
     void changeNotes(Long recipeId, String notes);
 
