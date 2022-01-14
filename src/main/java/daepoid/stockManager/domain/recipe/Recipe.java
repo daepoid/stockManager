@@ -6,17 +6,18 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Entity
 @Getter
-//@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Recipe {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "recipe_id")
     private Long id;
 
@@ -46,6 +47,9 @@ public class Recipe {
     private Double cost = 0.0;
 
     private Double netIncome = 0.0;
+
+    @ManyToMany(mappedBy="foods", cascade=CascadeType.ALL)
+    private Set<Menu> menus = new HashSet<>();
 
     // 레시피 방법 또는 주의점
     @Lob

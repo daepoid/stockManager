@@ -104,9 +104,9 @@ public class RecipeController {
     }
 
     @PostMapping("/{recipeId}/{ingredientId}/cancel")
-    public String editRecipe(@PathVariable("recipeId") Long recipeId,
-                             @PathVariable("ingredientId") Long ingredientId,
-                             RedirectAttributes redirectAttributes) {
+    public String cancel(@PathVariable("recipeId") Long recipeId,
+                         @PathVariable("ingredientId") Long ingredientId,
+                         RedirectAttributes redirectAttributes) {
 
         ingredientService.deleteIngredient(ingredientId);
         redirectAttributes.addAttribute("recipeId", recipeId);

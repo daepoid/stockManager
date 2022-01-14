@@ -102,7 +102,6 @@ public class RecipeService {
     public void addIngredient(Long recipeId, Ingredient ingredient) {
         Recipe recipe = recipeRepository.findById(recipeId).get();
         recipe.getIngredients().add(ingredient);
-//        recipeRepository.addIngredient(recipeId, ingredient);
     }
 
     @Transactional

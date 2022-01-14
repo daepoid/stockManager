@@ -41,7 +41,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.UNDEFINED;
 
-    @ManyToMany(mappedBy="members")
+    @ManyToMany(mappedBy="members", cascade = CascadeType.ALL)
     private List<Duty> duties = new ArrayList<>();
 
 

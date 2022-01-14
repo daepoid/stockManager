@@ -2,25 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
-<head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../../static/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .container {
-            max-width: 560px;
-        }
-        .field-error {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-    </style>
+<head th:replace="fragments/header::header">
     <title>직무 직원 할당</title>
 </head>
 <body>
 <div class="container"
      sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
-<!--    <div th:replace="fragments/bodyHeader::bodyHeader"></div>-->
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <div class="py-5 text-center">
         <h2>직무 직원 할당</h2>
     </div>

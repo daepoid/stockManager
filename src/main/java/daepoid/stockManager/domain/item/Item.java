@@ -39,6 +39,8 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<Ingredient> ingredients = new ArrayList<>();
 
+    // 원산지
+
     // 주의 사항
 
     // 거래처

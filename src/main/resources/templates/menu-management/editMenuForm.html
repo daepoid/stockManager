@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="fragments/header::header">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+    <title>메뉴 수정</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
+    <form th:object="${editMenuDTO}" method="post">
+        <!-- id -->
+        <input type="hidden" th:field="*{menuId}" />
+        <div>
+            <label for="name">전체 메뉴 이름</label>
+            <input type="text" id="name" th:field="*{name}"
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{name}"></div>
+            <p></p>
+        </div>
+        <div>
+            <label for="price">전체 메뉴 가격</label>
+            <input type="number" id="price" th:field="*{price}"
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{price}"></div>
+            <p></p>
+        </div>
+        <div>
+            <table class="table table-striped">
+                <tr>
+                    <th>음식 이름</th>
+                    <th>음식 가격</th>
+                    <th>음식 수량</th>
+                    <!--                    <th>직무 책임자</th>-->
+                    <th>
+                        <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                           th:href="@{/menu-management/{menuId}/new (menuId=${menuId})}"
+                           class="w-100 btn btn-primary btn-sm" role="button">음식 추가</a>
+                    </th>
+                </tr>
+                <tr th:each="recipe : *{foodMap}">
+                    <td th:text="${recipe.key.name}"></td>
+                    <td th:text="${recipe.key.price}"></td>
+                    <td th:text="${recipe.value}"></td>
+                    <td>
+                        <a href="#" th:href="'javascript:cancel(' +*{menuId}+ ','+${recipe.key.id}+')'"
+                           class="w-100 btn btn-danger btn-sm">제거</a>
+                    </td>
+                </tr>
+<!--                <tr th:each="recipe : *{foods}">-->
+<!--                    <td th:text="${recipe.name}"></td>-->
+<!--                    <td th:text="${recipe.price}"></td>-->
+<!--                    <td>-->
+<!--                        <a href="#" th:href="'javascript:cancel(' +*{menuId}+ ','+${recipe.id}+')'"-->
+<!--                           class="w-100 btn btn-danger btn-sm">제거</a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+            </table>
+        </div>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                        type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-sm"
+                        onclick="location.href='menuList.html'"
+                        th:onclick="|location.href='@{/menu-management}'|"
+                        type="button">취소</button>
+            </div>
+        </div>
+    </form>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+<script>
+    function cancel(menuId, recipeId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/menu-management/" + menuId + "/" + recipeId + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>

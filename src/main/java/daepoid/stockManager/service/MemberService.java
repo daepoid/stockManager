@@ -25,7 +25,6 @@ public class MemberService {
      */
 
     private final JpaMemberRepository memberRepository;
-//    private final MemoryMemberRepository memberRepository;
 
     //==생성 로직==//
     @Transactional
@@ -86,9 +85,7 @@ public class MemberService {
         memberRepository.changeMemberStatus(memberId, memberStatus);
     }
 
-    //==삭제 로직==//
-
-
     //==비즈니스 로직==//
 
+    //==삭제 로직==//
 }

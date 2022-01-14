@@ -27,7 +27,6 @@ public class SecurityLoginService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByLoginId(username);
         if(member == null) {
-            log.info("SecurityLoginService loadUserByUsername 로그인 오류");
             throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
         }
 
