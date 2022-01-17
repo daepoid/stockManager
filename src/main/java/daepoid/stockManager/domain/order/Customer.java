@@ -21,15 +21,22 @@ public class Customer {
 
     private String name;
 
+    private String password;
+
     private Integer tableNumber;
+
+    @OneToOne(fetch=FetchType.LAZY)
+    private Cart cart;
 
     @OneToMany(mappedBy="customer")
     private List<Order> orders = new ArrayList<>();
 
     @Builder
-    public Customer(String name, Integer tableNumber, List<Order> orders) {
+    public Customer(String name, String password, Integer tableNumber, Cart cart, List<Order> orders) {
         this.name = name;
+        this.password = password;
         this.tableNumber = tableNumber;
+        this.cart = cart;
         this.orders = orders;
     }
 
@@ -39,6 +46,10 @@ public class Customer {
 
     public void changeName(String name) {
         this.name = name;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
     }
 
     public void changeTableNumber(Integer tableNumber) {
@@ -51,5 +62,9 @@ public class Customer {
 
     public void addOrder(Order order) {
         this.orders.add(order);
+    }
+
+    public void changeCart(Cart cart) {
+        this.cart = cart;
     }
 }

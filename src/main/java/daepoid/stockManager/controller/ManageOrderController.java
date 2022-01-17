@@ -2,13 +2,8 @@ package daepoid.stockManager.controller;
 
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderStatus;
-import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.dto.CreateOrderDTO;
 import daepoid.stockManager.dto.EditOrderDTO;
-import daepoid.stockManager.service.CustomerService;
-import daepoid.stockManager.service.MenuService;
-import daepoid.stockManager.service.OrderService;
-import daepoid.stockManager.service.RecipeService;
+import daepoid.stockManager.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,19 +13,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("orders")
+@RequestMapping("/manage-orders")
 @RequiredArgsConstructor
-public class OrderController {
+public class ManageOrderController {
 
     private final OrderService orderService;
-    private final RecipeService recipeService;
     private final CustomerService customerService;
     private final MenuService menuService;
+    private final CartService cartService;
 
     @GetMapping("")
     public String orderList(Model model) {
@@ -50,6 +43,11 @@ public class OrderController {
                               @RequestParam("menuId") Long menuId,
                               @RequestParam("count") Integer count,
                               Model model) {
+
+        Long cartId = customerService.findCustomer(customerId)
+                .getCart().getId();
+
+        cartService.addMenu(cartId, menuId, count);
 
         Order order = Order.builder()
                 .customer(customerService.findCustomer(customerId))
@@ -74,6 +72,10 @@ public class OrderController {
                             @Valid @ModelAttribute("editOrderDTO") EditOrderDTO editOrderDTO,
                             BindingResult bindingResult,
                             Model model) {
+
+        if(bindingResult.hasErrors()) {
+            return "orders/editOrderForm";
+        }
 
         return "redirect:/orders";
     }

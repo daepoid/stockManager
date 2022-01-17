@@ -15,7 +15,7 @@ public interface CustomerRepository {
     Customer findById(Long id);
     List<Customer> findAll();
 
-    List<Customer> findByName(String name);
+    Customer findByName(String name);
     List<Customer> findByOrder(Order order);
 
     //==수정 로직==//

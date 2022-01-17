@@ -19,7 +19,7 @@
                 <th>주문 상태</th>
                 <th>
                     <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-                       href="/orders/order" th:href="@{/orders/order}"
+                       href="/manage-orders/order" th:href="@{/manage-orders/order}"
                        class="w-100 btn btn-primary btn-sm" role="button">추가</a>
                 </th>
             </tr>
@@ -32,7 +32,7 @@
                 <td th:text="${order.orderStatus}"></td>
                 <td>
                     <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')"
-                       href="#" th:href="@{/orders/{orderId} (orderId=${order.id})}"
+                       href="#" th:href="@{/manage-orders/{orderId} (orderId=${order.id})}"
                        class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
                 </td>
             </tr>

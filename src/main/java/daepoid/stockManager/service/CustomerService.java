@@ -8,9 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,7 +33,7 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public List<Customer> findByName(String name) {
+    public Customer findByName(String name) {
         return customerRepository.findByName(name);
     }
 

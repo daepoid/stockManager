@@ -35,7 +35,7 @@
         <div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
             <p class="lead">관리자 메뉴</p>
             <p>
-                <a class="btn btn-lg btn-info" href="/orders" th:href="@{/orders}">주문 정보 관리</a>
+                <a class="btn btn-lg btn-info" href="/manage-orders" th:href="@{/manage-orders}">주문 정보 관리</a>
                 <a class="btn btn-lg btn-info" href="/duties" th:href="@{/duties}">직무 정보 관리</a>
                 <a class="btn btn-lg btn-info" href="/members" th:href="@{/members}">직원 정보 관리</a>
                 <a class="btn btn-lg btn-info" href="/menu-management" th:href="@{/menu-management}">메뉴 정보 관리</a>

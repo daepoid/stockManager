@@ -36,10 +36,11 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public List<Customer> findByName(String name) {
+    public Customer findByName(String name) {
         return em.createQuery("select c from Customer c where c.name=:name", Customer.class)
                 .setParameter("name", name)
-                .getResultList();
+                .getSingleResult();
+
     }
 
     @Override

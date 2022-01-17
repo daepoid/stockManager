@@ -1,6 +1,8 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,17 +22,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityLoginService implements UserDetailsService {
 
-//    private final DataJpaMemberRepository memberRepository;
     private final JpaMemberRepository memberRepository;
+    private final JpaCustomerRepository customerRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByLoginId(username);
-        if(member == null) {
-            throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
+        Customer customer = customerRepository.findByName(username);
+
+        if(member != null) {
+            String role = "ROLE_" + member.getGradeType().toString();
+            return new User(member.getLoginId(), member.getPassword(), List.of(new SimpleGrantedAuthority(role)));
         }
 
-        String role = "ROLE_" + member.getGradeType().toString();
-        return new User(member.getLoginId(), member.getPassword(), List.of(new SimpleGrantedAuthority(role)));
+        if(customer != null) {
+            String role = "ROLE_CUSTOMER";
+            return new User(customer.getName(), customer.getPassword(), List.of(new SimpleGrantedAuthority(role)));
+        }
+
+        throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
     }
 }
