@@ -27,7 +27,7 @@ public class MenuController {
 
     @GetMapping("")
     public String menuListForm(Model model) {
-        model.addAttribute("menus", menuService.findAll());
+        model.addAttribute("menus", menuService.findMenus());
         return "menu-management/menuList";
     }
 
@@ -48,13 +48,13 @@ public class MenuController {
                 .name(createMenuDTO.getName())
                 .build();
 
-        Long savedId = menuService.save(menu);
+        Long savedId = menuService.saveMenu(menu);
         return "redirect:/menu-management";
     }
 
     @GetMapping("/{menuId}")
     public String editMenuForm(@PathVariable Long menuId, Model model) {
-        model.addAttribute("editMenuDTO", new EditMenuDTO(menuService.findById(menuId)));
+        model.addAttribute("editMenuDTO", new EditMenuDTO(menuService.findMenu(menuId)));
         return "menu-management/editMenuForm";
     }
 
@@ -80,7 +80,7 @@ public class MenuController {
     public String editMenuAddRecipeForm(@PathVariable Long menuId,
                                         Model model) {
 
-        model.addAttribute("addRecipeMenuDTO", new AddRecipeMenuDTO(menuService.findById(menuId)));
+        model.addAttribute("addRecipeMenuDTO", new AddRecipeMenuDTO(menuService.findMenu(menuId)));
         model.addAttribute("recipes", recipeService.findRecipes());
         return "menu-management/addRecipeMenuForm";
     }

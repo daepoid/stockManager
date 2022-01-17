@@ -84,6 +84,7 @@ public class Ingredient {
     //==비즈니스 로직 (setter 제거)==//
     public void changeItem(Item item) {
         this.item = item;
+        item.getIngredients().add(this);
     }
 
     public void changeName(String name) {
@@ -118,5 +119,6 @@ public class Ingredient {
 
     public void changeRecipe(Recipe recipe) {
         this.recipe = recipe;
+        recipe.getIngredients().add(this);
     }
 }

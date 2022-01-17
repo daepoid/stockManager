@@ -29,7 +29,7 @@ public class Menu {
     )
     private Set<Recipe> foods = new HashSet<>();
 
-    private Double price;
+    private Integer price;
 
     @ElementCollection
     @JoinTable(
@@ -41,14 +41,14 @@ public class Menu {
     private Map<Long, Integer> numberOfFood = new HashMap<>();
 
     @Builder
-    public Menu(String name, Double price, Set<Recipe> foods, Map<Long, Integer> numberOfFood) {
+    public Menu(String name, Integer price, Set<Recipe> foods, Map<Long, Integer> numberOfFood) {
         this.name = name;
         this.price = price;
         this.foods = foods;
         this.numberOfFood = numberOfFood;
     }
 
-    public Double getPrice() {
+    public Integer getPrice() {
         updatePrice();
         return this.price;
     }
@@ -57,7 +57,7 @@ public class Menu {
         this.name = name;
     }
 
-    public void changePrice(Double price) {
+    public void changePrice(Integer price) {
         this.price = price;
     }
 
@@ -70,8 +70,7 @@ public class Menu {
     }
 
     public void updatePrice() {
-
-        Double sum = 0.0;
+        int sum = 0;
         for (Recipe food : foods) {
             Integer numberOfFoodInt = this.numberOfFood.get(food.getId());
             if(numberOfFoodInt != null) {
@@ -80,10 +79,6 @@ public class Menu {
         }
 
         this.price = sum;
-//
-//        this.price = foods.stream()
-//                .mapToDouble(recipe -> recipe.getPrice() * numberOfFood.get(recipe.getId()))
-//                .sum();
     }
 
     public void addFood(Recipe food, Integer numberOfFood) {
@@ -94,4 +89,12 @@ public class Menu {
     public void removeFood(Recipe food) {
         this.getFoods().remove(food);
     }
+
+    // 메뉴 주문 취소
+    public void cancelMenu(Integer orderCount) {
+        for (Recipe food : foods) {
+            food.cancelRecipe(orderCount);
+        }
+    }
+
 }

@@ -115,6 +115,7 @@ public class Recipe {
     //==연관 관계 메서드==//
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
+        ingredient.changeRecipe(this);
     }
 
     public Boolean removeIngredient(Ingredient ingredient) {
@@ -139,5 +140,10 @@ public class Recipe {
                 .findAny()
                 .orElse(null);
         return find != null;
+    }
+
+    // 주문 취소시 재고 복원
+    public void cancelRecipe(Integer orderCount) {
+
     }
 }

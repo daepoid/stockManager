@@ -28,8 +28,8 @@ public class JpaMenuRepository implements MenuRepository {
     }
 
     @Override
-    public Optional<Menu> findById(Long menuId) {
-        return Optional.of(em.find(Menu.class, menuId));
+    public Menu findById(Long menuId) {
+        return em.find(Menu.class, menuId);
     }
 
     @Override

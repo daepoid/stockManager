@@ -1,6 +1,5 @@
 package daepoid.stockManager.controller;
 
-import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;

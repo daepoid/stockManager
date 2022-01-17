@@ -14,7 +14,7 @@ public interface MenuRepository {
     Long save(Menu menu);
 
     //==조회 로직==//
-    Optional<Menu> findById(Long menuId);
+    Menu findById(Long menuId);
     List<Menu> findAll();
 
     List<Menu> findByName(String name);

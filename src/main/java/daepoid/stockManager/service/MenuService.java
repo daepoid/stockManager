@@ -22,18 +22,18 @@ public class MenuService {
 
     //==생성 로직==//
     @Transactional
-    public Long save(Menu menu) {
+    public Long saveMenu(Menu menu) {
         menuRepository.save(menu);
         return menu.getId();
     }
 
 
     //==조회 로직==//
-    public Menu findById(Long menuId) {
-        return menuRepository.findById(menuId).orElse(null);
+    public Menu findMenu(Long menuId) {
+        return menuRepository.findById(menuId);
     }
 
-    public List<Menu> findAll() {
+    public List<Menu> findMenus() {
         return menuRepository.findAll();
     }
 

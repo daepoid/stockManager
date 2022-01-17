@@ -94,5 +94,6 @@ public class Item {
 
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
+        ingredient.changeItem(this);
     }
 }
