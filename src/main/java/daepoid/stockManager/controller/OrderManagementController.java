@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @Controller
-@RequestMapping("/manage-orders")
+@RequestMapping("/order-management")
 @RequiredArgsConstructor
-public class ManageOrderController {
+public class OrderManagementController {
 
     private final OrderService orderService;
     private final CustomerService customerService;
@@ -28,14 +28,14 @@ public class ManageOrderController {
     @GetMapping("")
     public String orderList(Model model) {
         model.addAttribute("orders", orderService.findOrders());
-        return "orders/orderList";
+        return "order-management/orderList";
     }
 
     @GetMapping("/order")
     public String createOrderForm(Model model) {
         model.addAttribute("customers", customerService.findCustomers());
         model.addAttribute("menus", menuService.findMenus());
-        return "orders/createOrderForm";
+        return "order-management/createOrderForm";
     }
 
     @PostMapping("/order")
@@ -56,7 +56,7 @@ public class ManageOrderController {
                 .build();
 
         orderService.order(customerId, menuId, count);
-        return "redirect:/orders";
+        return "redirect:/order-management";
     }
 
     @GetMapping("/{orderId}")
@@ -64,7 +64,7 @@ public class ManageOrderController {
                                 @ModelAttribute("editOrderDTO") EditOrderDTO editOrderDTO,
                                 Model model) {
 
-        return "orders/editOrderForm";
+        return "order-management/editOrderForm";
     }
 
     @PostMapping("/{orderId}")
@@ -74,10 +74,10 @@ public class ManageOrderController {
                             Model model) {
 
         if(bindingResult.hasErrors()) {
-            return "orders/editOrderForm";
+            return "order-management/editOrderForm";
         }
 
-        return "redirect:/orders";
+        return "redirect:/order-management";
     }
 
 

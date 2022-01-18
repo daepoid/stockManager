@@ -35,13 +35,34 @@ public class JpaCartRepository implements CartRepository {
 
     @Override
     public void addMenu(Long cartId, Long menuId, Integer count) {
-        em.find(Cart.class, cartId)
-                .getNumberOfMenus().put(menuId, count);
+        Map<Long, Integer> numberOfMenus = em.find(Cart.class, cartId).getNumberOfMenus();
+
+        if(numberOfMenus.containsKey(menuId)) {
+            numberOfMenus.replace(menuId, count);
+        }
+        else {
+            numberOfMenus.put(menuId, count);
+        }
     }
 
     @Override
     public void addMenus(Long cartId, Map<Long, Integer> menus) {
-        em.find(Cart.class, cartId)
-                .getNumberOfMenus().putAll(menus);
+        Map<Long, Integer> numberOfMenus = em.find(Cart.class, cartId).getNumberOfMenus();
+
+        for (Long menuId : menus.keySet()) {
+
+            if(numberOfMenus.containsKey(menuId)) {
+                numberOfMenus.replace(menuId, menus.get(menuId));
+            }
+            else {
+                numberOfMenus.put(menuId, menus.get(menuId));
+            }
+        }
+    }
+
+    @Override
+    public void removeMenu(Long cartId, Long menuId) {
+        Map<Long, Integer> numberOfMenus = em.find(Cart.class, cartId).getNumberOfMenus();
+        numberOfMenus.remove(menuId);
     }
 }

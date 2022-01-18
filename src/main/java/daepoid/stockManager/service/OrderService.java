@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -58,6 +59,38 @@ public class OrderService {
         // 주문 저장
         orderRepository.save(order);
         return order.getId();
+    }
+
+    @Transactional
+    public void orders(Long customerId) {
+        // 엔티티 조회
+        Customer customer = customerRepository.findById(customerId);
+        Map<Long, Integer> numberOfMenus = customer.getCart().getNumberOfMenus();
+
+        for (Long menuId : numberOfMenus.keySet()) {
+            Menu menu = menuRepository.findById(menuId);
+
+            // 주문 메뉴 단일 생성
+            OrderMenu orderMenu = OrderMenu.builder()
+                    .menu(menu)
+                    .orderPrice(menu.getPrice())
+                    .orderCount(numberOfMenus.get(menuId))
+                    .build();
+
+            List<OrderMenu> orderMenus = new ArrayList<>();
+            orderMenus.add(orderMenu);
+
+            // 주문 생성
+            Order order = Order.builder()
+                    .customer(customer)
+                    .orderMenus(orderMenus)
+                    .orderDateTime(LocalDateTime.now())
+                    .orderStatus(OrderStatus.ORDERED)
+                    .build();
+
+            // 주문 저장
+            orderRepository.save(order);
+        }
     }
 
     @Transactional

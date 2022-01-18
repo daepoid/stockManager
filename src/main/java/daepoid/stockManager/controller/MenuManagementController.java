@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/menu-management")
 @RequiredArgsConstructor
-public class MenuController {
+public class MenuManagementController {
 
     private final MenuService menuService;
     private final RecipeService recipeService;

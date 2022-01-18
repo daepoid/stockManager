@@ -37,4 +37,12 @@ public class Cart {
         this.numberOfMenus = numberOfMenus;
         this.customer = customer;
     }
+
+    public void addMenu(Long menuId, Integer count) {
+        this.numberOfMenus.put(menuId, count);
+    }
+
+    public void addMenus(Map<Long, Integer> menus) {
+        this.numberOfMenus.putAll(menus);
+    }
 }

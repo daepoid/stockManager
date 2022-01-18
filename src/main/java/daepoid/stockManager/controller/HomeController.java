@@ -2,6 +2,10 @@ package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
 
+import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.service.CustomerService;
+import daepoid.stockManager.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Controller;
@@ -12,7 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
+
+    private final MemberService memberService;
+    private final CustomerService customererService;
 
     /**
      * 스프링 시큐리티 이용시 보여줄 홈 화면
@@ -35,7 +43,15 @@ public class HomeController {
             return "home";
         }
 
-        log.info("{}님 로그인", loginId);
+        Member member = memberService.findMemberByLoginId(loginId);
+        log.info("member = {}", member);
+        if(member != null) {
+            log.info("직원 {}님 로그인", loginId);
+        }
+        else {
+            log.info("손님 {}님 로그인", loginId);
+            model.addAttribute("customerId", customererService.findByName(loginId).getId());
+        }
         model.addAttribute("loginId", loginId);
         return "loginHome";
     }

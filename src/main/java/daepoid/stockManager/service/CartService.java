@@ -40,4 +40,9 @@ public class CartService {
     public void addMenus(Long cartId, Map<Long, Integer> menus) {
         cartRepository.addMenus(cartId, menus);
     }
+
+    @Transactional
+    public void removeMenu(Long cartId, Long menuId) {
+        cartRepository.removeMenu(cartId, menuId);
+    }
 }

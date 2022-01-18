@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="fragments/header::header">
+    <title>메뉴 리스트</title>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>메뉴 이름</th>
+                <th>메뉴 가격</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="menu : ${menus}">
+                <td><a th:href="@{/menus/{menuId} (menuId=${menu.id})}" th:text="${menu.name}">메뉴 이름</a></td>
+                <td th:text="${menu.price}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+</html>

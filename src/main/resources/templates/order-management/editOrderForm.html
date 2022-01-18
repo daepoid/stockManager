@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="fragments/header::header">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+    <title>레시피 수정</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
+    <form th:object="${editDutyDTO}" method="post">
+        <!-- id -->
+        <input type="hidden" th:field="*{id}" />
+        <div>
+            <label for="name">직무 이름</label>
+            <input type="text" id="name" th:field="*{name}"
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{name}"></div>
+            <p></p>
+        </div>
+        <div>
+            <label for="incentive">직무 인센티브</label>
+            <input type="number" id="incentive" th:field="*{incentive}"
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{incentive}"></div>
+            <p></p>
+        </div>
+        <div>
+            <table class="table table-striped">
+                <tr>
+                    <th>직무 할당자 이름</th>
+                    <th>직무 할당자 직급</th>
+                    <!--                    <th>직무 책임자</th>-->
+                    <th>
+                        <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                           th:href="@{/duties/{dutyId}/new (dutyId=${dutyId})}"
+                           class="w-100 btn btn-primary btn-sm" role="button">직원 추가</a>
+                    </th>
+                </tr>
+                <tr th:each="member : *{members}">
+                    <td th:text="${member.name}"></td>
+                    <td th:text="${member.gradeType}"></td>
+                    <!--                    <td th:text="${member.gradeType}"></td>-->
+                    <td>
+                        <a href="#" th:href="'javascript:cancel(' +*{id}+ ','+${member.id}+')'"
+                           class="w-100 btn btn-danger btn-sm">제거</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                        type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-sm"
+                        onclick="location.href='dutyList.html'"
+                        th:onclick="|location.href='@{/duties}'|"
+                        type="button">취소</button>
+            </div>
+        </div>
+    </form>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+<script>
+    function cancel(dutyId, memberId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/duties/" + dutyId + "/" + memberId + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>

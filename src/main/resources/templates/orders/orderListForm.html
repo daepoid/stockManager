@@ -15,26 +15,20 @@
             <tr>
                 <th>고객 이름</th>
                 <th>고객 번호</th>
+                <th>주문 메뉴 이름</th>
+                <th>주문 메뉴 수량</th>
                 <th>주문 시간</th>
                 <th>주문 상태</th>
-                <th>
-                    <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-                       href="/manage-orders/order" th:href="@{/manage-orders/order}"
-                       class="w-100 btn btn-primary btn-sm" role="button">추가</a>
-                </th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="order : ${orders}">
                 <td th:text="${order.customer.name}"></td>
                 <td th:text="${order.customer.tableNumber}"></td>
+                <td th:text="${order.orderMenus}"></td>
+                <td th:text="${order.orderMenus}"></td>
                 <td th:text="${order.orderDateTime}"></td>
                 <td th:text="${order.orderStatus}"></td>
-                <td>
-                    <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')"
-                       href="#" th:href="@{/manage-orders/{orderId} (orderId=${order.id})}"
-                       class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
-                </td>
             </tr>
             </tbody>
         </table>

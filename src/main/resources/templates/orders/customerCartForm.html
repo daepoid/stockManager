@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="fragments/header::header">
+    <title>메뉴 리스트</title>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>메뉴 이름</th>
+                <th>메뉴 가격</th>
+                <th>선택 수량</th>
+                <th>
+                    <a href="#" th:href="'javascript:order(' +${customerId}+ ')'"
+                       class="w-100 btn btn-primary btn-sm">주문</a>
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="selectedMenu : ${selectedMenus}">
+                <td><a th:href="@{/menus/{menuId} (menuId=${selectedMenu.key.id})}" th:text="${selectedMenu.key.name}">메뉴 이름</a></td>
+                <td th:text="${selectedMenu.key.price}"></td>
+                <td th:text="${selectedMenu.value}"></td>
+                <td>
+                    <a href="#" th:href="@{/menus/{menuId} (menuId=${selectedMenu.key.id})}"
+                       class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
+                </td>
+                <td>
+                    <a href="#" th:href="'javascript:cancel(' +${customerId}+ ','+${selectedMenu.key.id}+')'"
+                       class="w-100 btn btn-danger btn-sm">제거</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+<script>
+    function order(customerId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/" + customerId + "/order");
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function cancel(customerId, menuId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/" + customerId + "/" + menuId + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>
