@@ -1,6 +1,7 @@
 package daepoid.stockManager.controller;
 
 import daepoid.stockManager.domain.order.Order;
+import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.order.OrderStatus;
 import daepoid.stockManager.dto.EditOrderDTO;
 import daepoid.stockManager.service.*;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -27,6 +30,11 @@ public class OrderManagementController {
 
     @GetMapping("")
     public String orderList(Model model) {
+        List<Order> orders = orderService.findOrders();
+        for (Order order : orders) {
+
+        }
+
         model.addAttribute("orders", orderService.findOrders());
         return "order-management/orderList";
     }
@@ -49,21 +57,27 @@ public class OrderManagementController {
 
         cartService.addMenu(cartId, menuId, count);
 
-        Order order = Order.builder()
-                .customer(customerService.findCustomer(customerId))
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
-                .build();
+//        Order order = Order.builder()
+//                .customer(customerService.findCustomer(customerId))
+//                .orderDateTime(LocalDateTime.now())
+//                .orderStatus(OrderStatus.ORDERED)
+//                .build();
 
-        orderService.order(customerId, menuId, count);
+        orderService.order(customerId, menuId, count, LocalDateTime.now());
         return "redirect:/order-management";
     }
 
     @GetMapping("/{orderId}")
     public String editOrderForm(@PathVariable("orderId") Long orderId,
-                                @ModelAttribute("editOrderDTO") EditOrderDTO editOrderDTO,
                                 Model model) {
 
+        List<EditOrderDTO> editOrderDTOs = new ArrayList<>();
+        List<OrderMenu> orderMenus = orderService.findOrder(orderId).getOrderMenus();
+        for (OrderMenu orderMenu : orderMenus) {
+            editOrderDTOs.add(new EditOrderDTO(orderMenu));
+        }
+
+        model.addAttribute("editOrderDTOs", editOrderDTOs);
         return "order-management/editOrderForm";
     }
 

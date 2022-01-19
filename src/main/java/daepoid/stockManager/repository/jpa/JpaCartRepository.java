@@ -65,4 +65,9 @@ public class JpaCartRepository implements CartRepository {
         Map<Long, Integer> numberOfMenus = em.find(Cart.class, cartId).getNumberOfMenus();
         numberOfMenus.remove(menuId);
     }
+
+    @Override
+    public void clearCart(Long cartId) {
+        em.find(Cart.class, cartId).getNumberOfMenus().clear();
+    }
 }

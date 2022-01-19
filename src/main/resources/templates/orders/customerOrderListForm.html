@@ -13,8 +13,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>고객 이름</th>
-                <th>고객 번호</th>
                 <th>주문 메뉴 이름</th>
                 <th>주문 메뉴 수량</th>
                 <th>주문 시간</th>
@@ -22,13 +20,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="order : ${orders}">
-                <td th:text="${order.customer.name}"></td>
-                <td th:text="${order.customer.tableNumber}"></td>
-                <td th:text="${order.orderMenus}"></td>
-                <td th:text="${order.orderMenus}"></td>
-                <td th:text="${order.orderDateTime}"></td>
-                <td th:text="${order.orderStatus}"></td>
+            <tr th:each="orderMenuDTO : ${orderMenuDTOs}">
+                <td th:text="${orderMenuDTO.nameOfOrderMenu}"></td>
+                <td th:text="${orderMenuDTO.numberOfOrderMenu}"></td>
+                <td th:text="${orderMenuDTO.orderedDateTime}"></td>
+                <td th:text="${orderMenuDTO.orderStatus}"></td>
             </tr>
             </tbody>
         </table>

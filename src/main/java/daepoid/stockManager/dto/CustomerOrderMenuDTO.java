@@ -1,6 +1,5 @@
 package daepoid.stockManager.dto;
 
-import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.order.OrderStatus;
 import lombok.AllArgsConstructor;
@@ -14,28 +13,21 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EditOrderDTO {
-
-    private String customerName;
-
-    private Long customerId;
+public class CustomerOrderMenuDTO {
 
     private String nameOfOrderMenu;
 
     private Integer numberOfOrderMenu;
 
-    private LocalDateTime orderDateTime;
+    private LocalDateTime orderedDateTime;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    public EditOrderDTO(OrderMenu orderMenu) {
-        this.customerName = orderMenu.getOrder().getCustomer().getName();
-        this.customerId = orderMenu.getOrder().getCustomer().getId();
-
+    public CustomerOrderMenuDTO(OrderMenu orderMenu) {
         this.nameOfOrderMenu = orderMenu.getMenu().getName();
         this.numberOfOrderMenu = orderMenu.getOrderCount();
-        this.orderDateTime = orderMenu.getOrder().getOrderDateTime();
+        this.orderedDateTime = orderMenu.getOrder().getOrderDateTime();
         this.orderStatus = orderMenu.getOrder().getOrderStatus();
     }
 }

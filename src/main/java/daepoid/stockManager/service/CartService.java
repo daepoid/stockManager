@@ -45,4 +45,9 @@ public class CartService {
     public void removeMenu(Long cartId, Long menuId) {
         cartRepository.removeMenu(cartId, menuId);
     }
+
+    @Transactional
+    public void clearCart(Long cartId) {
+        cartRepository.clearCart(cartId);
+    }
 }

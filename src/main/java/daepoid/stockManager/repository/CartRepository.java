@@ -19,4 +19,6 @@ public interface CartRepository {
     void addMenus(Long cartId, Map<Long, Integer> menus);
 
     void removeMenu(Long cartId, Long menuId);
+
+    void clearCart(Long cartId);
 }

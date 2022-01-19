@@ -25,8 +25,10 @@ public class OrderMenu {
     @JoinColumn(name="order_id")
     private Order order;
 
+    // 주문 당시 가격
     private Integer orderPrice;
 
+    // 주문 수량
     private Integer orderCount;
 
     @Builder

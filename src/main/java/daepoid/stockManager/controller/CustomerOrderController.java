@@ -3,8 +3,10 @@ package daepoid.stockManager.controller;
 import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.domain.order.Order;
+import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.dto.CustomerCartDTO;
+import daepoid.stockManager.dto.CustomerOrderMenuDTO;
 import daepoid.stockManager.dto.SelectedMenuDTO;
 import daepoid.stockManager.service.CartService;
 import daepoid.stockManager.service.CustomerService;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -147,12 +150,11 @@ public class CustomerOrderController {
     @PostMapping("/{customerId}/order")
     public String customerOrder(@PathVariable("customerId") Long customerId,
                                 RedirectAttributes redirectAttributes) {
-//        orderService.orders(customerId);
-        log.info("customerOrder 진입");
-        Map<Long, Integer> numberOfMenus = customerService.findCustomer(customerId).getCart().getNumberOfMenus();
-        for (Long menuId : numberOfMenus.keySet()) {
-            orderService.order(customerId, menuId, numberOfMenus.get(menuId));
-        }
+
+        orderService.orders(customerId);
+
+        cartService.clearCart(customerService.findCustomer(customerId).getCart().getId());
+
         redirectAttributes.addAttribute("customerId", customerId);
         return "redirect:/{customerId}/orders";
     }
@@ -167,9 +169,17 @@ public class CustomerOrderController {
     @GetMapping("/{customerId}/orders")
     public String orderListForm(@PathVariable("customerId") Long customerId,
                                 Model model) {
+        List<CustomerOrderMenuDTO> customerOrderMenuDTOs = new ArrayList<>();
+
         Customer customer = customerService.findCustomer(customerId);
-        model.addAttribute("orders", customer.getOrders());
-        return "orders/orderListForm";
+        List<Order> customerOrders = customer.getOrders();
+        for (Order customerOrder : customerOrders) {
+            for (OrderMenu orderMenu : customerOrder.getOrderMenus()) {
+                customerOrderMenuDTOs.add(new CustomerOrderMenuDTO(orderMenu));
+            }
+        }
+        model.addAttribute("orderMenuDTOs", customerOrderMenuDTOs);
+        return "orders/customerOrderListForm";
     }
 
     /**

@@ -31,9 +31,38 @@ public class OrderService {
     private final JpaCustomerRepository customerRepository;
     private final JpaMenuRepository menuRepository;
 
+//    @Transactional
+//    public Long order(Long customerId, Long menuId, Integer count) {
+//        // 엔티티 조회
+//        Customer customer = customerRepository.findById(customerId);
+//        Menu menu = menuRepository.findById(menuId);
+//
+//        // 주문 메뉴 단일 생성
+//        OrderMenu orderMenu = OrderMenu.builder()
+//                .menu(menu)
+//                .orderPrice(menu.getPrice())
+//                .orderCount(count)
+//                .build();
+//
+//        List<OrderMenu> orderMenus = new ArrayList<>();
+//        orderMenus.add(orderMenu);
+//
+//        // 주문 생성
+//        Order order = Order.builder()
+//                .customer(customer)
+//                .orderMenus(orderMenus)
+//                .orderDateTime(LocalDateTime.now())
+//                .orderStatus(OrderStatus.ORDERED)
+//                .build();
+//
+//        // 주문 저장
+//        orderRepository.save(order);
+//        return order.getId();
+//    }
+
     //==비즈니스 로직==//
     @Transactional
-    public Long order(Long customerId, Long menuId, Integer count) {
+    public Long order(Long customerId, Long menuId, Integer count, LocalDateTime orderDateTime) {
         // 엔티티 조회
         Customer customer = customerRepository.findById(customerId);
         Menu menu = menuRepository.findById(menuId);
@@ -52,7 +81,7 @@ public class OrderService {
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
+                .orderDateTime(orderDateTime)
                 .orderStatus(OrderStatus.ORDERED)
                 .build();
 
@@ -66,6 +95,9 @@ public class OrderService {
         // 엔티티 조회
         Customer customer = customerRepository.findById(customerId);
         Map<Long, Integer> numberOfMenus = customer.getCart().getNumberOfMenus();
+        LocalDateTime orderDateTime = LocalDateTime.now();
+
+        List<OrderMenu> orderMenus = new ArrayList<>();
 
         for (Long menuId : numberOfMenus.keySet()) {
             Menu menu = menuRepository.findById(menuId);
@@ -77,20 +109,19 @@ public class OrderService {
                     .orderCount(numberOfMenus.get(menuId))
                     .build();
 
-            List<OrderMenu> orderMenus = new ArrayList<>();
             orderMenus.add(orderMenu);
-
-            // 주문 생성
-            Order order = Order.builder()
-                    .customer(customer)
-                    .orderMenus(orderMenus)
-                    .orderDateTime(LocalDateTime.now())
-                    .orderStatus(OrderStatus.ORDERED)
-                    .build();
-
-            // 주문 저장
-            orderRepository.save(order);
         }
+
+        // 주문 생성
+        Order order = Order.builder()
+                .customer(customer)
+                .orderMenus(orderMenus)
+                .orderDateTime(orderDateTime)
+                .orderStatus(OrderStatus.ORDERED)
+                .build();
+
+        // 주문 저장
+        orderRepository.save(order);
     }
 
     @Transactional

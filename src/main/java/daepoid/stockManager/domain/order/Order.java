@@ -38,6 +38,9 @@ public class Order {
     public Order(Customer customer, List<OrderMenu> orderMenus, LocalDateTime orderDateTime, OrderStatus orderStatus) {
         this.customer = customer;
         this.orderMenus = orderMenus;
+        for (OrderMenu orderMenu : orderMenus) {
+            orderMenu.changeOrder(this);
+        }
         this.orderDateTime = orderDateTime;
         this.orderStatus = orderStatus;
     }
@@ -50,6 +53,9 @@ public class Order {
 
     public void changeOrderMenus(List<OrderMenu> orderMenus) {
         this.orderMenus = orderMenus;
+        for (OrderMenu orderMenu : orderMenus) {
+            orderMenu.changeOrder(this);
+        }
     }
 
     public void addOrderMenu(OrderMenu orderMenu) {
