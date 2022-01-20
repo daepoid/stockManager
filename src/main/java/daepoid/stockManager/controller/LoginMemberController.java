@@ -40,6 +40,7 @@ public class LoginMemberController {
 
         if(!sessionId.equals(loginId)) {
             log.info("개인정보 변경 접근 실패");
+            request.getSession(false).invalidate();
             return "redirect:/";
         }
         model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(memberService.findMemberByLoginId(sessionId)));
@@ -88,7 +89,15 @@ public class LoginMemberController {
      */
     @GetMapping("/myInfo/passwordChange")
     public String editMyPasswordForm(@PathVariable("loginId") String loginId,
-                                     @ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO) {
+                                     @ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO,
+                                     HttpServletRequest request) {
+
+        String sessionId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(!sessionId.equals(loginId)) {
+            log.info("개인정보 변경 접근 실패");
+            return "redirect:/";
+        }
+
         return "members/editMyPasswordForm";
     }
 

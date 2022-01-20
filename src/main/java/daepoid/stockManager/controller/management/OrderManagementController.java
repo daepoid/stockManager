@@ -1,8 +1,7 @@
-package daepoid.stockManager.controller;
+package daepoid.stockManager.controller.management;
 
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
-import daepoid.stockManager.domain.order.OrderStatus;
 import daepoid.stockManager.dto.EditOrderDTO;
 import daepoid.stockManager.service.*;
 import lombok.RequiredArgsConstructor;

@@ -22,11 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -75,10 +71,6 @@ public class CustomerOrderController {
         Integer count = 0;
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         Customer customer = customerService.findByName(loginId);
-        if(customer == null) {
-            request.getSession(false).invalidate();
-            return "redirect:/";
-        }
 
         // 해당 메뉴가 이미 고객의 장바구니에 포함이 되어있는 경우
         if(customer.getCart().getNumberOfMenus().containsKey(menuId)) {
@@ -122,7 +114,7 @@ public class CustomerOrderController {
         // cart는 customer가 생성되면서 동시에 같이 생성되어야 한다.
         Cart cart = loginCustomer.getCart();
         cartService.addMenu(cart.getId(), menuId, selectedMenuDTO.getCount());
-        return isCreated ? "redirect:/" + loginCustomer.getId() +"/order" : "redirect:/menus";
+        return isCreated ? "redirect:/customers/" + loginCustomer.getId() + "/order" : "redirect:/menus";
     }
 
     /**
@@ -132,9 +124,16 @@ public class CustomerOrderController {
      * @param model
      * @return
      */
-    @GetMapping("/{customerId}/order")
+    @GetMapping("/customers/{customerId}/order")
     public String customerCartForm(@PathVariable("customerId") Long customerId,
-                                   Model model) {
+                                   Model model,
+                                   HttpServletRequest request) {
+        String userName = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Customer loginCustomer = customerService.findByName(userName);
+        if(!Objects.equals(loginCustomer.getId(), customerId)) {
+            request.getSession(false).invalidate();
+            return "redirect:/";
+        }
 
         Map<Menu, Integer> selectedMenus = new HashMap<>();
 
@@ -147,7 +146,7 @@ public class CustomerOrderController {
         return "orders/customerCartForm";
     }
 
-    @PostMapping("/{customerId}/order")
+    @PostMapping("/customers/{customerId}/order")
     public String customerOrder(@PathVariable("customerId") Long customerId,
                                 RedirectAttributes redirectAttributes) {
 
@@ -156,7 +155,7 @@ public class CustomerOrderController {
         cartService.clearCart(customerService.findCustomer(customerId).getCart().getId());
 
         redirectAttributes.addAttribute("customerId", customerId);
-        return "redirect:/{customerId}/orders";
+        return "redirect:/customers/{customerId}/orders";
     }
 
     /**
@@ -166,19 +165,31 @@ public class CustomerOrderController {
      * @param model
      * @return
      */
-    @GetMapping("/{customerId}/orders")
+    @GetMapping("/customers/{customerId}/orders")
     public String orderListForm(@PathVariable("customerId") Long customerId,
-                                Model model) {
-        List<CustomerOrderMenuDTO> customerOrderMenuDTOs = new ArrayList<>();
+                                Model model,
+                                HttpServletRequest request) {
+
+        String userName = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(!Objects.equals(customerService.findByName(userName).getId(), customerId)) {
+            request.getSession(false).invalidate();
+            return "redirect:/";
+        }
 
         Customer customer = customerService.findCustomer(customerId);
+
+        Integer tableNumber = customer.getTableNumber();
+
+        List<CustomerOrderMenuDTO> customerOrderMenuDTOs = new ArrayList<>();
         List<Order> customerOrders = customer.getOrders();
         for (Order customerOrder : customerOrders) {
             for (OrderMenu orderMenu : customerOrder.getOrderMenus()) {
                 customerOrderMenuDTOs.add(new CustomerOrderMenuDTO(orderMenu));
             }
         }
+
         model.addAttribute("orderMenuDTOs", customerOrderMenuDTOs);
+        model.addAttribute("tableNumber", tableNumber);
         return "orders/customerOrderListForm";
     }
 
@@ -190,7 +201,7 @@ public class CustomerOrderController {
      * @param redirectAttributes
      * @return
      */
-    @PostMapping("/{customerId}/{menuId}/cancel")
+    @PostMapping("/customers/{customerId}/{menuId}/cancel")
     public String cancel(@PathVariable("customerId") Long customerId,
                          @PathVariable("menuId") Long menuId,
                          RedirectAttributes redirectAttributes) {
@@ -199,6 +210,6 @@ public class CustomerOrderController {
         cartService.removeMenu(cart.getId(), menuId);
 
         redirectAttributes.addAttribute("customerId", customerId);
-        return "redirect:/{customerId}/order";
+        return "redirect:/customers/{customerId}/order";
     }
 }

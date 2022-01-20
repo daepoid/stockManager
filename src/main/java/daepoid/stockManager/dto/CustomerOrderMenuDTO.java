@@ -19,6 +19,8 @@ public class CustomerOrderMenuDTO {
 
     private Integer numberOfOrderMenu;
 
+    private Integer orderPrice;
+
     private LocalDateTime orderedDateTime;
 
     @Enumerated(EnumType.STRING)
@@ -27,6 +29,7 @@ public class CustomerOrderMenuDTO {
     public CustomerOrderMenuDTO(OrderMenu orderMenu) {
         this.nameOfOrderMenu = orderMenu.getMenu().getName();
         this.numberOfOrderMenu = orderMenu.getOrderCount();
+        this.orderPrice = orderMenu.getOrderPrice();
         this.orderedDateTime = orderMenu.getOrder().getOrderDateTime();
         this.orderStatus = orderMenu.getOrder().getOrderStatus();
     }

@@ -35,7 +35,7 @@
                 <button th:if="*{count} != '0'"
                         class="w-100 btn btn-secondary btn-sm"
                         onclick="location.href='customerCartForm.html'"
-                        th:onclick="|location.href='@{/{customerId}/order (customerId=${customerId})}'|"
+                        th:onclick="|location.href='@{/customers/{customerId}/order (customerId=${customerId})}'|"
                         type="button">취소</button>
 <!--                <button class="w-100 btn btn-secondary btn-sm"-->
 <!--                        onclick="location.href='menuList.html'"-->

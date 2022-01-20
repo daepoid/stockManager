@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="fragments/header::header">
+    <title>직원 리스트</title>
+</head>
+<body>
+<div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>고객 이름</th>
+                <th>테이블 번호</th>
+                <th>
+                    <a href="#" th:href="@{/customer-management/new}"
+                       class="w-100 btn btn-primary btn-sm" role="button">추가</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${customers}">
+                <td th:text="${customer.id}"></td>
+                <td th:text="${customer.name}"></td>
+                <td th:text="${customer.tableNumber}"></td>
+                <td>
+                    <a href="#" th:href="@{/customer-management/{id} (id=${customer.id})}"
+                       class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+</html>

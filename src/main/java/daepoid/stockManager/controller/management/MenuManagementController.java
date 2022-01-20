@@ -1,4 +1,4 @@
-package daepoid.stockManager.controller;
+package daepoid.stockManager.controller.management;
 
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.dto.AddRecipeMenuDTO;

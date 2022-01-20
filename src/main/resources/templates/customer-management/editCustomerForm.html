@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="fragments/header::header">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+    <title>회원 정보 수정</title>
+</head>
+<body>
+<div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
+    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
+    <form th:object="${editCustomerDTO}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" th:field="*{name}"
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{name}"></div>
+        </div>
+        <div class="form-group">
+            <label for="tableNumber">전화번호</label>
+            <input type="number" id="tableNumber" th:field="*{tableNumber}"
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{tableNumber}"></div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-sm"
+                        onclick="location.href='customerListForm.html.html'"
+                        th:onclick="|location.href='@{/customer-management}'|"
+                        type="button">취소</button>
+            </div>
+        </div>
+    </form>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+</html>

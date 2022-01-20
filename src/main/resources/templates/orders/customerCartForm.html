@@ -47,7 +47,7 @@
     function order(customerId) {
         var form = document.createElement("form");
         form.setAttribute("method", "post");
-        form.setAttribute("action", "/" + customerId + "/order");
+        form.setAttribute("action", "/customers/" + customerId + "/order");
         document.body.appendChild(form);
         form.submit();
     }
@@ -56,7 +56,7 @@
     function cancel(customerId, menuId) {
         var form = document.createElement("form");
         form.setAttribute("method", "post");
-        form.setAttribute("action", "/" + customerId + "/" + menuId + "/cancel");
+        form.setAttribute("action", "/customers/" + customerId + "/" + menuId + "/cancel");
         document.body.appendChild(form);
         form.submit();
     }

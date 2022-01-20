@@ -55,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/members/new").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
+                .antMatchers("/members/**", "/duties/**", "/customer-management/**", "/menu-management/**", "/order-management/**").hasAnyRole("CEO", "MANAGER")
+                .antMatchers("/menus/**", "/customers/**").hasAnyRole("CUSTOMER")
                 // 나머지 요청들은 종류에 상관없이 권한이 있어야 접근 가능하다.
                 .anyRequest()
                     .authenticated()
