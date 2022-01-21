@@ -6,8 +6,8 @@
     <title>메뉴 음식 할당</title>
 </head>
 <body>
+<div th:replace="fragments/memberNavigation::navigation('manager')"></div>
 <div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
-    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <form action="" th:action th:object="${addRecipeMenuDTO}" method="post">
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}"

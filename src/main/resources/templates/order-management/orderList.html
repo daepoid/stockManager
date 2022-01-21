@@ -7,8 +7,8 @@
 </head>
 
 <body>
+<div th:replace="fragments/memberNavigation::navigation('manager')"></div>
 <div class="container">
-    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <div>
         <table class="table table-striped">
             <thead>
@@ -22,6 +22,7 @@
                        href="/manage-orders/order" th:href="@{/order-management/order}"
                        class="w-100 btn btn-primary btn-sm" role="button">추가</a>
                 </th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +35,10 @@
                     <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')"
                        href="#" th:href="@{/order-management/{orderId} (orderId=${order.id})}"
                        class="w-100 btn btn-secondary btn-sm" role="button">자세히 보기</a>
+                </td>
+                <td>
+                    <a href="#" th:href="@{/order-management/{orderId}/edit (orderId=${order.id})}"
+                       class="w-100 btn btn-secondary btn-sm" role="button">상태 수정</a>
                 </td>
             </tr>
             </tbody>

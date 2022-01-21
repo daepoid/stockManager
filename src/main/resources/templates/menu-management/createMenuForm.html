@@ -6,8 +6,8 @@
     <title>메뉴 추가</title>
 </head>
 <body>
+<div th:replace="fragments/memberNavigation::navigation('manager')"></div>
 <div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
-    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <form th:action="@{/menu-management/new}" th:object="${createMenuDTO}" method="post">
         <div class="form-group">
             <label th:for="name">메뉴 이름</label>
