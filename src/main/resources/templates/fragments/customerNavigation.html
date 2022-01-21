@@ -15,9 +15,8 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-          <li class="nav-item"><a class="nav-link " th:classappend="${tab == 'home'} ? active" aria-current="page" href="#!" th:href="@{/newHome}">Home</a></li>
+          <li class="nav-item"><a class="nav-link " th:classappend="${tab == 'home'} ? active" aria-current="page" href="#!" th:href="@{/}">Home</a></li>
           <li class="nav-item"><a class="nav-link " th:classappend="${tab == 'about'} ? active" href="#!" th:href="@{/about}">About</a></li>
-
           <li class="nav-item dropdown" th:classappend="${tab == 'shop'} ? active">
             <a class="nav-link dropdown-toggle" id="shopNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
             <ul class="dropdown-menu" aria-labelledby="shopNavbarDropdown">
@@ -28,34 +27,11 @@
             </ul>
           </li>
 
-          <li class="nav-item dropdown" th:classappend="${tab == 'member'} ? active"
-              sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
-            <a class="nav-link dropdown-toggle" id="memberNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">직원</a>
-            <ul class="dropdown-menu" aria-labelledby="memberNavbarDropdown">
-              <li><a class="dropdown-item" href="#!" th:href="@{/items}">재고 관리</a></li>
-              <li><a class="dropdown-item" href="#!" th:href="@{/recipes}">레시피</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown" th:classappend="${tab == 'manager'} ? active"
-              sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
-            <a class="nav-link dropdown-toggle" id="managerNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">매니저</a>
-            <ul class="dropdown-menu" aria-labelledby="managerNavbarDropdown">
-              <li><a class="dropdown-item" href="#!" th:href="@{/order-management}">주문 관리</a></li>
-              <li><a class="dropdown-item" href="#!" th:href="@{/menu-management}">메뉴 관리</a></li>
-              <li><a class="dropdown-item" href="#!" th:href="@{/customer-management}">고객 관리</a></li>
-              <li><hr class="dropdown-divider"/></li>
-              <li><a class="dropdown-item" href="#!" th:href="@{/duties}">직무 관리</a></li>
-              <li><a class="dropdown-item" href="#!" th:href="@{/members}">직원 관리</a></li>
-            </ul>
-          </li>
-        </ul>
-
         <form class="d-flex">
           <a class="btn btn-outline-dark" href="#" th:href="@{/customers/{customerId}/order (customerId=${customerId})}">
             <i class="bi-cart-fill me-1"></i>
             장바구니
-            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+<!--            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>-->
           </a>
         </form>
         <form class="d-flex">
@@ -63,6 +39,11 @@
             주문 내역
           </a>
         </form>
+          <form class="d-flex" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME', 'ROLE_CUSTOMER')">
+            <a class="btn btn-outline-dark" href="#" th:href="@{/logout}">
+              test-logout
+            </a>
+          </form>
       </div>
     </div>
   </nav>

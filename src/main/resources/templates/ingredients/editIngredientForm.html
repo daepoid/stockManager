@@ -15,6 +15,7 @@
     <title>재료 수정</title>
 </head>
 <body>
+<div th:replace="fragments/memberNavigation::navigation(tab='member')"></div>
 <div class="container">
     <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <form sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"

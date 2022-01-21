@@ -2,48 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
-<head th:replace="fragments/header::header">
-    <title>재고 물품 리스트</title>
-</head>
-
-<body>
-<div class="container">
-    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
-    <div>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-<!--                <th>#</th>-->
-                <th>상품명</th>
-                <th>아이템 특성</th>
-                <th>가격</th>
-                <th>박스 수량</th>
-                <th>재고 수량</th>
-                <th>단위</th>
-                <th>
-                    <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-                       href="/items/new" class="w-100 btn btn-primary btn-sm" role="button">추가</a>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="item : ${itemList}">
-<!--                <td th:text="${item.id}"></td>-->
-                <td th:text="${item.name}"></td>
-                <td th:text="${item.itemType}"></td>
-                <td th:text="${item.price}"></td>
-                <td th:text="${item.packageCount}"></td>
-                <td th:text="${item.quantity}"></td>
-                <td th:text="${item.unitType}"></td>
-                <td>
-                    <a href="#" th:href="@{/items/{id}/edit (id=${item.id})}"
-                       class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div th:replace="fragments/footer::footer"></div>
-</div> <!-- /container -->
-</body>
+    <head th:replace="fragments/header::header">
+        <title>재고 물품 리스트</title>
+    </head>
+    <body>
+        <div th:replace="fragments/memberNavigation::navigation(tab='member')"></div>
+        <div class="container">
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+        <!--                <th>#</th>-->
+                        <th>상품명</th>
+                        <th>아이템 특성</th>
+                        <th>가격</th>
+                        <th>박스 수량</th>
+                        <th>재고 수량</th>
+                        <th>단위</th>
+                        <th>
+                            <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                               href="/items/new" class="w-100 btn btn-primary btn-sm" role="button">추가</a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${itemList}">
+        <!--                <td th:text="${item.id}"></td>-->
+                        <td th:text="${item.name}"></td>
+                        <td th:text="${item.itemType}"></td>
+                        <td th:text="${item.price}"></td>
+                        <td th:text="${item.packageCount}"></td>
+                        <td th:text="${item.quantity}"></td>
+                        <td th:text="${item.unitType}"></td>
+                        <td>
+                            <a href="#" th:href="@{/items/{id}/edit (id=${item.id})}"
+                               class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="fragments/footer::footer"></div>
+        </div> <!-- /container -->
+    </body>
 </html>

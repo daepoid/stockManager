@@ -64,7 +64,7 @@ public class OrderService {
     @Transactional
     public Long order(Long customerId, Long menuId, Integer count, LocalDateTime orderDateTime) {
         // 엔티티 조회
-        Customer customer = customerRepository.findById(customerId);
+        Customer customer = customerRepository.findById(customerId).orElse(null);
         Menu menu = menuRepository.findById(menuId);
 
         // 주문 메뉴 단일 생성
@@ -76,6 +76,7 @@ public class OrderService {
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        menuRepository.addOrderCount(menuId, count);
 
         // 주문 생성
         Order order = Order.builder()
@@ -93,7 +94,7 @@ public class OrderService {
     @Transactional
     public void orders(Long customerId) {
         // 엔티티 조회
-        Customer customer = customerRepository.findById(customerId);
+        Customer customer = customerRepository.findById(customerId).orElse(null);
         Map<Long, Integer> numberOfMenus = customer.getCart().getNumberOfMenus();
         LocalDateTime orderDateTime = LocalDateTime.now();
 
@@ -122,11 +123,19 @@ public class OrderService {
 
         // 주문 저장
         orderRepository.save(order);
+
+        for (OrderMenu orderMenu : orderMenus) {
+            menuRepository.addOrderCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
+        }
     }
 
     @Transactional
     public void cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId);
+        List<OrderMenu> orderMenus = order.getOrderMenus();
+        for (OrderMenu orderMenu : orderMenus) {
+            menuRepository.cancelOrderCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
+        }
         order.cancel();
     }
 

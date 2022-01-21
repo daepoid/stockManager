@@ -79,6 +79,16 @@ public class JpaMenuRepository implements MenuRepository {
     }
 
     @Override
+    public void addOrderCount(Long menuId, Integer newOrderCount) {
+        em.find(Menu.class, menuId).addOrderCount(newOrderCount);
+    }
+
+    @Override
+    public void cancelOrderCount(Long menuId, Integer cancelOrderCount) {
+        em.find(Menu.class, menuId).cancelOrderCount(cancelOrderCount);
+    }
+
+    @Override
     public void removeFood(Long menuId, Recipe food) {
         em.find(Menu.class, menuId).removeFood(food);
     }

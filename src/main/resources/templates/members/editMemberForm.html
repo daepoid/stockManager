@@ -15,8 +15,8 @@
     <title>회원 정보 수정</title>
 </head>
 <body>
+<div th:replace="fragments/memberNavigation::navigation(tab='manager')"></div>
 <div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
-    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <form th:object="${editMemberDTO}" method="post">
         <input type="hidden" th:field="*{id}" />
         <div class="form-group">

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -26,7 +27,7 @@ public class CustomerService {
 
     //==조회 로직==//
     public Customer findCustomer(Long customerId) {
-        return customerRepository.findById(customerId);
+        return customerRepository.findById(customerId).orElse(null);
     }
 
     public List<Customer> findCustomers() {

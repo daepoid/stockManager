@@ -12,7 +12,7 @@ public interface CustomerRepository {
     Long save(Customer customer);
 
     //==조회 로직==//
-    Customer findById(Long id);
+    Optional<Customer> findById(Long id);
     List<Customer> findAll();
 
     Customer findByName(String name);

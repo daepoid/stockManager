@@ -26,8 +26,8 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public Customer findById(Long id) {
-        return em.find(Customer.class, id);
+    public Optional<Customer> findById(Long id) {
+        return Optional.of(em.find(Customer.class, id));
     }
 
     @Override
@@ -39,8 +39,9 @@ public class JpaCustomerRepository implements CustomerRepository {
     public Customer findByName(String name) {
         return em.createQuery("select c from Customer c where c.name=:name", Customer.class)
                 .setParameter("name", name)
-                .getSingleResult();
-
+                .getResultList()
+                .stream().findFirst()
+                .orElse(null);
     }
 
     @Override

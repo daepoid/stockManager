@@ -15,8 +15,8 @@
     <title>회원 정보 수정</title>
 </head>
 <body>
+<div th:replace="fragments/memberNavigation::navigation(tab='member')"></div>
 <div class="container">
-    <div th:replace="fragments/bodyHeader::bodyHeader"></div>
     <form th:object="${editMyInfoDTO}" method="post">
         <!-- id -->
         <input type="hidden" th:field="*{id}" />
