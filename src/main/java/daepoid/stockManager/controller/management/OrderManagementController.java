@@ -1,8 +1,10 @@
 package daepoid.stockManager.controller.management;
 
+import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.dto.EditOrderDTO;
+import daepoid.stockManager.dto.OrderInfoDTO;
 import daepoid.stockManager.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,18 +31,23 @@ public class OrderManagementController {
     private final CartService cartService;
 
     @GetMapping("")
-    public String orderList(Model model) {
-        List<Order> orders = orderService.findOrders();
-        for (Order order : orders) {
-
+    public String orderList(Model model,
+                            HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
         }
-
         model.addAttribute("orders", orderService.findOrders());
         return "order-management/orderList";
     }
 
     @GetMapping("/order")
-    public String createOrderForm(Model model) {
+    public String createOrderForm(Model model,
+                                  HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
+        }
         model.addAttribute("customers", customerService.findCustomers());
         model.addAttribute("menus", menuService.findMenus());
         return "order-management/createOrderForm";
@@ -67,8 +75,13 @@ public class OrderManagementController {
     }
 
     @GetMapping("/{orderId}")
-    public String editOrderForm(@PathVariable("orderId") Long orderId,
-                                Model model) {
+    public String orderInfoForm(@PathVariable("orderId") Long orderId,
+                                Model model,
+                                HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
+        }
 
         List<EditOrderDTO> editOrderDTOs = new ArrayList<>();
         List<OrderMenu> orderMenus = orderService.findOrder(orderId).getOrderMenus();
@@ -77,21 +90,42 @@ public class OrderManagementController {
         }
 
         model.addAttribute("editOrderDTOs", editOrderDTOs);
-        return "order-management/editOrderForm";
+        return "order-management/orderInfoForm";
     }
 
-    @PostMapping("/{orderId}")
-    public String editOrder(@PathVariable("orderId") Long orderId,
-                            @Valid @ModelAttribute("editOrderDTO") EditOrderDTO editOrderDTO,
-                            BindingResult bindingResult,
-                            Model model) {
-
-        if(bindingResult.hasErrors()) {
-            return "order-management/editOrderForm";
+    @GetMapping("/{orderId}/edit")
+    public String editOrderStatusForm(@PathVariable("orderId") Long orderId,
+                                      Model model,
+                                      HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
         }
 
-        return "redirect:/order-management";
+        Order order = orderService.findOrder(orderId);
+
+        model.addAttribute("orderInfoDTO", new OrderInfoDTO(order));
+        model.addAttribute("orderMenus", order.getOrderMenus());
+        return "order-management/editOrderStatusForm";
     }
 
+    @PostMapping("/{orderId}/edit")
+    public String editOrderStatus(@PathVariable("orderId") Long orderId,
+                                  @Valid @ModelAttribute("orderInfoDTO") OrderInfoDTO orderInfoDTO,
+                                  BindingResult bindingResult,
+                                  Model model,
+                                  HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
+        }
 
+        if(bindingResult.hasErrors()) {
+            return "order-management/editOrderStatusForm";
+        }
+
+        log.info("orderInfoDTO = {}", orderInfoDTO.getOrderStatus());
+        orderService.changeOrderStatus(orderId, orderInfoDTO.getOrderStatus());
+        return "redirect:/order-management";
+    }
 }

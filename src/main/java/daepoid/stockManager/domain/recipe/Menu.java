@@ -3,6 +3,8 @@ package daepoid.stockManager.domain.recipe;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -40,12 +42,21 @@ public class Menu {
     // Map<recipeId, food_count>
     private Map<Long, Integer> numberOfFood = new HashMap<>();
 
+    // 최근에 추가된 메뉴를 확인하기 위해
+    private LocalDateTime addedDate;
+
+    // 주문이 많이 된 음식을 찾기 위해
+    private Integer orderCount = 0;
+
     @Builder
-    public Menu(String name, Integer price, Set<Recipe> foods, Map<Long, Integer> numberOfFood) {
+    public Menu(String name, Integer price, Set<Recipe> foods,
+                Map<Long, Integer> numberOfFood, LocalDateTime addedDate, Integer orderCount) {
         this.name = name;
         this.price = price;
         this.foods = foods;
         this.numberOfFood = numberOfFood;
+        this.addedDate = addedDate;
+        this.orderCount = orderCount;
     }
 
     public Integer getPrice() {
@@ -69,6 +80,14 @@ public class Menu {
         this.numberOfFood = numberOfFood;
     }
 
+    public void changeAddedDate(LocalDateTime addedDate) {
+        this.addedDate = addedDate;
+    }
+
+    public void changeOrderCount(Integer orderCount) {
+        this.orderCount = orderCount;
+    }
+
     public void updatePrice() {
         int sum = 0;
         for (Recipe food : foods) {
@@ -79,6 +98,14 @@ public class Menu {
         }
 
         this.price = sum;
+    }
+
+    public void addOrderCount(Integer newOrderCount) {
+        this.orderCount += newOrderCount;
+    }
+
+    public void cancelOrderCount(Integer cancelOrderCount) {
+        this.orderCount -= cancelOrderCount;
     }
 
     public void addFood(Recipe food, Integer numberOfFood) {

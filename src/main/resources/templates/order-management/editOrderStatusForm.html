@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="fragments/header::header">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+    <title>주문 수정</title>
+</head>
+<body>
+<div th:replace="fragments/memberNavigation::navigation('manager')"></div>
+<div class="container">
+    <form th:object="${orderInfoDTO}" method="post">
+        <!-- id -->
+        <input type="hidden" th:field="*{orderId}" />
+        <div>
+            <label for="customerName">고객 이름</label>
+            <input type="text" id="customerName" th:field="*{customerName}"
+                   class="form-control" th:errorclass="field-error" readonly>
+            <div class="field-error" th:errors="*{customerName}"></div>
+        </div>
+        <div>
+            <label for="tableNumber">테이블 번호</label>
+            <input type="number" id="tableNumber" th:field="*{tableNumber}"
+                   class="form-control" th:errorclass="field-error" readonly>
+            <div class="field-error" th:errors="*{tableNumber}"></div>
+        </div>
+        <div>
+            <label for="orderDateTime">주문 시간</label>
+            <input type="text" id="orderDateTime" th:field="*{orderDateTime}"
+                   class="form-control" th:errorclass="field-error" readonly>
+            <div class="field-error" th:errors="*{orderDateTime}"></div>
+        </div>
+        <div>
+            <label for="orderStatus">현재 주문 상태</label>
+            <input type="text" id="orderStatus" th:field="*{orderStatus}"
+                   class="form-control" th:errorclass="field-error" readonly>
+            <div class="field-error" th:errors="*{orderStatus}"></div>
+        </div>
+        <div class="form-group">
+            <label th:for="orderStatus">주문 상태</label>
+            <select th:field="*{orderStatus}" class="form-control">
+                <option value="">주문 상태</option>
+                <option th:each="orderStatus : ${T(daepoid.stockManager.domain.order.OrderStatus).values()}"
+                        th:value="${orderStatus}"
+                        th:text="${orderStatus}">option
+                </option>
+            </select>
+        </div>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')"
+                        type="submit" class="w-100 btn btn-primary btn-sm">수정</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-sm"
+                        onclick="location.href='orderList.html'"
+                        th:onclick="|location.href='@{/order-management}'|"
+                        type="button">취소</button>
+            </div>
+        </div>
+    </form>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+<script>
+    function cancel(menuId, recipeId) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/menu-management/" + menuId + "/" + recipeId + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>

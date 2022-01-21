@@ -1,5 +1,6 @@
 package daepoid.stockManager.controller.management;
 
+import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.dto.AddRecipeMenuDTO;
 import daepoid.stockManager.dto.CreateMenuDTO;
@@ -14,7 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Controller
@@ -26,13 +29,23 @@ public class MenuManagementController {
     private final RecipeService recipeService;
 
     @GetMapping("")
-    public String menuListForm(Model model) {
+    public String menuListForm(Model model, HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
+        }
         model.addAttribute("menus", menuService.findMenus());
         return "menu-management/menuList";
     }
 
     @GetMapping("/new")
-    public String createMenuForm(@ModelAttribute("createMenuDTO") CreateMenuDTO createMenuDTO) {
+    public String createMenuForm(@ModelAttribute("createMenuDTO") CreateMenuDTO createMenuDTO,
+                                 HttpServletRequest request,
+                                 Model model) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
+        }
         return "menu-management/createMenuForm";
     }
 
@@ -46,6 +59,8 @@ public class MenuManagementController {
         // menu 생성
         Menu menu = Menu.builder()
                 .name(createMenuDTO.getName())
+                .orderCount(0)
+                .addedDate(LocalDateTime.now())
                 .build();
 
         Long savedId = menuService.saveMenu(menu);
@@ -53,7 +68,12 @@ public class MenuManagementController {
     }
 
     @GetMapping("/{menuId}")
-    public String editMenuForm(@PathVariable Long menuId, Model model) {
+    public String editMenuForm(@PathVariable Long menuId, Model model,
+                               HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
+        }
         model.addAttribute("editMenuDTO", new EditMenuDTO(menuService.findMenu(menuId)));
         return "menu-management/editMenuForm";
     }
@@ -78,7 +98,12 @@ public class MenuManagementController {
 
     @GetMapping("/{menuId}/new")
     public String editMenuAddRecipeForm(@PathVariable Long menuId,
-                                        Model model) {
+                                        Model model,
+                                        HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
+        }
 
         model.addAttribute("addRecipeMenuDTO", new AddRecipeMenuDTO(menuService.findMenu(menuId)));
         model.addAttribute("recipes", recipeService.findRecipes());

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,10 @@ public class EditMenuDTO {
 
     private Double price;
 
+    private Integer orderCount;
+
+    private LocalDateTime addedDate;
+
     private Map<Recipe, Integer> foodMap = new HashMap<>();
 
 //    private Set<Recipe> foods = new HashSet<>();
@@ -30,6 +35,9 @@ public class EditMenuDTO {
     public EditMenuDTO(Menu menu) {
         this.menuId = menu.getId();
         this.name = menu.getName();
+
+        this.orderCount = menu.getOrderCount();
+        this.addedDate = menu.getAddedDate();
 
         Double sum = 0.0;
 

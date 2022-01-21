@@ -19,12 +19,25 @@ import javax.validation.Valid;
 
 @Slf4j
 @Controller
-@RequestMapping("/{loginId}")
+@RequestMapping("")
 @RequiredArgsConstructor
 public class LoginMemberController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
+    @GetMapping("/myInfo")
+    public String myInfoRedirect(HttpServletRequest request,
+                                 RedirectAttributes redirectAttributes) {
+
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId == null) {
+            request.getSession(false).invalidate();
+            return "redirect:/login";
+        }
+        redirectAttributes.addAttribute("loginId", loginId);
+        return "redirect:/{loginId}/myInfo";
+    }
 
     /**
      * 직원 개인정보 변경
@@ -32,7 +45,7 @@ public class LoginMemberController {
      * @param request
      * @return
      */
-    @GetMapping("/myInfo")
+    @GetMapping("/{loginId}/myInfo")
     public String editMyInfoForm(@PathVariable("loginId") String loginId,
                                  Model model,
                                  HttpServletRequest request) {
@@ -47,7 +60,7 @@ public class LoginMemberController {
         return "members/editMyInfoForm";
     }
 
-    @PostMapping("/myInfo")
+    @PostMapping("/{loginId}/myInfo")
     public String editMyInfo(@PathVariable("loginId") String loginId,
                              @Valid @ModelAttribute("editMyInfoDTO") EditMyInfoDTO editMyInfoDTO,
                              BindingResult bindingResult,
@@ -87,7 +100,7 @@ public class LoginMemberController {
      * @param editMyPasswordDTO
      * @return
      */
-    @GetMapping("/myInfo/passwordChange")
+    @GetMapping("/{loginId}/myInfo/passwordChange")
     public String editMyPasswordForm(@PathVariable("loginId") String loginId,
                                      @ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO,
                                      HttpServletRequest request) {
@@ -101,7 +114,7 @@ public class LoginMemberController {
         return "members/editMyPasswordForm";
     }
 
-    @PostMapping("/myInfo/passwordChange")
+    @PostMapping("/{loginId}/myInfo/passwordChange")
     public String editMyPassword(@PathVariable("loginId") String loginId,
                                  @Valid @ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO,
                                  BindingResult bindingResult,

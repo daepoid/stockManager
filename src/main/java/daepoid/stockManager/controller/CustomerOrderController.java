@@ -1,6 +1,7 @@
 package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
+import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
@@ -8,10 +9,7 @@ import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.dto.CustomerOrderMenuDTO;
 import daepoid.stockManager.dto.SelectedMenuDTO;
-import daepoid.stockManager.service.CartService;
-import daepoid.stockManager.service.CustomerService;
-import daepoid.stockManager.service.MenuService;
-import daepoid.stockManager.service.OrderService;
+import daepoid.stockManager.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -31,6 +29,7 @@ public class CustomerOrderController {
 
     private final OrderService orderService;
     private final CustomerService customerService;
+    private final MemberService memberService;
     private final MenuService menuService;
     private final CartService cartService;
 
@@ -50,7 +49,20 @@ public class CustomerOrderController {
      * @return
      */
     @GetMapping("/menus")
-    public String menuListForm(Model model) {
+    public String menuListForm(Model model, HttpServletRequest request) {
+
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Customer customer = customerService.findByName(loginId);
+        Member member = memberService.findMemberByLoginId(loginId);
+
+        if(customer == null && member == null) {
+            request.getSession(false).invalidate();
+            return "redirect:/";
+        }
+        if(customer != null) {
+            model.addAttribute("customerId", customer.getId());
+        }
+
         model.addAttribute("menus", menuService.findMenus());
         return "menus/menuList";
     }
@@ -71,11 +83,15 @@ public class CustomerOrderController {
         Integer count = 0;
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         Customer customer = customerService.findByName(loginId);
+        if(customer == null) {
+            request.getSession(false).invalidate();
+            return "redirect:/";
+        }
+        model.addAttribute("customerId", customer.getId());
 
         // 해당 메뉴가 이미 고객의 장바구니에 포함이 되어있는 경우
         if(customer.getCart().getNumberOfMenus().containsKey(menuId)) {
             count = customer.getCart().getNumberOfMenus().get(menuId);
-            model.addAttribute("customerId", customer.getId());
         }
         model.addAttribute("selectedMenuDTO", new SelectedMenuDTO(menuService.findMenu(menuId), count));
         return "menus/selectedMenuForm";
