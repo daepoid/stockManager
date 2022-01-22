@@ -1,6 +1,5 @@
 package daepoid.stockManager.dto.order;
 
-import daepoid.stockManager.domain.order.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,20 +10,17 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EditCustomerDTO {
-
-    @NotNull
-    private Long id;
+public class CreateCustomerDTO {
 
     @NotBlank
     private String name;
 
+    @NotBlank
+    private String password;
+
+    @NotBlank
+    private String passwordCheck;
+
     @NotNull
     private Integer tableNumber;
-
-    public EditCustomerDTO(Customer customer) {
-        this.id = customer.getId();
-        this.name = customer.getName();
-        this.tableNumber = customer.getTableNumber();
-    }
 }

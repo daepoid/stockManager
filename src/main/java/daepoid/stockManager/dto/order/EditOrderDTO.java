@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,16 +18,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class EditOrderDTO {
 
+    @NotBlank
     private String customerName;
 
+    @NotNull
     private Long customerId;
 
+    @NotBlank
     private String nameOfOrderMenu;
 
+    @NotNull
     private Integer numberOfOrderMenu;
 
+    @NotNull
     private LocalDateTime orderDateTime;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 

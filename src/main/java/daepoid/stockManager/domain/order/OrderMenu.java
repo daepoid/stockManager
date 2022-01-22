@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -17,18 +18,22 @@ public class OrderMenu {
     @Column(name="order_menu_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="menu_id")
     private Menu menu;
 
+    @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="order_id")
     private Order order;
 
     // 주문 당시 가격
+    @NotNull
     private Integer orderPrice;
 
     // 주문 수량
+    @NotNull
     private Integer orderCount;
 
     @Builder

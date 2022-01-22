@@ -3,6 +3,8 @@ package daepoid.stockManager.domain.recipe;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -20,7 +22,8 @@ public class Menu {
     @GeneratedValue
     @Column(name="menu_id")
     private Long id;
-    
+
+    @NotBlank
     private String name;
 
     @ManyToMany
@@ -31,6 +34,7 @@ public class Menu {
     )
     private Set<Recipe> foods = new HashSet<>();
 
+    @NotNull
     private Integer price;
 
     @ElementCollection
@@ -43,9 +47,11 @@ public class Menu {
     private Map<Long, Integer> numberOfFood = new HashMap<>();
 
     // 최근에 추가된 메뉴를 확인하기 위해
+    @NotNull
     private LocalDateTime addedDate;
 
     // 주문이 많이 된 음식을 찾기 위해
+    @NotNull
     private Integer orderCount = 0;
 
     @Builder

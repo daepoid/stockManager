@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,19 +25,23 @@ public class Recipe {
 
 //    // 레시피 번호
 //    @Column(unique = true)
+    @NotBlank
     private String recipeNumber;
 
     // 레시피 이름
     // 매장에서 사용되는 레시피가 무한하지 않고, 관리자가 등록을 하기 때문에 중복 검사를 하지 않는다.
+    @NotBlank
     private String name;
 
     // 판매 가격
+    @NotNull
     private Integer price;
 
     // 요리 무게
     private Double weight;
 
     // 접시 유형
+    @NotNull
     @Enumerated(EnumType.STRING)
     private DishType dishType;
 
@@ -44,8 +50,10 @@ public class Recipe {
     private List<Ingredient> ingredients = new ArrayList<>();
 
     // 레시피 생산 단가
+    @NotNull
     private Double cost = 0.0;
 
+    @NotNull
     private Double netIncome = 0.0;
 
     @ManyToMany(mappedBy="foods", cascade=CascadeType.ALL)

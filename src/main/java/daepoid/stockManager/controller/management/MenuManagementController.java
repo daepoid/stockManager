@@ -58,9 +58,10 @@ public class MenuManagementController {
 
         // menu 생성
         Menu menu = Menu.builder()
-                .name(createMenuDTO.getName())
-                .orderCount(0)
+                .name(createMenuDTO.getMenuName())
+                .price(0)
                 .addedDate(LocalDateTime.now())
+                .orderCount(0)
                 .build();
 
         Long savedId = menuService.saveMenu(menu);

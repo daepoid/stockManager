@@ -1,8 +1,10 @@
 package daepoid.stockManager.controller.management;
 
 import daepoid.stockManager.SessionConst;
+import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
+import daepoid.stockManager.dto.order.CreateOrderDTO;
 import daepoid.stockManager.dto.order.EditOrderDTO;
 import daepoid.stockManager.dto.member.OrderInfoDTO;
 import daepoid.stockManager.service.*;
@@ -42,7 +44,8 @@ public class OrderManagementController {
     }
 
     @GetMapping("/order")
-    public String createOrderForm(Model model,
+    public String createOrderForm(@ModelAttribute("createOrderDTO") CreateOrderDTO createOrderDTO,
+                                  Model model,
                                   HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         if(loginId != null) {
@@ -54,23 +57,26 @@ public class OrderManagementController {
     }
 
     @PostMapping("/order")
-    public String createOrder(@RequestParam("customerId") Long customerId,
-                              @RequestParam("menuId") Long menuId,
-                              @RequestParam("count") Integer count,
+    public String createOrder(@Valid @ModelAttribute("createOrderDTO") CreateOrderDTO createOrderDTO,
+                              BindingResult bindingResult,
                               Model model) {
 
-        Long cartId = customerService.findCustomer(customerId)
-                .getCart().getId();
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("customers", customerService.findCustomers());
+            model.addAttribute("menus", menuService.findMenus());
+            return "order-management/createOrderForm";
+        }
 
-        cartService.addMenu(cartId, menuId, count);
+        Customer customer = customerService.findCustomer(createOrderDTO.getCustomerId());
+        if(customer == null) {
+            return "order-management/createOrderForm";
+        }
 
-//        Order order = Order.builder()
-//                .customer(customerService.findCustomer(customerId))
-//                .orderDateTime(LocalDateTime.now())
-//                .orderStatus(OrderStatus.ORDERED)
-//                .build();
+        Long cartId = customer.getCart().getId();
 
-        orderService.order(customerId, menuId, count, LocalDateTime.now());
+        cartService.addMenu(cartId, createOrderDTO.getMenuId(), createOrderDTO.getCount());
+
+        orderService.order(createOrderDTO.getCustomerId(), createOrderDTO.getMenuId(), createOrderDTO.getCount(), LocalDateTime.now());
         return "redirect:/order-management";
     }
 
@@ -124,7 +130,6 @@ public class OrderManagementController {
             return "order-management/editOrderStatusForm";
         }
 
-        log.info("orderInfoDTO = {}", orderInfoDTO.getOrderStatus());
         orderService.changeOrderStatus(orderId, orderInfoDTO.getOrderStatus());
         return "redirect:/order-management";
     }

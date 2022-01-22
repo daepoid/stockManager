@@ -21,20 +21,23 @@ public class TestMenuDataInit {
         LocalDateTime now = LocalDateTime.now();
         menuService.saveMenu(Menu.builder()
                 .name("메뉴 1")
-                .orderCount(0)
+                .price(0)
                 .addedDate(now)
+                .orderCount(0)
                 .build());
 
         menuService.saveMenu(Menu.builder()
                 .name("메뉴 2")
-                .orderCount(0)
+                .price(0)
                 .addedDate(now)
+                .orderCount(0)
                 .build());
 
         menuService.saveMenu(Menu.builder()
                 .name("메뉴 3")
-                .orderCount(0)
+                .price(0)
                 .addedDate(now)
+                .orderCount(0)
                 .build());
     }
 }

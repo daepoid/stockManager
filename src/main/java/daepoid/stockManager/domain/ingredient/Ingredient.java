@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -21,26 +23,33 @@ public class Ingredient {
     // 재료 이름
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
+    @NotNull
     private Item item;
 
     // 재료 이름
+    @NotBlank
     private String name;
 
     // 재료 양
-    private Integer quantity;
+    @NotNull
+    private Integer quantity = 0;
 
     // 재료 양 단위
-    private UnitType unitType;
+    @NotNull
+    private UnitType unitType = UnitType.kg;
 
     // 로스율에 기반한 단위 가격
-    private Double unitPrice;
+    @NotNull
+    private Double unitPrice = 0.0;
 
     // 로스율
-    private Double loss;
+    @NotNull
+    private Double loss = 0.0;
 
     // 투입 재료 가격 => 재료 양 * 단위 가격
     // 사용하지 않을 수 있음
-    private Double cost;
+    @NotNull
+    private Double cost = 0.0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
@@ -52,11 +61,14 @@ public class Ingredient {
                       Double unitPrice, Double loss, Double cost, Recipe recipe) {
         this.item = item;
         this.name = name;
+
         this.quantity = quantity;
         this.unitType = unitType;
+
         this.unitPrice = unitPrice;
         this.loss = loss;
         this.cost = cost;
+
         this.recipe = recipe;
     }
 

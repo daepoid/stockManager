@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,10 @@ public class Order {
     @OneToMany(mappedBy="order", cascade=CascadeType.ALL)
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
+    @NotNull
     private LocalDateTime orderDateTime;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 

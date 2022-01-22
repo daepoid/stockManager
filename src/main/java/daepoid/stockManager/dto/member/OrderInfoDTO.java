@@ -1,31 +1,35 @@
 package daepoid.stockManager.dto.member;
 
-import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.order.OrderStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderInfoDTO {
 
+    @NotNull
     private Long orderId;
 
+    @NotBlank
     private String customerName;
 
+    @NotNull
     private Integer tableNumber;
 
+    @NotNull
     private LocalDateTime orderDateTime;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 

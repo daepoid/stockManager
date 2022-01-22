@@ -20,6 +20,7 @@ import java.util.List;
 public class EditRecipeDTO {
 
     // IngredientController에서 사용하기 위해 생성
+    @NotNull
     private Long id;
 
     @NotBlank
@@ -41,8 +42,10 @@ public class EditRecipeDTO {
 
     private List<Ingredient> ingredients = new ArrayList<>();
 
+    @NotNull
     private Double cost = 0.0;
 
+    @NotNull
     private Double netIncome = 0.0;
 
     public EditRecipeDTO(Recipe recipe) {

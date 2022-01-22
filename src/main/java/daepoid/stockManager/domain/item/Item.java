@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,21 +21,27 @@ public class Item {
     private Long id;
 
     // 재료 이름
+    @NotBlank
     private String name;
 
     // 재료 특성
+    @NotNull
     private ItemType itemType;
 
     // 재료 개당 가격 평균
+    @NotNull
     private Integer price;
 
     // 수량
+    @NotNull
     private Double quantity;
 
     // 단위 (g, ml, ...)
+    @NotNull
     private UnitType unitType;
 
     // 패키지 수량 (개, 박스, 통)
+    @NotNull
     private Integer packageCount;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
@@ -50,11 +58,16 @@ public class Item {
     public Item(String name, ItemType itemType, Integer price, Double quantity,
                 UnitType unitType, Integer packageCount, List<Ingredient> ingredients) {
         this.name = name;
+
         this.itemType = itemType;
+
         this.price = price;
+
         this.quantity = quantity;
         this.unitType = unitType;
+
         this.packageCount = packageCount;
+
         this.ingredients = ingredients;
     }
 

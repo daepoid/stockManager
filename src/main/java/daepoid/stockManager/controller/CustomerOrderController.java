@@ -166,6 +166,11 @@ public class CustomerOrderController {
     public String customerOrder(@PathVariable("customerId") Long customerId,
                                 RedirectAttributes redirectAttributes) {
 
+        Cart cart = customerService.findCustomer(customerId).getCart();
+        if(cart == null || cart.getNumberOfMenus().size() < 1) {
+            return "orders/customerCartForm";
+        }
+
         orderService.orders(customerId);
 
         cartService.clearCart(customerService.findCustomer(customerId).getCart().getId());

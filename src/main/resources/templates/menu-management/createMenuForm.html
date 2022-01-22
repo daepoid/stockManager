@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
-<head th:replace="fragments/header::header" >
+<head th:replace="fragments/header::header">
     <title>메뉴 추가</title>
 </head>
 <body>
@@ -10,8 +10,8 @@
 <div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
     <form th:action="@{/menu-management/new}" th:object="${createMenuDTO}" method="post">
         <div class="form-group">
-            <label th:for="name">메뉴 이름</label>
-            <input type="text" th:field="*{name}" class="form-control"
+            <label th:for="menuName">메뉴 이름</label>
+            <input type="text" th:field="*{menuName}" class="form-control"
                    placeholder="메뉴 이름을 입력하세요">
         </div>
         <hr class="my-4">

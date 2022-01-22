@@ -7,8 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,10 +28,12 @@ public class Duty {
     private Long id;
 
     // 직무 이름
+    @NotBlank
     private String name;
 
     // 직무 인센티브
-    private Double incentive;
+    @NotNull
+    private Double incentive = 0.0;
 
     // 직무 타입 (주방, 홀, 재고, 권한)
 

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +21,19 @@ public class Customer {
     @Column(name="customer_id")
     private Long id;
 
+    @NotBlank
+    // final ?
     private String name;
 
+    @NotBlank
     private String password;
 
+    @NotNull
+    // final ?
+    // recipeNumber처럼 String 타입으로 생성해야 하는가?
     private Integer tableNumber;
 
+    @NotNull
     @OneToOne(fetch=FetchType.LAZY)
     private Cart cart;
 
