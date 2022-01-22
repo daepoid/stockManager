@@ -3,8 +3,8 @@ package daepoid.stockManager.controller;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.dto.CreateIngredientDTO;
-import daepoid.stockManager.dto.EditIngredientDTO;
+import daepoid.stockManager.dto.item.CreateIngredientDTO;
+import daepoid.stockManager.dto.item.EditIngredientDTO;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.ItemService;
 import daepoid.stockManager.service.RecipeService;
@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @Slf4j
 @Controller

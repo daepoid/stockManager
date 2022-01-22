@@ -2,8 +2,7 @@ package daepoid.stockManager.inteceptor;
 
 import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.argumentresolver.Login;
-import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.dto.LoginMemberDTO;
+import daepoid.stockManager.dto.member.LoginMemberDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

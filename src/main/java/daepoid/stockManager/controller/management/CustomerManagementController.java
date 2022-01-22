@@ -1,11 +1,8 @@
 package daepoid.stockManager.controller.management;
 
 import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.domain.order.Customer;
-import daepoid.stockManager.dto.EditCustomerDTO;
+import daepoid.stockManager.dto.order.EditCustomerDTO;
 import daepoid.stockManager.service.CustomerService;
-import daepoid.stockManager.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

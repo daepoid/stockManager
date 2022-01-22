@@ -1,4 +1,4 @@
-package daepoid.stockManager.dto;
+package daepoid.stockManager.dto.duty;
 
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.Member;

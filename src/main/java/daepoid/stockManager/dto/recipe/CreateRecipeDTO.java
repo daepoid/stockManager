@@ -1,4 +1,4 @@
-package daepoid.stockManager.dto;
+package daepoid.stockManager.dto.recipe;
 
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;

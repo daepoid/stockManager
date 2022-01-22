@@ -1,8 +1,8 @@
 package daepoid.stockManager.controller;
 
 import daepoid.stockManager.domain.item.Item;
-import daepoid.stockManager.dto.CreateItemDTO;
-import daepoid.stockManager.dto.EditItemDTO;
+import daepoid.stockManager.dto.item.CreateItemDTO;
+import daepoid.stockManager.dto.item.EditItemDTO;
 import daepoid.stockManager.service.ItemService;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package daepoid.stockManager.dto;
+package daepoid.stockManager.dto.order;
 
 import daepoid.stockManager.domain.recipe.Menu;
 import lombok.AllArgsConstructor;

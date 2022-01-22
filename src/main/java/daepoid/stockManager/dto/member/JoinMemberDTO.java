@@ -1,4 +1,4 @@
-package daepoid.stockManager.dto;
+package daepoid.stockManager.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

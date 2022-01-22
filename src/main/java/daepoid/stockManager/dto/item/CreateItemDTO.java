@@ -1,4 +1,4 @@
-package daepoid.stockManager.dto;
+package daepoid.stockManager.dto.item;
 
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;

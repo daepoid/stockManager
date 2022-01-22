@@ -3,7 +3,7 @@ package daepoid.stockManager.inteceptor;
 import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.dto.LoginMemberDTO;
+import daepoid.stockManager.dto.member.LoginMemberDTO;
 import daepoid.stockManager.service.MemberService;
 
 import lombok.RequiredArgsConstructor;

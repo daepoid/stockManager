@@ -1,4 +1,4 @@
-package daepoid.stockManager.dto;
+package daepoid.stockManager.dto.member;
 
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
