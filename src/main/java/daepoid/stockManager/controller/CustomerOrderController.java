@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Controller
@@ -125,13 +127,56 @@ public class CustomerOrderController {
 
         //==loginCustomer.getCart().addMenu()==//
 
-
         //==cartService 사용==//
         // cart는 customer가 생성되면서 동시에 같이 생성되어야 한다.
         Cart cart = loginCustomer.getCart();
         cartService.addMenu(cart.getId(), menuId, selectedMenuDTO.getCount());
         return isCreated ? "redirect:/customers/" + loginCustomer.getId() + "/order" : "redirect:/menus";
     }
+
+    @GetMapping("/menus/popular")
+    public String popularMenuForm(Model model, HttpServletRequest request) {
+
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Customer customer = customerService.findByName(loginId);
+        Member member = memberService.findMemberByLoginId(loginId);
+
+        if(customer == null && member == null) {
+            request.getSession(false).invalidate();
+            return "redirect:/";
+        }
+        if(customer != null) {
+            model.addAttribute("customerId", customer.getId());
+        }
+
+        List<Menu> menuList = menuService.findMenus().stream()
+                .sorted(Comparator.comparing(Menu::getOrderCount).reversed())
+                .collect(Collectors.toList());
+        model.addAttribute("menus", menuList);
+        return "menus/popularMenuForm";
+    }
+
+    @GetMapping("/menus/new-arrivals")
+    public String newArrivalsMenuForm(Model model, HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Customer customer = customerService.findByName(loginId);
+        Member member = memberService.findMemberByLoginId(loginId);
+
+        if(customer == null && member == null) {
+            request.getSession(false).invalidate();
+            return "redirect:/";
+        }
+        if(customer != null) {
+            model.addAttribute("customerId", customer.getId());
+        }
+
+        List<Menu> menuList = menuService.findMenus().stream()
+                .sorted(Comparator.comparing(Menu::getAddedDate).reversed())
+                .collect(Collectors.toList());
+        model.addAttribute("menus", menuList);
+        return "menus/newArrivalsMenuForm";
+    }
+
 
     /**
      * 주문 하기
