@@ -16,34 +16,51 @@
                        th:text="${err}">전체 오류 메시지</p>
                 </div>
                 <div>
-                    <label for="loginId">로그인 ID</label>
-                    <input type="text" id="loginId" th:field="*{loginId}"
-                           class="form-control" th:errorclass="field-error">
-                    <div class="field-error" th:errors="*{loginId}"></div>
+                    <div>
+                        <label for="loginId">로그인 ID</label>
+                        <input type="text" id="loginId" th:field="*{loginId}"
+                               class="form-control" th:errorclass="field-error">
+                        <div class="field-error" th:errors="*{loginId}"></div>
+                    </div>
+                    <div>
+                        <button class="idCheck" type="button" id="idCheck" onclick="fn_idCheck();" value="N">중복 확인</button>
+                    </div>
                 </div>
                 <div>
-                    <label for="password">비밀번호</label>
-                    <input type="password" id="password" th:field="*{password}"
-                           class="form-control" th:errorclass="field-error">
-                    <div class="field-error" th:errors="*{password}"></div>
+                    <div>
+                        <label for="password">비밀번호</label>
+                        <input type="password" id="password" th:field="*{password}"
+                               class="form-control" th:errorclass="field-error">
+                        <div class="field-error" th:errors="*{password}"></div>
+                    </div>
+                    <div>
+                        <label for="passwordCheck">비밀번호 확인</label>
+                        <input type="password" id="passwordCheck" th:field="*{passwordCheck}"
+                               class="form-control" th:errorclass="field-error">
+                        <div class="field-error" th:errors="*{passwordCheck}"></div>
+                    </div>
+                    <div>
+                        <button class="pwCheck" type="button" id="pwCheck" onclick="fn_pwCheck();" value="N">비밀번호 확인</button>
+                    </div>
                 </div>
                 <div>
-                    <label for="passwordCheck">비밀번호 확인</label>
-                    <input type="password" id="passwordCheck" th:field="*{passwordCheck}"
-                           class="form-control" th:errorclass="field-error">
-                    <div class="field-error" th:errors="*{passwordCheck}"></div>
+                    <div>
+                        <label for="name">이름</label>
+                        <input type="text" id="name" th:field="*{name}"
+                               class="form-control" th:errorclass="field-error">
+                        <div class="field-error" th:errors="*{name}"></div>
+                    </div>
                 </div>
                 <div>
-                    <label for="name">이름</label>
-                    <input type="text" id="name" th:field="*{name}"
-                           class="form-control" th:errorclass="field-error">
-                    <div class="field-error" th:errors="*{name}"></div>
-                </div>
-                <div>
-                    <label for="phoneNumber">전화번호</label>
-                    <input type="text" id="phoneNumber" th:field="*{phoneNumber}"
-                           class="form-control" th:errorclass="field-error">
-                    <div class="field-error" th:errors="*{phoneNumber}"></div>
+                    <div>
+                        <label for="phoneNumber">전화번호</label>
+                        <input type="text" id="phoneNumber" th:field="*{phoneNumber}"
+                               class="form-control" th:errorclass="field-error">
+                        <div class="field-error" th:errors="*{phoneNumber}"></div>
+                    </div>
+                    <div>
+                        <button class="phoneCheck" type="button" id="phoneCheck" onclick="fn_phoneCheck();" value="N">전화번호 확인</button>
+                    </div>
                 </div>
                 <hr class="my-4">
                 <div class="row">
@@ -61,4 +78,60 @@
             </form>
         </div> <!-- /container -->
     </body>
+    <script>
+        function fn_idCheck() {
+            $.ajax({
+                url: "/members/new/idCheck",
+                type: "POST",
+                dataType: "JSON",
+                data: {"loginId" : $("#loginId").val()},
+                success: function(data) {
+                    if(data) {
+                        alert("중복된 아이디입니다.");
+                    } else {
+                        $("#idCheck").attr("value", "Y")
+                        alert("사용 가능한 아이디입니다.");
+                    }
+                }
+            })
+        }
+    </script>
+    <script>
+        function fn_pwCheck() {
+            $.ajax({
+                url: "/members/new/pwCheck",
+                type: "POST",
+                dataType: "JSON",
+                data: {"password": $("#password").val(),
+                    "passwordCheck": $("#passwordCheck").val()
+                },
+                success: function(data) {
+                    if(data) {
+                        alert("비밀번호가 일치합니다.");
+                    } else {
+                        $("#pwCheck").attr("value", "Y")
+                        alert("비밀번호가 올바르지 않습니다.");
+                    }
+                }
+            })
+        }
+    </script>
+    <script>
+        function fn_phoneCheck() {
+            $.ajax({
+                url: "/members/new/phoneCheck",
+                type: "POST",
+                dataType: "JSON",
+                data: {"phoneNumber": $("#phoneNumber").val()},
+                success: function(data) {
+                    if(data) {
+                        alert("올바른 전화번호입니다.");
+                    } else {
+                        $("#phoneCheck").attr("value", "Y")
+                        alert("전화번호가 올바르지 않습니다.");
+                    }
+                }
+            })
+        }
+    </script>
 </html>

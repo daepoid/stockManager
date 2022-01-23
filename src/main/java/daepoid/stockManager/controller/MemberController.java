@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -68,6 +69,10 @@ public class MemberController {
             return "members/joinMemberForm";
         }
 
+        if(!joinMemberDTO.getPhoneNumber().matches("^(01[0-1|6-9])-?(\\d{3,4})-?(\\d{4})$")) {
+            return "members/joinMemberForm";
+        }
+
         Member member = Member.builder()
                 .loginId(joinMemberDTO.getLoginId())
                 .name(joinMemberDTO.getName())
@@ -81,6 +86,29 @@ public class MemberController {
         Long memberId = memberService.join(member);
         log.info("회원가입 성공 / 아이디: {} / 이름: {} / 전화번호: {}", member.getLoginId(), member.getName(), member.getPhoneNumber());
         return "redirect:/";
+    }
+
+
+    @ResponseBody
+    @PostMapping("/new/idCheck")
+    public boolean idCheck(String loginId) {
+        return memberService.findMemberByLoginId(loginId) != null;
+    }
+
+
+    @ResponseBody
+    @PostMapping("/new/pwCheck")
+    public boolean pwCheck(String password, String passwordCheck) {
+        if(password == null || password.equals("")){
+            return false;
+        }
+        return Objects.requireNonNull(password).equals(passwordCheck);
+    }
+
+    @ResponseBody
+    @PostMapping("/new/phoneCheck")
+    public boolean phoneCheck(String phoneNumber) {
+        return phoneNumber.matches("^(01[0-1|6-9])-?(\\d{3,4})-?(\\d{4})$");
     }
 
     /**

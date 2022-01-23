@@ -55,7 +55,7 @@
               내 정보
             </a>
           </form>
-          <form class="d-flex" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')">
+          <form class="d-flex" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME', 'ROLE_UNDEFINED')">
             <a class="btn btn-outline-dark" href="#" th:href="@{/logout}">
               logout
             </a>

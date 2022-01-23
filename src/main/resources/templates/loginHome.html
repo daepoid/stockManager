@@ -10,7 +10,7 @@
         <!-- Navigation-->
         <div sec:authorize="hasAnyRole('ROLE_CUSTOMER')"
              th:replace="fragments/customerNavigation::navigation(${customerId}, 'home')"></div>
-        <div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')"
+        <div sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME', 'ROLE_UNDEFINED')"
              th:replace="fragments/memberNavigation::navigation(tab='home')"></div>
 
         <!-- Header-->
