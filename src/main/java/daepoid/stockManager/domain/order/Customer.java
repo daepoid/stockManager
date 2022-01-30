@@ -20,28 +20,30 @@ public class Customer {
     @GeneratedValue
     @Column(name="customer_id")
     private Long id;
-
-    @NotBlank
+    
     // final ?
+    @NotBlank
+    @Column(unique=true)
     private String name;
 
     @NotBlank
     private String password;
 
     @NotNull
+    @Column(unique=true)
     // final ?
     // recipeNumber처럼 String 타입으로 생성해야 하는가?
-    private Integer tableNumber;
+    private int tableNumber;
 
     @NotNull
     @OneToOne(fetch=FetchType.LAZY)
     private Cart cart;
 
-    @OneToMany(mappedBy="customer")
+    @OneToMany(mappedBy="customer", cascade=CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
     @Builder
-    public Customer(String name, String password, Integer tableNumber, Cart cart, List<Order> orders) {
+    public Customer(String name, String password, int tableNumber, Cart cart, List<Order> orders) {
         this.name = name;
         this.password = password;
         this.tableNumber = tableNumber;
@@ -61,7 +63,7 @@ public class Customer {
         this.password = password;
     }
 
-    public void changeTableNumber(Integer tableNumber) {
+    public void changeTableNumber(int tableNumber) {
         this.tableNumber = tableNumber;
     }
 

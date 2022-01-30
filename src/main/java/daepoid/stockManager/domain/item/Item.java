@@ -30,11 +30,11 @@ public class Item {
 
     // 재료 개당 가격 평균
     @NotNull
-    private Integer price;
+    private int price;
 
     // 수량
     @NotNull
-    private Double quantity;
+    private double quantity;
 
     // 단위 (g, ml, ...)
     @NotNull
@@ -42,7 +42,7 @@ public class Item {
 
     // 패키지 수량 (개, 박스, 통)
     @NotNull
-    private Integer packageCount;
+    private int packageCount;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<Ingredient> ingredients = new ArrayList<>();
@@ -55,8 +55,8 @@ public class Item {
 
     //==생성 메서드==//
     @Builder
-    public Item(String name, ItemType itemType, Integer price, Double quantity,
-                UnitType unitType, Integer packageCount, List<Ingredient> ingredients) {
+    public Item(String name, ItemType itemType, int price, double quantity,
+                UnitType unitType, int packageCount, List<Ingredient> ingredients) {
         this.name = name;
 
         this.itemType = itemType;
@@ -85,11 +85,11 @@ public class Item {
         this.itemType = itemType;
     }
 
-    public void changePrice(Integer price) {
+    public void changePrice(int price) {
         this.price = price;
     }
 
-    public void changeQuantity(Double quantity) {
+    public void changeQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -97,7 +97,7 @@ public class Item {
         this.unitType = unitType;
     }
 
-    public void changePackageCount(Integer packageCount) {
+    public void changePackageCount(int packageCount) {
         this.packageCount = packageCount;
     }
 

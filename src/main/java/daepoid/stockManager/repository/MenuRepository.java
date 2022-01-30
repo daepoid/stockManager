@@ -29,9 +29,9 @@ public interface MenuRepository {
 
     void addFood(Long menuId, Recipe food, Integer numberOfFood);
 
-    void addOrderCount(Long menuId, Integer newOrderCount);
+    void addOrderCount(Long menuId, int newOrderCount);
 
-    void cancelOrderCount(Long menuId, Integer cancelOrderCount);
+    void cancelOrderCount(Long menuId, int cancelOrderCount);
 
     //==삭제 로직==//
     void removeFood(Long menuId, Recipe food);

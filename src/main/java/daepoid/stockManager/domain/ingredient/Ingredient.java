@@ -32,7 +32,7 @@ public class Ingredient {
 
     // 재료 양
     @NotNull
-    private Integer quantity = 0;
+    private int quantity = 0;
 
     // 재료 양 단위
     @NotNull
@@ -40,16 +40,16 @@ public class Ingredient {
 
     // 로스율에 기반한 단위 가격
     @NotNull
-    private Double unitPrice = 0.0;
+    private double unitPrice = 0.0;
 
     // 로스율
     @NotNull
-    private Double loss = 0.0;
+    private double loss = 0.0;
 
     // 투입 재료 가격 => 재료 양 * 단위 가격
     // 사용하지 않을 수 있음
     @NotNull
-    private Double cost = 0.0;
+    private double cost = 0.0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
@@ -57,8 +57,8 @@ public class Ingredient {
 
 
     @Builder
-    public Ingredient(Item item, String name, Integer quantity, UnitType unitType,
-                      Double unitPrice, Double loss, Double cost, Recipe recipe) {
+    public Ingredient(Item item, String name, int quantity, UnitType unitType,
+                      double unitPrice, double loss, double cost, Recipe recipe) {
         this.item = item;
         this.name = name;
 
@@ -78,7 +78,7 @@ public class Ingredient {
         return name;
     }
 
-    public Double getCost() {
+    public double getCost() {
         updateCost();
         return this.cost;
     }
@@ -109,7 +109,7 @@ public class Ingredient {
         }
     }
 
-    public void changeQuantity(Integer quantity) {
+    public void changeQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -117,15 +117,15 @@ public class Ingredient {
         this.unitType = unitType;
     }
 
-    public void changeUnitPrice(Double unitPrice) {
+    public void changeUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public void changeLoss(Double loss) {
+    public void changeLoss(double loss) {
         this.loss = loss;
     }
 
-    public void changeCost(Double cost) {
+    public void changeCost(double cost) {
         this.cost = cost;
     }
 

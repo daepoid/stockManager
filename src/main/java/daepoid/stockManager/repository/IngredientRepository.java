@@ -19,11 +19,11 @@ public interface IngredientRepository {
 
     //==수정 메서드==//
     void changeName(Long ingredientId, String name);
-    void changeQuantity(Long ingredientId, Integer quantity);
+    void changeQuantity(Long ingredientId, int quantity);
     void changeUnitType(Long ingredientId, UnitType unitType);
-    void changeUnitPrice(Long ingredientId, Double unitPrice);
-    void changeLoss(Long ingredientId, Double loss);
-    void changeCost(Long ingredientId, Double cost);
+    void changeUnitPrice(Long ingredientId, double unitPrice);
+    void changeLoss(Long ingredientId, double loss);
+    void changeCost(Long ingredientId, double cost);
 
     void updateCost(Long ingredientId);
 

@@ -12,6 +12,6 @@ public class CreateDutyDTO {
     private String name;
 
     @NotNull
-    private Double incentive;
+    private double incentive;
 
 }

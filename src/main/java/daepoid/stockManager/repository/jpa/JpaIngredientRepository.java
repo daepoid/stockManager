@@ -61,7 +61,7 @@ public class JpaIngredientRepository implements IngredientRepository {
     }
 
     @Override
-    public void changeQuantity(Long ingredientId, Integer quantity) {
+    public void changeQuantity(Long ingredientId, int quantity) {
         em.find(Ingredient.class, ingredientId).changeQuantity(quantity);
     }
 
@@ -72,18 +72,18 @@ public class JpaIngredientRepository implements IngredientRepository {
     }
 
     @Override
-    public void changeUnitPrice(Long ingredientId, Double unitPrice) {
+    public void changeUnitPrice(Long ingredientId, double unitPrice) {
         em.find(Ingredient.class, ingredientId).changeUnitPrice(unitPrice);
     }
 
     @Override
-    public void changeLoss(Long ingredientId, Double loss) {
+    public void changeLoss(Long ingredientId, double loss) {
         em.find(Ingredient.class, ingredientId).changeLoss(loss);
     }
 
     @Override
-    public void changeCost(Long ingredientId, Double cost) {
-        em.find(Ingredient.class, ingredientId).changeLoss(cost);
+    public void changeCost(Long ingredientId, double cost) {
+        em.find(Ingredient.class, ingredientId).changeCost(cost);
     }
 
     @Override

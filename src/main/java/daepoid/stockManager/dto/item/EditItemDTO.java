@@ -28,15 +28,15 @@ public class EditItemDTO {
 
     // 재료 가격 평균
     @NotNull
-    private Integer price;
+    private int price;
 
     // 패키지 수량
     @NotNull
-    private Integer packageCount;
+    private int packageCount;
 
     // 재고 수량
     @NotNull
-    private Double quantity;
+    private double quantity;
 
     // 재고 수량 단위 (g, ml, ...)
     @NotNull

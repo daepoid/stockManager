@@ -76,7 +76,8 @@ public class OrderManagementController {
 
         cartService.addMenu(cartId, createOrderDTO.getMenuId(), createOrderDTO.getCount());
 
-        orderService.order(createOrderDTO.getCustomerId(), createOrderDTO.getMenuId(), createOrderDTO.getCount(), LocalDateTime.now());
+        orderService.orders(createOrderDTO.getCustomerId());
+//        orderService.order(createOrderDTO.getCustomerId(), createOrderDTO.getMenuId(), createOrderDTO.getCount(), LocalDateTime.now());
         return "redirect:/order-management";
     }
 

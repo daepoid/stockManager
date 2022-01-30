@@ -65,7 +65,7 @@ public class MemoryIngredientRepository implements IngredientRepository {
     }
 
     @Override
-    public void changeQuantity(Long ingredientId, Integer quantity) {
+    public void changeQuantity(Long ingredientId, int quantity) {
         store.get(ingredientId).changeQuantity(quantity);
     }
 
@@ -76,19 +76,19 @@ public class MemoryIngredientRepository implements IngredientRepository {
     }
 
     @Override
-    public void changeUnitPrice(Long ingredientId, Double unitPrice) {
+    public void changeUnitPrice(Long ingredientId, double unitPrice) {
         store.get(ingredientId).changeUnitPrice(unitPrice);
 
     }
 
     @Override
-    public void changeLoss(Long ingredientId, Double loss) {
+    public void changeLoss(Long ingredientId, double loss) {
         store.get(ingredientId).changeLoss(loss);
 
     }
 
     @Override
-    public void changeCost(Long ingredientId, Double cost) {
+    public void changeCost(Long ingredientId, double cost) {
         store.get(ingredientId).changeCost(cost);
 
     }

@@ -27,7 +27,7 @@ public class CustomerService {
 
     //==조회 로직==//
     public Customer findCustomer(Long customerId) {
-        return customerRepository.findById(customerId).orElse(null);
+        return customerRepository.findById(customerId);
     }
 
     public List<Customer> findCustomers() {
@@ -38,10 +38,6 @@ public class CustomerService {
         return customerRepository.findByName(name);
     }
 
-    public List<Customer> findByOrder(Order order) {
-        return customerRepository.findByOrder(order);
-    }
-
     //==수정 로직==//
     @Transactional
     public void changeName(Long customerId, String name) {
@@ -49,7 +45,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public void changeTableNumber(Long customerId, Integer tableNumber) {
+    public void changeTableNumber(Long customerId, int tableNumber) {
         customerRepository.changeTableNumber(customerId, tableNumber);
     }
 

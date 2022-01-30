@@ -46,11 +46,11 @@ public class ItemService {
         return itemRepository.findByItemType(itemType);
     }
 
-    public List<Item> findByPackageCount(Integer packageCount) {
+    public List<Item> findByPackageCount(int packageCount) {
         return itemRepository.findByPackageCount(packageCount);
     }
 
-    public List<Item> findByQuantity(Double quantity) {
+    public List<Item> findByQuantity(double quantity) {
         return itemRepository.findByQuantity(quantity);
     }
 
@@ -70,17 +70,17 @@ public class ItemService {
     }
 
     @Transactional
-    public void changePrice(Long itemId, Integer price) {
+    public void changePrice(Long itemId, int price) {
         itemRepository.changePrice(itemId, price);
     }
 
     @Transactional
-    public void changePackageCount(Long itemId, Integer packageCount) {
+    public void changePackageCount(Long itemId, int packageCount) {
         itemRepository.changePackageCount(itemId, packageCount);
     }
     
     @Transactional
-    public void changeQuantity(Long itemId, Double quantity) {
+    public void changeQuantity(Long itemId, double quantity) {
         itemRepository.changeQuantity(itemId, quantity);
     }
 

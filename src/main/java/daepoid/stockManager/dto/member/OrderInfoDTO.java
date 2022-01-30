@@ -24,7 +24,7 @@ public class OrderInfoDTO {
     private String customerName;
 
     @NotNull
-    private Integer tableNumber;
+    private int tableNumber;
 
     @NotNull
     private LocalDateTime orderDateTime;

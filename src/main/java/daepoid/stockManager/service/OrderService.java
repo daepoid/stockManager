@@ -1,9 +1,6 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.order.Customer;
-import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.domain.order.OrderMenu;
-import daepoid.stockManager.domain.order.OrderStatus;
+import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.repository.CustomerRepository;
 import daepoid.stockManager.repository.OrderRepository;
@@ -31,40 +28,11 @@ public class OrderService {
     private final JpaCustomerRepository customerRepository;
     private final JpaMenuRepository menuRepository;
 
-//    @Transactional
-//    public Long order(Long customerId, Long menuId, Integer count) {
-//        // 엔티티 조회
-//        Customer customer = customerRepository.findById(customerId);
-//        Menu menu = menuRepository.findById(menuId);
-//
-//        // 주문 메뉴 단일 생성
-//        OrderMenu orderMenu = OrderMenu.builder()
-//                .menu(menu)
-//                .orderPrice(menu.getPrice())
-//                .orderCount(count)
-//                .build();
-//
-//        List<OrderMenu> orderMenus = new ArrayList<>();
-//        orderMenus.add(orderMenu);
-//
-//        // 주문 생성
-//        Order order = Order.builder()
-//                .customer(customer)
-//                .orderMenus(orderMenus)
-//                .orderDateTime(LocalDateTime.now())
-//                .orderStatus(OrderStatus.ORDERED)
-//                .build();
-//
-//        // 주문 저장
-//        orderRepository.save(order);
-//        return order.getId();
-//    }
-
     //==비즈니스 로직==//
     @Transactional
-    public Long order(Long customerId, Long menuId, Integer count, LocalDateTime orderDateTime) {
+    public Long order(Long customerId, Long menuId, int count, LocalDateTime orderDateTime) {
         // 엔티티 조회
-        Customer customer = customerRepository.findById(customerId).orElse(null);
+        Customer customer = customerRepository.findById(customerId);
         Menu menu = menuRepository.findById(menuId);
 
         // 주문 메뉴 단일 생성
@@ -92,10 +60,20 @@ public class OrderService {
     }
 
     @Transactional
-    public void orders(Long customerId) {
+    public boolean orders(Long customerId) {
+
         // 엔티티 조회
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        Map<Long, Integer> numberOfMenus = customer.getCart().getNumberOfMenus();
+        Customer customer = customerRepository.findById(customerId);
+        if(customer == null) {
+            return false;
+        }
+
+        Cart cart = customer.getCart();
+        if(cart == null || cart.getNumberOfMenus().size() < 1) {
+            return false;
+        }
+
+        Map<Long, Integer> numberOfMenus = cart.getNumberOfMenus();
         LocalDateTime orderDateTime = LocalDateTime.now();
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -104,29 +82,34 @@ public class OrderService {
             Menu menu = menuRepository.findById(menuId);
 
             // 주문 메뉴 단일 생성
-            OrderMenu orderMenu = OrderMenu.builder()
-                    .menu(menu)
-                    .orderPrice(menu.getPrice())
-                    .orderCount(numberOfMenus.get(menuId))
-                    .build();
-
-            orderMenus.add(orderMenu);
+            orderMenus.add(
+                    OrderMenu.builder()
+                            .menu(menu)
+                            .orderPrice(menu.getPrice())
+                            .orderCount(numberOfMenus.get(menuId))
+                            .build()
+            );
         }
 
-        // 주문 생성
-        Order order = Order.builder()
-                .customer(customer)
-                .orderMenus(orderMenus)
-                .orderDateTime(orderDateTime)
-                .orderStatus(OrderStatus.ORDERED)
-                .build();
+        // 주문 생성 및 저장
+        orderRepository.save(
+                Order.builder()
+                        .customer(customer)
+                        .orderMenus(orderMenus)
+                        .orderDateTime(orderDateTime)
+                        .orderStatus(OrderStatus.ORDERED)
+                        .build()
+        );
 
-        // 주문 저장
-        orderRepository.save(order);
+        // 주문 환료 후 장바구니 비우기
+        cart.clearCart();
 
+        // 주문 수량 카운팅
         for (OrderMenu orderMenu : orderMenus) {
             menuRepository.addOrderCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
         }
+
+        return true;
     }
 
     @Transactional

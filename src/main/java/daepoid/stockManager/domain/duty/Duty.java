@@ -33,7 +33,7 @@ public class Duty {
 
     // 직무 인센티브
     @NotNull
-    private Double incentive = 0.0;
+    private double incentive = 0.0;
 
     // 직무 타입 (주방, 홀, 재고, 권한)
 
@@ -48,7 +48,7 @@ public class Duty {
 
     //==생성 메서드(빌더)==//
     @Builder
-    public Duty(String name, Double incentive, Set<Member> members) {
+    public Duty(String name, double incentive, Set<Member> members) {
         this.name = name;
         this.incentive = incentive;
         this.members = members;
@@ -76,7 +76,7 @@ public class Duty {
         this.members.remove(member);
     }
 
-    public void changeDutyIncentive(Double incentive) {
+    public void changeDutyIncentive(double incentive) {
         this.incentive = incentive;
     }
 }

@@ -21,10 +21,10 @@ public class CustomerOrderMenuDTO {
     private String nameOfOrderMenu;
 
     @NotNull
-    private Integer numberOfOrderMenu;
+    private int numberOfOrderMenu;
 
     @NotNull
-    private Integer orderPrice;
+    private int orderPrice;
 
     @NotNull
     private LocalDateTime orderedDateTime;

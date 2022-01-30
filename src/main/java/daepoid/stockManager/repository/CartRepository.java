@@ -14,7 +14,7 @@ public interface CartRepository {
 
     List<Cart> findAll();
 
-    void addMenu(Long cartId, Long menuId, Integer count);
+    void addMenu(Long cartId, Long menuId, int count);
 
     void addMenus(Long cartId, Map<Long, Integer> menus);
 

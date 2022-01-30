@@ -48,14 +48,14 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public List<Recipe> findByPrice(Integer price) {
+    public List<Recipe> findByPrice(int price) {
         return em.createQuery("select r from Recipe r where r.price = :price", Recipe.class)
                 .setParameter("price", price)
                 .getResultList();
     }
 
     @Override
-    public List<Recipe> findByWeight(Double weight) {
+    public List<Recipe> findByWeight(double weight) {
         return em.createQuery("select r from Recipe r where r.weight = :weight", Recipe.class)
                 .setParameter("weight", weight)
                 .getResultList();
@@ -90,13 +90,13 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public void changePrice(Long recipeId, Integer price) {
+    public void changePrice(Long recipeId, int price) {
         em.find(Recipe.class, recipeId)
                 .changePrice(price);
     }
 
     @Override
-    public void changeWeight(Long recipeId, Double weight) {
+    public void changeWeight(Long recipeId, double weight) {
         em.find(Recipe.class, recipeId)
                 .changeWeight(weight);
     }
@@ -131,7 +131,7 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public void changeCost(Long recipeId, Double cost) {
+    public void changeCost(Long recipeId, double cost) {
         Recipe recipe = em.find(Recipe.class, recipeId);
         recipe.changeCost(cost);
         recipe.changeNetIncome(recipe.getPrice() - cost);

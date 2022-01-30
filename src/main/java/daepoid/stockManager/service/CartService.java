@@ -32,7 +32,7 @@ public class CartService {
     }
 
     @Transactional
-    public void addMenu(Long cartId, Long menuId, Integer count) {
+    public void addMenu(Long cartId, Long menuId, int count) {
         cartRepository.addMenu(cartId, menuId, count);
     }
 

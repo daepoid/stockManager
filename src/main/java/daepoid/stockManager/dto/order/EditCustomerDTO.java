@@ -20,7 +20,7 @@ public class EditCustomerDTO {
     private String name;
 
     @NotNull
-    private Integer tableNumber;
+    private int tableNumber;
 
     public EditCustomerDTO(Customer customer) {
         this.id = customer.getId();

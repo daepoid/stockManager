@@ -20,7 +20,7 @@ public class SelectedMenuDTO {
     private String name;
 
     @NotNull
-    private Integer count;
+    private int count;
 
     public SelectedMenuDTO(Menu menu, Integer count) {
         this.menuId = menu.getId();

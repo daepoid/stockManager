@@ -10,17 +10,17 @@ import java.util.Set;
 public interface DutyRepository {
 
     //==생성 로직==//
-    void save(Duty duty);
+    Long save(Duty duty);
 
     //==조회 로직==//
-    Optional<Duty> findById(Long id);
+    Duty findById(Long id);
     List<Duty> findAll();
     List<Duty> findByName(String name);
     List<Duty> findByMember(Member member);
-    List<Duty> findIncentive(Double incentive);
+    List<Duty> findByIncentive(double incentive);
 
-    List<Duty> findUnderIncentive(Double incentive);
-    List<Duty> findOverIncentive(Double incentive);
+    List<Duty> findUnderIncentive(double incentive);
+    List<Duty> findOverIncentive(double incentive);
 
     //==수정 로직==//
     void changeId(Long dutyId, Long id);
@@ -28,7 +28,7 @@ public interface DutyRepository {
     void changeMembers(Long dutyId, Set<Member> members);
     void addMember(Long dutyId, Member member);
     void removeMember(Long dutyId, Member member);
-    void changeIncentive(Long dutyId, Double incentive);
+    void changeIncentive(Long dutyId, double incentive);
 
     //==삭제 로직==//
 }

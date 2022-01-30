@@ -17,10 +17,6 @@ public class Cart {
     @Column(name="cart_id")
     private Long id;
 
-//    // Map<menuId, Integer>
-//    private Map<Long, Integer> selectedMenus = new HashMap<>();
-
-    // Map<menuId, Integer>
     @ElementCollection
     @JoinTable(
             name="cart_number_of_menu",
@@ -44,5 +40,9 @@ public class Cart {
 
     public void addMenus(Map<Long, Integer> menus) {
         this.numberOfMenus.putAll(menus);
+    }
+
+    public void clearCart() {
+        numberOfMenus.clear();
     }
 }

@@ -24,19 +24,19 @@ public interface ItemRepository {
     List<Item> findByItemType(ItemType itemType);
 
     // 일정 수량 이하인 경우에 찾아서 반환하다.
-    List<Item> findByPackageCount(Integer packageCount);
+    List<Item> findByPackageCount(int packageCount);
 
     // 일정 수량 이하인 경우에 찾아서 반환한다.
-    List<Item> findByQuantity(Double quantity);
+    List<Item> findByQuantity(double quantity);
 
     List<Item> findByItemSearch(ItemSearch itemSearch);
 
     //==수정 로직==//
     void changeName(Long itemId, String name);
     void changeItemType(Long itemId, ItemType itemType);
-    void changePrice(Long itemId, Integer price);
-    void changePackageCount(Long itemId, Integer packageCount);
-    void changeQuantity(Long itemId, Double quantity);
+    void changePrice(Long itemId, int price);
+    void changePackageCount(Long itemId, int packageCount);
+    void changeQuantity(Long itemId, double quantity);
     void changeUnitType(Long itemId, UnitType unitType);
 
     //==삭제 로직==//

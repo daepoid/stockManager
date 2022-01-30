@@ -55,7 +55,7 @@ public class JpaItemRepository implements ItemRepository {
     }
 
     @Override
-    public List<Item> findByPackageCount(Integer packageCount) {
+    public List<Item> findByPackageCount(int packageCount) {
         return em.createQuery("select i from Item i where i.packageCount < :packageCount", Item.class)
                 .setParameter("packageCount", packageCount)
                 .getResultList();
@@ -63,7 +63,7 @@ public class JpaItemRepository implements ItemRepository {
 
     // 일정 수량 이하인 경우에 찾아서 반환한다.
     @Override
-    public List<Item> findByQuantity(Double quantity) {
+    public List<Item> findByQuantity(double quantity) {
         return em.createQuery("select  i from Item i where i.quantity < :quantity", Item.class)
                 .setParameter("quantity", quantity)
                 .getResultList();
@@ -117,19 +117,19 @@ public class JpaItemRepository implements ItemRepository {
     }
 
     @Override
-    public void changePrice(Long itemId, Integer price) {
+    public void changePrice(Long itemId, int price) {
         Item item = em.find(Item.class, itemId);
         item.changePrice(price);
     }
 
     @Override
-    public void changePackageCount(Long itemId, Integer packageCount) {
+    public void changePackageCount(Long itemId, int packageCount) {
         Item item = em.find(Item.class, itemId);
         item.changePackageCount(packageCount);
     }
 
     @Override
-    public void changeQuantity(Long itemId, Double quantity) {
+    public void changeQuantity(Long itemId, double quantity) {
         Item item = em.find(Item.class, itemId);
         item.changeQuantity(quantity);
     }

@@ -1,5 +1,6 @@
 package daepoid.stockManager.service;
 
+import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 
@@ -7,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -27,6 +31,15 @@ public class LoginService {
         log.info("findMember = {}", findMember);
 
         return findMember != null && findMember.getPassword().equals(password);
+    }
+
+    public boolean checkCorrectUser(String sessionId, String loginId) {
+        return Objects.equals(sessionId, loginId);
+    }
+
+    public boolean checkCorrectUser(HttpServletRequest request, String loginId) {
+        String sessionId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        return Objects.equals(sessionId, loginId);
     }
 
 }

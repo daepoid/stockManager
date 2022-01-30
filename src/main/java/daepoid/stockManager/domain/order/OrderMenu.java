@@ -30,14 +30,14 @@ public class OrderMenu {
 
     // 주문 당시 가격
     @NotNull
-    private Integer orderPrice;
+    private int orderPrice;
 
     // 주문 수량
     @NotNull
-    private Integer orderCount;
+    private int orderCount;
 
     @Builder
-    public OrderMenu(Menu menu, Order order, Integer orderPrice, Integer orderCount) {
+    public OrderMenu(Menu menu, Order order, int orderPrice, int orderCount) {
         this.menu = menu;
         this.order = order;
         this.orderPrice = orderPrice;
@@ -56,11 +56,11 @@ public class OrderMenu {
         this.order = order;
     }
 
-    public void changeOrderPrice(Integer orderPrice) {
+    public void changeOrderPrice(int orderPrice) {
         this.orderPrice = orderPrice;
     }
 
-    public void changeCount(Integer orderCount) {
+    public void changeCount(int orderCount) {
         this.orderCount = orderCount;
     }
 
@@ -68,7 +68,7 @@ public class OrderMenu {
         getMenu().cancelMenu(orderCount);
     }
 
-    public Integer getTotalPrice() {
+    public int getTotalPrice() {
         return getOrderPrice() * getOrderCount();
     }
 }

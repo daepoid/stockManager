@@ -42,16 +42,16 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public List<Recipe> findByPrice(Integer price) {
+    public List<Recipe> findByPrice(int price) {
         return store.values().stream()
-                .filter(recipe -> recipe.getPrice().equals(price))
+                .filter(recipe -> recipe.getPrice() == price)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Recipe> findByWeight(Double weight) {
+    public List<Recipe> findByWeight(double weight) {
         return store.values().stream()
-                .filter(recipe -> recipe.getWeight().equals(weight))
+                .filter(recipe -> recipe.getWeight() == weight)
                 .collect(Collectors.toList());
     }
 
@@ -81,12 +81,12 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public void changePrice(Long recipeId, Integer price) {
+    public void changePrice(Long recipeId, int price) {
         store.get(recipeId).changePrice(price);
     }
 
     @Override
-    public void changeWeight(Long recipeId, Double weight) {
+    public void changeWeight(Long recipeId, double weight) {
         store.get(recipeId).changeWeight(weight);
     }
 
@@ -119,7 +119,7 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public void changeCost(Long recipeId, Double cost) {
+    public void changeCost(Long recipeId, double cost) {
         store.get(recipeId).changeCost(cost);
         store.get(recipeId).changeNetIncome(store.get(recipeId).getPrice() - cost);
     }

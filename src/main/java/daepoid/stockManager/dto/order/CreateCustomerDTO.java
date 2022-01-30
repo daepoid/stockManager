@@ -22,5 +22,5 @@ public class CreateCustomerDTO {
     private String passwordCheck;
 
     @NotNull
-    private Integer tableNumber;
+    private int tableNumber;
 }

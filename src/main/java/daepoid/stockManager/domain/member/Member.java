@@ -66,7 +66,8 @@ public class Member {
 
     //==생성 메서드==//
     @Builder
-    public Member(String loginId, String name, String password, String phoneNumber, GradeType gradeType, MemberStatus memberStatus, List<RoleType> roles, List<Duty> duties) {
+    public Member(String loginId, String name, String password, String phoneNumber,
+                  GradeType gradeType, MemberStatus memberStatus, List<RoleType> roles, List<Duty> duties) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;

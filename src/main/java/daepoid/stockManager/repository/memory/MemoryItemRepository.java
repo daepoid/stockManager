@@ -60,7 +60,7 @@ public class MemoryItemRepository implements ItemRepository {
     }
 
     @Override
-    public List<Item> findByPackageCount(Integer packageCount) {
+    public List<Item> findByPackageCount(int packageCount) {
         return store.values()
                 .stream()
                 .filter(item -> item.getPackageCount() < packageCount)
@@ -68,7 +68,7 @@ public class MemoryItemRepository implements ItemRepository {
     }
 
     @Override
-    public List<Item> findByQuantity(Double quantity) {
+    public List<Item> findByQuantity(double quantity) {
         return store.values()
                 .stream()
                 .filter(item -> item.getQuantity() < quantity)
@@ -92,17 +92,17 @@ public class MemoryItemRepository implements ItemRepository {
     }
 
     @Override
-    public void changePrice(Long itemId, Integer price) {
+    public void changePrice(Long itemId, int price) {
         store.get(itemId).changePrice(price);
     }
 
     @Override
-    public void changePackageCount(Long itemId, Integer packageCount) {
+    public void changePackageCount(Long itemId, int packageCount) {
         store.get(itemId).changePackageCount(packageCount);
     }
 
     @Override
-    public void changeQuantity(Long itemId, Double quantity) {
+    public void changeQuantity(Long itemId, double quantity) {
         store.get(itemId).changeQuantity(quantity);
     }
 

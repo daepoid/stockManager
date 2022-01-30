@@ -20,15 +20,16 @@ public class MemoryDutyRepository implements DutyRepository {
 
     //==생성 로직==//
     @Override
-    public void save(Duty duty) {
+    public Long save(Duty duty) {
         duty.changeDutyId(++sequence);
         store.put(sequence, duty);
+        return duty.getId();
     }
 
     //==조회 로직==//
     @Override
-    public Optional<Duty> findById(Long id) {
-        return Optional.of(store.get(id));
+    public Duty findById(Long id) {
+        return store.get(id);
     }
 
     @Override
@@ -51,21 +52,21 @@ public class MemoryDutyRepository implements DutyRepository {
     }
 
     @Override
-    public List<Duty> findIncentive(Double incentive) {
+    public List<Duty> findByIncentive(double incentive) {
         return store.values().stream()
-                .filter(duty -> duty.getIncentive().equals(incentive))
+                .filter(duty -> duty.getIncentive() == incentive)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Duty> findUnderIncentive(Double incentive) {
+    public List<Duty> findUnderIncentive(double incentive) {
         return store.values().stream()
                 .filter(duty -> duty.getIncentive() <= incentive)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Duty> findOverIncentive(Double incentive) {
+    public List<Duty> findOverIncentive(double incentive) {
         return store.values().stream()
                 .filter(duty -> duty.getIncentive() >= incentive)
                 .collect(Collectors.toList());
@@ -98,7 +99,7 @@ public class MemoryDutyRepository implements DutyRepository {
     }
 
     @Override
-    public void changeIncentive(Long dutyId, Double incentive) {
+    public void changeIncentive(Long dutyId, double incentive) {
         store.get(dutyId).changeDutyIncentive(incentive);
     }
 }

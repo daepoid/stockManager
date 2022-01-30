@@ -27,9 +27,8 @@ import java.util.stream.Stream;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class CustomerOrderController {
+public class OrderMenuController {
 
-    private final OrderService orderService;
     private final CustomerService customerService;
     private final MemberService memberService;
     private final MenuService menuService;
@@ -175,107 +174,5 @@ public class CustomerOrderController {
                 .collect(Collectors.toList());
         model.addAttribute("menus", menuList);
         return "menus/newArrivalsMenuForm";
-    }
-
-
-    /**
-     * 주문 하기
-     * 장바구니를 보고 내용을 수정하고 주문을 수행할 수 있다.
-     * @param customerId
-     * @param model
-     * @return
-     */
-    @GetMapping("/customers/{customerId}/order")
-    public String customerCartForm(@PathVariable("customerId") Long customerId,
-                                   Model model,
-                                   HttpServletRequest request) {
-        String userName = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Customer loginCustomer = customerService.findByName(userName);
-        if(!Objects.equals(loginCustomer.getId(), customerId)) {
-            request.getSession(false).invalidate();
-            return "redirect:/";
-        }
-
-        Map<Menu, Integer> selectedMenus = new HashMap<>();
-
-        Map<Long, Integer> numberOfMenus = customerService.findCustomer(customerId).getCart().getNumberOfMenus();
-        for (Long menuId : numberOfMenus.keySet()) {
-            selectedMenus.put(menuService.findMenu(menuId), numberOfMenus.get(menuId));
-        }
-
-        model.addAttribute("selectedMenus", selectedMenus);
-        return "orders/customerCartForm";
-    }
-
-    @PostMapping("/customers/{customerId}/order")
-    public String customerOrder(@PathVariable("customerId") Long customerId,
-                                RedirectAttributes redirectAttributes) {
-
-        Cart cart = customerService.findCustomer(customerId).getCart();
-        if(cart == null || cart.getNumberOfMenus().size() < 1) {
-            return "orders/customerCartForm";
-        }
-
-        orderService.orders(customerId);
-
-        cartService.clearCart(customerService.findCustomer(customerId).getCart().getId());
-
-        redirectAttributes.addAttribute("customerId", customerId);
-        return "redirect:/customers/{customerId}/orders";
-    }
-
-    /**
-     * 주문 내역
-     * 고객이 자신의 주문 내역을 볼 수 있다.
-     * @param customerId
-     * @param model
-     * @return
-     */
-    @GetMapping("/customers/{customerId}/orders")
-    public String orderListForm(@PathVariable("customerId") Long customerId,
-                                Model model,
-                                HttpServletRequest request) {
-
-        String userName = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        if(!Objects.equals(customerService.findByName(userName).getId(), customerId)) {
-            request.getSession(false).invalidate();
-            return "redirect:/";
-        }
-
-        Customer customer = customerService.findCustomer(customerId);
-
-        Integer tableNumber = customer.getTableNumber();
-
-        List<CustomerOrderMenuDTO> customerOrderMenuDTOs = new ArrayList<>();
-        List<Order> customerOrders = customer.getOrders();
-        for (Order customerOrder : customerOrders) {
-            for (OrderMenu orderMenu : customerOrder.getOrderMenus()) {
-                customerOrderMenuDTOs.add(new CustomerOrderMenuDTO(orderMenu));
-            }
-        }
-
-        model.addAttribute("orderMenuDTOs", customerOrderMenuDTOs);
-        model.addAttribute("tableNumber", tableNumber);
-        return "orders/customerOrderListForm";
-    }
-
-    /**
-     * 장바구니에 담긴 메뉴 취소
-     * 고객이 자신의 장바구니에 담긴 메뉴를 취소할 수 있다.
-     * @param customerId
-     * @param menuId
-     * @param redirectAttributes
-     * @return
-     */
-    @PostMapping("/customers/{customerId}/{menuId}/cancel")
-    public String cancel(@PathVariable("customerId") Long customerId,
-                         @PathVariable("menuId") Long menuId,
-                         RedirectAttributes redirectAttributes) {
-
-        Cart cart = customerService.findCustomer(customerId).getCart();
-        cartService.removeMenu(cart.getId(), menuId);
-
-        redirectAttributes.addAttribute("customerId", customerId);
-        return "redirect:/customers/{customerId}/order";
     }
 }

@@ -4,6 +4,7 @@ import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.dto.member.EditMyInfoDTO;
 import daepoid.stockManager.dto.member.EditMyPasswordDTO;
+import daepoid.stockManager.service.LoginService;
 import daepoid.stockManager.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +20,15 @@ import javax.validation.Valid;
 
 @Slf4j
 @Controller
-@RequestMapping("")
+@RequestMapping("/myInfo")
 @RequiredArgsConstructor
 public class LoginMemberController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final LoginService loginService;
 
-    @GetMapping("/myInfo")
+    @GetMapping("")
     public String myInfoRedirect(HttpServletRequest request,
                                  RedirectAttributes redirectAttributes) {
 
@@ -35,8 +37,9 @@ public class LoginMemberController {
             request.getSession(false).invalidate();
             return "redirect:/login";
         }
+
         redirectAttributes.addAttribute("loginId", loginId);
-        return "redirect:/{loginId}/myInfo";
+        return "redirect:/myInfo/{loginId}";
     }
 
     /**
@@ -45,14 +48,13 @@ public class LoginMemberController {
      * @param request
      * @return
      */
-    @GetMapping("/{loginId}/myInfo")
+    @GetMapping("/{loginId}")
     public String editMyInfoForm(@PathVariable("loginId") String loginId,
                                  Model model,
                                  HttpServletRequest request) {
         String sessionId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
 
         if(!sessionId.equals(loginId)) {
-            log.info("개인정보 변경 접근 실패");
             request.getSession(false).invalidate();
             return "redirect:/";
         }
@@ -60,19 +62,12 @@ public class LoginMemberController {
         return "members/editMyInfoForm";
     }
 
-    @PostMapping("/{loginId}/myInfo")
+    @PostMapping("/{loginId}")
     public String editMyInfo(@PathVariable("loginId") String loginId,
                              @Valid @ModelAttribute("editMyInfoDTO") EditMyInfoDTO editMyInfoDTO,
                              BindingResult bindingResult,
-                             Model model,
-                             HttpServletRequest request) {
+                             Model model) {
 
-        String sessionId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        if(!sessionId.equals(loginId)) {
-            log.info("개인정보 변경 접근 실패");
-            return "redirect:/";
-        }
-        
         if(bindingResult.hasErrors()) {
             model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(memberService.findMemberByLoginId(loginId)));
             return "members/editMyInfoForm";
@@ -100,34 +95,28 @@ public class LoginMemberController {
      * @param editMyPasswordDTO
      * @return
      */
-    @GetMapping("/{loginId}/myInfo/passwordChange")
+    @GetMapping("/{loginId}/passwordChange")
     public String editMyPasswordForm(@PathVariable("loginId") String loginId,
                                      @ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO,
                                      HttpServletRequest request) {
 
         String sessionId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         if(!sessionId.equals(loginId)) {
-            log.info("개인정보 변경 접근 실패");
             return "redirect:/";
         }
 
         return "members/editMyPasswordForm";
     }
 
-    @PostMapping("/{loginId}/myInfo/passwordChange")
+    @PostMapping("/{loginId}/passwordChange")
     public String editMyPassword(@PathVariable("loginId") String loginId,
                                  @Valid @ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO,
                                  BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes,
-                                 HttpServletRequest request) {
-        String sessionId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+                                 RedirectAttributes redirectAttributes) {
+
+        Member loginMember = memberService.findMemberByLoginId(loginId);
 
         if(bindingResult.hasErrors()) {
-            return "members/editMyPasswordForm";
-        }
-        Member loginMember = memberService.findMemberByLoginId(loginId);
-        if(!sessionId.equals(loginMember.getName())) {
-            log.info("개인정보 변경 접근 실패");
             return "members/editMyPasswordForm";
         }
 
@@ -143,6 +132,6 @@ public class LoginMemberController {
         }
         memberService.changePassword(loginMember.getId(), passwordEncoder.encode(editMyPasswordDTO.getNewPassword()));
         redirectAttributes.addAttribute("loginId", loginId);
-        return "redirect:/{loginId}/myInfo";
+        return "redirect:/myInfo/{loginId}";
     }
 }

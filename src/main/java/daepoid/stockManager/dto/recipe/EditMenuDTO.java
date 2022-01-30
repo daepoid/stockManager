@@ -25,10 +25,10 @@ public class EditMenuDTO {
     private String name;
 
     @NotNull
-    private Double price;
+    private double price;
 
     @NotNull
-    private Integer orderCount;
+    private int orderCount;
 
     @NotNull
     private LocalDateTime addedDate;
@@ -46,7 +46,7 @@ public class EditMenuDTO {
         this.orderCount = menu.getOrderCount();
         this.addedDate = menu.getAddedDate();
 
-        Double sum = 0.0;
+        double sum = 0.0;
 
         Map<Recipe, Integer> food_info = new HashMap<>();
         Set<Recipe> foods = menu.getFoods();

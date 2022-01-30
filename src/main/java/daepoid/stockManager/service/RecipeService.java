@@ -41,11 +41,11 @@ public class RecipeService {
         return recipeRepository.findByName(name).orElse(null);
     }
 
-    public List<Recipe> findRecipeByPrice(Integer price) {
+    public List<Recipe> findRecipeByPrice(int price) {
         return recipeRepository.findByPrice(price);
     }
 
-    public List<Recipe> findRecipesByWeight(Double weight) {
+    public List<Recipe> findRecipesByWeight(double weight) {
         return recipeRepository.findByWeight(weight);
     }
 
@@ -78,17 +78,17 @@ public class RecipeService {
     }
 
     @Transactional
-    public void changePrice(Long recipeId, Integer price) {
+    public void changePrice(Long recipeId, int price) {
         recipeRepository.changePrice(recipeId, price);
     }
 
     @Transactional
-    public void changeWeight(Long recipeId, Double weight) {
+    public void changeWeight(Long recipeId, double weight) {
         recipeRepository.changeWeight(recipeId, weight);
     }
 
     @Transactional
-    public void changeCost(Long recipeId, Double cost) {
+    public void changeCost(Long recipeId, double cost) {
         recipeRepository.changeCost(recipeId, cost);
     }
 

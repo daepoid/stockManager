@@ -35,10 +35,10 @@ public class Recipe {
 
     // 판매 가격
     @NotNull
-    private Integer price;
+    private int price;
 
     // 요리 무게
-    private Double weight;
+    private double weight;
 
     // 접시 유형
     @NotNull
@@ -51,10 +51,10 @@ public class Recipe {
 
     // 레시피 생산 단가
     @NotNull
-    private Double cost = 0.0;
+    private double cost = 0.0;
 
     @NotNull
-    private Double netIncome = 0.0;
+    private double netIncome = 0.0;
 
     @ManyToMany(mappedBy="foods", cascade=CascadeType.ALL)
     private Set<Menu> menus = new HashSet<>();
@@ -64,8 +64,8 @@ public class Recipe {
     private String notes;
 
     @Builder
-    public Recipe(String recipeNumber, String name, Integer price, Double weight, DishType dishType,
-                  Double cost, Double netIncome, List<Ingredient> ingredients, String notes) {
+    public Recipe(String recipeNumber, String name, int price, double weight, DishType dishType,
+                  double cost, double netIncome, List<Ingredient> ingredients, String notes) {
         this.recipeNumber = recipeNumber;
         this.name = name;
         this.price = price;
@@ -92,11 +92,11 @@ public class Recipe {
         this.name = name;
     }
 
-    public void changePrice(Integer price) {
+    public void changePrice(int price) {
         this.price = price;
     }
 
-    public void changeWeight(Double weight) {
+    public void changeWeight(double weight) {
         this.weight = weight;
     }
 
@@ -112,11 +112,11 @@ public class Recipe {
         this.notes = notes;
     }
 
-    public void changeCost(Double cost) {
+    public void changeCost(double cost) {
         this.cost = cost;
     }
 
-    public void changeNetIncome(Double netIncome) {
+    public void changeNetIncome(double netIncome) {
         this.netIncome = netIncome;
     }
 
@@ -131,7 +131,7 @@ public class Recipe {
     }
 
     //==서비스 로직==//
-    public Double getCost() {
+    public double getCost() {
         this.cost = ingredients.stream()
                 .mapToDouble(Ingredient::getCost)
                 .sum();
@@ -151,7 +151,7 @@ public class Recipe {
     }
 
     // 주문 취소시 재고 복원
-    public void cancelRecipe(Integer orderCount) {
+    public void cancelRecipe(int orderCount) {
 
     }
 }

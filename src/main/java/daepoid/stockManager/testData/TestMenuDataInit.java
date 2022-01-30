@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class TestMenuDataInit {
 

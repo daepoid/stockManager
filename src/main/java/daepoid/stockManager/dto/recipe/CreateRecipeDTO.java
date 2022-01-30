@@ -27,9 +27,9 @@ public class CreateRecipeDTO {
     private String name;
 
     @NotNull
-    private Integer price;
+    private int price;
 
-    private Double weight;
+    private double weight;
 
     @NotNull
     @Enumerated(EnumType.STRING)

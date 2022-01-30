@@ -16,21 +16,21 @@ public interface RecipeRepository {
     Optional<Recipe> findById(Long id);
     List<Recipe> findAll();
     Optional<Recipe> findByName(String name);
-    List<Recipe> findByPrice(Integer price);
-    List<Recipe> findByWeight(Double weight);
+    List<Recipe> findByPrice(int price);
+    List<Recipe> findByWeight(double weight);
     List<Recipe> findByIngredient(Ingredient ingredient);
     List<Recipe> findByDishType(DishType dishType);
 
     //==수정 로직==//
     void changeRecipeNumber(Long recipeId, String recipeNumber);
     void changeName(Long recipeId, String name);
-    void changePrice(Long recipeId, Integer price);
-    void changeWeight(Long recipeId, Double weight);
+    void changePrice(Long recipeId, int price);
+    void changeWeight(Long recipeId, double weight);
     void changeDishType(Long recipeId, DishType dishType);
     void changeIngredient(Long recipeId, List<Ingredient> ingredients);
     boolean addIngredient(Long recipeId, Ingredient ingredient);
     boolean removeIngredient(Long recipeId, Ingredient ingredient);
-    void changeCost(Long recipeId, Double cost);
+    void changeCost(Long recipeId, double cost);
     void updateCost(Long recipeId);
     void changeNotes(Long recipeId, String notes);
 

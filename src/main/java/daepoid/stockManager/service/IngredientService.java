@@ -61,7 +61,7 @@ public class IngredientService {
     }
 
     @Transactional
-    public void changeQuantity(Long ingredientId, Integer quantity) {
+    public void changeQuantity(Long ingredientId, int quantity) {
         ingredientRepository.findById(ingredientId).changeQuantity(quantity);
     }
 
@@ -71,17 +71,17 @@ public class IngredientService {
     }
 
     @Transactional
-    public void changeUnitPrice(Long ingredientId, Double unitPrice) {
+    public void changeUnitPrice(Long ingredientId, double unitPrice) {
         ingredientRepository.findById(ingredientId).changeUnitPrice(unitPrice);
     }
 
     @Transactional
-    public void changeLoss(Long ingredientId, Double loss) {
+    public void changeLoss(Long ingredientId, double loss) {
         ingredientRepository.findById(ingredientId).changeLoss(loss);
     }
 
     @Transactional
-    public void changeCost(Long ingredientId, Double cost) {
+    public void changeCost(Long ingredientId, double cost) {
         ingredientRepository.findById(ingredientId).changeCost(cost);
     }
 

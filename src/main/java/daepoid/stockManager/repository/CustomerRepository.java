@@ -12,15 +12,16 @@ public interface CustomerRepository {
     Long save(Customer customer);
 
     //==조회 로직==//
-    Optional<Customer> findById(Long id);
+    Customer findById(Long id);
     List<Customer> findAll();
 
     Customer findByName(String name);
-    List<Customer> findByOrder(Order order);
+    Customer findByTableNumber(int tableNumber);
 
     //==수정 로직==//
+    void changeId(Long customerId, Long changeId);
     void changeName(Long customerId, String name);
-    void changeTableNumber(Long customerId, Integer tableNumber);
+    void changeTableNumber(Long customerId, int tableNumber);
     void changeOrders(Long customerId, List<Order> orders);
     void addOrder(Long customerId, Order order);
 

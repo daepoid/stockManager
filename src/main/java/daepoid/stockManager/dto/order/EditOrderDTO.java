@@ -28,7 +28,7 @@ public class EditOrderDTO {
     private String nameOfOrderMenu;
 
     @NotNull
-    private Integer numberOfOrderMenu;
+    private int numberOfOrderMenu;
 
     @NotNull
     private LocalDateTime orderDateTime;

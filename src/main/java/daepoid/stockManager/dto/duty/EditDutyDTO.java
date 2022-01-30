@@ -26,7 +26,7 @@ public class EditDutyDTO {
 
     // 직무 인센티브
     @NotNull
-    private Double incentive;
+    private double incentive;
 
     // 직무 할당자
     private Set<Member> members = new HashSet<>();

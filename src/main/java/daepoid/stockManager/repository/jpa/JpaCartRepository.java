@@ -31,19 +31,14 @@ public class JpaCartRepository implements CartRepository {
 
     @Override
     public List<Cart> findAll() {
-        return em.createQuery("select c from Cart c", Cart.class).getResultList();
+        return em.createQuery("select c from Cart c", Cart.class)
+                .getResultList();
     }
 
     @Override
-    public void addMenu(Long cartId, Long menuId, Integer count) {
+    public void addMenu(Long cartId, Long menuId, int count) {
         Map<Long, Integer> numberOfMenus = em.find(Cart.class, cartId).getNumberOfMenus();
-
-        if(numberOfMenus.containsKey(menuId)) {
-            numberOfMenus.replace(menuId, count);
-        }
-        else {
-            numberOfMenus.put(menuId, count);
-        }
+        numberOfMenus.put(menuId, count);
     }
 
     @Override
@@ -51,13 +46,7 @@ public class JpaCartRepository implements CartRepository {
         Map<Long, Integer> numberOfMenus = em.find(Cart.class, cartId).getNumberOfMenus();
 
         for (Long menuId : menus.keySet()) {
-
-            if(numberOfMenus.containsKey(menuId)) {
-                numberOfMenus.replace(menuId, menus.get(menuId));
-            }
-            else {
-                numberOfMenus.put(menuId, menus.get(menuId));
-            }
+            numberOfMenus.put(menuId, menus.get(menuId));
         }
     }
 

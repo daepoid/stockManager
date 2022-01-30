@@ -22,14 +22,15 @@ public class JpaDutyRepository implements DutyRepository {
 
     //==생성 로직==//
     @Override
-    public void save(Duty duty) {
+    public Long save(Duty duty) {
         em.persist(duty);
+        return duty.getId();
     }
 
     //==조회 로직==//
     @Override
-    public Optional<Duty> findById(Long id) {
-        return Optional.of(em.find(Duty.class, id));
+    public Duty findById(Long id) {
+        return em.find(Duty.class, id);
     }
 
     @Override
@@ -45,6 +46,12 @@ public class JpaDutyRepository implements DutyRepository {
                 .getResultList();
     }
 
+    public Duty findByUniqueName(String name) {
+        return em.createQuery("select d from Duty d where d.name = :name", Duty.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
     @Override
     public List<Duty> findByMember(Member member) {
         return em.createQuery("select d from Duty d", Duty.class)
@@ -54,21 +61,21 @@ public class JpaDutyRepository implements DutyRepository {
     }
 
     @Override
-    public List<Duty> findIncentive(Double incentive) {
+    public List<Duty> findByIncentive(double incentive) {
         return em.createQuery("select d from Duty d where d.incentive = :incentive", Duty.class)
                 .setParameter("incentive", incentive)
                 .getResultList();
     }
 
     @Override
-    public List<Duty> findUnderIncentive(Double incentive) {
+    public List<Duty> findUnderIncentive(double incentive) {
         return em.createQuery("select d from Duty d where d.incentive <= :incentive", Duty.class)
                 .setParameter("incentive", incentive)
                 .getResultList();
     }
 
     @Override
-    public List<Duty> findOverIncentive(Double incentive) {
+    public List<Duty> findOverIncentive(double incentive) {
         return em.createQuery("select d from Duty d where d.incentive >= :incentive", Duty.class)
                 .setParameter("incentive", incentive)
                 .getResultList();
@@ -106,7 +113,7 @@ public class JpaDutyRepository implements DutyRepository {
     }
 
     @Override
-    public void changeIncentive(Long dutyId, Double incentive) {
+    public void changeIncentive(Long dutyId, double incentive) {
         Duty duty = em.find(Duty.class, dutyId);
         duty.changeDutyIncentive(incentive);
     }

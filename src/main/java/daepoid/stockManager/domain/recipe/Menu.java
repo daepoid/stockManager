@@ -35,7 +35,7 @@ public class Menu {
     private Set<Recipe> foods = new HashSet<>();
 
     @NotNull
-    private Integer price;
+    private int price;
 
     @ElementCollection
     @JoinTable(
@@ -52,11 +52,11 @@ public class Menu {
 
     // 주문이 많이 된 음식을 찾기 위해
     @NotNull
-    private Integer orderCount = 0;
+    private int orderCount = 0;
 
     @Builder
-    public Menu(String name, Integer price, Set<Recipe> foods,
-                Map<Long, Integer> numberOfFood, LocalDateTime addedDate, Integer orderCount) {
+    public Menu(String name, Set<Recipe> foods, int price,
+                Map<Long, Integer> numberOfFood, LocalDateTime addedDate, int orderCount) {
         this.name = name;
         this.price = price;
         this.foods = foods;
@@ -90,7 +90,7 @@ public class Menu {
         this.addedDate = addedDate;
     }
 
-    public void changeOrderCount(Integer orderCount) {
+    public void changeOrderCount(int orderCount) {
         this.orderCount = orderCount;
     }
 
@@ -106,11 +106,11 @@ public class Menu {
         this.price = sum;
     }
 
-    public void addOrderCount(Integer newOrderCount) {
+    public void addOrderCount(int newOrderCount) {
         this.orderCount += newOrderCount;
     }
 
-    public void cancelOrderCount(Integer cancelOrderCount) {
+    public void cancelOrderCount(int cancelOrderCount) {
         this.orderCount -= cancelOrderCount;
     }
 
@@ -124,7 +124,7 @@ public class Menu {
     }
 
     // 메뉴 주문 취소
-    public void cancelMenu(Integer orderCount) {
+    public void cancelMenu(int orderCount) {
         for (Recipe food : foods) {
             food.cancelRecipe(orderCount);
         }

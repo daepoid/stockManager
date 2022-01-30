@@ -21,35 +21,43 @@ public class JpaCustomerRepository implements CustomerRepository {
 
     @Override
     public Long save(Customer customer) {
-        em.persist(customer);
+        if(customer.getId() == null) {
+            em.persist(customer);
+        }
         return customer.getId();
     }
 
     @Override
-    public Optional<Customer> findById(Long id) {
-        return Optional.of(em.find(Customer.class, id));
+    public Customer findById(Long id) {
+        return em.find(Customer.class, id);
     }
 
     @Override
     public List<Customer> findAll() {
-        return em.createQuery("select c from Customer c", Customer.class).getResultList();
+        return em.createQuery("select c from Customer c", Customer.class)
+                .getResultList();
     }
 
     @Override
     public Customer findByName(String name) {
         return em.createQuery("select c from Customer c where c.name=:name", Customer.class)
                 .setParameter("name", name)
+                .getResultList().stream()
+                .findFirst().orElse(null);
+    }
+
+    @Override
+    public Customer findByTableNumber(int tableNumber) {
+        return em.createQuery("select c from Customer c where c.tableNumber=:tableNumber", Customer.class)
+                .setParameter("tableNumber", tableNumber)
                 .getResultList()
                 .stream().findFirst()
                 .orElse(null);
     }
 
     @Override
-    public List<Customer> findByOrder(Order order) {
-        return em.createQuery("select c from Customer c", Customer.class)
-                .getResultList().stream()
-                .filter(customer -> customer.getOrders().contains(order))
-                .collect(Collectors.toList());
+    public void changeId(Long customerId, Long changeId) {
+        em.find(Customer.class, customerId).changeId(changeId);
     }
 
     @Override
@@ -58,7 +66,7 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public void changeTableNumber(Long customerId, Integer tableNumber) {
+    public void changeTableNumber(Long customerId, int tableNumber) {
         em.find(Customer.class, customerId).changeTableNumber(tableNumber);
     }
 

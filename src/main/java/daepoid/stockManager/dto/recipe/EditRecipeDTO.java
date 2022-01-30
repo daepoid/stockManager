@@ -30,9 +30,9 @@ public class EditRecipeDTO {
     private String name;
 
     @NotNull
-    private Integer price;
+    private int price;
 
-    private Double weight;
+    private double weight;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -43,10 +43,10 @@ public class EditRecipeDTO {
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @NotNull
-    private Double cost = 0.0;
+    private double cost = 0.0;
 
     @NotNull
-    private Double netIncome = 0.0;
+    private double netIncome = 0.0;
 
     public EditRecipeDTO(Recipe recipe) {
         this.id = recipe.getId();
