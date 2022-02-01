@@ -25,8 +25,8 @@ public class MemoryRecipeRepository implements RecipeRepository {
 
     //==조회 로직==//
     @Override
-    public Optional<Recipe> findById(Long id) {
-        return Optional.of(store.get(id));
+    public Recipe findById(Long id) {
+        return store.get(id);
     }
 
     @Override
@@ -35,10 +35,10 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public Optional<Recipe> findByName(String name) {
+    public Recipe findByName(String name) {
         return store.values().stream()
                 .filter(recipe -> recipe.getName().equals(name))
-                .findFirst();
+                .findFirst().orElse(null);
     }
 
     @Override

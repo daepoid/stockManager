@@ -13,9 +13,9 @@ public interface RecipeRepository {
     Long save(Recipe recipe);
 
     //==조회 로직==//
-    Optional<Recipe> findById(Long id);
+    Recipe findById(Long id);
     List<Recipe> findAll();
-    Optional<Recipe> findByName(String name);
+    Recipe findByName(String name);
     List<Recipe> findByPrice(int price);
     List<Recipe> findByWeight(double weight);
     List<Recipe> findByIngredient(Ingredient ingredient);

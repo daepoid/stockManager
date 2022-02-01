@@ -29,8 +29,8 @@ public class JpaRecipeRepository implements RecipeRepository {
 
     //==조회 로직==//
     @Override
-    public Optional<Recipe> findById(Long id) {
-        return Optional.of(em.find(Recipe.class, id));
+    public Recipe findById(Long id) {
+        return em.find(Recipe.class, id);
     }
 
     @Override
@@ -40,11 +40,11 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public Optional<Recipe> findByName(String name) {
+    public Recipe findByName(String name) {
         return em.createQuery("select r from Recipe r where r.name = :name", Recipe.class)
                 .setParameter("name", name)
                 .getResultList()
-                .stream().findFirst();
+                .stream().findFirst().orElse(null);
     }
 
     @Override

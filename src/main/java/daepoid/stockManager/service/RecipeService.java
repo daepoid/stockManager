@@ -30,7 +30,7 @@ public class RecipeService {
 
     //==조회 로직==//
     public Recipe findRecipe(Long recipeId) {
-        return recipeRepository.findById(recipeId).orElse(null);
+        return recipeRepository.findById(recipeId);
     }
 
     public List<Recipe> findRecipes() {
@@ -38,7 +38,7 @@ public class RecipeService {
     }
 
     public Recipe findRecipesByName(String name) {
-        return recipeRepository.findByName(name).orElse(null);
+        return recipeRepository.findByName(name);
     }
 
     public List<Recipe> findRecipeByPrice(int price) {
@@ -50,7 +50,7 @@ public class RecipeService {
     }
 
     public List<Ingredient> findIngredientsByRecipe(Long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId).get();
+        Recipe recipe = recipeRepository.findById(recipeId);
         return recipe.getIngredients();
     }
 
@@ -66,7 +66,7 @@ public class RecipeService {
     //==수정 로직==//
     @Transactional
     public void changeRecipeNumber(Long recipeId, String recipeNumber) {
-        Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+        Recipe recipe = recipeRepository.findById(recipeId);
         if(recipe != null) {
             recipe.changeRecipeNumber(recipeNumber);
         }
@@ -94,13 +94,13 @@ public class RecipeService {
 
     @Transactional
     public void changeIngredient(Long recipeId, List<Ingredient> ingredients) {
-        Recipe recipe = recipeRepository.findById(recipeId).get();
+        Recipe recipe = recipeRepository.findById(recipeId);
         recipe.changeIngredients(ingredients);
     }
 
     @Transactional
     public void addIngredient(Long recipeId, Ingredient ingredient) {
-        Recipe recipe = recipeRepository.findById(recipeId).get();
+        Recipe recipe = recipeRepository.findById(recipeId);
         recipe.getIngredients().add(ingredient);
     }
 
@@ -116,7 +116,7 @@ public class RecipeService {
 
     @Transactional
     public void updateCost(Long recipeId) {
-        double sum = recipeRepository.findById(recipeId).get()
+        double sum = recipeRepository.findById(recipeId)
                 .getIngredients().stream()
                 .mapToDouble(Ingredient::getCost)
                 .sum();

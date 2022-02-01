@@ -2,6 +2,7 @@ package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.Recipe;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -132,23 +132,26 @@ class JpaOrderRepositoryTest {
                 .build();
         em.persist(customer);
 
+        Set<Recipe> foods = new HashSet<>();
+        Map<Long, Integer> numberOfFood = new HashMap<>();
+
         Menu menu = Menu.builder()
                 .name("menu")
                 .price(222)
                 .addedDate(LocalDateTime.now())
                 .orderCount(0)
+                .foods(foods)
+                .numberOfFood(numberOfFood)
                 .build();
         em.persist(menu);
 
-        OrderMenu orderMenu = OrderMenu.builder()
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(OrderMenu.builder()
                 .menu(menu)
                 .orderPrice(333)
                 .orderCount(333)
-                .build();
-        em.persist(orderMenu);
-
-        List<OrderMenu> orderMenus = new ArrayList<>();
-        orderMenus.add(orderMenu);
+                .build()
+        );
 
         Order order = Order.builder()
                 .customer(customer)
@@ -188,7 +191,6 @@ class JpaOrderRepositoryTest {
                 .orderPrice(333)
                 .orderCount(333)
                 .build();
-        em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
@@ -230,7 +232,6 @@ class JpaOrderRepositoryTest {
                 .orderPrice(333)
                 .orderCount(333)
                 .build();
-        em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
@@ -272,7 +273,6 @@ class JpaOrderRepositoryTest {
                 .orderPrice(333)
                 .orderCount(333)
                 .build();
-        em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
@@ -294,12 +294,25 @@ class JpaOrderRepositoryTest {
         em.persist(cart);
 
         Customer customer = Customer.builder()
-                .name("customer")
+                .name("customer1")
                 .password(passwordEncoder.encode("123"))
                 .tableNumber(111)
                 .cart(cart)
                 .build();
         em.persist(customer);
+
+        Cart new_cart = Cart.builder().build();
+        em.persist(new_cart);
+
+        List<Order> orders = new ArrayList<>();
+        Customer new_customer = Customer.builder()
+                .name("customer2")
+                .password(passwordEncoder.encode("123"))
+                .tableNumber(112)
+                .cart(new_cart)
+                .orders(orders)
+                .build();
+        em.persist(new_customer);
 
         Menu menu = Menu.builder()
                 .name("menu")
@@ -327,17 +340,6 @@ class JpaOrderRepositoryTest {
                 .build();
 
         Long orderId = orderRepository.save(order);
-
-
-        Cart new_cart = Cart.builder().build();
-        em.persist(cart);
-        Customer new_customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(112)
-                .cart(new_cart)
-                .build();
-        em.persist(new_customer);
 
         orderRepository.changeCustomer(orderId, new_customer);
 
@@ -508,7 +510,6 @@ class JpaOrderRepositoryTest {
                 .orderPrice(333)
                 .orderCount(333)
                 .build();
-        em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
