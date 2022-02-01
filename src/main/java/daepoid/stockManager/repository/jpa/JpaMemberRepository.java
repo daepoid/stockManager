@@ -31,8 +31,8 @@ public class JpaMemberRepository implements MemberRepository {
 
     //==조회 로직==//
     @Override
-    public Optional<Member> findById(Long id) {
-        return Optional.of(em.find(Member.class, id));
+    public Member findById(Long id) {
+        return em.find(Member.class, id);
     }
 
     @Override

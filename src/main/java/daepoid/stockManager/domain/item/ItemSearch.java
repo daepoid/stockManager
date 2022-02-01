@@ -14,4 +14,12 @@ public class ItemSearch {
     private String name;
 
     private ItemType itemType;
+
+    public ItemSearch(String name) {
+        this.name = name;
+    }
+
+    public ItemSearch(ItemType itemType) {
+        this.itemType = itemType;
+    }
 }

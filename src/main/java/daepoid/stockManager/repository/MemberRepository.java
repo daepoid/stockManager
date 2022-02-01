@@ -14,7 +14,7 @@ public interface MemberRepository {
     Long save(Member member);
 
     //==조회 로직==//
-    Optional<Member> findById(Long id);
+    Member findById(Long id);
     List<Member> findAll();
     Member findByLoginId(String loginId);
     List<Member> findByName(String name);

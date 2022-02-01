@@ -35,7 +35,7 @@ public class MemberService {
 
     //==조회 로직==//
     public Member findMember(Long memberId) {
-        return memberRepository.findById(memberId).orElse(null);
+        return memberRepository.findById(memberId);
     }
 
     public Member findMemberByLoginId(String loginId) {

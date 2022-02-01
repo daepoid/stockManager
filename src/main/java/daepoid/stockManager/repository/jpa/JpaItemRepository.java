@@ -56,7 +56,7 @@ public class JpaItemRepository implements ItemRepository {
 
     @Override
     public List<Item> findByPackageCount(int packageCount) {
-        return em.createQuery("select i from Item i where i.packageCount < :packageCount", Item.class)
+        return em.createQuery("select i from Item i where i.packageCount <= :packageCount", Item.class)
                 .setParameter("packageCount", packageCount)
                 .getResultList();
     }
@@ -64,7 +64,7 @@ public class JpaItemRepository implements ItemRepository {
     // 일정 수량 이하인 경우에 찾아서 반환한다.
     @Override
     public List<Item> findByQuantity(double quantity) {
-        return em.createQuery("select  i from Item i where i.quantity < :quantity", Item.class)
+        return em.createQuery("select  i from Item i where i.quantity <= :quantity", Item.class)
                 .setParameter("quantity", quantity)
                 .getResultList();
 
@@ -142,7 +142,7 @@ public class JpaItemRepository implements ItemRepository {
 
     //==삭제 로직==//
     @Override
-    public void removeByItem(Item item) {
+    public void removeItem(Item item) {
         em.remove(item);
     }
 

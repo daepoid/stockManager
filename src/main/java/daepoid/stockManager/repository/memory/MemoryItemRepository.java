@@ -113,7 +113,7 @@ public class MemoryItemRepository implements ItemRepository {
 
     //==삭제 로직==//
     @Override
-    public void removeByItem(Item item) {
+    public void removeItem(Item item) {
         store.remove(item.getId(), item);
     }
 

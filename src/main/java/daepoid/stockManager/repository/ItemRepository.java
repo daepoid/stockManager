@@ -40,7 +40,7 @@ public interface ItemRepository {
     void changeUnitType(Long itemId, UnitType unitType);
 
     //==삭제 로직==//
-    void removeByItem(Item item);
+    void removeItem(Item item);
 
     void removeById(Long id);
 

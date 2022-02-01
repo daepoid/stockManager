@@ -36,8 +36,8 @@ public class MemoryMemberRepository implements MemberRepository {
 
     //==조회 로직==//
     @Override
-    public Optional<Member> findById(Long id) {
-        return Optional.of(store.get(id));
+    public Member findById(Long id) {
+        return store.get(id);
     }
 
     @Override
