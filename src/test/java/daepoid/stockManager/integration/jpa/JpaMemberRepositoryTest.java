@@ -1,8 +1,9 @@
-package daepoid.stockManager.repository.jpa;
+package daepoid.stockManager.integration.jpa;
 
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
+import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

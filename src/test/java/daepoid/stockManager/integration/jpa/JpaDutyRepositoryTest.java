@@ -1,9 +1,10 @@
-package daepoid.stockManager.repository.jpa;
+package daepoid.stockManager.integration.jpa;
 
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
+import daepoid.stockManager.repository.jpa.JpaDutyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

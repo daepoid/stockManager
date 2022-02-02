@@ -1,7 +1,9 @@
-package daepoid.stockManager.repository.jpa;
+package daepoid.stockManager.integration.jpa;
 
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.repository.CustomerRepository;
+import daepoid.stockManager.repository.jpa.JpaCartRepository;
+import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

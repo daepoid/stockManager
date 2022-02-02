@@ -1,4 +1,4 @@
-package daepoid.stockManager.repository.jpa;
+package daepoid.stockManager.integration.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
@@ -6,6 +6,7 @@ import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.repository.jpa.JpaIngredientRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
