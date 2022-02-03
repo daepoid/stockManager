@@ -55,8 +55,9 @@ public class Duty {
     }
 
     //==개발 로직==//
-    public void changeDutyId(Long id) {
+    public Long changeDutyId(Long id) {
         this.id = id;
+        return id;
     }
 
     //==비즈니스 로직(setter 제거)==//

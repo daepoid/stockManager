@@ -21,8 +21,8 @@ public class DutyService {
 
     //==생성 로직==//
     @Transactional
-    public void saveDuty(Duty duty) {
-        dutyRepository.save(duty);
+    public Long saveDuty(Duty duty) {
+        return dutyRepository.save(duty);
     }
 
     //==조회 로직==//
@@ -42,7 +42,7 @@ public class DutyService {
         return dutyRepository.findByMember(member);
     }
 
-    public List<Duty> findIncentive(double incentive) {
+    public List<Duty> findByIncentive(double incentive) {
         return dutyRepository.findByIncentive(incentive);
     }
 
@@ -55,11 +55,6 @@ public class DutyService {
     }
 
     //==수정 로직==//
-    @Transactional
-    public void changeId(Long dutyId, Long id) {
-        Duty duty = dutyRepository.findById(dutyId);
-        duty.changeDutyId(id);
-    }
 
     @Transactional
     public void changeName(Long dutyId, String name) {

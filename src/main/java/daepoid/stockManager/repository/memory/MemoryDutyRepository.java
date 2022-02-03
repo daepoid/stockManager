@@ -73,10 +73,6 @@ public class MemoryDutyRepository implements DutyRepository {
     }
 
     //==수정 로직==//
-    @Override
-    public void changeId(Long dutyId, Long id) {
-        store.get(dutyId).changeDutyId(id);
-    }
 
     @Override
     public void changeName(Long dutyId, String name) {

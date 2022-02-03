@@ -3,6 +3,9 @@ package daepoid.stockManager.service;
 import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
+import daepoid.stockManager.repository.CartRepository;
+import daepoid.stockManager.repository.jpa.JpaCartRepository;
+import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +26,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class CustomerServiceTest {
 
     @Autowired
+    EntityManager em;
+
+    @Autowired
+    JpaCustomerRepository customerRepository;
+
+    @Autowired
     CustomerService customerService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
-    @Autowired
-    EntityManager em;
 
     @Test
     void saveCustomer() {
@@ -37,11 +43,14 @@ class CustomerServiceTest {
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
+        Cart cart = Cart.builder().build();
+        em.persist(cart);
+
         Customer customer = Customer.builder()
                 .name(name)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(Cart.builder().build())
+                .cart(cart)
                 .orders(orders)
                 .build();
 
@@ -56,11 +65,14 @@ class CustomerServiceTest {
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
+        Cart cart = Cart.builder().build();
+        em.persist(cart);
+
         Customer customer = Customer.builder()
                 .name(name)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(Cart.builder().build())
+                .cart(cart)
                 .orders(orders)
                 .build();
 
@@ -75,11 +87,14 @@ class CustomerServiceTest {
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
+        Cart cart = Cart.builder().build();
+        em.persist(cart);
+
         Customer customer = Customer.builder()
                 .name(name)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(Cart.builder().build())
+                .cart(cart)
                 .orders(orders)
                 .build();
 
@@ -94,11 +109,14 @@ class CustomerServiceTest {
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
+        Cart cart = Cart.builder().build();
+        em.persist(cart);
+
         Customer customer = Customer.builder()
                 .name(name)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(Cart.builder().build())
+                .cart(cart)
                 .orders(orders)
                 .build();
 
@@ -113,11 +131,15 @@ class CustomerServiceTest {
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
+
+        Cart cart = Cart.builder().build();
+        em.persist(cart);
+
         Customer customer = Customer.builder()
                 .name(name)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(Cart.builder().build())
+                .cart(cart)
                 .orders(orders)
                 .build();
 

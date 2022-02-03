@@ -82,11 +82,6 @@ public class JpaDutyRepository implements DutyRepository {
     }
 
     //==변경 로직==//
-    @Override
-    public void changeId(Long dutyId, Long id) {
-        Duty duty = em.find(Duty.class, dutyId);
-        duty.changeDutyId(id);
-    }
 
     @Override
     public void changeName(Long dutyId, String name) {

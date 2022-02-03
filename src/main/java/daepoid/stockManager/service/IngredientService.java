@@ -86,11 +86,6 @@ public class IngredientService {
     }
 
     @Transactional
-    public void changeRecipe(Long ingredientId, Recipe recipe) {
-        ingredientRepository.findById(ingredientId).changeRecipe(recipe);
-    }
-
-    @Transactional
     public void updateCost(Long ingredientId) {
         ingredientRepository.findById(ingredientId).updateCost();
     }

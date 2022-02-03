@@ -266,34 +266,6 @@ class JpaDutyRepositoryTest {
     }
 
     @Test
-    public void changeId() throws Exception {
-        // given
-        int size = dutyRepository.findAll().size();
-        int count = 2;
-
-        String name = "dutyName";
-        double incentive = 0.0;
-
-        Long changeNumber = 123123L;
-
-        // when
-        Duty duty = Duty.builder()
-                .name(name + "1")
-                .incentive(incentive + 1.0)
-                .members(new HashSet<Member>())
-                .build();
-        Long saved1Id = dutyRepository.save(duty);
-
-        dutyRepository.changeId(duty.getId(), changeNumber);
-
-        // then
-        assertThat(duty.getId()).isEqualTo(changeNumber);
-
-        // id를 변경하면 기존의 것은 깨지고 새로운 영속성이 만들어지는가?
-//        assertThat(duty).isEqualTo(dutyRepository.findById(changeNumber));
-    }
-
-    @Test
     public void changeName() throws Exception {
         // given
         String name = "dutyName";

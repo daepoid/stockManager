@@ -2,7 +2,9 @@ package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.repository.CartRepository;
 import daepoid.stockManager.repository.MenuRepository;
+import daepoid.stockManager.repository.jpa.JpaCartRepository;
 import daepoid.stockManager.repository.jpa.JpaMenuRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,10 +28,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class CartServiceTest {
 
     @Autowired
-    CartService cartService;
+    EntityManager em;
 
     @Autowired
-    EntityManager em;
+    JpaCartRepository cartRepository;
+
+    @Autowired
+    CartService cartService;
 
     @Autowired
     JpaMenuRepository menuRepository;

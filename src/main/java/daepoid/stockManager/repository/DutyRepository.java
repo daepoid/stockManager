@@ -23,7 +23,6 @@ public interface DutyRepository {
     List<Duty> findOverIncentive(double incentive);
 
     //==수정 로직==//
-    void changeId(Long dutyId, Long id);
     void changeName(Long dutyId, String name);
     void changeMembers(Long dutyId, Set<Member> members);
     void addMember(Long dutyId, Member member);
