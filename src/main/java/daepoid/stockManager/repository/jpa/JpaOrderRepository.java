@@ -65,8 +65,7 @@ public class JpaOrderRepository implements OrderRepository {
     //==수정 로직==//
     @Override
     public void changeCustomer(Long orderId, Customer customer) {
-        em.find(Order.class, orderId)
-                .changeCustomer(customer);
+        em.find(Order.class, orderId).changeCustomer(customer);
     }
 
     @Override

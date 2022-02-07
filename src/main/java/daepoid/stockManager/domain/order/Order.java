@@ -80,10 +80,10 @@ public class Order {
      * 주문 취소
      */
     public void cancel(){
-        if(this.orderStatus != OrderStatus.ORDERED && this.orderStatus != OrderStatus.CANCELED) {
+        if(this.orderStatus == OrderStatus.COOKING) {
             throw new IllegalStateException("준비중인 음식은 취소가 불가능합니다.");
         }
-        if(this.orderStatus != OrderStatus.CANCELED){
+        if(this.orderStatus == OrderStatus.CANCELED){
             throw new IllegalStateException("이미 취소되었습니다.");
         }
         this.changeOrderStatus(OrderStatus.CANCELED);

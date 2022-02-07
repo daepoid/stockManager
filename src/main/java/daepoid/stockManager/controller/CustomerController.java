@@ -68,7 +68,7 @@ public class CustomerController {
     public String customerOrder(@PathVariable("customerId") Long customerId,
                                 RedirectAttributes redirectAttributes) {
 
-        if(!orderService.orders(customerId)) {
+        if(orderService.orders(customerId) != null) {
             return "orders/customerCartForm";
         }
 

@@ -61,13 +61,18 @@ public class MenuService {
     }
 
     @Transactional
-    public void addFood(Long menuId, Recipe food, Integer numberOfFood) {
-        menuRepository.addFood(menuId, food, numberOfFood);
+    public void changeNumberOfFood(Long menuId, Map<Long, Integer> numberOfFood) {
+        menuRepository.changeNumberOfFood(menuId, numberOfFood);
     }
 
     @Transactional
-    public void changeNumberOfFood(Long menuId, Map<Long, Integer> numberOfFood) {
-        menuRepository.changeNumberOfFood(menuId, numberOfFood);
+    public void changeFoodInfo(Long menuId, Set<Recipe> foods, Map<Long, Integer> numberOfFood) {
+        menuRepository.changeFoodInfo(menuId, foods, numberOfFood);
+    }
+
+    @Transactional
+    public void addFood(Long menuId, Recipe food, Integer numberOfFood) {
+        menuRepository.addFood(menuId, food, numberOfFood);
     }
 
     //==삭제 로직==//

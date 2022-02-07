@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.Objects;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +29,9 @@ class JpaCartRepositoryTest {
     @Test
     void save_성공() {
         Cart cart = Cart.builder().build();
+
         Long savedId = cartRepository.save(cart);
+
         assertThat(savedId).isEqualTo(cart.getId());
         assertThat(em.find(Cart.class, savedId)).isEqualTo(cart);
     }
@@ -58,6 +62,12 @@ class JpaCartRepositoryTest {
         Cart cart2 = Cart.builder().build();
         cartRepository.save(cart2);
         assertThat(cartRepository.findAll().size()).isEqualTo(size + 2);
+
+        em.detach(cart1);
+        assertThat(Objects.requireNonNull(cartRepository.findAll().stream()
+                .filter(cart -> cart.getId().equals(cart1.getId()))
+                .findAny().orElse(null)).getId())
+                .isEqualTo(cart1.getId());
     }
 
     @Test

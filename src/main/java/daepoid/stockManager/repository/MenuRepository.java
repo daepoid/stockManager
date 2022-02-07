@@ -26,6 +26,8 @@ public interface MenuRepository {
     void changeName(Long menuId, String name);
     void changeFoods(Long menuId, Set<Recipe> foods);
     void changeNumberOfFood(Long menuId, Map<Long, Integer> numberOfFood);
+    void changeFoodInfo(Long menuId, Set<Recipe> foods, Map<Long, Integer> numberOfFood);
+
 
     void addFood(Long menuId, Recipe food, Integer numberOfFood);
 

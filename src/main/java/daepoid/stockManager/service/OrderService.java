@@ -60,17 +60,17 @@ public class OrderService {
     }
 
     @Transactional
-    public boolean orders(Long customerId) {
+    public Long orders(Long customerId) {
 
         // 엔티티 조회
         Customer customer = customerRepository.findById(customerId);
         if(customer == null) {
-            return false;
+            return null;
         }
 
         Cart cart = customer.getCart();
         if(cart == null || cart.getNumberOfMenus().size() < 1) {
-            return false;
+            return null;
         }
 
         Map<Long, Integer> numberOfMenus = cart.getNumberOfMenus();
@@ -92,14 +92,14 @@ public class OrderService {
         }
 
         // 주문 생성 및 저장
-        orderRepository.save(
-                Order.builder()
-                        .customer(customer)
-                        .orderMenus(orderMenus)
-                        .orderDateTime(orderDateTime)
-                        .orderStatus(OrderStatus.ORDERED)
-                        .build()
-        );
+
+        Order order = Order.builder()
+                .customer(customer)
+                .orderMenus(orderMenus)
+                .orderDateTime(orderDateTime)
+                .orderStatus(OrderStatus.ORDERED)
+                .build();
+        orderRepository.save(order);
 
         // 주문 환료 후 장바구니 비우기
         cart.clearCart();
@@ -109,7 +109,7 @@ public class OrderService {
             menuRepository.addOrderCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
         }
 
-        return true;
+        return order.getId();
     }
 
     @Transactional

@@ -3,7 +3,6 @@ package daepoid.stockManager.service;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.repository.jpa.JpaIngredientRepository;
 import daepoid.stockManager.repository.jpa.JpaRecipeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -37,21 +36,16 @@ public class RecipeService {
         return recipeRepository.findAll();
     }
 
-    public Recipe findRecipesByName(String name) {
+    public Recipe findRecipeByName(String name) {
         return recipeRepository.findByName(name);
     }
 
-    public List<Recipe> findRecipeByPrice(int price) {
+    public List<Recipe> findRecipesByPrice(int price) {
         return recipeRepository.findByPrice(price);
     }
 
     public List<Recipe> findRecipesByWeight(double weight) {
         return recipeRepository.findByWeight(weight);
-    }
-
-    public List<Ingredient> findIngredientsByRecipe(Long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId);
-        return recipe.getIngredients();
     }
 
     public List<Recipe> findRecipesByIngredient(Ingredient ingredient) {
@@ -93,7 +87,7 @@ public class RecipeService {
     }
 
     @Transactional
-    public void changeIngredient(Long recipeId, List<Ingredient> ingredients) {
+    public void changeIngredients(Long recipeId, List<Ingredient> ingredients) {
         Recipe recipe = recipeRepository.findById(recipeId);
         recipe.changeIngredients(ingredients);
     }

@@ -65,7 +65,7 @@ public class Recipe {
 
     @Builder
     public Recipe(String recipeNumber, String name, int price, double weight, DishType dishType,
-                  double cost, double netIncome, List<Ingredient> ingredients, String notes) {
+                  double cost, double netIncome, List<Ingredient> ingredients, Set<Menu> menus, String notes) {
         this.recipeNumber = recipeNumber;
         this.name = name;
         this.price = price;
@@ -74,6 +74,7 @@ public class Recipe {
         this.cost = cost;
         this.netIncome = netIncome;
         this.ingredients = ingredients;
+        this.menus = menus;
         this.notes = notes;
     }
 

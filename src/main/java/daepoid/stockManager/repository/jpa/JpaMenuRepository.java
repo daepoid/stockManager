@@ -74,6 +74,13 @@ public class JpaMenuRepository implements MenuRepository {
     }
 
     @Override
+    public void changeFoodInfo(Long menuId, Set<Recipe> foods, Map<Long, Integer> numberOfFood) {
+        Menu menu = em.find(Menu.class, menuId);
+        menu.changeFoods(foods);
+        menu.changeNumberOfFood(numberOfFood);
+    }
+
+    @Override
     public void addFood(Long menuId, Recipe food, Integer numberOfFood) {
         em.find(Menu.class, menuId).addFood(food, numberOfFood);
     }
