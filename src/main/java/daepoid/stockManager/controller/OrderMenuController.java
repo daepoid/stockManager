@@ -4,10 +4,7 @@ import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
-import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.dto.order.CustomerOrderMenuDTO;
 import daepoid.stockManager.dto.recipe.SelectedMenuDTO;
 import daepoid.stockManager.service.*;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Controller
@@ -149,7 +144,7 @@ public class OrderMenuController {
         }
 
         List<Menu> menuList = menuService.findMenus().stream()
-                .sorted(Comparator.comparing(Menu::getOrderCount).reversed())
+                .sorted(Comparator.comparing(Menu::getSalesCount).reversed())
                 .collect(Collectors.toList());
         model.addAttribute("menus", menuList);
         return "menus/popularMenuForm";

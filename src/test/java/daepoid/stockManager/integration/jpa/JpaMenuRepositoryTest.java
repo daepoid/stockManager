@@ -3,9 +3,7 @@ package daepoid.stockManager.integration.jpa;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.repository.RecipeRepository;
 import daepoid.stockManager.repository.jpa.JpaMenuRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -35,15 +32,19 @@ class JpaMenuRepositoryTest {
     @Test
     void save() {
         String name = "menu";
+        Set<Recipe> foods = new HashSet<>();
         int price = 1000;
+        Map<Long, Integer> numberOfFood = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int orderCount = 0;
 
         Menu menu = Menu.builder()
                 .name(name)
+                .foods(new HashSet<>())
                 .price(price)
+                .numberOfFood(new HashMap<>())
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -60,9 +61,11 @@ class JpaMenuRepositoryTest {
 
         Menu menu = Menu.builder()
                 .name(name)
+                .foods(new HashSet<>())
                 .price(price)
+                .numberOfFood(new HashMap<>())
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -80,9 +83,11 @@ class JpaMenuRepositoryTest {
 
         Menu menu = Menu.builder()
                 .name(name)
+                .foods(new HashSet<>())
                 .price(price)
+                .numberOfFood(new HashMap<>())
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -99,9 +104,11 @@ class JpaMenuRepositoryTest {
 
         Menu menu = Menu.builder()
                 .name(name)
+                .foods(new HashSet<>())
                 .price(price)
+                .numberOfFood(new HashMap<>())
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -137,7 +144,7 @@ class JpaMenuRepositoryTest {
                 .name(name)
                 .price(price)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .foods(foods)
                 .numberOfFood(numberOfFood)
                 .build();
@@ -174,7 +181,7 @@ class JpaMenuRepositoryTest {
                 .name(name)
                 .price(price)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .foods(foods)
                 .numberOfFood(numberOfFood)
                 .build();
@@ -194,9 +201,11 @@ class JpaMenuRepositoryTest {
 
         Menu menu = Menu.builder()
                 .name(name)
+                .foods(new HashSet<>())
                 .price(price)
+                .numberOfFood(new HashMap<>())
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -234,7 +243,7 @@ class JpaMenuRepositoryTest {
                 .name(name)
                 .price(price)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .numberOfFood(numberOfFood)
                 .build();
 
@@ -271,7 +280,7 @@ class JpaMenuRepositoryTest {
                 .name(name)
                 .price(price)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .foods(foods)
                 .build();
 
@@ -295,7 +304,7 @@ class JpaMenuRepositoryTest {
                 .name(name)
                 .price(price)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .foods(foods)
                 .numberOfFood(numberOfFood)
                 .build();
@@ -328,13 +337,13 @@ class JpaMenuRepositoryTest {
                 .name(name)
                 .price(price)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuRepository.save(menu);
-        menuRepository.addOrderCount(menuId, 123);
-        assertThat(menu.getOrderCount()).isEqualTo(123);
-        assertThat(menuRepository.findById(menuId).getOrderCount()).isEqualTo(123);
+        menuRepository.addSalesCount(menuId, 123);
+        assertThat(menu.getSalesCount()).isEqualTo(123);
+        assertThat(menuRepository.findById(menuId).getSalesCount()).isEqualTo(123);
     }
 
     @Test
@@ -348,13 +357,13 @@ class JpaMenuRepositoryTest {
                 .name(name)
                 .price(price)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuRepository.save(menu);
-        menuRepository.cancelOrderCount(menuId, 123);
-        assertThat(menu.getOrderCount()).isEqualTo(-123);
-        assertThat(menuRepository.findById(menuId).getOrderCount()).isEqualTo(-123);
+        menuRepository.cancelSalesCount(menuId, 123);
+        assertThat(menu.getSalesCount()).isEqualTo(-123);
+        assertThat(menuRepository.findById(menuId).getSalesCount()).isEqualTo(-123);
     }
 
     @Test
@@ -384,7 +393,7 @@ class JpaMenuRepositoryTest {
                 .name(name)
                 .price(price)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .foods(foods)
                 .numberOfFood(numberOfFood)
                 .build();

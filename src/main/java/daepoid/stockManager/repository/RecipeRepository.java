@@ -15,6 +15,7 @@ public interface RecipeRepository {
     //==조회 로직==//
     Recipe findById(Long id);
     List<Recipe> findAll();
+    Recipe findByRecipeNumber(String recipeNumber);
     Recipe findByName(String name);
     List<Recipe> findByPrice(int price);
     List<Recipe> findByWeight(double weight);

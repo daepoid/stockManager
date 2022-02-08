@@ -51,10 +51,6 @@ public class Customer {
         this.orders = orders;
     }
 
-    public void changeId(Long id) {
-        this.id = id;
-    }
-
     public void changeName(String name) {
         this.name = name;
     }

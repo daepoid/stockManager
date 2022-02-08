@@ -81,7 +81,7 @@ class CartServiceTest {
                 .name("menu")
                 .price(price)
                 .addedDate(LocalDateTime.now())
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .numberOfFood(new_numberOfMenus)
                 .build();
         menuRepository.save(menu);
@@ -109,7 +109,7 @@ class CartServiceTest {
                 .name("menu")
                 .price(price)
                 .addedDate(LocalDateTime.now())
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .numberOfFood(new_numberOfMenus)
                 .build();
         menuRepository.save(menu);
@@ -138,7 +138,7 @@ class CartServiceTest {
                 .name("menu")
                 .price(price)
                 .addedDate(LocalDateTime.now())
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .numberOfFood(new_numberOfMenus)
                 .build();
         menuRepository.save(menu);
@@ -168,7 +168,7 @@ class CartServiceTest {
                 .name("menu")
                 .price(price)
                 .addedDate(LocalDateTime.now())
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .numberOfFood(new_numberOfMenus)
                 .build();
         menuRepository.save(menu);

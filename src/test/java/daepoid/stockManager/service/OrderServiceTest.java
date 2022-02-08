@@ -3,7 +3,6 @@ package daepoid.stockManager.service;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.repository.jpa.JpaOrderRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -55,7 +53,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -72,7 +70,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -110,7 +108,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(totalOrderCount)
+                .salesCount(totalOrderCount)
                 .build();
         em.persist(menu);
 
@@ -131,11 +129,11 @@ class OrderServiceTest {
         em.persist(customer);
 
         Long orderId = orderService.order(customer.getId(), menu.getId(), orderCount, LocalDateTime.now());
-        assertThat(menu.getOrderCount()).isEqualTo(totalOrderCount + orderCount);
+        assertThat(menu.getSalesCount()).isEqualTo(totalOrderCount + orderCount);
 
         orderService.cancelOrder(orderId);
         assertThat(orderService.findOrder(orderId).getOrderStatus()).isEqualTo(OrderStatus.CANCELED);
-        assertThat(menu.getOrderCount()).isEqualTo(totalOrderCount + orderCount - orderCount);
+        assertThat(menu.getSalesCount()).isEqualTo(totalOrderCount + orderCount - orderCount);
     }
 
     @Test
@@ -161,7 +159,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -208,7 +206,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -255,7 +253,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -302,7 +300,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -349,7 +347,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -396,7 +394,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -444,7 +442,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -504,7 +502,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -561,7 +559,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -616,7 +614,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -664,7 +662,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 
@@ -712,7 +710,7 @@ class OrderServiceTest {
                 .price(123)
                 .numberOfFood(new HashMap<>())
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
         em.persist(menu);
 

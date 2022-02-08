@@ -46,7 +46,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -69,7 +69,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -92,7 +92,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -115,7 +115,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -155,7 +155,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -190,7 +190,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -213,7 +213,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -240,7 +240,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -281,7 +281,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -307,7 +307,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -348,7 +348,7 @@ class MenuServiceTest {
                 .numberOfFood(numberOfFood)
                 .price(price)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -382,7 +382,7 @@ class MenuServiceTest {
                 .price(price)
                 .numberOfFood(numberOfFood)
                 .addedDate(addedDate)
-                .orderCount(orderCount)
+                .salesCount(orderCount)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);

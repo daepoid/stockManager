@@ -61,7 +61,7 @@ public class MenuManagementController {
                 .name(createMenuDTO.getMenuName())
                 .price(0)
                 .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .salesCount(0)
                 .build();
 
         Long savedId = menuService.saveMenu(menu);

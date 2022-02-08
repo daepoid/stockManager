@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,17 +51,17 @@ public class Menu {
 
     // 주문이 많이 된 음식을 찾기 위해
     @NotNull
-    private int orderCount = 0;
+    private int salesCount = 0;
 
     @Builder
     public Menu(String name, Set<Recipe> foods, int price,
-                Map<Long, Integer> numberOfFood, LocalDateTime addedDate, int orderCount) {
+                Map<Long, Integer> numberOfFood, LocalDateTime addedDate, int salesCount) {
         this.name = name;
         this.price = price;
         this.foods = foods;
         this.numberOfFood = numberOfFood;
         this.addedDate = addedDate;
-        this.orderCount = orderCount;
+        this.salesCount = salesCount;
     }
 
     public Integer getPrice() {
@@ -90,8 +89,8 @@ public class Menu {
         this.addedDate = addedDate;
     }
 
-    public void changeOrderCount(int orderCount) {
-        this.orderCount = orderCount;
+    public void changeSalesCount(int salesCount) {
+        this.salesCount = salesCount;
     }
 
     public void updatePrice() {
@@ -106,12 +105,12 @@ public class Menu {
         this.price = sum;
     }
 
-    public void addOrderCount(int newOrderCount) {
-        this.orderCount += newOrderCount;
+    public void addSalesCount(int newSalesCount) {
+        this.salesCount += newSalesCount;
     }
 
-    public void cancelOrderCount(int cancelOrderCount) {
-        this.orderCount -= cancelOrderCount;
+    public void cancelSalesCount(int cancelSalesCount) {
+        this.salesCount -= cancelSalesCount;
     }
 
     public void addFood(Recipe food, Integer numberOfFood) {
@@ -124,9 +123,9 @@ public class Menu {
     }
 
     // 메뉴 주문 취소
-    public void cancelMenu(int orderCount) {
+    public void cancelMenu(int newSalesCount) {
         for (Recipe food : foods) {
-            food.cancelRecipe(orderCount);
+            food.cancelRecipe(newSalesCount);
         }
     }
 

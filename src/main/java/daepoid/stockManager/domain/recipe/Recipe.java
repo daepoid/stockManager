@@ -151,6 +151,13 @@ public class Recipe {
         return find != null;
     }
 
+    public boolean hasIngredient(Long ingredientId) {
+        Ingredient find = ingredients.stream()
+                .filter(ingredient -> ingredient.getId().equals(ingredientId))
+                .findAny().orElse(null);
+        return find != null;
+    }
+
     // 주문 취소시 재고 복원
     public void cancelRecipe(int orderCount) {
 

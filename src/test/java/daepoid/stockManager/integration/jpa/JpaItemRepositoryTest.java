@@ -1,5 +1,6 @@
 package daepoid.stockManager.integration.jpa;
 
+import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
@@ -11,6 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -32,6 +36,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -40,12 +45,12 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
         assertThat(item.getId()).isEqualTo(itemId);
-        assertThat(item).isEqualTo(em.find(Item.class, itemId));
     }
 
     @Test
@@ -56,6 +61,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -64,21 +70,26 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
         assertThat(itemRepository.findById(itemId)).isEqualTo(item);
+        assertThat(itemRepository.findById(itemId).getId()).isEqualTo(item.getId());
     }
 
     @Test
     void findAll() {
+        int size = itemRepository.findAll().size();
+
         String name = "item name";
         ItemType itemType = ItemType.MEAT;
         int price = 123;
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -87,12 +98,16 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        assertThat(itemRepository.findAll().contains(item)).isEqualTo(true);
-        assertThat(itemRepository.findAll().size()).isEqualTo(1);
+        assertThat(itemRepository.findAll().contains(item)).isTrue();
+        assertThat(itemRepository.findAll().size()).isEqualTo(size + 1);
+        assertThat(itemRepository.findAll().stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -103,6 +118,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -111,11 +127,15 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        assertThat(itemRepository.findByName(name).contains(item)).isEqualTo(true);
+        assertThat(itemRepository.findByName(name).contains(item)).isTrue();
+        assertThat(itemRepository.findByName(name).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -126,6 +146,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -134,11 +155,15 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        assertThat(itemRepository.findByItemType(itemType).contains(item)).isEqualTo(true);
+        assertThat(itemRepository.findByItemType(itemType).contains(item)).isTrue();
+        assertThat(itemRepository.findByItemType(itemType).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -149,6 +174,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -157,11 +183,15 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        assertThat(itemRepository.findByPackageCount(packageCount).contains(item)).isEqualTo(true);
+        assertThat(itemRepository.findByPackageCount(packageCount).contains(item)).isTrue();
+        assertThat(itemRepository.findByPackageCount(packageCount).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -172,6 +202,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -180,11 +211,15 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        assertThat(itemRepository.findByQuantity(quantity).contains(item)).isEqualTo(true);
+        assertThat(itemRepository.findByQuantity(quantity).contains(item)).isTrue();
+        assertThat(itemRepository.findByQuantity(quantity).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -195,6 +230,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -203,6 +239,7 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
@@ -211,6 +248,22 @@ class JpaItemRepositoryTest {
         assertThat(itemRepository.findByItemSearch(new ItemSearch(name, itemType)).contains(item)).isEqualTo(true);
         assertThat(itemRepository.findByItemSearch(new ItemSearch(name)).contains(item)).isEqualTo(true);
         assertThat(itemRepository.findByItemSearch(new ItemSearch(itemType)).contains(item)).isEqualTo(true);
+
+        assertThat(itemRepository.findByItemSearch(new ItemSearch()).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(itemRepository.findByItemSearch(new ItemSearch(name, itemType)).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(itemRepository.findByItemSearch(new ItemSearch(name)).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(itemRepository.findByItemSearch(new ItemSearch(itemType)).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -221,6 +274,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -229,14 +283,20 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        itemRepository.changeName(itemId, name + name);
-        assertThat(item.getName()).isEqualTo(name + name);
-        assertThat(itemRepository.findById(itemId).getName()).isEqualTo(name + name);
-        assertThat(itemRepository.findByName(name + name).contains(item)).isEqualTo(true);
+        String newName = "new Item Name";
+        itemRepository.changeName(itemId, newName);
+
+        assertThat(item.getName()).isEqualTo(newName);
+        assertThat(itemRepository.findById(itemId).getName()).isEqualTo(newName);
+        assertThat(itemRepository.findByName(newName).contains(item)).isTrue();
+        assertThat(itemRepository.findByName(newName).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -247,6 +307,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -255,14 +316,19 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        itemRepository.changeItemType(itemId, ItemType.POWDER);
-        assertThat(item.getItemType()).isEqualTo(ItemType.POWDER);
-        assertThat(itemRepository.findById(itemId).getItemType()).isEqualTo(ItemType.POWDER);
-        assertThat(itemRepository.findByItemType(ItemType.POWDER).contains(item)).isEqualTo(true);
+        ItemType newItemType = ItemType.POWDER;
+        itemRepository.changeItemType(itemId, newItemType);
+        assertThat(item.getItemType()).isEqualTo(newItemType);
+        assertThat(itemRepository.findById(itemId).getItemType()).isEqualTo(newItemType);
+        assertThat(itemRepository.findByItemType(newItemType).contains(item)).isTrue();
+        assertThat(itemRepository.findByItemType(newItemType).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -273,6 +339,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -281,13 +348,15 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        itemRepository.changePrice(itemId, price * 100);
-        assertThat(item.getPrice()).isEqualTo(price * 100);
-        assertThat(itemRepository.findById(itemId).getPrice()).isEqualTo(price * 100);
+        int newPrice = 123123;
+        itemRepository.changePrice(itemId, newPrice);
+        assertThat(item.getPrice()).isEqualTo(newPrice);
+        assertThat(itemRepository.findById(itemId).getPrice()).isEqualTo(newPrice);
     }
 
     @Test
@@ -298,6 +367,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -306,14 +376,15 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        itemRepository.changePackageCount(itemId, packageCount * 100);
-
-        assertThat(item.getPackageCount()).isEqualTo(packageCount * 100);
-        assertThat(itemRepository.findById(itemId).getPackageCount()).isEqualTo(packageCount * 100);
+        int newPackageCount = 123123;
+        itemRepository.changePackageCount(itemId, newPackageCount);
+        assertThat(item.getPackageCount()).isEqualTo(newPackageCount);
+        assertThat(itemRepository.findById(itemId).getPackageCount()).isEqualTo(newPackageCount);
     }
 
     @Test
@@ -324,6 +395,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -332,13 +404,15 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
 
-        itemRepository.changeQuantity(itemId, quantity * 2);
-        assertThat(item.getQuantity()).isEqualTo(quantity * 2);
-        assertThat(itemRepository.findById(itemId).getQuantity()).isEqualTo(quantity * 2);
+        double newQuantity = 123.123;
+        itemRepository.changeQuantity(itemId, newQuantity);
+        assertThat(item.getQuantity()).isEqualTo(newQuantity);
+        assertThat(itemRepository.findById(itemId).getQuantity()).isEqualTo(newQuantity);
     }
 
     @Test
@@ -349,6 +423,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -357,12 +432,15 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
-        itemRepository.changeUnitType(itemId, UnitType.mg);
-        assertThat(item.getUnitType()).isEqualTo(UnitType.mg);
-        assertThat(itemRepository.findById(itemId).getUnitType()).isEqualTo(UnitType.mg);
+
+        UnitType newUnitType = UnitType.mg;
+        itemRepository.changeUnitType(itemId, newUnitType);
+        assertThat(item.getUnitType()).isEqualTo(newUnitType);
+        assertThat(itemRepository.findById(itemId).getUnitType()).isEqualTo(newUnitType);
     }
 
     @Test
@@ -373,6 +451,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -381,6 +460,7 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
@@ -397,6 +477,7 @@ class JpaItemRepositoryTest {
         double quantity = 123.1;
         UnitType unitType = UnitType.g;
         int packageCount = 123;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         Item item = Item.builder()
                 .name(name)
@@ -405,11 +486,14 @@ class JpaItemRepositoryTest {
                 .quantity(quantity)
                 .unitType(unitType)
                 .packageCount(packageCount)
+                .ingredients(ingredients)
                 .build();
 
         Long itemId = itemRepository.save(item);
+        assertThat(item.getId()).isEqualTo(itemId);
+        assertThat(itemRepository.findById(itemId)).isEqualTo(item);
 
         itemRepository.removeById(item.getId());
-        assertThat(itemRepository.findById(itemId)).isEqualTo(null);
+        assertThat(itemRepository.findById(itemId)).isNull();
     }
 }

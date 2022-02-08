@@ -59,8 +59,10 @@ class JpaCartRepositoryTest {
 
         Cart cart1 = Cart.builder().build();
         cartRepository.save(cart1);
+
         Cart cart2 = Cart.builder().build();
         cartRepository.save(cart2);
+
         assertThat(cartRepository.findAll().size()).isEqualTo(size + 2);
 
         em.detach(cart1);

@@ -19,7 +19,6 @@ public interface CustomerRepository {
     Customer findByTableNumber(int tableNumber);
 
     //==수정 로직==//
-    void changeId(Long customerId, Long changeId);
     void changeName(Long customerId, String name);
     void changeTableNumber(Long customerId, int tableNumber);
     void changeOrders(Long customerId, List<Order> orders);

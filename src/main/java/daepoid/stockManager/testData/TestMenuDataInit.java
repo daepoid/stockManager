@@ -23,21 +23,21 @@ public class TestMenuDataInit {
                 .name("메뉴 1")
                 .price(0)
                 .addedDate(now)
-                .orderCount(0)
+                .salesCount(0)
                 .build());
 
         menuService.saveMenu(Menu.builder()
                 .name("메뉴 2")
                 .price(0)
                 .addedDate(now)
-                .orderCount(0)
+                .salesCount(0)
                 .build());
 
         menuService.saveMenu(Menu.builder()
                 .name("메뉴 3")
                 .price(0)
                 .addedDate(now)
-                .orderCount(0)
+                .salesCount(0)
                 .build());
     }
 }

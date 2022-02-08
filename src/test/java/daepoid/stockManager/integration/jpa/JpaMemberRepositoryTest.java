@@ -1,5 +1,6 @@
 package daepoid.stockManager.integration.jpa;
 
+import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
@@ -12,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +41,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -45,6 +50,7 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
@@ -61,6 +67,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -69,11 +76,13 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
         assertThat(memberRepository.findById(memberId)).isEqualTo(member);
+        assertThat(memberRepository.findById(memberId).getId()).isEqualTo(member.getId());
     }
 
     @Test
@@ -84,6 +93,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -92,11 +102,13 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
         assertThat(memberRepository.findByLoginId(loginId)).isEqualTo(member);
+        assertThat(memberRepository.findByLoginId(loginId).getId()).isEqualTo(memberId);
     }
 
     @Test
@@ -107,6 +119,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -115,11 +128,15 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
-        assertThat(memberRepository.findAll().contains(member)).isEqualTo(true);
+        assertThat(memberRepository.findAll().contains(member)).isTrue();
+        assertThat(memberRepository.findAll().stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -130,6 +147,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -138,11 +156,15 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
-        assertThat(memberRepository.findByName(name).contains(member)).isEqualTo(true);
+        assertThat(memberRepository.findByName(name).contains(member)).isTrue();
+        assertThat(memberRepository.findByName(name).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -153,6 +175,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -161,6 +184,7 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
@@ -176,6 +200,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -184,11 +209,15 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
-        assertThat(memberRepository.findByGradeType(gradeType).contains(member)).isEqualTo(true);
+        assertThat(memberRepository.findByGradeType(gradeType).contains(member)).isTrue();
+        assertThat(memberRepository.findByGradeType(gradeType).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -199,6 +228,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -207,11 +237,15 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
-        assertThat(memberRepository.findByMemberStatus(memberStatus).contains(member)).isEqualTo(true);
+        assertThat(memberRepository.findByMemberStatus(memberStatus).contains(member)).isTrue();
+        assertThat(memberRepository.findByMemberStatus(memberStatus).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -227,6 +261,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -235,14 +270,19 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
-        memberRepository.changeName(memberId, name + name);
-        assertThat(member.getName()).isEqualTo(name + name);
-        assertThat(memberRepository.findById(memberId).getName()).isEqualTo(name + name);
-        assertThat(memberRepository.findByName(name + name).contains(member)).isEqualTo(true);
+        String newName = "new Name";
+        memberRepository.changeName(memberId, newName);
+        assertThat(member.getName()).isEqualTo(newName);
+        assertThat(memberRepository.findById(memberId).getName()).isEqualTo(newName);
+        assertThat(memberRepository.findByName(newName).contains(member)).isTrue();
+        assertThat(memberRepository.findByName(newName).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -253,6 +293,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -261,13 +302,15 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
-        memberRepository.changePassword(memberId, passwordEncoder.encode(password + password));
-        assertThat(passwordEncoder.matches(password + password, member.getPassword())).isEqualTo(true);
-        assertThat(passwordEncoder.matches(password + password, memberRepository.findById(memberId).getPassword())).isEqualTo(true);
+        String newPassword = "456";
+        memberRepository.changePassword(memberId, passwordEncoder.encode(newPassword));
+        assertThat(passwordEncoder.matches(newPassword, member.getPassword())).isTrue();
+        assertThat(passwordEncoder.matches(newPassword, memberRepository.findById(memberId).getPassword())).isTrue();
     }
 
     @Test
@@ -278,6 +321,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -286,6 +330,7 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
@@ -294,6 +339,7 @@ class JpaMemberRepositoryTest {
         memberRepository.changePhoneNumber(memberId, newPhoneNumber);
         assertThat(member.getPhoneNumber()).isEqualTo(newPhoneNumber);
         assertThat(memberRepository.findByPhoneNumber(newPhoneNumber)).isEqualTo(member);
+        assertThat(memberRepository.findByPhoneNumber(newPhoneNumber).getId()).isEqualTo(memberId);
     }
 
     @Test
@@ -304,6 +350,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -312,13 +359,18 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
-        memberRepository.changeGradeType(memberId, GradeType.PART_TIME);
-        assertThat(member.getGradeType()).isEqualTo(GradeType.PART_TIME);
-        assertThat(memberRepository.findByGradeType(GradeType.PART_TIME).contains(member)).isEqualTo(true);
+        GradeType newGradeType = GradeType.PART_TIME;
+        memberRepository.changeGradeType(memberId, newGradeType);
+        assertThat(member.getGradeType()).isEqualTo(newGradeType);
+        assertThat(memberRepository.findByGradeType(newGradeType).contains(member)).isTrue();
+        assertThat(memberRepository.findByGradeType(newGradeType).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -329,6 +381,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -337,14 +390,19 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
-        memberRepository.changeMemberStatus(memberId, MemberStatus.WORK);
-        assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.WORK);
-        assertThat(memberRepository.findByMemberStatus(MemberStatus.UNDEFINED).contains(member)).isEqualTo(false);
-        assertThat(memberRepository.findByMemberStatus(MemberStatus.WORK).contains(member)).isEqualTo(true);
+        MemberStatus newMemberStatus = MemberStatus.WORK;
+        memberRepository.changeMemberStatus(memberId, newMemberStatus);
+        assertThat(member.getMemberStatus()).isEqualTo(newMemberStatus);
+        assertThat(memberRepository.findByMemberStatus(memberStatus).contains(member)).isFalse();
+        assertThat(memberRepository.findByMemberStatus(newMemberStatus).contains(member)).isTrue();
+        assertThat(memberRepository.findByMemberStatus(newMemberStatus).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -355,6 +413,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -363,13 +422,13 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
         memberRepository.removeMember(member);
-        assertThat(memberRepository.findById(memberId)).isEqualTo(null);
-
+        assertThat(memberRepository.findById(memberId)).isNull();
     }
 
     @Test
@@ -380,6 +439,7 @@ class JpaMemberRepositoryTest {
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -388,11 +448,12 @@ class JpaMemberRepositoryTest {
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
+                .duties(duties)
                 .build();
 
         Long memberId = memberRepository.save(member);
 
         memberRepository.removeById(memberId);
-        assertThat(memberRepository.findById(memberId)).isEqualTo(null);
+        assertThat(memberRepository.findById(memberId)).isNull();
     }
 }

@@ -2,8 +2,6 @@ package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.repository.CustomerRepository;
-import daepoid.stockManager.repository.OrderRepository;
 import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
 import daepoid.stockManager.repository.jpa.JpaMenuRepository;
 import daepoid.stockManager.repository.jpa.JpaOrderRepository;
@@ -16,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -44,7 +41,7 @@ public class OrderService {
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
-        menuRepository.addOrderCount(menuId, count);
+        menuRepository.addSalesCount(menuId, count);
 
         // 주문 생성
         Order order = Order.builder()
@@ -106,7 +103,7 @@ public class OrderService {
 
         // 주문 수량 카운팅
         for (OrderMenu orderMenu : orderMenus) {
-            menuRepository.addOrderCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
+            menuRepository.addSalesCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
         }
 
         return order.getId();
@@ -117,7 +114,7 @@ public class OrderService {
         Order order = orderRepository.findById(orderId);
         List<OrderMenu> orderMenus = order.getOrderMenus();
         for (OrderMenu orderMenu : orderMenus) {
-            menuRepository.cancelOrderCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
+            menuRepository.cancelSalesCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
         }
         order.cancel();
     }

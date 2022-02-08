@@ -56,11 +56,6 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public void changeId(Long customerId, Long changeId) {
-        em.find(Customer.class, customerId).changeId(changeId);
-    }
-
-    @Override
     public void changeName(Long customerId, String name) {
         em.find(Customer.class, customerId).changeName(name);
     }

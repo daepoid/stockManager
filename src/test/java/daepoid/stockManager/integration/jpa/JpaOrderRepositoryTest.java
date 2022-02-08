@@ -34,40 +34,58 @@ class JpaOrderRepositoryTest {
 
     @Test
     void save() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
-        em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
@@ -78,40 +96,58 @@ class JpaOrderRepositoryTest {
 
     @Test
     void findById() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
-        em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
@@ -122,456 +158,703 @@ class JpaOrderRepositoryTest {
 
     @Test
     void findAll() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
                 .build();
         em.persist(customer);
 
-        Set<Recipe> foods = new HashSet<>();
-        Map<Long, Integer> numberOfFood = new HashMap<>();
-
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
-                .foods(foods)
-                .numberOfFood(numberOfFood)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
-        List<OrderMenu> orderMenus = new ArrayList<>();
-        orderMenus.add(OrderMenu.builder()
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
+        OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
-                .build()
-        );
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
+                .build();
+
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
 
-        assertThat(orderRepository.findAll().contains(order)).isEqualTo(true);
+        assertThat(orderRepository.findAll().size()).isEqualTo(1);
+//        assertThat(orderRepository.findAll().stream()
+//                .filter(o -> o.getId().equals(orderId))
+//                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
     void findByCustomer() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
-        assertThat(orderRepository.findByCustomer(customer).contains(order)).isEqualTo(true);
+
+        assertThat(orderRepository.findByCustomer(customer).contains(order)).isTrue();
+        assertThat(orderRepository.findByCustomer(customer).stream()
+                .filter(o -> o.getId().equals(orderId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
     void findByOrderMenu() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
-        assertThat(orderRepository.findByOrderMenu(orderMenu).contains(order)).isEqualTo(true);
+
+        assertThat(orderRepository.findByOrderMenu(orderMenu).contains(order)).isTrue();
+        assertThat(orderRepository.findByOrderMenu(orderMenu).stream()
+                .filter(o -> o.getId().equals(orderId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
     void findByOrderStatus() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
-        assertThat(orderRepository.findByOrderStatus(OrderStatus.ORDERED).contains(order)).isEqualTo(true);
+
+        assertThat(orderRepository.findByOrderStatus(orderStatus).contains(order)).isTrue();
+        assertThat(orderRepository.findByOrderStatus(orderStatus).stream()
+                .filter(o -> o.getId().equals(orderId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
     void changeCustomer() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer1")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
-        Cart new_cart = Cart.builder().build();
-        em.persist(new_cart);
-
-        List<Order> orders = new ArrayList<>();
-        Customer new_customer = Customer.builder()
-                .name("customer2")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(112)
-                .cart(new_cart)
-                .orders(orders)
-                .build();
-        em.persist(new_customer);
-
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
-        em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
 
-        orderRepository.changeCustomer(orderId, new_customer);
+        assertThat(orderRepository.findByCustomer(customer).contains(order)).isTrue();
+        assertThat(orderRepository.findByCustomer(customer).stream()
+                .filter(o -> o.getId().equals(orderId))
+                .findFirst().orElse(null)).isNotNull();
 
-        assertThat(order.getCustomer()).isEqualTo(new_customer);
-        assertThat(orderRepository.findById(orderId).getCustomer()).isEqualTo(new_customer);
+        Map<Long, Integer> newNumberOfMenus = new HashMap<>();
+        Cart newCart = Cart.builder().numberOfMenus(numberOfMenus).build();
+        em.persist(newCart);
+
+        String newCustomerName = "newCustomerName";
+        String newCustomerPassword = "123123";
+        int newCustomerTableNumber = 123123;
+        List<Order> newCustomerOrders = new ArrayList<>();
+
+        Customer newCustomer = Customer.builder()
+                .name(newCustomerName)
+                .password(passwordEncoder.encode(newCustomerPassword))
+                .tableNumber(newCustomerTableNumber)
+                .cart(newCart)
+                .orders(newCustomerOrders)
+                .build();
+        em.persist(newCustomer);
+
+        orderRepository.changeCustomer(orderId, newCustomer);
+
+        assertThat(order.getCustomer()).isEqualTo(newCustomer);
+        assertThat(orderRepository.findById(orderId).getCustomer()).isEqualTo(newCustomer);
+        assertThat(orderRepository.findByCustomer(newCustomer).contains(order)).isTrue();
+        assertThat(orderRepository.findByCustomer(newCustomer).stream()
+                .filter(o -> o.getId().equals(orderId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
     void changeOrderMenus() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
-        em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
 
-        List<OrderMenu> new_orderMenus = new ArrayList<>();
-        new_orderMenus.add(orderMenu);
-        orderRepository.changeOrderMenus(orderId, new_orderMenus);
+        assertThat(orderRepository.findByOrderMenu(orderMenu).contains(order)).isTrue();
+        assertThat(orderRepository.findByOrderMenu(orderMenu).stream()
+                .filter(o -> o.getId().equals(orderId))
+                .findFirst().orElse(null)).isNotNull();
 
-        assertThat(order.getOrderMenus().contains(orderMenu)).isEqualTo(true);
+        int newOrderMenuOrderPrice = 789789;
+        int newOrderMenuOrderCount = 789789;
+        OrderMenu newOrderMenu = OrderMenu.builder()
+                .menu(menu)
+                .orderPrice(newOrderMenuOrderPrice)
+                .orderCount(newOrderMenuOrderCount)
+                .build();
+
+        List<OrderMenu> newOrderMenus = new ArrayList<>();
+        newOrderMenus.add(newOrderMenu);
+        orderRepository.changeOrderMenus(orderId, newOrderMenus);
+
+        assertThat(order.getOrderMenus().contains(orderMenu)).isFalse();
+        assertThat(order.getOrderMenus().contains(newOrderMenu)).isTrue();
+//        assertThat(orderRepository.findById(orderId).getOrderMenus().stream()
+//                .filter(om -> om.getId().equals(newOrderMenu.getId()))
+//                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
     void addOrderMenus() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
         em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
-        assertThat(orderRepository.findById(orderId).getOrderMenus().contains(orderMenu)).isEqualTo(false);
+
+        assertThat(orderRepository.findById(orderId).getOrderMenus().contains(orderMenu)).isFalse();
 
         orderRepository.addOrderMenus(orderId, orderMenu);
-        assertThat(order.getOrderMenus().contains(orderMenu)).isEqualTo(true);
-        assertThat(orderRepository.findById(orderId).getOrderMenus().contains(orderMenu)).isEqualTo(true);
+        assertThat(order.getOrderMenus().contains(orderMenu)).isTrue();
+        assertThat(orderRepository.findById(orderId).getOrderMenus().contains(orderMenu)).isTrue();
+        assertThat(orderRepository.findById(orderId).getOrderMenus().stream()
+                .filter(om -> om.getId().equals(orderMenu.getId()))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
     void changeOrderDate() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
         em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
-        LocalDateTime changeTime = LocalDateTime.now();
-        orderRepository.changeOrderDate(orderId, changeTime);
 
-        assertThat(orderRepository.findById(orderId).getOrderDateTime()).isEqualTo(changeTime);
-        assertThat(order.getOrderDateTime()).isEqualTo(changeTime);
+        LocalDateTime newOrderDateTime = LocalDateTime.now();
+        orderRepository.changeOrderDate(orderId, newOrderDateTime);
+
+        assertThat(order.getOrderDateTime()).isEqualTo(newOrderDateTime);
+        assertThat(orderRepository.findById(orderId).getOrderDateTime()).isEqualTo(newOrderDateTime);
     }
 
     @Test
     void changeOrderStatus() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
-        orderRepository.changeOrderStatus(orderId, OrderStatus.CANCELED);
 
-        assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.CANCELED);
-        assertThat(orderRepository.findById(orderId).getOrderStatus()).isEqualTo(OrderStatus.CANCELED);
-        assertThat(orderRepository.findByOrderStatus(OrderStatus.CANCELED).contains(order)).isEqualTo(true);
-        assertThat(orderRepository.findByOrderStatus(OrderStatus.ORDERED).contains(order)).isEqualTo(false);
+        OrderStatus newOrderStatus = OrderStatus.CANCELED;
+        orderRepository.changeOrderStatus(orderId, newOrderStatus);
+
+        assertThat(order.getOrderStatus()).isEqualTo(newOrderStatus);
+        assertThat(orderRepository.findById(orderId).getOrderStatus()).isEqualTo(newOrderStatus);
+        assertThat(orderRepository.findByOrderStatus(newOrderStatus).contains(order)).isTrue();
+        assertThat(orderRepository.findByOrderStatus(newOrderStatus).stream()
+                .filter(o -> o.getId().equals(orderId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(orderRepository.findByOrderStatus(orderStatus).contains(order)).isFalse();
+        assertThat(orderRepository.findByOrderStatus(orderStatus).stream()
+                .filter(o -> o.getId().equals(orderId))
+                .findFirst().orElse(null)).isNull();
     }
 
     @Test
     void removeOrder() {
-        Cart cart = Cart.builder().build();
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         em.persist(cart);
 
+        String customerName = "customer";
+        String customerPassword = "123";
+        int customerTableNumber = 123;
+        List<Order> customerOrders = new ArrayList<>();
+
         Customer customer = Customer.builder()
-                .name("customer")
-                .password(passwordEncoder.encode("123"))
-                .tableNumber(111)
+                .name(customerName)
+                .password(passwordEncoder.encode(customerPassword))
+                .tableNumber(customerTableNumber)
                 .cart(cart)
+                .orders(customerOrders)
                 .build();
         em.persist(customer);
 
+        String menuName = "menu";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 456;
+        Map<Long, Integer> menuNumberOfFood = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 0;
         Menu menu = Menu.builder()
-                .name("menu")
-                .price(222)
-                .addedDate(LocalDateTime.now())
-                .orderCount(0)
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFood(menuNumberOfFood)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
+        int orderMenuOrderPrice = 789;
+        int orderMenuOrderCount = 789;
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
-                .orderPrice(333)
-                .orderCount(333)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
                 .build();
         em.persist(orderMenu);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
+        LocalDateTime orderDateTime = LocalDateTime.now();
+        OrderStatus orderStatus = OrderStatus.ORDERED;
 
         Order order = Order.builder()
                 .customer(customer)
                 .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
+                .orderDateTime(orderDateTime)
+                .orderStatus(orderStatus)
                 .build();
 
         Long orderId = orderRepository.save(order);
+        assertThat(orderRepository.findById(orderId)).isEqualTo(order);
+        assertThat(orderRepository.findById(orderId).getId()).isEqualTo(order.getId());
+
         orderRepository.removeOrder(order);
 
-        assertThat(orderRepository.findById(orderId)).isEqualTo(null);
+        assertThat(orderRepository.findById(orderId)).isNull();
     }
 }

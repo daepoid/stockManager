@@ -43,7 +43,7 @@ public class EditMenuDTO {
         this.menuId = menu.getId();
         this.name = menu.getName();
 
-        this.orderCount = menu.getOrderCount();
+        this.orderCount = menu.getSalesCount();
         this.addedDate = menu.getAddedDate();
 
         double sum = 0.0;

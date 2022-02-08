@@ -44,10 +44,6 @@ public class OrderMenu {
         this.orderCount = orderCount;
     }
 
-    public void changeId(Long id) {
-        this.id = id;
-    }
-
     public void changeMenu(Menu menu) {
         this.menu = menu;
     }

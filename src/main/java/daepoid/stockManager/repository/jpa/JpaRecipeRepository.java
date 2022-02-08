@@ -40,6 +40,14 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
+    public Recipe findByRecipeNumber(String recipeNumber) {
+        return em.createQuery("select r from Recipe r where r.recipeNumber = :recipeNumber", Recipe.class)
+                .setParameter("recipeNumber", recipeNumber)
+                .getResultList()
+                .stream().findFirst().orElse(null);
+    }
+
+    @Override
     public Recipe findByName(String name) {
         return em.createQuery("select r from Recipe r where r.name = :name", Recipe.class)
                 .setParameter("name", name)

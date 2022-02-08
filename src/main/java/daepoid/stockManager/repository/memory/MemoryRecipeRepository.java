@@ -35,6 +35,13 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
+    public Recipe findByRecipeNumber(String recipeNumber) {
+        return store.values().stream()
+                .filter(recipe -> recipe.getRecipeNumber().equals(recipeNumber))
+                .findFirst().orElse(null);
+    }
+
+    @Override
     public Recipe findByName(String name) {
         return store.values().stream()
                 .filter(recipe -> recipe.getName().equals(name))
