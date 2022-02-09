@@ -38,6 +38,10 @@ public class CustomerService {
         return customerRepository.findByName(name);
     }
 
+    public Customer findByTableNumber(int tableNumber) {
+        return customerRepository.findByTableNumber(tableNumber);
+    }
+
     //==수정 로직==//
     @Transactional
     public void changeName(Long customerId, String name) {
