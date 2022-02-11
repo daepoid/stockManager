@@ -56,7 +56,7 @@ public class OrderMenu {
         this.orderPrice = orderPrice;
     }
 
-    public void changeCount(int orderCount) {
+    public void changeOrderCount(int orderCount) {
         this.orderCount = orderCount;
     }
 

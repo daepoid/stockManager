@@ -1,4 +1,4 @@
-package daepoid.stockManager.integration.jpa;
+package daepoid.stockManager.jpa;
 
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;

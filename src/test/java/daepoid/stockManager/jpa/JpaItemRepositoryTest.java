@@ -1,4 +1,4 @@
-package daepoid.stockManager.integration.jpa;
+package daepoid.stockManager.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
@@ -195,7 +195,7 @@ class JpaItemRepositoryTest {
     }
 
     @Test
-    void findByQuantity() {
+    void findByUnderQuantity() {
         String name = "item name";
         ItemType itemType = ItemType.MEAT;
         int price = 123;
@@ -216,8 +216,8 @@ class JpaItemRepositoryTest {
 
         Long itemId = itemRepository.save(item);
 
-        assertThat(itemRepository.findByQuantity(quantity).contains(item)).isTrue();
-        assertThat(itemRepository.findByQuantity(quantity).stream()
+        assertThat(itemRepository.findByUnderQuantity(quantity).contains(item)).isTrue();
+        assertThat(itemRepository.findByUnderQuantity(quantity).stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -244,26 +244,43 @@ class JpaItemRepositoryTest {
 
         Long itemId = itemRepository.save(item);
 
-        assertThat(itemRepository.findByItemSearch(new ItemSearch()).contains(item)).isEqualTo(true);
-        assertThat(itemRepository.findByItemSearch(new ItemSearch(name, itemType)).contains(item)).isEqualTo(true);
-        assertThat(itemRepository.findByItemSearch(new ItemSearch(name)).contains(item)).isEqualTo(true);
-        assertThat(itemRepository.findByItemSearch(new ItemSearch(itemType)).contains(item)).isEqualTo(true);
-
-        assertThat(itemRepository.findByItemSearch(new ItemSearch()).stream()
+        ItemSearch itemSearch1 = new ItemSearch(name, itemType);
+        assertThat(itemRepository.findByItemSearch(itemSearch1).contains(item)).isTrue();
+        assertThat(itemRepository.findByItemSearch(itemSearch1).stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst().orElse(null)).isNotNull();
 
-        assertThat(itemRepository.findByItemSearch(new ItemSearch(name, itemType)).stream()
+        ItemSearch itemSearch2 = new ItemSearch(name);
+        assertThat(itemRepository.findByItemSearch(itemSearch2).contains(item)).isTrue();
+        assertThat(itemRepository.findByItemSearch(itemSearch2).stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst().orElse(null)).isNotNull();
 
-        assertThat(itemRepository.findByItemSearch(new ItemSearch(name)).stream()
+        ItemSearch itemSearch3 = new ItemSearch(itemType);
+        assertThat(itemRepository.findByItemSearch(itemSearch3).contains(item)).isTrue();
+        assertThat(itemRepository.findByItemSearch(itemSearch3).stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst().orElse(null)).isNotNull();
 
-        assertThat(itemRepository.findByItemSearch(new ItemSearch(itemType)).stream()
+        ItemSearch itemSearch4 = new ItemSearch();
+        assertThat(itemRepository.findByItemSearch(itemSearch4).contains(item)).isTrue();
+        assertThat(itemRepository.findByItemSearch(itemSearch4).stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst().orElse(null)).isNotNull();
+
+        String wrongName = "wrong name";
+        ItemSearch itemSearch5 = new ItemSearch(wrongName);
+        assertThat(itemRepository.findByItemSearch(itemSearch5).contains(item)).isFalse();
+        assertThat(itemRepository.findByItemSearch(itemSearch5).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNull();
+
+        ItemType wrongItemType = ItemType.BOTTLE;
+        ItemSearch itemSearch6 = new ItemSearch(wrongItemType);
+        assertThat(itemRepository.findByItemSearch(itemSearch6).contains(item)).isFalse();
+        assertThat(itemRepository.findByItemSearch(itemSearch6).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNull();
     }
 
     @Test
@@ -323,6 +340,12 @@ class JpaItemRepositoryTest {
 
         ItemType newItemType = ItemType.POWDER;
         itemRepository.changeItemType(itemId, newItemType);
+
+        // 변경전의 값을 이용해서 찾는 경우 결과가 null이다.
+        assertThat(itemRepository.findByItemType(itemType).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNull();
+
         assertThat(item.getItemType()).isEqualTo(newItemType);
         assertThat(itemRepository.findById(itemId).getItemType()).isEqualTo(newItemType);
         assertThat(itemRepository.findByItemType(newItemType).contains(item)).isTrue();
@@ -355,6 +378,12 @@ class JpaItemRepositoryTest {
 
         int newPrice = 123123;
         itemRepository.changePrice(itemId, newPrice);
+
+        // 변경전의 값을 이용해서 찾는 경우 결과가 null이다.
+        assertThat(itemRepository.findAll().stream()
+                .filter(i -> i.getPrice() == price && i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNull();
+
         assertThat(item.getPrice()).isEqualTo(newPrice);
         assertThat(itemRepository.findById(itemId).getPrice()).isEqualTo(newPrice);
     }
@@ -383,6 +412,12 @@ class JpaItemRepositoryTest {
 
         int newPackageCount = 123123;
         itemRepository.changePackageCount(itemId, newPackageCount);
+
+        // 변경전의 값을 이용해서 찾는 경우 결과가 null이다.
+        assertThat(itemRepository.findByPackageCount(packageCount).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNull();
+
         assertThat(item.getPackageCount()).isEqualTo(newPackageCount);
         assertThat(itemRepository.findById(itemId).getPackageCount()).isEqualTo(newPackageCount);
     }
@@ -411,6 +446,12 @@ class JpaItemRepositoryTest {
 
         double newQuantity = 123.123;
         itemRepository.changeQuantity(itemId, newQuantity);
+
+        // 변경전의 값을 이용해서 찾는 경우 결과가 null이다.
+        assertThat(itemRepository.findByUnderQuantity(quantity).stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNull();
+
         assertThat(item.getQuantity()).isEqualTo(newQuantity);
         assertThat(itemRepository.findById(itemId).getQuantity()).isEqualTo(newQuantity);
     }
@@ -439,6 +480,12 @@ class JpaItemRepositoryTest {
 
         UnitType newUnitType = UnitType.mg;
         itemRepository.changeUnitType(itemId, newUnitType);
+
+        // 변경전의 값을 이용해서 찾는 경우 결과가 null이다.
+        assertThat(itemRepository.findAll().stream()
+                .filter(i -> i.getUnitType().equals(unitType) && i.getId().equals(itemId))
+                .findFirst().orElse(null)).isNull();
+
         assertThat(item.getUnitType()).isEqualTo(newUnitType);
         assertThat(itemRepository.findById(itemId).getUnitType()).isEqualTo(newUnitType);
     }
@@ -466,7 +513,7 @@ class JpaItemRepositoryTest {
         Long itemId = itemRepository.save(item);
 
         itemRepository.removeItem(item);
-        assertThat(itemRepository.findById(itemId)).isEqualTo(null);
+        assertThat(itemRepository.findById(itemId)).isNull();
     }
 
     @Test

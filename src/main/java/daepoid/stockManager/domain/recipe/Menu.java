@@ -43,7 +43,7 @@ public class Menu {
     @MapKeyColumn(name="food_id")
     @Column(name="number")
     // Map<recipeId, food_count>
-    private Map<Long, Integer> numberOfFood = new HashMap<>();
+    private Map<Long, Integer> numberOfFoods = new HashMap<>();
 
     // 최근에 추가된 메뉴를 확인하기 위해
     @NotNull
@@ -55,11 +55,11 @@ public class Menu {
 
     @Builder
     public Menu(String name, Set<Recipe> foods, int price,
-                Map<Long, Integer> numberOfFood, LocalDateTime addedDate, int salesCount) {
+                Map<Long, Integer> numberOfFoods, LocalDateTime addedDate, int salesCount) {
         this.name = name;
         this.price = price;
         this.foods = foods;
-        this.numberOfFood = numberOfFood;
+        this.numberOfFoods = numberOfFoods;
         this.addedDate = addedDate;
         this.salesCount = salesCount;
     }
@@ -81,8 +81,8 @@ public class Menu {
         this.foods = foods;
     }
 
-    public void changeNumberOfFood(Map<Long, Integer> numberOfFood) {
-        this.numberOfFood = numberOfFood;
+    public void changeNumberOfFood(Map<Long, Integer> numberOfFoods) {
+        this.numberOfFoods = numberOfFoods;
     }
 
     public void changeAddedDate(LocalDateTime addedDate) {
@@ -96,9 +96,9 @@ public class Menu {
     public void updatePrice() {
         int sum = 0;
         for (Recipe food : foods) {
-            Integer numberOfFoodInt = this.numberOfFood.get(food.getId());
-            if(numberOfFoodInt != null) {
-                sum += numberOfFoodInt * food.getPrice();
+            Integer numberOfFoodsInt = this.numberOfFoods.get(food.getId());
+            if(numberOfFoodsInt != null) {
+                sum += numberOfFoodsInt * food.getPrice();
             }
         }
 
@@ -113,9 +113,9 @@ public class Menu {
         this.salesCount -= cancelSalesCount;
     }
 
-    public void addFood(Recipe food, Integer numberOfFood) {
+    public void addFood(Recipe food, Integer numberOfFoods) {
         this.getFoods().add(food);
-        this.getNumberOfFood().put(food.getId(), numberOfFood);
+        this.getNumberOfFoods().put(food.getId(), numberOfFoods);
     }
 
     public void removeFood(Recipe food) {
@@ -128,5 +128,4 @@ public class Menu {
             food.cancelRecipe(newSalesCount);
         }
     }
-
 }

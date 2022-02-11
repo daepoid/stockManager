@@ -38,16 +38,18 @@ spring:
 #    expose-session-attributes: true
 
 logging:
+  config: classpath:logback-spring.xml
   level:
     org.hibernate.SQL: debug
-#  org.hibernate.type: trace
-  pattern:
-    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
-  file:
-    path: E:/User/Code/stockManager/ChangeLogs
-  logback:
-    rollingpolicy:
-      max-file-size: 10MB
-      max-history: 400
-      file-name-pattern: "/logs/abc.%d{yyyy-MM-dd}.%i"
+    org.springframework.security: DEBUG
+##  org.hibernate.type: trace
+#  pattern:
+#    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+#  file:
+#    path: stockManager/ChangeLogs
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 10MB
+#      max-history: 400
+#      file-name-pattern: "/logs/abc.%d{yyyy-MM-dd}.%i"
 

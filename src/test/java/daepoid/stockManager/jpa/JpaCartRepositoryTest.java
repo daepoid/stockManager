@@ -1,4 +1,4 @@
-package daepoid.stockManager.integration.jpa;
+package daepoid.stockManager.jpa;
 
 import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.recipe.Menu;
@@ -27,7 +27,6 @@ class JpaCartRepositoryTest {
 
     @Autowired
     JpaCartRepository cartRepository;
-
 
     @Test
     void save_성공() {
@@ -91,7 +90,7 @@ class JpaCartRepositoryTest {
         String menuName = "menu name";
         Set<Recipe> menuFoods = new HashSet<>();
         int menuPrice = 123;
-        Map<Long, Integer> numberOfFood = new HashMap<>();
+        Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 123;
 
@@ -99,22 +98,22 @@ class JpaCartRepositoryTest {
                 .name(menuName)
                 .foods(menuFoods)
                 .price(menuPrice)
-                .numberOfFood(numberOfFood)
+                .numberOfFoods(numberOfFoods)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
-        int orderCount = 123;
+        int numberOfFood = 123;
         Map<Long, Integer> numberOfMenus = new HashMap<>();
-        numberOfMenus.put(menu.getId(), orderCount);
+        numberOfMenus.put(menu.getId(), numberOfFood);
 
         Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
 
         Long cartId = cartRepository.save(cart);
 
-        assertThat(cart.getNumberOfMenus().get(menu.getId())).isEqualTo(orderCount);
-        assertThat(cartRepository.findById(cart.getId()).getNumberOfMenus().get(menu.getId())).isEqualTo(orderCount);
+        assertThat(cart.getNumberOfMenus().get(menu.getId())).isEqualTo(numberOfFood);
+        assertThat(cartRepository.findById(cart.getId()).getNumberOfMenus().get(menu.getId())).isEqualTo(numberOfFood);
     }
 
     @Test
@@ -122,7 +121,7 @@ class JpaCartRepositoryTest {
         String menuName1 = "menu name";
         Set<Recipe> menuFoods1 = new HashSet<>();
         int menuPrice1 = 123;
-        Map<Long, Integer> numberOfFood1 = new HashMap<>();
+        Map<Long, Integer> numberOfFoods1 = new HashMap<>();
         LocalDateTime menuAddedDate1 = LocalDateTime.now();
         int menuSalesCount1 = 123;
 
@@ -130,7 +129,7 @@ class JpaCartRepositoryTest {
                 .name(menuName1)
                 .foods(menuFoods1)
                 .price(menuPrice1)
-                .numberOfFood(numberOfFood1)
+                .numberOfFoods(numberOfFoods1)
                 .addedDate(menuAddedDate1)
                 .salesCount(menuSalesCount1)
                 .build();
@@ -139,7 +138,7 @@ class JpaCartRepositoryTest {
         String menuName2 = "menu name";
         Set<Recipe> menuFoods2 = new HashSet<>();
         int menuPrice2 = 123;
-        Map<Long, Integer> numberOfFood2 = new HashMap<>();
+        Map<Long, Integer> numberOfFoods2 = new HashMap<>();
         LocalDateTime menuAddedDate2 = LocalDateTime.now();
         int menuSalesCount2 = 123;
 
@@ -147,14 +146,14 @@ class JpaCartRepositoryTest {
                 .name(menuName2)
                 .foods(menuFoods2)
                 .price(menuPrice2)
-                .numberOfFood(numberOfFood2)
+                .numberOfFoods(numberOfFoods2)
                 .addedDate(menuAddedDate2)
                 .salesCount(menuSalesCount2)
                 .build();
         em.persist(menu2);
 
-        int orderCount1 = 123;
-        int orderCount2 = 456;
+        int numberOfFood1 = 123;
+        int numberOfFood2 = 456;
         Map<Long, Integer> numberOfMenus = new HashMap<>();
 
         Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
@@ -162,16 +161,16 @@ class JpaCartRepositoryTest {
         Long cartId = cartRepository.save(cart);
 
         Map<Long, Integer> newNumberOfMenus = new HashMap<>();
-        newNumberOfMenus.put(menu1.getId(), orderCount1);
-        newNumberOfMenus.put(menu2.getId(), orderCount2);
+        newNumberOfMenus.put(menu1.getId(), numberOfFood1);
+        newNumberOfMenus.put(menu2.getId(), numberOfFood2);
 
         cartRepository.addMenus(cartId, newNumberOfMenus);
 
-        assertThat(cart.getNumberOfMenus().get(menu1.getId())).isEqualTo(orderCount1);
-        assertThat(cartRepository.findById(cartId).getNumberOfMenus().get(menu1.getId())).isEqualTo(orderCount1);
+        assertThat(cart.getNumberOfMenus().get(menu1.getId())).isEqualTo(numberOfFood1);
+        assertThat(cartRepository.findById(cartId).getNumberOfMenus().get(menu1.getId())).isEqualTo(numberOfFood1);
 
-        assertThat(cart.getNumberOfMenus().get(menu2.getId())).isEqualTo(orderCount2);
-        assertThat(cartRepository.findById(cartId).getNumberOfMenus().get(menu2.getId())).isEqualTo(orderCount2);
+        assertThat(cart.getNumberOfMenus().get(menu2.getId())).isEqualTo(numberOfFood2);
+        assertThat(cartRepository.findById(cartId).getNumberOfMenus().get(menu2.getId())).isEqualTo(numberOfFood2);
     }
 
     @Test
@@ -179,7 +178,7 @@ class JpaCartRepositoryTest {
         String menuName = "menu name";
         Set<Recipe> menuFoods = new HashSet<>();
         int menuPrice = 123;
-        Map<Long, Integer> numberOfFood = new HashMap<>();
+        Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 123;
 
@@ -187,22 +186,22 @@ class JpaCartRepositoryTest {
                 .name(menuName)
                 .foods(menuFoods)
                 .price(menuPrice)
-                .numberOfFood(numberOfFood)
+                .numberOfFoods(numberOfFoods)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
-        int orderCount = 123;
+        int numberOfFood = 123;
         Map<Long, Integer> numberOfMenus = new HashMap<>();
-        numberOfMenus.put(menu.getId(), orderCount);
+        numberOfMenus.put(menu.getId(), numberOfFood);
 
         Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
 
         Long cartId = cartRepository.save(cart);
 
-        assertThat(cart.getNumberOfMenus().get(menu.getId())).isEqualTo(orderCount);
-        assertThat(cartRepository.findById(cart.getId()).getNumberOfMenus().get(menu.getId())).isEqualTo(orderCount);
+        assertThat(cart.getNumberOfMenus().get(menu.getId())).isEqualTo(numberOfFood);
+        assertThat(cartRepository.findById(cart.getId()).getNumberOfMenus().get(menu.getId())).isEqualTo(numberOfFood);
 
         cartRepository.removeMenu(cart.getId(), menu.getId());
 
@@ -215,7 +214,7 @@ class JpaCartRepositoryTest {
         String menuName = "menu name";
         Set<Recipe> menuFoods = new HashSet<>();
         int menuPrice = 123;
-        Map<Long, Integer> numberOfFood = new HashMap<>();
+        Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 123;
 
@@ -223,15 +222,15 @@ class JpaCartRepositoryTest {
                 .name(menuName)
                 .foods(menuFoods)
                 .price(menuPrice)
-                .numberOfFood(numberOfFood)
+                .numberOfFoods(numberOfFoods)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
                 .build();
         em.persist(menu);
 
-        int orderCount = 123;
+        int numberOfFood = 123;
         Map<Long, Integer> numberOfMenus = new HashMap<>();
-        numberOfMenus.put(menu.getId(), orderCount);
+        numberOfMenus.put(menu.getId(), numberOfFood);
 
         Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
 

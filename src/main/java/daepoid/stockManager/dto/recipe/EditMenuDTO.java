@@ -28,7 +28,7 @@ public class EditMenuDTO {
     private double price;
 
     @NotNull
-    private int orderCount;
+    private int numberOfFood;
 
     @NotNull
     private LocalDateTime addedDate;
@@ -37,13 +37,13 @@ public class EditMenuDTO {
 
 //    private Set<Recipe> foods = new HashSet<>();
 //
-//    private Map<Long, Integer> numberOfFood = new HashMap<>();
+//    private Map<Long, Integer> numberOfFoods = new HashMap<>();
 
     public EditMenuDTO(Menu menu) {
         this.menuId = menu.getId();
         this.name = menu.getName();
 
-        this.orderCount = menu.getSalesCount();
+        this.numberOfFood = menu.getSalesCount();
         this.addedDate = menu.getAddedDate();
 
         double sum = 0.0;
@@ -51,16 +51,16 @@ public class EditMenuDTO {
         Map<Recipe, Integer> food_info = new HashMap<>();
         Set<Recipe> foods = menu.getFoods();
         for (Recipe food : foods) {
-            Integer numberOfFoodInt = menu.getNumberOfFood().get(food.getId());
-            if(numberOfFoodInt != null) {
-                food_info.put(food, numberOfFoodInt);
-                sum += numberOfFoodInt * food.getPrice();
+            Integer numberOfFoodsInt = menu.getNumberOfFoods().get(food.getId());
+            if(numberOfFoodsInt != null) {
+                food_info.put(food, numberOfFoodsInt);
+                sum += numberOfFoodsInt * food.getPrice();
             }
         }
         foodMap = food_info;
 
 //        this.foods = menu.getFoods();
-//        this.numberOfFood = menu.getNumberOfFood();
+//        this.numberOfFoods = menu.getNumberOfFood();
         this.price = sum;
     }
 

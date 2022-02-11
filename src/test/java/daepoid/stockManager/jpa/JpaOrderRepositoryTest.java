@@ -1,19 +1,20 @@
-package daepoid.stockManager.service;
+package daepoid.stockManager.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.repository.jpa.JpaOrderRepository;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -22,10 +23,10 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class OrderServiceTest {
+class JpaOrderRepositoryTest {
 
     @Autowired
-    OrderService orderService;
+    JpaOrderRepository orderRepository;
 
     @Autowired
     EntityManager em;
@@ -104,79 +105,6 @@ class OrderServiceTest {
     }
 
     @Test
-    void order() {
-        Recipe recipe = createRecipe();
-        em.persist(recipe);
-
-        Menu menu = createMenu(recipe);
-        em.persist(menu);
-
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
-        em.persist(customer);
-
-        LocalDateTime orderDateTime = LocalDateTime.now();
-        int orderCount = 123;
-        Long orderId = orderService.order(customer.getId(), menu.getId(), orderCount, orderDateTime);
-
-        assertThat(orderService.findOrder(orderId)).isNotNull();
-    }
-
-    @Test
-    void orders() {
-        Recipe recipe = createRecipe();
-        em.persist(recipe);
-
-        Menu menu = createMenu(recipe);
-        em.persist(menu);
-
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
-        em.persist(customer);
-
-        Long orderId = orderService.orders(customer.getId());
-
-        assertThat(orderService.findOrder(orderId).getCustomer().getId()).isEqualTo(customer.getId());
-
-        assertThat(orderService.findByCustomer(customer).stream()
-                .filter(o -> o.getId().equals(orderId))
-                .findFirst().orElse(null)).isNotNull();
-    }
-
-    @Test
-    void cancelOrder() {
-        Recipe recipe = createRecipe();
-        em.persist(recipe);
-
-        Menu menu = createMenu(recipe);
-        em.persist(menu);
-
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
-        em.persist(customer);
-
-        // 확인을 위해 빼 놓음
-        int salesCount = menu.getSalesCount();
-
-        LocalDateTime orderDateTime = LocalDateTime.now();
-        int orderCount = 123;
-        Long orderId = orderService.order(customer.getId(), menu.getId(), orderCount, orderDateTime);
-        assertThat(menu.getSalesCount()).isEqualTo(salesCount + orderCount);
-
-        // 주문 취소
-        orderService.cancelOrder(orderId);
-
-        assertThat(orderService.findOrder(orderId).getOrderStatus()).isEqualTo(OrderStatus.CANCELED);
-        assertThat(menu.getSalesCount()).isEqualTo(salesCount);
-    }
-
-    @Test
     void save() {
         Recipe recipe = createRecipe();
         em.persist(recipe);
@@ -210,13 +138,14 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
-        assertThat(orderId).isEqualTo(order.getId());
+        assertThat(order.getId()).isEqualTo(orderId);
+        assertThat(em.find(Order.class, orderId)).isEqualTo(order);
     }
 
     @Test
-    void findOrder() {
+    void findById() {
         Recipe recipe = createRecipe();
         em.persist(recipe);
 
@@ -249,14 +178,15 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
-        assertThat(orderService.findOrder(orderId)).isEqualTo(order);
+        assertThat(orderRepository.findById(orderId)).isEqualTo(order);
+        assertThat(orderRepository.findById(orderId).getId()).isEqualTo(order.getId());
     }
 
     @Test
-    void findOrders() {
-        int size = orderService.findOrders().size();
+    void findAll() {
+        int size = orderRepository.findAll().size();
 
         Recipe recipe = createRecipe();
         em.persist(recipe);
@@ -290,11 +220,11 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
-        assertThat(orderService.findOrders().contains(order)).isTrue();
-        assertThat(orderService.findOrders().size()).isEqualTo(size + 1);
-        assertThat(orderService.findOrders().stream()
+        assertThat(orderRepository.findAll().contains(order)).isTrue();
+        assertThat(orderRepository.findAll().size()).isEqualTo(size + 1);
+        assertThat(orderRepository.findAll().stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -333,10 +263,10 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
-        assertThat(orderService.findByCustomer(customer).contains(order)).isTrue();
-        assertThat(orderService.findByCustomer(customer).stream()
+        assertThat(orderRepository.findByCustomer(customer).contains(order)).isTrue();
+        assertThat(orderRepository.findByCustomer(customer).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -375,10 +305,10 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
-        assertThat(orderService.findByOrderMenu(orderMenu).contains(order)).isTrue();
-        assertThat(orderService.findByOrderMenu(orderMenu).stream()
+        assertThat(orderRepository.findByOrderMenu(orderMenu).contains(order)).isTrue();
+        assertThat(orderRepository.findByOrderMenu(orderMenu).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -417,10 +347,10 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
-        assertThat(orderService.findByOrderStatus(orderStatus).contains(order)).isTrue();
-        assertThat(orderService.findByOrderStatus(orderStatus).stream()
+        assertThat(orderRepository.findByOrderStatus(orderStatus).contains(order)).isTrue();
+        assertThat(orderRepository.findByOrderStatus(orderStatus).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -459,32 +389,37 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
-        assertThat(orderService.findOrder(orderId)).isEqualTo(order);
-        assertThat(orderService.findOrder(orderId).getCustomer().getId()).isEqualTo(customer.getId());
-
-        Cart newCart = createCart(menu);
-        em.persist(newCart);
+        assertThat(orderRepository.findByCustomer(customer).contains(order)).isTrue();
+        assertThat(orderRepository.findByCustomer(customer).stream()
+                .filter(o -> o.getId().equals(orderId))
+                .findFirst().orElse(null)).isNotNull();
 
         String newCustomerName = "new customer name";
         String newCustomerPassword = "456";
         int newCustomerTableNumber = 456;
+        Cart newCustomerCart = createCart(menu);
+        em.persist(newCustomerCart);
+
         List<Order> newCustomerOrders = new ArrayList<>();
         Customer newCustomer = Customer.builder()
                 .name(newCustomerName)
                 .password(passwordEncoder.encode(newCustomerPassword))
                 .tableNumber(newCustomerTableNumber)
-                .cart(newCart)
+                .cart(newCustomerCart)
                 .orders(newCustomerOrders)
                 .build();
         em.persist(newCustomer);
-        orderService.changeCustomer(orderId, newCustomer);
+
+        assertThat(em.find(Customer.class, newCustomer.getId())).isEqualTo(newCustomer);
+
+        orderRepository.changeCustomer(orderId, newCustomer);
 
         assertThat(order.getCustomer()).isEqualTo(newCustomer);
-        assertThat(orderService.findOrder(orderId).getCustomer().getId()).isEqualTo(newCustomer.getId());
-        assertThat(orderService.findByCustomer(newCustomer).contains(order)).isTrue();
-        assertThat(orderService.findByCustomer(newCustomer).stream()
+        assertThat(orderRepository.findById(orderId).getCustomer()).isEqualTo(newCustomer);
+        assertThat(orderRepository.findByCustomer(newCustomer).contains(order)).isTrue();
+        assertThat(orderRepository.findByCustomer(newCustomer).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -523,25 +458,26 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
-        assertThat(orderService.findByOrderMenu(orderMenu).contains(order)).isTrue();
-        assertThat(orderService.findByOrderMenu(orderMenu).stream()
+        assertThat(orderRepository.findByOrderMenu(orderMenu).contains(order)).isTrue();
+        assertThat(orderRepository.findByOrderMenu(orderMenu).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
 
         List<OrderMenu> newOrderMenus = new ArrayList<>();
-        int newOrderMenuOrderPrice = 123;
-        int newOrderMenuOrderCount = 123;
+        int newOrderMenuOrderPrice = 456;
+        int newOrderMenuOrderCount = 456;
         OrderMenu newOrderMenu = OrderMenu.builder()
                 .menu(menu)
                 .orderPrice(newOrderMenuOrderPrice)
                 .orderCount(newOrderMenuOrderCount)
                 .build();
         newOrderMenus.add(newOrderMenu);
-        orderService.changeOrderMenus(orderId, newOrderMenus);
+        orderRepository.changeOrderMenus(orderId, newOrderMenus);
 
-        assertThat(orderService.findOrder(orderId).getOrderMenus().contains(newOrderMenu)).isTrue();
+        assertThat(order.getOrderMenus().contains(orderMenu)).isFalse();
+        assertThat(order.getOrderMenus().contains(newOrderMenu)).isTrue();
     }
 
     @Test
@@ -578,7 +514,9 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
+
+        assertThat(orderRepository.findById(orderId).getOrderMenus().contains(orderMenu)).isTrue();
 
         int newOrderMenuOrderPrice = 123;
         int newOrderMenuOrderCount = 123;
@@ -587,11 +525,11 @@ class OrderServiceTest {
                 .orderPrice(newOrderMenuOrderPrice)
                 .orderCount(newOrderMenuOrderCount)
                 .build();
-        orderService.addOrderMenus(orderId, newOrderMenu);
+        orderRepository.addOrderMenus(orderId, newOrderMenu);
 
-        assertThat(orderService.findOrder(orderId).getOrderMenus().contains(newOrderMenu)).isTrue();
-        assertThat(orderService.findOrder(orderId).getOrderMenus().contains(orderMenu)).isTrue();
-        assertThat(orderService.findOrder(orderId).getOrderMenus().stream()
+        assertThat(order.getOrderMenus().contains(orderMenu)).isTrue();
+        assertThat(orderRepository.findById(orderId).getOrderMenus().contains(orderMenu)).isTrue();
+        assertThat(orderRepository.findById(orderId).getOrderMenus().stream()
                 .filter(om -> om.getId().equals(orderMenu.getId()))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -630,15 +568,13 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
         LocalDateTime newOrderDateTime = LocalDateTime.now();
-        orderService.changeOrderDate(orderId, newOrderDateTime);
+        orderRepository.changeOrderDate(orderId, newOrderDateTime);
 
         assertThat(order.getOrderDateTime()).isEqualTo(newOrderDateTime);
-
-        // 실행 시간이 거의 비슷하여 isNotEqualTo(orderDateTime)으로 비교할 경우 실패가 나올 수 있다.
-        assertThat(orderService.findOrder(orderId).getOrderDateTime()).isEqualTo(newOrderDateTime);
+        assertThat(orderRepository.findById(orderId).getOrderDateTime()).isEqualTo(newOrderDateTime);
     }
 
     @Test
@@ -675,20 +611,20 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
         OrderStatus newOrderStatus = OrderStatus.CANCELED;
-        orderService.changeOrderStatus(orderId, newOrderStatus);
+        orderRepository.changeOrderStatus(orderId, newOrderStatus);
 
         assertThat(order.getOrderStatus()).isEqualTo(newOrderStatus);
-        assertThat(orderService.findOrder(orderId).getOrderStatus()).isEqualTo(newOrderStatus);
-        assertThat(orderService.findByOrderStatus(newOrderStatus).contains(order)).isTrue();
-        assertThat(orderService.findByOrderStatus(newOrderStatus).stream()
+        assertThat(orderRepository.findById(orderId).getOrderStatus()).isEqualTo(newOrderStatus);
+        assertThat(orderRepository.findByOrderStatus(newOrderStatus).contains(order)).isTrue();
+        assertThat(orderRepository.findByOrderStatus(newOrderStatus).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
 
-        assertThat(orderService.findByOrderStatus(orderStatus).contains(order)).isFalse();
-        assertThat(orderService.findByOrderStatus(orderStatus).stream()
+        assertThat(orderRepository.findByOrderStatus(orderStatus).contains(order)).isFalse();
+        assertThat(orderRepository.findByOrderStatus(orderStatus).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNull();
     }
@@ -727,13 +663,13 @@ class OrderServiceTest {
                 .orderStatus(orderStatus)
                 .build();
 
-        Long orderId = orderService.save(order);
+        Long orderId = orderRepository.save(order);
 
-        assertThat(orderService.findOrder(orderId)).isEqualTo(order);
-        assertThat(orderService.findOrder(orderId).getId()).isEqualTo(order.getId());
+        assertThat(orderRepository.findById(orderId)).isEqualTo(order);
+        assertThat(orderRepository.findById(orderId).getId()).isEqualTo(order.getId());
 
-        orderService.removeOrder(order);
+        orderRepository.removeOrder(order);
 
-        assertThat(orderService.findOrder(orderId)).isNull();
+        assertThat(orderRepository.findById(orderId)).isNull();
     }
 }

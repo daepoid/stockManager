@@ -1,4 +1,4 @@
-package daepoid.stockManager.integration.jpa;
+package daepoid.stockManager.jpa;
 
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +35,18 @@ class JpaMemberRepositoryTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    private Duty createDuty() {
+        String dutyName = "dutyName";
+        double dutyIncentive = 4.56;
+        Set<Member> dutyMembers = new HashSet<>();
+
+        return Duty.builder()
+                .name(dutyName)
+                .incentive(dutyIncentive)
+                .members(dutyMembers)
+                .build();
+    }
+
     @Test
     void save() {
         String loginId = "member";
@@ -42,6 +56,9 @@ class JpaMemberRepositoryTest {
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -69,6 +86,9 @@ class JpaMemberRepositoryTest {
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
 
+        Duty duty = createDuty();
+        em.persist(duty);
+
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
@@ -95,6 +115,9 @@ class JpaMemberRepositoryTest {
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
 
+        Duty duty = createDuty();
+        em.persist(duty);
+
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
@@ -120,6 +143,9 @@ class JpaMemberRepositoryTest {
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -149,6 +175,9 @@ class JpaMemberRepositoryTest {
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
 
+        Duty duty = createDuty();
+        em.persist(duty);
+
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
@@ -161,6 +190,7 @@ class JpaMemberRepositoryTest {
 
         Long memberId = memberRepository.save(member);
 
+        assertThat(member.getName()).isEqualTo(name);
         assertThat(memberRepository.findByName(name).contains(member)).isTrue();
         assertThat(memberRepository.findByName(name).stream()
                 .filter(m -> m.getId().equals(memberId))
@@ -177,6 +207,9 @@ class JpaMemberRepositoryTest {
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
 
+        Duty duty = createDuty();
+        em.persist(duty);
+
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
@@ -189,7 +222,9 @@ class JpaMemberRepositoryTest {
 
         Long memberId = memberRepository.save(member);
 
+        assertThat(member.getPhoneNumber()).isEqualTo(phoneNumber);
         assertThat(memberRepository.findByPhoneNumber(phoneNumber)).isEqualTo(member);
+        assertThat(memberRepository.findByPhoneNumber(phoneNumber).getId()).isEqualTo(memberId);
     }
 
     @Test
@@ -201,6 +236,9 @@ class JpaMemberRepositoryTest {
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -230,6 +268,9 @@ class JpaMemberRepositoryTest {
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
 
+        Duty duty = createDuty();
+        em.persist(duty);
+
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
@@ -249,6 +290,41 @@ class JpaMemberRepositoryTest {
     }
 
     @Test
+    void findByDuty() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+        duties.add(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberRepository.save(member);
+
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+        assertThat(memberRepository.findByDuty(duty).contains(member)).isTrue();
+        assertThat(memberRepository.findByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+    }
+
+    @Test
     void findByRoles() {
 
     }
@@ -262,6 +338,9 @@ class JpaMemberRepositoryTest {
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -277,6 +356,7 @@ class JpaMemberRepositoryTest {
 
         String newName = "new Name";
         memberRepository.changeName(memberId, newName);
+
         assertThat(member.getName()).isEqualTo(newName);
         assertThat(memberRepository.findById(memberId).getName()).isEqualTo(newName);
         assertThat(memberRepository.findByName(newName).contains(member)).isTrue();
@@ -295,6 +375,9 @@ class JpaMemberRepositoryTest {
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
 
+        Duty duty = createDuty();
+        em.persist(duty);
+
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
@@ -309,6 +392,7 @@ class JpaMemberRepositoryTest {
 
         String newPassword = "456";
         memberRepository.changePassword(memberId, passwordEncoder.encode(newPassword));
+
         assertThat(passwordEncoder.matches(newPassword, member.getPassword())).isTrue();
         assertThat(passwordEncoder.matches(newPassword, memberRepository.findById(memberId).getPassword())).isTrue();
     }
@@ -322,6 +406,9 @@ class JpaMemberRepositoryTest {
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -337,6 +424,7 @@ class JpaMemberRepositoryTest {
 
         String newPhoneNumber = "01011112222";
         memberRepository.changePhoneNumber(memberId, newPhoneNumber);
+
         assertThat(member.getPhoneNumber()).isEqualTo(newPhoneNumber);
         assertThat(memberRepository.findByPhoneNumber(newPhoneNumber)).isEqualTo(member);
         assertThat(memberRepository.findByPhoneNumber(newPhoneNumber).getId()).isEqualTo(memberId);
@@ -352,6 +440,9 @@ class JpaMemberRepositoryTest {
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
 
+        Duty duty = createDuty();
+        em.persist(duty);
+
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
@@ -366,6 +457,7 @@ class JpaMemberRepositoryTest {
 
         GradeType newGradeType = GradeType.PART_TIME;
         memberRepository.changeGradeType(memberId, newGradeType);
+
         assertThat(member.getGradeType()).isEqualTo(newGradeType);
         assertThat(memberRepository.findByGradeType(newGradeType).contains(member)).isTrue();
         assertThat(memberRepository.findByGradeType(newGradeType).stream()
@@ -383,6 +475,9 @@ class JpaMemberRepositoryTest {
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
 
+        Duty duty = createDuty();
+        em.persist(duty);
+
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
@@ -397,12 +492,201 @@ class JpaMemberRepositoryTest {
 
         MemberStatus newMemberStatus = MemberStatus.WORK;
         memberRepository.changeMemberStatus(memberId, newMemberStatus);
+
         assertThat(member.getMemberStatus()).isEqualTo(newMemberStatus);
         assertThat(memberRepository.findByMemberStatus(memberStatus).contains(member)).isFalse();
+        assertThat(memberRepository.findByMemberStatus(memberStatus).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNull();
+
         assertThat(memberRepository.findByMemberStatus(newMemberStatus).contains(member)).isTrue();
         assertThat(memberRepository.findByMemberStatus(newMemberStatus).stream()
                 .filter(m -> m.getId().equals(memberId))
                 .findFirst().orElse(null)).isNotNull();
+    }
+
+    @Test
+    void changeDuties() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberRepository.save(member);
+
+        List<Duty> newDuties = new ArrayList<>();
+        Duty newDuty = createDuty();
+        em.persist(newDuty);
+        newDuties.add(newDuty);
+        memberRepository.changeDuties(memberId, newDuties);
+
+        assertThat(member.getDuties().contains(newDuty)).isTrue();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNull();
+
+        assertThat(memberRepository.findById(memberId).getDuties().contains(newDuty)).isTrue();
+        assertThat(memberRepository.findById(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findById(memberId).getDuties().contains(duty)).isFalse();
+        assertThat(memberRepository.findById(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNull();
+
+        assertThat(memberRepository.findByDuty(newDuty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNull();
+    }
+
+    @Test
+    void addDuty() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberRepository.save(member);
+
+        Duty newDuty = createDuty();
+        em.persist(newDuty);
+
+        memberRepository.addDuty(memberId, duty, newDuty);
+
+        assertThat(member.getDuties().contains(newDuty)).isTrue();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findById(memberId).getDuties().contains(newDuty)).isTrue();
+        assertThat(memberRepository.findById(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findById(memberId).getDuties().contains(duty)).isTrue();
+        assertThat(memberRepository.findById(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findByDuty(newDuty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+    }
+
+    @Test
+    void removeDuty() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberRepository.save(member);
+
+        Duty newDuty = createDuty();
+        em.persist(newDuty);
+
+        memberRepository.addDuty(memberId, duty, newDuty);
+
+        assertThat(member.getDuties().contains(newDuty)).isTrue();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findById(memberId).getDuties().contains(newDuty)).isTrue();
+        assertThat(memberRepository.findById(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findById(memberId).getDuties().contains(duty)).isTrue();
+        assertThat(memberRepository.findById(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findByDuty(newDuty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberRepository.findByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+
+        memberRepository.removeDuty(memberId, duty);
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNull();
+        assertThat(memberRepository.findById(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNull();
+        assertThat(memberRepository.findByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNull();
+
     }
 
     @Test
@@ -414,6 +698,9 @@ class JpaMemberRepositoryTest {
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
 
         Member member = Member.builder()
                 .loginId(loginId)
@@ -440,6 +727,9 @@ class JpaMemberRepositoryTest {
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
         List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
 
         Member member = Member.builder()
                 .loginId(loginId)

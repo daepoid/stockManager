@@ -1,15 +1,16 @@
-package daepoid.stockManager.service;
+package daepoid.stockManager.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.repository.jpa.JpaMenuRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,14 +18,14 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@Transactional 
-class MenuServiceTest {
+@Transactional
+class JpaMenuRepositoryTest {
 
     @Autowired
     EntityManager em;
 
     @Autowired
-    MenuService menuService;
+    JpaMenuRepository menuRepository;
 
     private Recipe createRecipe() {
         String recipeRecipeNumber = "123";
@@ -53,7 +54,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void saveMenu() {
+    void save() {
         Recipe recipe = createRecipe();
         em.persist(recipe);
 
@@ -78,13 +79,13 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
         assertThat(menuId).isEqualTo(menu.getId());
     }
 
     @Test
-    void findMenu() {
+    void findById() {
         Recipe recipe = createRecipe();
         em.persist(recipe);
 
@@ -109,15 +110,15 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
         assertThat(menu.getId()).isEqualTo(menuId);
-        assertThat(menuService.findMenu(menuId)).isEqualTo(menu);
-        assertThat(menuService.findMenu(menuId).getId()).isEqualTo(menuId);
+        assertThat(menuRepository.findById(menuId)).isEqualTo(menu);
+        assertThat(menuRepository.findById(menuId).getId()).isEqualTo(menu.getId());
     }
 
     @Test
-    void findMenus() {
+    void findAll() {
         Recipe recipe = createRecipe();
         em.persist(recipe);
 
@@ -142,10 +143,10 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
-
-        assertThat(menuService.findMenus().contains(menu)).isTrue();
-        assertThat(menuService.findMenus().stream()
+        Long menuId = menuRepository.save(menu);
+        
+        assertThat(menuRepository.findAll().contains(menu)).isTrue();
+        assertThat(menuRepository.findAll().stream()
                 .filter(m -> m.getId().equals(menuId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -176,11 +177,11 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
         assertThat(menu.getName()).isEqualTo(name);
-        assertThat(menuService.findByName(name).contains(menu)).isTrue();
-        assertThat(menuService.findByName(name).stream()
+        assertThat(menuRepository.findByName(name).contains(menu)).isTrue();
+        assertThat(menuRepository.findByName(name).stream()
                 .filter(m -> m.getId().equals(menuId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -211,13 +212,13 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
         assertThat(menu.getFoods().stream()
                 .filter(r -> r.getId().equals(recipe.getId()))
                 .findFirst().orElse(null)).isNotNull();
-        assertThat(menuService.findByRecipe(recipe).contains(menu)).isTrue();
-        assertThat(menuService.findByRecipe(recipe).stream()
+        assertThat(menuRepository.findByRecipe(recipe).contains(menu)).isTrue();
+        assertThat(menuRepository.findByRecipe(recipe).stream()
                 .filter(m -> m.getId().equals(menuId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -248,9 +249,9 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
-        assertThat(menuService.getNumberOfFoodByRecipeId(menuId, recipe.getId())).isEqualTo(numberOfFood);
+        assertThat(menuRepository.getNumberOfFoodByRecipeId(menuId, recipe.getId())).isEqualTo(numberOfFood);
     }
 
     @Test
@@ -279,14 +280,14 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
         String newName = "new name";
-        menuService.changeName(menuId, newName);
+        menuRepository.changeName(menuId, newName);
 
         assertThat(menu.getName()).isEqualTo(newName);
-        assertThat(menuService.findMenu(menuId).getName()).isEqualTo(newName);
-        assertThat(menuService.findByName(newName).stream()
+        assertThat(menuRepository.findById(menuId).getName()).isEqualTo(newName);
+        assertThat(menuRepository.findByName(newName).stream()
                 .filter(m -> m.getId().equals(menuId))
                 .findAny().orElse(null)).isEqualTo(menu);
     }
@@ -317,24 +318,24 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
         assertThat(menu.getFoods().stream()
                 .filter(r -> r.getId().equals(recipe.getId()))
                 .findFirst().orElse(null)).isNotNull();
-        assertThat(menuService.findMenu(menuId).getFoods().stream()
+        assertThat(menuRepository.findById(menuId).getFoods().stream()
                 .filter(r -> r.getId().equals(recipe.getId()))
                 .findFirst().orElse(null)).isNotNull();
 
         Set<Recipe> newFoods = new HashSet<>();
         newFoods.add(recipe);
 
-        menuService.changeFoods(menuId, newFoods);
+        menuRepository.changeFoods(menuId, newFoods);
 
         assertThat(menu.getFoods().stream()
                 .filter(r -> r.getId().equals(recipe.getId()))
                 .findFirst().orElse(null)).isNotNull();
-        assertThat(menuService.findMenu(menuId).getFoods().stream()
+        assertThat(menuRepository.findById(menuId).getFoods().stream()
                 .filter(r -> r.getId().equals(recipe.getId()))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -365,14 +366,14 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
         Map<Long, Integer> newNumberOfFoods = new HashMap<>();
         int newNumberOfFood = 456;
         newNumberOfFoods.put(recipe.getId(), newNumberOfFood);
-        menuService.changeNumberOfFoods(menuId, newNumberOfFoods);
+        menuRepository.changeNumberOfFoods(menuId, newNumberOfFoods);
 
-        assertThat(menuService.findMenu(menuId).getNumberOfFoods().get(recipe.getId())).isEqualTo(newNumberOfFood);
+        assertThat(menuRepository.findById(menuId).getNumberOfFoods().get(recipe.getId())).isEqualTo(newNumberOfFood);
     }
 
     @Test
@@ -401,16 +402,17 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
         Set<Recipe> newFoods = new HashSet<>();
         Map<Long, Integer> newNumberOfFoods = new HashMap<>();
         int newNumberOfFood = 456;
         newFoods.add(recipe);
         newNumberOfFoods.put(recipe.getId(), newNumberOfFood);
-        menuService.changeFoodInfo(menuId, newFoods, newNumberOfFoods);
+        menuRepository.changeFoodInfo(menuId, newFoods, newNumberOfFoods);
 
-        assertThat(menuService.findMenu(menuId).getNumberOfFoods().get(recipe.getId())).isEqualTo(newNumberOfFood);
+        assertThat(menu.getNumberOfFoods().containsKey(recipe.getId())).isTrue();
+        assertThat(menuRepository.findById(menuId).getNumberOfFoods().get(recipe.getId())).isEqualTo(newNumberOfFood);
     }
 
     @Test
@@ -439,7 +441,7 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
         String newRecipeRecipeNumber = "456";
         String newRecipeName = "456";
@@ -467,11 +469,10 @@ class MenuServiceTest {
         em.persist(newRecipe);
 
         int newNumberOfFood = 456;
-        menuService.addFood(menuId, recipe, newNumberOfFood);
-
+        menuRepository.addFood(menuId, recipe, newNumberOfFood);
         assertThat(menu.getFoods().contains(recipe)).isTrue();
         assertThat(menu.getNumberOfFoods().get(recipe.getId())).isEqualTo(newNumberOfFood);
-        assertThat(menuService.findMenu(menuId).getNumberOfFoods().get(recipe.getId())).isEqualTo(newNumberOfFood);
+        assertThat(menuRepository.findById(menuId).getNumberOfFoods().get(recipe.getId())).isEqualTo(newNumberOfFood);
     }
 
     @Test
@@ -500,13 +501,11 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
-        int newSalesCount = 456;
-        menuService.addSalesCount(menuId, newSalesCount);
-
-        assertThat(menu.getSalesCount()).isEqualTo(salesCount + newSalesCount);
-        assertThat(menuService.findMenu(menuId).getSalesCount()).isEqualTo(salesCount + newSalesCount);
+        menuRepository.addSalesCount(menuId, 123);
+        assertThat(menu.getSalesCount()).isEqualTo(123);
+        assertThat(menuRepository.findById(menuId).getSalesCount()).isEqualTo(123);
     }
 
     @Test
@@ -535,13 +534,11 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
-        int newSalesCount = 456;
-        menuService.cancelSalesCount(menuId, newSalesCount);
-
-        assertThat(menu.getSalesCount()).isEqualTo(salesCount - newSalesCount);
-        assertThat(menuService.findMenu(menuId).getSalesCount()).isEqualTo(salesCount - newSalesCount);
+        menuRepository.cancelSalesCount(menuId, 123);
+        assertThat(menu.getSalesCount()).isEqualTo(-123);
+        assertThat(menuRepository.findById(menuId).getSalesCount()).isEqualTo(-123);
     }
 
     @Test
@@ -570,18 +567,9 @@ class MenuServiceTest {
                 .salesCount(salesCount)
                 .build();
 
-        Long menuId = menuService.saveMenu(menu);
+        Long menuId = menuRepository.save(menu);
 
-        int newNumberOfFood = 456;
-        menuService.addFood(menuId, recipe, newNumberOfFood);
-
-        assertThat(menu.getFoods().contains(recipe)).isTrue();
-        assertThat(menu.getNumberOfFoods().get(recipe.getId())).isEqualTo(newNumberOfFood);
-        assertThat(menuService.findMenu(menuId).getNumberOfFoods().get(recipe.getId())).isEqualTo(newNumberOfFood);
-
-        menuService.removeFood(menuId, recipe);
-
-        assertThat(menuService.findByRecipe(recipe).size()).isEqualTo(0);
+        menuRepository.removeFood(menu.getId(), recipe);
         assertThat(menu.getFoods().contains(recipe)).isFalse();
         assertThat(menu.getFoods().stream()
                 .anyMatch(r -> r.getId().equals(recipe.getId()))).isFalse();

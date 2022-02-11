@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -55,7 +54,7 @@ public class JpaMenuRepository implements MenuRepository {
 
     @Override
     public Integer getNumberOfFoodByRecipeId(Long menuId, Long recipeId) {
-        return em.find(Menu.class, menuId).getNumberOfFood().get(recipeId);
+        return em.find(Menu.class, menuId).getNumberOfFoods().get(recipeId);
     }
 
     @Override
@@ -69,20 +68,20 @@ public class JpaMenuRepository implements MenuRepository {
     }
 
     @Override
-    public void changeNumberOfFood(Long menuId, Map<Long, Integer> numberOfFood) {
-        em.find(Menu.class, menuId).changeNumberOfFood(numberOfFood);
+    public void changeNumberOfFoods(Long menuId, Map<Long, Integer> numberOfFoods) {
+        em.find(Menu.class, menuId).changeNumberOfFood(numberOfFoods);
     }
 
     @Override
-    public void changeFoodInfo(Long menuId, Set<Recipe> foods, Map<Long, Integer> numberOfFood) {
+    public void changeFoodInfo(Long menuId, Set<Recipe> foods, Map<Long, Integer> numberOfFoods) {
         Menu menu = em.find(Menu.class, menuId);
         menu.changeFoods(foods);
-        menu.changeNumberOfFood(numberOfFood);
+        menu.changeNumberOfFood(numberOfFoods);
     }
 
     @Override
-    public void addFood(Long menuId, Recipe food, Integer numberOfFood) {
-        em.find(Menu.class, menuId).addFood(food, numberOfFood);
+    public void addFood(Long menuId, Recipe food, Integer numberOfFoods) {
+        em.find(Menu.class, menuId).addFood(food, numberOfFoods);
     }
 
     @Override

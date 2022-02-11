@@ -27,7 +27,7 @@ public class OrderService {
 
     //==비즈니스 로직==//
     @Transactional
-    public Long order(Long customerId, Long menuId, int count, LocalDateTime orderDateTime) {
+    public Long order(Long customerId, Long menuId, int orderCount, LocalDateTime orderDateTime) {
         // 엔티티 조회
         Customer customer = customerRepository.findById(customerId);
         Menu menu = menuRepository.findById(menuId);
@@ -36,12 +36,12 @@ public class OrderService {
         OrderMenu orderMenu = OrderMenu.builder()
                 .menu(menu)
                 .orderPrice(menu.getPrice())
-                .orderCount(count)
+                .orderCount(orderCount)
                 .build();
 
         List<OrderMenu> orderMenus = new ArrayList<>();
         orderMenus.add(orderMenu);
-        menuRepository.addSalesCount(menuId, count);
+        menuRepository.addSalesCount(menuId, orderCount);
 
         // 주문 생성
         Order order = Order.builder()

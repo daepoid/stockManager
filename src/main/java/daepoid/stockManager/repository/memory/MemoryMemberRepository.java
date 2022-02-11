@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository.memory;
 
 
+import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
@@ -60,12 +61,6 @@ public class MemoryMemberRepository implements MemberRepository {
                 .stream()
                 .filter(member -> member.getName().equals(name))
                 .collect(Collectors.toList());
-
-//        return store.keySet()
-//                .stream()
-//                .filter(id -> store.get(id).getName().equals(name))
-//                .map(id -> store.get(id))
-//                .collect(Collectors.toList());
     }
 
     @Override
@@ -92,6 +87,14 @@ public class MemoryMemberRepository implements MemberRepository {
         return store.values()
                 .stream()
                 .filter(member -> member.getMemberStatus().equals(memberStatus))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Member> findByDuty(Duty duty) {
+        return store.values().stream()
+                .filter(m -> m.getDuties().stream()
+                        .anyMatch(d -> d.getId().equals(duty.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -127,7 +130,21 @@ public class MemoryMemberRepository implements MemberRepository {
     @Override
     public void changeMemberStatus(Long memberId, MemberStatus memberStatus) {
         store.get(memberId).changeMemberStatus(memberStatus);
+    }
 
+    @Override
+    public void changeDuties(Long memberId, List<Duty> duties) {
+        store.get(memberId).changeDuties(duties);
+    }
+
+    @Override
+    public void addDuty(Long memberId, Duty... duties) {
+        store.get(memberId).addDuty(duties);
+    }
+
+    @Override
+    public void removeDuty(Long memberId, Duty... duties) {
+        store.get(memberId).removeDuty(duties);
     }
 
     //==삭제 로직==//

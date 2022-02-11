@@ -68,10 +68,10 @@ public class MemoryItemRepository implements ItemRepository {
     }
 
     @Override
-    public List<Item> findByQuantity(double quantity) {
+    public List<Item> findByUnderQuantity(double quantity) {
         return store.values()
                 .stream()
-                .filter(item -> item.getQuantity() < quantity)
+                .filter(item -> item.getQuantity() <= quantity)
                 .collect(Collectors.toList());
     }
 

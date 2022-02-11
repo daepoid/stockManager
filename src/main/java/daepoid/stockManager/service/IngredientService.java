@@ -52,7 +52,7 @@ public class IngredientService {
     //==수정 메서드==//
     @Transactional
     public void changeItem(Long ingredientId, Item item) {
-        ingredientRepository.findById(ingredientId).changeItem(item);
+        ingredientRepository.changeItem(ingredientId, item);
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository.memory;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,11 @@ public class MemoryIngredientRepository implements IngredientRepository {
         return store.values().stream()
                 .filter(ingredient -> ingredient.getUnitType().equals(unitType))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void changeItem(Long ingredientId, Item item) {
+        store.get(ingredientId).changeItem(item);
     }
 
     @Override

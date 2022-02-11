@@ -20,7 +20,7 @@ public class AddRecipeMenuDTO {
     private Long recipeId;
 
     @NotNull
-    private int numberOfFood;
+    private int numberOfFoods;
 
     public AddRecipeMenuDTO(Menu menu) {
         menuName = menu.getName();

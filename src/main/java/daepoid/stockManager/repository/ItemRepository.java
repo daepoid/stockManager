@@ -27,7 +27,7 @@ public interface ItemRepository {
     List<Item> findByPackageCount(int packageCount);
 
     // 일정 수량 이하인 경우에 찾아서 반환한다.
-    List<Item> findByQuantity(double quantity);
+    List<Item> findByUnderQuantity(double quantity);
 
     List<Item> findByItemSearch(ItemSearch itemSearch);
 

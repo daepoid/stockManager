@@ -1,6 +1,8 @@
-package daepoid.stockManager.integration.jpa;
+package daepoid.stockManager.jpa;
 
 import daepoid.stockManager.domain.order.*;
+import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.CustomerRepository;
 import daepoid.stockManager.repository.jpa.JpaCartRepository;
 import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
@@ -14,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,29 +26,65 @@ import static org.junit.jupiter.api.Assertions.*;
 class JpaCustomerRepositoryTest {
 
     @Autowired
-    EntityManager em;
+    JpaCustomerRepository customerRepository;
 
     @Autowired
-    JpaCustomerRepository customerRepository;
+    EntityManager em;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    static class DTO {
-        Long customerId;
+    private Cart createCart() {
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        return Cart.builder().numberOfMenus(numberOfMenus).build();
+    }
 
-        Customer customer;
+    private Menu createMenu() {
+        String menuName = "menu name";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 123;
+        Map<Long, Integer> numberOfFoods = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 123;
 
-        DTO(Long customerId, Customer customer) {
-            this.customerId = customerId;
-            this.customer = customer;
-        }
+        return Menu.builder()
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFoods(numberOfFoods)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
+                .build();
+    }
+
+    private OrderMenu createOrderMenu(Menu menu) {
+        int orderMenuOrderPrice = 123;
+        int orderMenuOrderCount = 123;
+        return OrderMenu.builder()
+                .menu(menu)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
+                .build();
+    }
+
+    private Order createOrder(OrderMenu orderOrderMenu) {
+        List<OrderMenu> orderOrderMenus = new ArrayList<>();
+        LocalDateTime orderOrderDateTime = LocalDateTime.now();
+        OrderStatus orderOrderStatus = OrderStatus.ORDERED;
+
+        orderOrderMenus.add(orderOrderMenu);
+
+        return Order.builder()
+                .orderMenus(orderOrderMenus)
+                .orderDateTime(orderOrderDateTime)
+                .orderStatus(orderOrderStatus)
+                .build();
     }
 
     @Test
     public void save_성공() throws Exception {
         // given
-        Cart cart = Cart.builder().build();
+        Cart cart = createCart();
         em.persist(cart);
 
         String name = "customer";
@@ -74,7 +111,7 @@ class JpaCustomerRepositoryTest {
     @Test
     public void findById() throws Exception {
         // given
-        Cart cart = Cart.builder().build();
+        Cart cart = createCart();
         em.persist(cart);
 
         String name = "customer";
@@ -160,7 +197,7 @@ class JpaCustomerRepositoryTest {
     @Test
     public void findByName() throws Exception {
         // given
-        Cart cart = Cart.builder().build();
+        Cart cart = createCart();
         em.persist(cart);
 
         String name = "customer";
@@ -184,9 +221,33 @@ class JpaCustomerRepositoryTest {
     }
 
     @Test
+    void findByTableNumber() {
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
+        String password = "123";
+        int tableNumber = 123;
+        List<Order> orders = new ArrayList<>();
+
+        Customer customer = Customer.builder()
+                .name(name)
+                .password(passwordEncoder.encode(password))
+                .tableNumber(tableNumber)
+                .cart(cart)
+                .orders(orders)
+                .build();
+
+        Long customerId = customerRepository.save(customer);
+
+        assertThat(customerRepository.findByTableNumber(tableNumber)).isEqualTo(customer);
+        assertThat(customerRepository.findByTableNumber(tableNumber).getId()).isEqualTo(customerId);
+    }
+
+    @Test
     public void changeName() throws Exception {
         // given
-        Cart cart = Cart.builder().build();
+        Cart cart = createCart();
         em.persist(cart);
 
         String name = "customer";
@@ -205,7 +266,7 @@ class JpaCustomerRepositoryTest {
         // when
         Long customerId = customerRepository.save(customer);
 
-        String newName = "newCustomerName";
+        String newName = "new customer Name";
         customerRepository.changeName(customerId, newName);
     
         // then
@@ -216,7 +277,7 @@ class JpaCustomerRepositoryTest {
     @Test
     public void changeTableNumber() throws Exception {
         // given
-        Cart cart = Cart.builder().build();
+        Cart cart = createCart();
         em.persist(cart);
 
         String name = "customer";
@@ -245,20 +306,8 @@ class JpaCustomerRepositoryTest {
     @Test
     public void changeOrders() throws Exception {
         // given
-        Cart cart = Cart.builder().build();
+        Cart cart = createCart();
         em.persist(cart);
-
-        List<OrderMenu> orderMenus = new ArrayList<>();
-        OrderMenu orderMenu = OrderMenu.builder().build();
-
-        orderMenus.add(orderMenu);
-
-        Order order = Order.builder()
-                .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
-                .build();
-        em.persist(order);
 
         String name = "customer";
         String password = "123";
@@ -275,6 +324,15 @@ class JpaCustomerRepositoryTest {
 
         // when
         Long customerId = customerRepository.save(customer);
+
+        Menu menu = createMenu();
+        em.persist(menu);
+
+        OrderMenu orderMenu = createOrderMenu(menu);
+
+        Order order = createOrder(orderMenu);
+        em.persist(order);
+
         assertThat(customerRepository.findById(customerId).getOrders().contains(order)).isFalse();
         assertThat(customerRepository.findById(customerId).getOrders().stream()
                 .filter(o -> o.getId().equals(order.getId()))
@@ -294,7 +352,7 @@ class JpaCustomerRepositoryTest {
     @Test
     public void addOrder() throws Exception {
         // given
-        Cart cart = Cart.builder().build();
+        Cart cart = createCart();
         em.persist(cart);
 
         String name = "customer";
@@ -310,15 +368,17 @@ class JpaCustomerRepositoryTest {
                 .orders(orders)
                 .build();
 
-        Order order = Order.builder()
-                .orderMenus(new ArrayList<>())
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
-                .build();
-        em.persist(order);
-
         // when
         Long customerId = customerRepository.save(customer);
+
+        Menu menu = createMenu();
+        em.persist(menu);
+
+        OrderMenu orderMenu = createOrderMenu(menu);
+
+        Order order = createOrder(orderMenu);
+        em.persist(order);
+
         assertThat(customerRepository.findById(customerId).getOrders().contains(order)).isFalse();
         assertThat(customerRepository.findById(customerId).getOrders().stream()
                 .filter(o -> o.getId().equals(order.getId()))
@@ -327,6 +387,11 @@ class JpaCustomerRepositoryTest {
         customerRepository.addOrder(customerId, order);
 
         // then
+        assertThat(customer.getOrders().contains(order)).isTrue();
+        assertThat(customer.getOrders().stream()
+                .filter(o -> o.getId().equals(order.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
         assertThat(customerRepository.findById(customerId).getOrders().contains(order)).isTrue();
         assertThat(customerRepository.findById(customerId).getOrders().stream()
                 .filter(o -> o.getId().equals(order.getId()))
@@ -336,7 +401,7 @@ class JpaCustomerRepositoryTest {
     @Test
     public void removeCustomer() throws Exception {
         // given
-        Cart cart = Cart.builder().build();
+        Cart cart = createCart();
         em.persist(cart);
 
         String name = "customer";
@@ -354,6 +419,7 @@ class JpaCustomerRepositoryTest {
 
         // when
         Long customerId = customerRepository.save(customer);
+
         assertThat(customerRepository.findById(customerId)).isNotNull();
 
         customerRepository.removeCustomer(customer);

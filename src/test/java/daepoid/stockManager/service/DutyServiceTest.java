@@ -23,13 +23,10 @@ import static org.assertj.core.api.Assertions.*;
 class DutyServiceTest {
 
     @Autowired
-    EntityManager em;
-
-    @Autowired
     DutyService dutyService;
 
     @Autowired
-    JpaDutyRepository dutyRepository;
+    EntityManager em;
 
     @Autowired
     PasswordEncoder passwordEncoder;

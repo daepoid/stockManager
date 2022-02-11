@@ -1,5 +1,6 @@
 package daepoid.stockManager.repository;
 
+import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
@@ -21,6 +22,7 @@ public interface MemberRepository {
     Member findByPhoneNumber(String phoneNumber);
     List<Member> findByGradeType(GradeType gradeType);
     List<Member> findByMemberStatus(MemberStatus memberStatus);
+    List<Member> findByDuty(Duty duty);
     List<Member> findByRoles(RoleType... roleType);
 
     //==수정 로직==//
@@ -29,8 +31,11 @@ public interface MemberRepository {
     void changePhoneNumber(Long memberId, String phoneNumber);
     void changeGradeType(Long memberId, GradeType gradeType);
     void changeMemberStatus(Long memberId, MemberStatus memberStatus);
+    void changeDuties(Long memberId, List<Duty> duties);
+    void addDuty(Long memberId, Duty... duties);
+    void removeDuty(Long memberId, Duty... duties);
 
     //==삭제 로직==//
     void removeMember(Member member);
-    void removeById(Long id);
+    void removeById(Long memberId);
 }

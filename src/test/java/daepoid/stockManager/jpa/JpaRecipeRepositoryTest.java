@@ -1,4 +1,4 @@
-package daepoid.stockManager.integration.jpa;
+package daepoid.stockManager.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
@@ -8,8 +8,9 @@ import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaRecipeRepository;
-import org.assertj.core.api.Assertions;
+
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -20,52 +21,52 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
 class JpaRecipeRepositoryTest {
 
     @Autowired
-    EntityManager em;
-
-    @Autowired
     JpaRecipeRepository recipeRepository;
 
+    @Autowired
+    EntityManager em;
+
     private Item createItem() {
-        String ItemName = "item";
-        ItemType itemItemType = ItemType.BOTTLE;
+        String itemName = "item";
+        ItemType itemItemType = ItemType.MEAT;
         int itemPrice = 123;
         int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.kg;
+        UnitType itemUnitType = UnitType.l;
         int itemPackageCount = 123;
-        List<Ingredient> itemIngredients = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
         return Item.builder()
-                .name(ItemName)
+                .name(itemName)
                 .itemType(itemItemType)
                 .price(itemPrice)
                 .quantity(itemQuantity)
                 .unitType(itemUnitType)
                 .packageCount(itemPackageCount)
-                .ingredients(itemIngredients)
+                .ingredients(ingredients)
                 .build();
     }
 
     private Ingredient createIngredient(Item item) {
-        int ingredientQuantity = 456;
-        UnitType ingredientUnitType = UnitType.g;
-        double ingredientUnitPrice = 456;
-        double ingredientLoss = 4.56;
-        double ingredientCost = 456;
+        int quantity = 456;
+        UnitType unitType = UnitType.ml;
+        double unitPrice = 45.6;
+        double loss = 0.456;
+        double cost = quantity * unitPrice;
+
         return Ingredient.builder()
                 .item(item)
                 .name(item.getName())
-                .quantity(ingredientQuantity)
-                .unitType(ingredientUnitType)
-                .unitPrice(ingredientUnitPrice)
-                .loss(ingredientLoss)
-                .cost(ingredientCost)
+                .quantity(quantity)
+                .unitType(unitType)
+                .unitPrice(unitPrice)
+                .loss(loss)
+                .cost(cost)
                 .build();
     }
 
@@ -76,11 +77,12 @@ class JpaRecipeRepositoryTest {
         Map<Long, Integer> menuNumberOfFood = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 789;
+
         return Menu.builder()
                 .name(menuName)
                 .foods(menuFoods)
                 .price(menuPrice)
-                .numberOfFood(menuNumberOfFood)
+                .numberOfFoods(menuNumberOfFood)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
                 .build();
@@ -101,15 +103,12 @@ class JpaRecipeRepositoryTest {
         String name = "name";
         int price = 123;
         int weight = 123;
-        DishType dishType = DishType.BOWL;
+        DishType dishType = DishType.BASKET;
         List<Ingredient> ingredients = new ArrayList<>();
-        double cost = 123;
-        double netIncome = 123;
+        int cost = 123;
+        int netIncome = 123;
         Set<Menu> menus = new HashSet<>();
-        String notes = "notes";
-
-        ingredients.add(ingredient);
-        menus.add(menu);
+        String notes = "recipe notes";
 
         Recipe recipe = Recipe.builder()
                 .recipeNumber(recipeNumber)
@@ -532,7 +531,7 @@ class JpaRecipeRepositoryTest {
 
         Long recipeId = recipeRepository.save(recipe);
 
-        String newRecipeNumber = "123123";
+        String newRecipeNumber = "456";
         recipeRepository.changeRecipeNumber(recipeId, newRecipeNumber);
 
         assertThat(recipe.getRecipeNumber()).isEqualTo(newRecipeNumber);
@@ -738,6 +737,7 @@ class JpaRecipeRepositoryTest {
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
+
         DishType newDishType = DishType.DESSERT;
         recipeRepository.changeDishType(recipeId, newDishType);
 
@@ -775,6 +775,7 @@ class JpaRecipeRepositoryTest {
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
 
+        ingredients.add(ingredient);
         menus.add(menu);
 
         Recipe recipe = Recipe.builder()
@@ -831,6 +832,7 @@ class JpaRecipeRepositoryTest {
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
 
+        ingredients.add(ingredient);
         menus.add(menu);
 
         Recipe recipe = Recipe.builder()
@@ -974,7 +976,7 @@ class JpaRecipeRepositoryTest {
         double newCost = 456456;
         recipeRepository.changeCost(recipeId, newCost);
 
-        double realCost = 456 * 456;
+        double realCost = 456 * 45.6;
         assertThat(recipe.getCost()).isNotEqualTo(newCost);
         assertThat(recipe.getCost()).isEqualTo(realCost);
         assertThat(recipeRepository.findById(recipeId).getCost()).isEqualTo(realCost);
@@ -1024,7 +1026,7 @@ class JpaRecipeRepositoryTest {
         // 그로인해 정상적인 계산값이 저장되어 호출된다.
         recipeRepository.updateCost(recipeId);
 
-        double realCost = 456 * 456;
+        double realCost = 456 * 45.6;
         assertThat(recipe.getCost()).isEqualTo(realCost);
         assertThat(recipeRepository.findById(recipeId).getCost()).isEqualTo(realCost);
     }

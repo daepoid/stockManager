@@ -1,4 +1,4 @@
-package daepoid.stockManager.integration.jpa;
+package daepoid.stockManager.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
@@ -34,10 +34,7 @@ class JpaIngredientRepositoryTest {
     @Autowired
     JpaIngredientRepository ingredientRepository;
 
-
-    @Test
-    public void saveIngredient() throws Exception {
-        // given
+    private Item createItem() {
         String itemName = "item";
         ItemType itemItemType = ItemType.MEAT;
         int itemPrice = 123;
@@ -46,7 +43,7 @@ class JpaIngredientRepositoryTest {
         int itemPackageCount = 123;
         List<Ingredient> ingredients = new ArrayList<>();
 
-        Item item = Item.builder()
+        return Item.builder()
                 .name(itemName)
                 .itemType(itemItemType)
                 .price(itemPrice)
@@ -55,7 +52,34 @@ class JpaIngredientRepositoryTest {
                 .packageCount(itemPackageCount)
                 .ingredients(ingredients)
                 .build();
+    }
+
+    private Recipe createRecipe() {
+        String recipeRecipeNumber = "456";
+        String recipeName = "recipe name";
+        int price = 456;
+        DishType recipeDishType = DishType.BOWL;
+        double recipeCost = 456;
+        double recipeNetIncome = 456;
+
+        return Recipe.builder()
+                .recipeNumber(recipeRecipeNumber)
+                .name(recipeName)
+                .price(price)
+                .dishType(recipeDishType)
+                .cost(recipeCost)
+                .netIncome(recipeNetIncome)
+                .build();
+    }
+
+    @Test
+    public void saveIngredient() throws Exception {
+        // given
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -71,6 +95,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -83,24 +108,11 @@ class JpaIngredientRepositoryTest {
     @Test
     public void findById() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -116,6 +128,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -123,29 +136,19 @@ class JpaIngredientRepositoryTest {
 
         // then
         assertThat(ingredientRepository.findById(ingredientId)).isEqualTo(ingredient);
+        assertThat(ingredientRepository.findById(ingredientId).getId()).isEqualTo(ingredientId);
     }
 
     @Test
     public void findAll() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
+        int size = ingredientRepository.findAll().size();
 
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -161,10 +164,10 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
-        int size = ingredientRepository.findAll().size();
         Long ingredientId = ingredientRepository.saveIngredient(ingredient);
 
         // then
@@ -178,24 +181,11 @@ class JpaIngredientRepositoryTest {
     @Test
     public void findByName() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -211,6 +201,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -226,47 +217,10 @@ class JpaIngredientRepositoryTest {
     @Test
     public void findByRecipe() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
 
-        String recipeRecipeNumber = "Drink-789";
-        String recipeName = "recipe";
-        int recipePrice = 789;
-        int recipeWeight = 789;
-        DishType recipeDishType = DishType.BOWL;
-        List<Ingredient> recipeIngredients = new ArrayList<>();
-        double recipeCost = 789;
-        double recipeNetIncome = recipePrice - recipeCost;
-        Set<Menu> recipeMenus = new HashSet<>();
-        String recipeNotes = "notes";
-        Recipe recipe = Recipe.builder()
-                .recipeNumber(recipeRecipeNumber)
-                .name(recipeName)
-                .price(recipePrice)
-                .weight(recipeWeight)
-                .dishType(recipeDishType)
-                .ingredients(recipeIngredients)
-                .cost(recipeCost)
-                .netIncome(recipeNetIncome)
-                .menus(recipeMenus)
-                .notes(recipeNotes)
-                .build();
+        Recipe recipe = createRecipe();
         em.persist(recipe);
 
         int quantity = 456;
@@ -299,24 +253,11 @@ class JpaIngredientRepositoryTest {
     @Test
     public void findByUnitType() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -332,11 +273,11 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
         Long ingredientId = ingredientRepository.saveIngredient(ingredient);
-
         // then
         assertThat(ingredientRepository.findByUnitType(unitType).contains(ingredient)).isTrue();
         assertThat(ingredientRepository.findByUnitType(unitType).stream()
@@ -345,26 +286,13 @@ class JpaIngredientRepositoryTest {
     }
 
     @Test
-    public void changeName() throws Exception {
+    public void changeItem() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -380,6 +308,77 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
+                .build();
+
+        // when
+        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+
+        String newItemName ="new item name";
+        ItemType newItemItemType = ItemType.MEAT;
+        int newItemPrice = 789;
+        int newItemQuantity = 789;
+        UnitType newItemUnitType = UnitType.g;
+        int newItemPackageCount = 789;
+        List<Ingredient> newItemIngredients = new ArrayList<>();
+        Item newItem = Item.builder()
+                .name(newItemName)
+                .itemType(newItemItemType)
+                .price(newItemPrice)
+                .quantity(newItemQuantity)
+                .unitType(newItemUnitType)
+                .packageCount(newItemPackageCount)
+                .ingredients(newItemIngredients)
+                .build();
+        em.persist(newItem);
+
+        ingredientRepository.changeItem(ingredientId, newItem);
+
+        // then
+        assertThat(ingredientRepository.findById(ingredientId).getItem().getId()).isEqualTo(newItem.getId());
+        // item.getName()을 통해 ingredient의 name을 설정하므로 newItemName을 이용하여 찾을 수 있다.
+        // 단, getName()을 수행하지 않은 상태이면 제대로 업데이트가 이루어지지 않아 원하는 결과가 나오지 않을 수 있다.
+
+        // 예상한대로의 결과가 나오지 않음
+        assertThat(ingredientRepository.findByName(newItemName).stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNull();
+
+        // 예상한대로의 결과가 나옴
+        assertThat(ingredientRepository.findAll().stream()
+                .filter(i -> i.getName().equals(newItemName) && i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNotNull();
+
+        // getName()을 통해 갱신되어 예상한대로의 결과가 나온다.
+        assertThat(ingredientRepository.findByName(newItemName).stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNotNull();
+    }
+
+    @Test
+    public void changeName() throws Exception {
+        // given
+        Item item = createItem();
+        em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
+
+        int quantity = 456;
+        UnitType unitType = UnitType.ml;
+        double unitPrice = 45.6;
+        double loss = 0.456;
+        double cost = quantity * unitPrice;
+
+        Ingredient ingredient = Ingredient.builder()
+                .item(item)
+                .name(item.getName())
+                .quantity(quantity)
+                .unitType(unitType)
+                .unitPrice(unitPrice)
+                .loss(loss)
+                .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -389,35 +388,27 @@ class JpaIngredientRepositoryTest {
         ingredientRepository.changeName(ingredientId, newName);
 
         // then
-        // 이름을 변경해도 getName() 수행시에 updateCost()가 같이 수행된다.
-        assertThat(ingredient.getName()).isEqualTo(item.getName());
-        assertThat(ingredientRepository.findByName(newName).contains(ingredient)).isFalse();
+        // getName() 호출 시 item.name을 가져와 갱신하므로 changeName()을 호출할 필요 없다.
+        // 다만, getName()을 호출하지 않은 상태라면 예상한 대로의 결과가 나올 수 있다.
         assertThat(ingredientRepository.findByName(newName).stream()
                 .filter(i -> i.getId().equals(ingredientId))
-                .findFirst().orElse(null)).isNull();
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(ingredient.getName()).isNotEqualTo(newName);
+        assertThat(ingredientRepository.findById(ingredientId).getName()).isNotEqualTo(newName);
+
+        assertThat(ingredient.getItem().getName()).isEqualTo(item.getName());
+        assertThat(ingredientRepository.findById(ingredientId).getName()).isEqualTo(ingredient.getItem().getName());
     }
 
     @Test
     public void changeQuantity() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -433,6 +424,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -449,24 +441,11 @@ class JpaIngredientRepositoryTest {
     @Test
     public void changeUnitType() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -482,6 +461,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -505,24 +485,11 @@ class JpaIngredientRepositoryTest {
     @Test
     public void changeUnitPrice() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -538,6 +505,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -554,24 +522,11 @@ class JpaIngredientRepositoryTest {
     @Test
     public void changeLoss() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -587,6 +542,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -603,24 +559,11 @@ class JpaIngredientRepositoryTest {
     @Test
     public void changeCost() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -636,6 +579,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -645,32 +589,28 @@ class JpaIngredientRepositoryTest {
         ingredientRepository.changeCost(ingredientId, newCost);
 
         // then
-        // getCost() 수행시에 updateCost()가 자동으로 동작하여 올바른 값으로 갱신된다.
-        assertThat(ingredient.getCost()).isEqualTo(ingredient.getQuantity() * ingredient.getUnitPrice());
+        // getCost() 호출 시 updateCost()가 자동으로 호출되어 quantity * unitPrice로 갱신된다.
+        // getCost()를 사용하지 않으면 올바르지 않게 변경된 값을 얻을 수 있다.
+        assertThat(em.createQuery("select i from Ingredient i where i.cost=:newCost", Ingredient.class)
+                .setParameter("newCost", newCost)
+                .getResultList().stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(ingredient.getCost()).isNotEqualTo(newCost);
         assertThat(ingredientRepository.findById(ingredientId).getCost()).isNotEqualTo(newCost);
+
+        assertThat(ingredientRepository.findById(ingredientId).getCost()).isEqualTo(quantity * unitPrice);
     }
 
     @Test
     public void updateCost() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -686,6 +626,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when
@@ -695,36 +636,31 @@ class JpaIngredientRepositoryTest {
         ingredientRepository.changeCost(ingredientId, newCost);
 
         // then
-        // getCost() 수행시에 updateCost()가 자동으로 동작하여 올바른 값으로 갱신된다.
-        assertThat(ingredient.getCost()).isEqualTo(ingredient.getQuantity() * ingredient.getUnitPrice());
-        assertThat(ingredientRepository.findById(ingredientId).getCost()).isNotEqualTo(newCost);
+        // getCost() 호출 시 updateCost()가 자동으로 호출되어 quantity * unitPrice로 갱신된다.
+        // getCost()를 사용하지 않으면 올바르지 않게 변경된 값을 얻을 수 있다.
+        assertThat(em.createQuery("select i from Ingredient i where i.cost=:newCost", Ingredient.class)
+                .setParameter("newCost", newCost)
+                .getResultList().stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNotNull();
 
         ingredientRepository.updateCost(ingredientId);
-        assertThat(ingredient.getCost()).isEqualTo(cost);
-        assertThat(ingredientRepository.findById(ingredientId).getCost()).isEqualTo(cost);
+
+        assertThat(em.createQuery("select i from Ingredient i where i.cost=:newCost", Ingredient.class)
+                .setParameter("newCost", newCost)
+                .getResultList().stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNull();
     }
 
     @Test
     public void deleteIngredient() throws Exception {
         // given
-        String itemName = "item";
-        ItemType itemItemType = ItemType.MEAT;
-        int itemPrice = 123;
-        int itemQuantity = 123;
-        UnitType itemUnitType = UnitType.l;
-        int itemPackageCount = 123;
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        Item item = Item.builder()
-                .name(itemName)
-                .itemType(itemItemType)
-                .price(itemPrice)
-                .quantity(itemQuantity)
-                .unitType(itemUnitType)
-                .packageCount(itemPackageCount)
-                .ingredients(ingredients)
-                .build();
+        Item item = createItem();
         em.persist(item);
+
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
 
         int quantity = 456;
         UnitType unitType = UnitType.ml;
@@ -740,6 +676,7 @@ class JpaIngredientRepositoryTest {
                 .unitPrice(unitPrice)
                 .loss(loss)
                 .cost(cost)
+                .recipe(recipe)
                 .build();
 
         // when

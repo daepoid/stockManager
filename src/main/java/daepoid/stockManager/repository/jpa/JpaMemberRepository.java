@@ -1,5 +1,6 @@
 package daepoid.stockManager.repository.jpa;
 
+import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.sql.Array;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Repository
@@ -81,6 +84,13 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
+    public List<Member> findByDuty(Duty duty) {
+        return em.createQuery("select m from Member m", Member.class).getResultList()
+                .stream().filter(m -> m.getDuties().stream().anyMatch(d -> d.getId().equals(duty.getId())))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Member> findByRoles(RoleType... roleType) {
         return null;
     }
@@ -116,17 +126,33 @@ public class JpaMemberRepository implements MemberRepository {
         member.changeMemberStatus(memberStatus);
     }
 
+    @Override
+    public void changeDuties(Long memberId, List<Duty> duties) {
+        Member member = em.find(Member.class, memberId);
+        member.changeDuties(duties);
+    }
+
+    @Override
+    public void addDuty(Long memberId, Duty... duties) {
+        Member member = em.find(Member.class, memberId);
+        member.addDuty(duties);
+    }
+
+    @Override
+    public void removeDuty(Long memberId, Duty... duties) {
+        Member member = em.find(Member.class, memberId);
+        member.removeDuty(duties);
+    }
+
     //==삭제 로직==//
     @Override
-    @Transactional
     public void removeMember(Member member) {
         em.remove(member);
     }
 
     @Override
-    @Transactional
-    public void removeById(Long id) {
-        Member member = em.find(Member.class, id);
+    public void removeById(Long memberId) {
+        Member member = em.find(Member.class, memberId);
         em.remove(member);
     }
 }

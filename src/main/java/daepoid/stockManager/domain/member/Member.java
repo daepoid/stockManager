@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -120,11 +121,11 @@ public class Member {
         this.duties = duties;
     }
 
-    public void addDuty(Duty duty) {
-        this.duties.add(duty);
+    public void addDuty(Duty... duties) {
+        this.duties.addAll(Arrays.asList(duties));
     }
 
-    public void removeDuty(Duty duty) {
-        this.duties.remove(duty);
+    public void removeDuty(Duty... duties) {
+        this.duties.removeAll(Arrays.asList(duties));
     }
 }

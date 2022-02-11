@@ -41,6 +41,25 @@ class CartServiceTest {
         assertThat(cart.getId()).isEqualTo(cartId);
     }
 
+    private Menu createMenu() {
+        String menuName = "menu name";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 123;
+        Map<Long, Integer> numberOfFoods = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 123;
+
+        return Menu.builder()
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFoods(numberOfFoods)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
+                .build();
+    }
+
+
     @Test
     void findCart() {
         Map<Long, Integer> numberOfMenus = new HashMap<>();
@@ -72,114 +91,57 @@ class CartServiceTest {
 
         Long cartId = cartService.createCart(cart);
 
-        String menuName = "menu name";
-        Set<Recipe> menuFoods = new HashSet<>();
-        int menuPrice = 123;
-        Map<Long, Integer> numberOfFood = new HashMap<>();
-        LocalDateTime menuAddedDate = LocalDateTime.now();
-        int menuSalesCount = 123;
-
-        Menu menu = Menu.builder()
-                .name(menuName)
-                .foods(menuFoods)
-                .price(menuPrice)
-                .numberOfFood(numberOfFood)
-                .addedDate(menuAddedDate)
-                .salesCount(menuSalesCount)
-                .build();
+        Menu menu = createMenu();
         em.persist(menu);
 
-        int orderCount = 123;
-        cartService.addMenu(cartId, menu.getId(), orderCount);
+        int numberOfFood = 123;
+        cartService.addMenu(cartId, menu.getId(), numberOfFood);
 
-        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu.getId())).isEqualTo(orderCount);
+        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu.getId())).isEqualTo(numberOfFood);
     }
 
     @Test
     void addMenus() {
-        String menuName1 = "menu name";
-        Set<Recipe> menuFoods1 = new HashSet<>();
-        int menuPrice1 = 123;
-        Map<Long, Integer> numberOfFood1 = new HashMap<>();
-        LocalDateTime menuAddedDate1 = LocalDateTime.now();
-        int menuSalesCount1 = 123;
-
-        Menu menu1 = Menu.builder()
-                .name(menuName1)
-                .foods(menuFoods1)
-                .price(menuPrice1)
-                .numberOfFood(numberOfFood1)
-                .addedDate(menuAddedDate1)
-                .salesCount(menuSalesCount1)
-                .build();
+        Menu menu1 = createMenu();
         em.persist(menu1);
 
-        String menuName2 = "menu name";
-        Set<Recipe> menuFoods2 = new HashSet<>();
-        int menuPrice2 = 123;
-        Map<Long, Integer> numberOfFood2 = new HashMap<>();
-        LocalDateTime menuAddedDate2 = LocalDateTime.now();
-        int menuSalesCount2 = 123;
-
-        Menu menu2 = Menu.builder()
-                .name(menuName2)
-                .foods(menuFoods2)
-                .price(menuPrice2)
-                .numberOfFood(numberOfFood2)
-                .addedDate(menuAddedDate2)
-                .salesCount(menuSalesCount2)
-                .build();
+        Menu menu2 = createMenu();
         em.persist(menu2);
 
-        int orderCount1 = 123;
-        int orderCount2 = 456;
+        int numberOfFood1 = 123;
+        int numberOfFood2 = 456;
         Map<Long, Integer> numberOfMenus = new HashMap<>();
 
         Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         Long cartId = cartService.createCart(cart);
 
         Map<Long, Integer> newNumberOfMenus = new HashMap<>();
-        newNumberOfMenus.put(menu1.getId(), orderCount1);
-        newNumberOfMenus.put(menu2.getId(), orderCount2);
+        newNumberOfMenus.put(menu1.getId(), numberOfFood1);
+        newNumberOfMenus.put(menu2.getId(), numberOfFood2);
 
         cartService.addMenus(cartId, newNumberOfMenus);
 
-        assertThat(cart.getNumberOfMenus().get(menu1.getId())).isEqualTo(orderCount1);
-        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu1.getId())).isEqualTo(orderCount1);
+        assertThat(cart.getNumberOfMenus().get(menu1.getId())).isEqualTo(numberOfFood1);
+        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu1.getId())).isEqualTo(numberOfFood1);
 
-        assertThat(cart.getNumberOfMenus().get(menu2.getId())).isEqualTo(orderCount2);
-        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu2.getId())).isEqualTo(orderCount2);
+        assertThat(cart.getNumberOfMenus().get(menu2.getId())).isEqualTo(numberOfFood2);
+        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu2.getId())).isEqualTo(numberOfFood2);
     }
 
     @Test
     void removeMenu() {
-        String menuName = "menu name";
-        Set<Recipe> menuFoods = new HashSet<>();
-        int menuPrice = 123;
-        Map<Long, Integer> numberOfFood = new HashMap<>();
-        LocalDateTime menuAddedDate = LocalDateTime.now();
-        int menuSalesCount = 123;
-
-        Menu menu = Menu.builder()
-                .name(menuName)
-                .foods(menuFoods)
-                .price(menuPrice)
-                .numberOfFood(numberOfFood)
-                .addedDate(menuAddedDate)
-                .salesCount(menuSalesCount)
-                .build();
+        Menu menu = createMenu();
         em.persist(menu);
 
-        int orderCount = 123;
+        int numberOfMenu = 123;
         Map<Long, Integer> numberOfMenus = new HashMap<>();
-        numberOfMenus.put(menu.getId(), orderCount);
-
+        numberOfMenus.put(menu.getId(), numberOfMenu);
         Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         Long cartId = cartService.createCart(cart);
 
         // menu가 존재하는 상태
-        assertThat(cart.getNumberOfMenus().get(menu.getId())).isEqualTo(orderCount);
-        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu.getId())).isEqualTo(orderCount);
+        assertThat(cart.getNumberOfMenus().get(menu.getId())).isEqualTo(numberOfMenu);
+        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu.getId())).isEqualTo(numberOfMenu);
 
         // removeMenu를 통해 menu를 제거
         cartService.removeMenu(cartId, menu.getId());
@@ -191,32 +153,18 @@ class CartServiceTest {
 
     @Test
     void clearCart() {
-        String menuName = "menu name";
-        Set<Recipe> menuFoods = new HashSet<>();
-        int menuPrice = 123;
-        Map<Long, Integer> numberOfFood = new HashMap<>();
-        LocalDateTime menuAddedDate = LocalDateTime.now();
-        int menuSalesCount = 123;
-
-        Menu menu = Menu.builder()
-                .name(menuName)
-                .foods(menuFoods)
-                .price(menuPrice)
-                .numberOfFood(numberOfFood)
-                .addedDate(menuAddedDate)
-                .salesCount(menuSalesCount)
-                .build();
+        Menu menu = createMenu();
         em.persist(menu);
 
-        int orderCount = 123;
+        int numberOfMenu = 123;
         Map<Long, Integer> numberOfMenus = new HashMap<>();
-        numberOfMenus.put(menu.getId(), orderCount);
+        numberOfMenus.put(menu.getId(), numberOfMenu);
 
         Cart cart = Cart.builder().numberOfMenus(numberOfMenus).build();
         Long cartId = cartService.createCart(cart);
 
         // cart에 담긴 정보들이 있는 상태
-        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu.getId())).isEqualTo(orderCount);
+        assertThat(cartService.findCart(cartId).getNumberOfMenus().get(menu.getId())).isEqualTo(numberOfMenu);
 
         // cart를 비운다.
         cartService.clearCart(cartId);

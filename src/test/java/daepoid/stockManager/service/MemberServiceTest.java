@@ -12,10 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.persistence.EntityManager;
+import javax.swing.text.html.parser.Entity;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,10 +32,22 @@ class MemberServiceTest {
     MemberService memberService;
 
     @Autowired
-    JpaMemberRepository memberRepository;
+    EntityManager em;
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    private Duty createDuty() {
+        String dutyName = "dutyName";
+        double dutyIncentive = 4.56;
+        Set<Member> dutyMembers = new HashSet<>();
+
+        return Duty.builder()
+                .name(dutyName)
+                .incentive(dutyIncentive)
+                .members(dutyMembers)
+                .build();
+    }
 
     @Test
     void join() {
@@ -81,6 +97,7 @@ class MemberServiceTest {
         Long memberId = memberService.join(member);
 
         assertThat(memberService.findMember(memberId)).isEqualTo(member);
+        assertThat(memberService.findMember(memberId).getId()).isEqualTo(member.getId());
     }
 
     @Test
@@ -106,6 +123,7 @@ class MemberServiceTest {
         Long memberId = memberService.join(member);
 
         assertThat(memberService.findMemberByLoginId(loginId)).isEqualTo(member);
+        assertThat(memberService.findMemberByLoginId(loginId).getId()).isEqualTo(memberId);
     }
 
     @Test
@@ -131,6 +149,9 @@ class MemberServiceTest {
         Long memberId = memberService.join(member);
 
         assertThat(memberService.findMembers().contains(member)).isTrue();
+        assertThat(memberService.findMembers().stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -155,7 +176,11 @@ class MemberServiceTest {
 
         Long memberId = memberService.join(member);
 
+        assertThat(member.getName()).isEqualTo(name);
         assertThat(memberService.findMembersByName(name).contains(member)).isTrue();
+        assertThat(memberService.findMembersByName(name).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -180,7 +205,9 @@ class MemberServiceTest {
 
         Long memberId = memberService.join(member);
 
+        assertThat(member.getPhoneNumber()).isEqualTo(phoneNumber);
         assertThat(memberService.findMemberByPhoneNumber(phoneNumber)).isEqualTo(member);
+        assertThat(memberService.findMemberByPhoneNumber(phoneNumber).getId()).isEqualTo(memberId);
     }
 
     @Test
@@ -206,6 +233,69 @@ class MemberServiceTest {
         Long memberId = memberService.join(member);
 
         assertThat(memberService.findMembersByGradeType(gradeType).contains(member)).isTrue();
+        assertThat(memberService.findMembersByGradeType(gradeType).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+    }
+
+    @Test
+    void findMemberByMemberStatus() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberService.join(member);
+
+        assertThat(memberService.findMembersByMemberStatus(memberStatus).contains(member)).isTrue();
+        assertThat(memberService.findMembersByMemberStatus(memberStatus).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+    }
+
+    @Test
+    void findMembersByDuty() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+        duties.add(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberService.join(member);
+
+        assertThat(memberService.findMembersByDuty(duty).contains(member)).isTrue();
+        assertThat(memberService.findMembersByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -230,9 +320,15 @@ class MemberServiceTest {
 
         Long memberId = memberService.join(member);
 
-        memberService.changeName(memberId, name + name);
-        assertThat(memberService.findMember(memberId).getName()).isEqualTo(name + name);
-        assertThat(memberService.findMembersByName(name + name).contains(member)).isTrue();
+        String newName = "new member name";
+        memberService.changeName(memberId, newName);
+
+        assertThat(member.getName()).isEqualTo(newName);
+        assertThat(memberService.findMember(memberId).getName()).isEqualTo(newName);
+        assertThat(memberService.findMembersByName(newName).contains(member)).isTrue();
+        assertThat(memberService.findMembersByGradeType(gradeType).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -259,6 +355,7 @@ class MemberServiceTest {
 
         String newPhoneNumber = "01011112222";
         memberService.changePhoneNumber(memberId, newPhoneNumber);
+
         assertThat(memberService.findMember(memberId).getPhoneNumber()).isEqualTo(newPhoneNumber);
         assertThat(memberService.findMemberByPhoneNumber(newPhoneNumber)).isEqualTo(member);
     }
@@ -287,6 +384,7 @@ class MemberServiceTest {
 
         String newPassword = "456";
         memberService.changePassword(memberId, passwordEncoder.encode(newPassword));
+
         assertThat(passwordEncoder.matches(newPassword, memberService.findMember(memberId).getPassword())).isTrue();
         assertThat(passwordEncoder.matches(newPassword, member.getPassword())).isTrue();
     }
@@ -315,9 +413,13 @@ class MemberServiceTest {
 
         GradeType newGradeType = GradeType.CHEF;
         memberService.changeGradeType(memberId, newGradeType);
+
+        assertThat(member.getGradeType()).isEqualTo(newGradeType);
         assertThat(memberService.findMember(memberId).getGradeType()).isEqualTo(newGradeType);
         assertThat(memberService.findMembersByGradeType(newGradeType).contains(member)).isTrue();
-        assertThat(member.getGradeType()).isEqualTo(newGradeType);
+        assertThat(memberService.findMembersByGradeType(newGradeType).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
     }
 
     @Test
@@ -344,7 +446,250 @@ class MemberServiceTest {
 
         MemberStatus newMemberStatus = MemberStatus.RETIRE;
         memberService.changeMemberStatus(memberId, newMemberStatus);
+
         assertThat(member.getMemberStatus()).isEqualTo(newMemberStatus);
         assertThat(memberService.findMember(memberId).getMemberStatus()).isEqualTo(newMemberStatus);
+    }
+
+    @Test
+    void changeDuties() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberService.join(member);
+
+        List<Duty> newDuties = new ArrayList<>();
+        Duty newDuty = createDuty();
+        em.persist(newDuty);
+        newDuties.add(newDuty);
+        memberService.changeDuties(memberId, newDuties);
+
+        assertThat(member.getDuties().contains(newDuty)).isTrue();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNull();
+
+        assertThat(memberService.findMember(memberId).getDuties().contains(newDuty)).isTrue();
+        assertThat(memberService.findMember(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMember(memberId).getDuties().contains(duty)).isFalse();
+        assertThat(memberService.findMember(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNull();
+
+        assertThat(memberService.findMembersByDuty(newDuty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMembersByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNull();
+    }
+
+    @Test
+    void addDuty() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberService.join(member);
+
+        Duty newDuty = createDuty();
+        em.persist(newDuty);
+
+        memberService.addDuty(memberId, duty, newDuty);
+
+        assertThat(member.getDuties().contains(newDuty)).isTrue();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMember(memberId).getDuties().contains(newDuty)).isTrue();
+        assertThat(memberService.findMember(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMember(memberId).getDuties().contains(duty)).isTrue();
+        assertThat(memberService.findMember(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMembersByDuty(newDuty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMembersByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+    }
+
+    @Test
+    void removeDuty() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberService.join(member);
+
+        Duty newDuty = createDuty();
+        em.persist(newDuty);
+
+        memberService.addDuty(memberId, duty, newDuty);
+
+        assertThat(member.getDuties().contains(newDuty)).isTrue();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMember(memberId).getDuties().contains(newDuty)).isTrue();
+        assertThat(memberService.findMember(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(newDuty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMember(memberId).getDuties().contains(duty)).isTrue();
+        assertThat(memberService.findMember(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMembersByDuty(newDuty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(memberService.findMembersByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNotNull();
+
+        memberService.removeDuty(memberId, duty);
+        assertThat(member.getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNull();
+        assertThat(memberService.findMember(memberId).getDuties().stream()
+                .filter(d -> d.getId().equals(duty.getId()))
+                .findFirst().orElse(null)).isNull();
+        assertThat(memberService.findMembersByDuty(duty).stream()
+                .filter(m -> m.getId().equals(memberId))
+                .findFirst().orElse(null)).isNull();
+
+    }
+
+    @Test
+    void removeMember() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberService.join(member);
+
+        memberService.removeMember(member);
+        assertThat(memberService.findMember(memberId)).isNull();
+    }
+
+    @Test
+    void removeById() {
+        String loginId = "member";
+        String password = "123";
+        String name = "name";
+        String phoneNumber = "01012341234";
+        GradeType gradeType = GradeType.UNDEFINED;
+        MemberStatus memberStatus = MemberStatus.UNDEFINED;
+        List<Duty> duties = new ArrayList<>();
+
+        Duty duty = createDuty();
+        em.persist(duty);
+
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .gradeType(gradeType)
+                .memberStatus(memberStatus)
+                .duties(duties)
+                .build();
+
+        Long memberId = memberService.join(member);
+
+        memberService.removeById(memberId);
+        assertThat(memberService.findMember(memberId)).isNull();
     }
 }

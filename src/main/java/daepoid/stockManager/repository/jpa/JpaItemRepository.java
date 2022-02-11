@@ -63,7 +63,7 @@ public class JpaItemRepository implements ItemRepository {
 
     // 일정 수량 이하인 경우에 찾아서 반환한다.
     @Override
-    public List<Item> findByQuantity(double quantity) {
+    public List<Item> findByUnderQuantity(double quantity) {
         return em.createQuery("select  i from Item i where i.quantity <= :quantity", Item.class)
                 .setParameter("quantity", quantity)
                 .getResultList();

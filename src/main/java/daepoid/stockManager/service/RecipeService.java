@@ -36,6 +36,10 @@ public class RecipeService {
         return recipeRepository.findAll();
     }
 
+    public Recipe findRecipeByRecipeNumber(String recipeNumber) {
+        return recipeRepository.findByRecipeNumber(recipeNumber);
+    }
+
     public Recipe findRecipeByName(String name) {
         return recipeRepository.findByName(name);
     }

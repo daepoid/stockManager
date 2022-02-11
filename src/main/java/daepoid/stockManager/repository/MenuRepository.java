@@ -24,11 +24,11 @@ public interface MenuRepository {
     //==수정 로직==//
     void changeName(Long menuId, String name);
     void changeFoods(Long menuId, Set<Recipe> foods);
-    void changeNumberOfFood(Long menuId, Map<Long, Integer> numberOfFood);
-    void changeFoodInfo(Long menuId, Set<Recipe> foods, Map<Long, Integer> numberOfFood);
+    void changeNumberOfFoods(Long menuId, Map<Long, Integer> numberOfFoods);
+    void changeFoodInfo(Long menuId, Set<Recipe> foods, Map<Long, Integer> numberOfFoods);
 
 
-    void addFood(Long menuId, Recipe food, Integer numberOfFood);
+    void addFood(Long menuId, Recipe food, Integer numberOfFoods);
 
     void addSalesCount(Long menuId, int salesCount);
     void cancelSalesCount(Long menuId, int salesCount);

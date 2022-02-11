@@ -1,5 +1,6 @@
 package daepoid.stockManager.service;
 
+import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
@@ -58,6 +59,14 @@ public class MemberService {
         return memberRepository.findByGradeType(gradeType);
     }
 
+    public List<Member> findMembersByMemberStatus(MemberStatus memberStatus) {
+        return memberRepository.findByMemberStatus(memberStatus);
+    }
+
+    public List<Member> findMembersByDuty(Duty duty) {
+        return memberRepository.findByDuty(duty);
+    }
+
     //==수정 로직==//
 
     @Transactional
@@ -85,7 +94,31 @@ public class MemberService {
         memberRepository.changeMemberStatus(memberId, memberStatus);
     }
 
+    @Transactional
+    public void changeDuties(Long memberId, List<Duty> duties) {
+        memberRepository.changeDuties(memberId, duties);
+    }
+
+    @Transactional
+    public void addDuty(Long memberId, Duty... duties) {
+        memberRepository.addDuty(memberId, duties);
+    }
+
+    @Transactional
+    public void removeDuty(Long memberId, Duty... duties) {
+        memberRepository.removeDuty(memberId, duties);
+    }
+
     //==비즈니스 로직==//
 
     //==삭제 로직==//
+    @Transactional
+    public void removeMember(Member member) {
+        memberRepository.removeMember(member);
+    }
+
+    @Transactional
+    public void removeById(Long memberId) {
+        memberRepository.removeById(memberId);
+    }
 }

@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.UnitType;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public interface IngredientRepository {
     List<Ingredient> findByUnitType(UnitType unitType);
 
     //==수정 메서드==//
+    void changeItem(Long ingredientId, Item item);
     void changeName(Long ingredientId, String name);
     void changeQuantity(Long ingredientId, int quantity);
     void changeUnitType(Long ingredientId, UnitType unitType);

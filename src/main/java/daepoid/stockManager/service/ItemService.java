@@ -50,8 +50,8 @@ public class ItemService {
         return itemRepository.findByPackageCount(packageCount);
     }
 
-    public List<Item> findByQuantity(double quantity) {
-        return itemRepository.findByQuantity(quantity);
+    public List<Item> findByUnderQuantity(double quantity) {
+        return itemRepository.findByUnderQuantity(quantity);
     }
 
     public List<Item> findByItemSearch(ItemSearch itemSearch) {
@@ -90,4 +90,13 @@ public class ItemService {
     }
 
     //==삭제 로직==//
+    @Transactional
+    public void removeItem(Item item) {
+        itemRepository.removeItem(item);
+    }
+
+    @Transactional
+    public void removeById(Long itemId) {
+        itemRepository.removeById(itemId);
+    }
 }

@@ -1,6 +1,8 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.order.*;
+import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.CartRepository;
 import daepoid.stockManager.repository.jpa.JpaCartRepository;
 import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
@@ -14,8 +16,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,22 +26,70 @@ import static org.junit.jupiter.api.Assertions.*;
 class CustomerServiceTest {
 
     @Autowired
-    EntityManager em;
+    CustomerService customerService;
 
     @Autowired
-    CustomerService customerService;
+    EntityManager em;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    private Cart createCart() {
+        Map<Long, Integer> numberOfMenus = new HashMap<>();
+        return Cart.builder().numberOfMenus(numberOfMenus).build();
+    }
+
+    private Menu createMenu() {
+        String menuName = "menu name";
+        Set<Recipe> menuFoods = new HashSet<>();
+        int menuPrice = 123;
+        Map<Long, Integer> numberOfFoods = new HashMap<>();
+        LocalDateTime menuAddedDate = LocalDateTime.now();
+        int menuSalesCount = 123;
+
+        return Menu.builder()
+                .name(menuName)
+                .foods(menuFoods)
+                .price(menuPrice)
+                .numberOfFoods(numberOfFoods)
+                .addedDate(menuAddedDate)
+                .salesCount(menuSalesCount)
+                .build();
+    }
+
+    private OrderMenu createOrderMenu(Menu menu) {
+        int orderMenuOrderPrice = 123;
+        int orderMenuOrderCount = 123;
+        return OrderMenu.builder()
+                .menu(menu)
+                .orderPrice(orderMenuOrderPrice)
+                .orderCount(orderMenuOrderCount)
+                .build();
+    }
+
+    private Order createOrder(OrderMenu orderOrderMenu) {
+        List<OrderMenu> orderOrderMenus = new ArrayList<>();
+        LocalDateTime orderOrderDateTime = LocalDateTime.now();
+        OrderStatus orderOrderStatus = OrderStatus.ORDERED;
+
+        orderOrderMenus.add(orderOrderMenu);
+
+        return Order.builder()
+                .orderMenus(orderOrderMenus)
+                .orderDateTime(orderOrderDateTime)
+                .orderStatus(orderOrderStatus)
+                .build();
+    }
+
     @Test
     void saveCustomer() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)
@@ -57,12 +106,13 @@ class CustomerServiceTest {
 
     @Test
     void findCustomer() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)
@@ -79,12 +129,13 @@ class CustomerServiceTest {
 
     @Test
     void findCustomers() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)
@@ -104,12 +155,13 @@ class CustomerServiceTest {
 
     @Test
     void findByName() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)
@@ -127,12 +179,13 @@ class CustomerServiceTest {
 
     @Test
     void findByTableNumber() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)
@@ -150,13 +203,13 @@ class CustomerServiceTest {
 
     @Test
     void changeName() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)
@@ -168,7 +221,7 @@ class CustomerServiceTest {
 
         Long customerId = customerService.saveCustomer(customer);
 
-        String newName = "new name";
+        String newName = "new customer name";
         customerService.changeName(customerId, newName);
 
         assertThat(customer.getName()).isEqualTo(newName);
@@ -178,13 +231,13 @@ class CustomerServiceTest {
 
     @Test
     void changeTableNumber() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)
@@ -206,13 +259,13 @@ class CustomerServiceTest {
 
     @Test
     void changeOrders() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)
@@ -224,21 +277,21 @@ class CustomerServiceTest {
 
         Long customerId = customerService.saveCustomer(customer);
 
-        List<OrderMenu> orderMenus = new ArrayList<>();
-        OrderMenu orderMenu = OrderMenu.builder().build();
+        Menu menu = createMenu();
+        em.persist(menu);
 
-        orderMenus.add(orderMenu);
+        OrderMenu orderMenu = createOrderMenu(menu);
 
-        Order order = Order.builder()
-                .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
-                .build();
+        Order order = createOrder(orderMenu);
         em.persist(order);
+
+        assertThat(customerService.findCustomer(customerId).getOrders().contains(order)).isFalse();
+        assertThat(customerService.findCustomer(customerId).getOrders().stream()
+                .filter(o -> o.getId().equals(order.getId()))
+                .findFirst().orElse(null)).isNull();
 
         List<Order> newOrders = new ArrayList<>();
         newOrders.add(order);
-
         customerService.changeOrders(customerId, newOrders);
 
         assertThat(customer.getOrders().contains(order)).isTrue();
@@ -254,13 +307,13 @@ class CustomerServiceTest {
 
     @Test
     void addOrder() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)
@@ -272,19 +325,18 @@ class CustomerServiceTest {
 
         Long customerId = customerService.saveCustomer(customer);
 
-        assertThat(customer.getOrders().size()).isEqualTo(0);
+        Menu menu = createMenu();
+        em.persist(menu);
 
-        List<OrderMenu> orderMenus = new ArrayList<>();
-        OrderMenu orderMenu = OrderMenu.builder().build();
+        OrderMenu orderMenu = createOrderMenu(menu);
 
-        orderMenus.add(orderMenu);
-
-        Order order = Order.builder()
-                .orderMenus(orderMenus)
-                .orderDateTime(LocalDateTime.now())
-                .orderStatus(OrderStatus.ORDERED)
-                .build();
+        Order order = createOrder(orderMenu);
         em.persist(order);
+
+        assertThat(customerService.findCustomer(customerId).getOrders().contains(order)).isFalse();
+        assertThat(customerService.findCustomer(customerId).getOrders().stream()
+                .filter(o -> o.getId().equals(order.getId()))
+                .findFirst().orElse(null)).isNull();
 
         customerService.addOrder(customerId, order);
 
@@ -301,13 +353,13 @@ class CustomerServiceTest {
 
     @Test
     void removeCustomer() {
-        String name = "name";
+        Cart cart = createCart();
+        em.persist(cart);
+
+        String name = "customer";
         String password = "123";
         int tableNumber = 123;
         List<Order> orders = new ArrayList<>();
-
-        Cart cart = Cart.builder().build();
-        em.persist(cart);
 
         Customer customer = Customer.builder()
                 .name(name)

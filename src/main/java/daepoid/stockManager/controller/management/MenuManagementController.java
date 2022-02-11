@@ -123,7 +123,7 @@ public class MenuManagementController {
             return "menu-management/addRecipeMenuForm";
         }
 
-        menuService.addFood(menuId, recipeService.findRecipe(addRecipeMenuDTO.getRecipeId()), addRecipeMenuDTO.getNumberOfFood());
+        menuService.addFood(menuId, recipeService.findRecipe(addRecipeMenuDTO.getRecipeId()), addRecipeMenuDTO.getNumberOfFoods());
 
         redirectAttributes.addAttribute("menuId", menuId);
         return "redirect:/menu-management/{menuId}";

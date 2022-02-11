@@ -159,7 +159,7 @@ public class Recipe {
     }
 
     // 주문 취소시 재고 복원
-    public void cancelRecipe(int orderCount) {
+    public void cancelRecipe(int numberOfFood) {
 
     }
 }

@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,11 @@ public class JpaIngredientRepository implements IngredientRepository {
         return em.createQuery("select i from Ingredient i where i.unitType = :unitType", Ingredient.class)
                 .setParameter("unitType", unitType)
                 .getResultList();
+    }
+
+    @Override
+    public void changeItem(Long ingredientId, Item item) {
+        em.find(Ingredient.class, ingredientId).changeItem(item);
     }
 
     @Override

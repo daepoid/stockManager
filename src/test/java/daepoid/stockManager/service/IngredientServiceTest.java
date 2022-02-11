@@ -275,7 +275,6 @@ class IngredientServiceTest {
         double unitPrice = 45.6;
         double loss = 0.456;
         double cost = quantity * unitPrice;
-
         Ingredient ingredient = Ingredient.builder()
                 .item(item)
                 .name(item.getName())
@@ -286,7 +285,6 @@ class IngredientServiceTest {
                 .cost(cost)
                 .recipe(recipe)
                 .build();
-
         Long ingredientId = ingredientService.saveIngredient(ingredient);
 
         String newItemName ="new item name";
@@ -308,8 +306,21 @@ class IngredientServiceTest {
         em.persist(newItem);
         ingredientService.changeItem(ingredientId, newItem);
 
-        assertThat(ingredientService.findIngredient(ingredientId).getItem()).isEqualTo(newItem);
+        assertThat(ingredientService.findIngredient(ingredientId).getItem().getId()).isEqualTo(newItem.getId());
         // item.getName()을 통해 ingredient의 name을 설정하므로 newItemName을 이용하여 찾을 수 있다.
+        // 단, getName()을 수행하지 않은 상태이면 제대로 업데이트가 이루어지지 않아 원하는 결과가 나오지 않을 수 있다.
+
+        // 예상한대로의 결과가 나오지 않음
+        assertThat(ingredientService.findByName(newItemName).stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNull();
+
+        // 예상한대로의 결과가 나옴
+        assertThat(ingredientService.findIngredients().stream()
+                .filter(i -> i.getName().equals(newItemName) && i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNotNull();
+
+        // getName()을 통해 갱신되어 예상한대로의 결과가 나온다.
         assertThat(ingredientService.findByName(newItemName).stream()
                 .filter(i -> i.getId().equals(ingredientId))
                 .findFirst().orElse(null)).isNotNull();
@@ -345,12 +356,17 @@ class IngredientServiceTest {
         String newName = "new item Name";
         ingredientService.changeName(ingredientId, newName);
 
+        // getName() 호출 시 item.name을 가져와 갱신하므로 changeName()을 호출할 필요 없다.
+        // 다만, getName()을 호출하지 않은 상태라면 예상한 대로의 결과가 나올 수 있다.
+        assertThat(ingredientService.findByName(newName).stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(ingredient.getName()).isNotEqualTo(newName);
+        assertThat(ingredientService.findIngredient(ingredientId).getName()).isNotEqualTo(newName);
+
         assertThat(ingredient.getItem().getName()).isEqualTo(item.getName());
         assertThat(ingredientService.findIngredient(ingredientId).getName()).isEqualTo(ingredient.getItem().getName());
-
-//        // getName() 호출 시 item.name을 가져와 업데이트를 진행하므로 changeName()을 호출할 필요 없다.
-//        assertThat(ingredient.getName()).isEqualTo(name + name);
-//        assertThat(ingredientService.findIngredient(ingredientId).getName()).isEqualTo(name + name);
     }
 
     @Test
@@ -380,10 +396,11 @@ class IngredientServiceTest {
 
         Long ingredientId = ingredientService.saveIngredient(ingredient);
 
-        ingredientService.changeQuantity(ingredientId, quantity * 100);
+        int newQuantity = 789;
+        ingredientService.changeQuantity(ingredientId, newQuantity);
 
-        assertThat(ingredient.getQuantity()).isEqualTo(quantity * 100);
-        assertThat(ingredientService.findIngredient(ingredientId).getQuantity()).isEqualTo(quantity * 100);
+        assertThat(ingredient.getQuantity()).isEqualTo(newQuantity);
+        assertThat(ingredientService.findIngredient(ingredientId).getQuantity()).isEqualTo(newQuantity);
     }
 
     @Test
@@ -413,10 +430,19 @@ class IngredientServiceTest {
 
         Long ingredientId = ingredientService.saveIngredient(ingredient);
 
-        ingredientService.changeUnitType(ingredientId, UnitType.l);
+        UnitType newUnitType = UnitType.l;
+        ingredientService.changeUnitType(ingredientId, newUnitType);
 
-        assertThat(ingredient.getUnitType()).isEqualTo(UnitType.l);
-        assertThat(ingredientService.findIngredient(ingredientId).getUnitType()).isEqualTo(UnitType.l);
+        assertThat(ingredient.getUnitType()).isEqualTo(newUnitType);
+        assertThat(ingredientService.findIngredient(ingredientId).getUnitType()).isEqualTo(newUnitType);
+        assertThat(ingredientService.findByUnitType(newUnitType).stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(ingredientService.findByUnitType(unitType).contains(ingredient)).isFalse();
+        assertThat(ingredientService.findByUnitType(unitType).stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNull();
     }
 
     @Test
@@ -446,10 +472,11 @@ class IngredientServiceTest {
 
         Long ingredientId = ingredientService.saveIngredient(ingredient);
 
-        ingredientService.changeUnitPrice(ingredientId, unitPrice * 10);
+        double newUnitPrice = 78.9;
+        ingredientService.changeUnitPrice(ingredientId, newUnitPrice);
 
-        assertThat(ingredient.getUnitPrice()).isEqualTo(unitPrice * 10);
-        assertThat(ingredientService.findIngredient(ingredientId).getUnitPrice()).isEqualTo(unitPrice * 10);
+        assertThat(ingredient.getUnitPrice()).isEqualTo(newUnitPrice);
+        assertThat(ingredientService.findIngredient(ingredientId).getUnitPrice()).isEqualTo(newUnitPrice);
     }
 
     @Test
@@ -479,10 +506,11 @@ class IngredientServiceTest {
 
         Long ingredientId = ingredientService.saveIngredient(ingredient);
 
-        ingredientService.changeLoss(ingredientId, loss * 10);
+        double newLoss = 7.89;
+        ingredientService.changeLoss(ingredientId, newLoss);
 
-        assertThat(ingredient.getLoss()).isEqualTo(loss * 10);
-        assertThat(ingredientService.findIngredient(ingredientId).getLoss()).isEqualTo(loss * 10);
+        assertThat(ingredient.getLoss()).isEqualTo(newLoss);
+        assertThat(ingredientService.findIngredient(ingredientId).getLoss()).isEqualTo(newLoss);
     }
 
     @Test
@@ -512,13 +540,23 @@ class IngredientServiceTest {
 
         Long ingredientId = ingredientService.saveIngredient(ingredient);
 
-        ingredientService.changeCost(ingredientId, cost * 10);
+        double newCost = 7.89;
+        ingredientService.changeCost(ingredientId, newCost);
+
+        // getCost() 호출 시 updateCost()가 자동으로 호출되어 quantity * unitPrice로 갱신된다.
+        // getCost()를 사용하지 않으면 올바르지 않게 변경된 값을 얻을 수 있다.
+        assertThat(em.createQuery("select i from Ingredient i where i.cost=:newCost", Ingredient.class)
+                .setParameter("newCost", newCost)
+                .getResultList().stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(ingredient.getCost()).isNotEqualTo(newCost);
+        assertThat(ingredientService.findIngredient(ingredientId).getCost()).isNotEqualTo(newCost);
 
         assertThat(ingredientService.findIngredient(ingredientId).getCost()).isEqualTo(quantity * unitPrice);
 
-//        // updateCost()가 자동으로 호출된다.
-//        assertThat(ingredient.getCost()).isEqualTo(cost * 10);
-//        assertThat(ingredientService.findIngredient(ingredientId).getCost()).isEqualTo(cost * 10);
+
     }
 
     @Test
@@ -548,13 +586,24 @@ class IngredientServiceTest {
 
         Long ingredientId = ingredientService.saveIngredient(ingredient);
 
-        assertThat(ingredientService.findIngredient(ingredientId).getCost()).isEqualTo(quantity * unitPrice);
+        double newCost = 7.89;
+        ingredientService.changeCost(ingredientId, newCost);
 
-//        // getCost() 호출 시 자동으로 UpdateCost()가 동작하기 떄문에 따로 Update를 호출하지 않아도 된다.
-//        ingredientService.updateCost(ingredientId);
-//
-//        assertThat(ingredient.getCost()).isEqualTo(cost);
-//        assertThat(ingredientService.findIngredient(ingredientId).getCost()).isEqualTo(cost);
+        // getCost() 호출 시 updateCost()가 자동으로 호출되어 quantity * unitPrice로 갱신된다.
+        // getCost()를 사용하지 않으면 올바르지 않게 변경된 값을 얻을 수 있다.
+        assertThat(em.createQuery("select i from Ingredient i where i.cost=:newCost", Ingredient.class)
+                .setParameter("newCost", newCost)
+                .getResultList().stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNotNull();
+
+        ingredientService.updateCost(ingredientId);
+
+        assertThat(em.createQuery("select i from Ingredient i where i.cost=:newCost", Ingredient.class)
+                .setParameter("newCost", newCost)
+                .getResultList().stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst().orElse(null)).isNull();
     }
 
     @Test
@@ -586,6 +635,9 @@ class IngredientServiceTest {
 
         ingredientService.deleteIngredient(ingredientId);
 
-        assertThat(ingredientService.findIngredient(ingredientId)).isEqualTo(null);
+        assertThat(ingredientService.findIngredient(ingredientId)).isNull();
+
+        // db에서는 삭제되고 id는 남아있음
+        assertThat(ingredient.getId()).isEqualTo(ingredientId);
     }
 }
