@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class CreateCustomerDTO {
 
     @NotBlank
-    private String name;
+    private String userName;
 
     @NotBlank
     private String password;
@@ -22,5 +22,5 @@ public class CreateCustomerDTO {
     private String passwordCheck;
 
     @NotNull
-    private int tableNumber;
+    private String tableNumber;
 }

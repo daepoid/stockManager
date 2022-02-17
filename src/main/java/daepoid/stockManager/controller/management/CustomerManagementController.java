@@ -52,7 +52,7 @@ public class CustomerManagementController {
             return "customer-management/createCustomerForm";
         }
 
-        if(customerService.findByName(createCustomerDTO.getName()) != null) {
+        if(customerService.findCustomerByUserName(createCustomerDTO.getUserName()) != null) {
             return "customer-management/createCustomerForm";
         }
 
@@ -63,7 +63,7 @@ public class CustomerManagementController {
         Long cartId = cartService.createCart(Cart.builder().build());
 
         Customer customer = Customer.builder()
-                .name(createCustomerDTO.getName())
+                .userName(createCustomerDTO.getUserName())
                 .password(passwordEncoder.encode(createCustomerDTO.getPassword()))
                 .tableNumber(createCustomerDTO.getTableNumber())
                 .cart(cartService.findCart(cartId))
@@ -94,7 +94,7 @@ public class CustomerManagementController {
             return "customer-management/editCustomerForm";
         }
 
-        customerService.changeName(customerId, editCustomerDTO.getName());
+        customerService.changeUserName(customerId, editCustomerDTO.getUserName());
         customerService.changeTableNumber(customerId, editCustomerDTO.getTableNumber());
 
         return "redirect:/customer-management";

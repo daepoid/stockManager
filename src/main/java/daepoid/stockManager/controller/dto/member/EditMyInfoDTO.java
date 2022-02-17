@@ -25,7 +25,7 @@ public class EditMyInfoDTO {
 
     // 이름
     @NotBlank
-    private String name;
+    private String userName;
 
     // 전화번호
     @NotBlank
@@ -41,7 +41,7 @@ public class EditMyInfoDTO {
     public EditMyInfoDTO(Member member) {
         this.id = member.getId();
         this.loginId = member.getLoginId();
-        this.name = member.getName();
+        this.userName = member.getUserName();
         this.phoneNumber = member.getPhoneNumber();
         this.duties = member.getDuties();
     }

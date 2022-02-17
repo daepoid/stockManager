@@ -11,9 +11,9 @@ public class CustomerDTO {
 
     private Long customerId;
 
-    private String name;
+    private String userName;
 
-    private int tableNumber;
+    private String tableNumber;
 
     private Long cartId;
 
@@ -21,7 +21,7 @@ public class CustomerDTO {
 
     public CustomerDTO(Customer customer) {
         this.customerId = customer.getId();
-        this.name = customer.getName();
+        this.userName = customer.getUserName();
         this.tableNumber = customer.getTableNumber();
         this.cartId = customer.getCart().getId();
         this.orders = customer.getOrders();

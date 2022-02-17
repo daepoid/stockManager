@@ -18,8 +18,8 @@ public class CreateCustomerRequestDTO {
     @NotBlank
     private String password;
 
-    @NotNull
-    private int tableNumber;
+    @NotBlank
+    private String tableNumber;
 
     private Cart cart;
 

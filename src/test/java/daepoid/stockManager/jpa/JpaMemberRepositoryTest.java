@@ -5,8 +5,9 @@ import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
-import org.assertj.core.api.Assertions;
+
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -51,7 +51,7 @@ class JpaMemberRepositoryTest {
     void save() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -63,7 +63,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -80,7 +80,7 @@ class JpaMemberRepositoryTest {
     void findById() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -92,7 +92,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -109,7 +109,7 @@ class JpaMemberRepositoryTest {
     void findByLoginId() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -121,7 +121,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -138,7 +138,7 @@ class JpaMemberRepositoryTest {
     void findAll() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -150,7 +150,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -169,7 +169,7 @@ class JpaMemberRepositoryTest {
     void findByName() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -181,7 +181,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -190,9 +190,9 @@ class JpaMemberRepositoryTest {
 
         Long memberId = memberRepository.save(member);
 
-        assertThat(member.getName()).isEqualTo(name);
-        assertThat(memberRepository.findByName(name).contains(member)).isTrue();
-        assertThat(memberRepository.findByName(name).stream()
+        assertThat(member.getUserName()).isEqualTo(userName);
+        assertThat(memberRepository.findByUserName(userName).contains(member)).isTrue();
+        assertThat(memberRepository.findByUserName(userName).stream()
                 .filter(m -> m.getId().equals(memberId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -201,7 +201,7 @@ class JpaMemberRepositoryTest {
     void findByPhoneNumber() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -213,7 +213,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -231,7 +231,7 @@ class JpaMemberRepositoryTest {
     void findByGradeType() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -243,7 +243,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -262,7 +262,7 @@ class JpaMemberRepositoryTest {
     void findByMemberStatus() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -274,7 +274,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -293,7 +293,7 @@ class JpaMemberRepositoryTest {
     void findByDuty() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -306,7 +306,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -333,7 +333,7 @@ class JpaMemberRepositoryTest {
     void changeName() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -345,7 +345,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -355,12 +355,12 @@ class JpaMemberRepositoryTest {
         Long memberId = memberRepository.save(member);
 
         String newName = "new Name";
-        memberRepository.changeName(memberId, newName);
+        memberRepository.changeUserName(memberId, newName);
 
-        assertThat(member.getName()).isEqualTo(newName);
-        assertThat(memberRepository.findById(memberId).getName()).isEqualTo(newName);
-        assertThat(memberRepository.findByName(newName).contains(member)).isTrue();
-        assertThat(memberRepository.findByName(newName).stream()
+        assertThat(member.getUserName()).isEqualTo(newName);
+        assertThat(memberRepository.findById(memberId).getUserName()).isEqualTo(newName);
+        assertThat(memberRepository.findByUserName(newName).contains(member)).isTrue();
+        assertThat(memberRepository.findByUserName(newName).stream()
                 .filter(m -> m.getId().equals(memberId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -369,7 +369,7 @@ class JpaMemberRepositoryTest {
     void changePassword() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -381,7 +381,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -401,7 +401,7 @@ class JpaMemberRepositoryTest {
     void changePhoneNumber() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -413,7 +413,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -434,7 +434,7 @@ class JpaMemberRepositoryTest {
     void changeGradeType() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -446,7 +446,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -469,7 +469,7 @@ class JpaMemberRepositoryTest {
     void changeMemberStatus() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -481,7 +481,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -509,7 +509,7 @@ class JpaMemberRepositoryTest {
     void changeDuties() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -521,7 +521,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -567,7 +567,7 @@ class JpaMemberRepositoryTest {
     void addDuty() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -579,7 +579,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -624,7 +624,7 @@ class JpaMemberRepositoryTest {
     void removeDuty() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -636,7 +636,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -693,7 +693,7 @@ class JpaMemberRepositoryTest {
     void removeMember() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -705,7 +705,7 @@ class JpaMemberRepositoryTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -714,36 +714,7 @@ class JpaMemberRepositoryTest {
 
         Long memberId = memberRepository.save(member);
 
-        memberRepository.removeMember(member);
-        assertThat(memberRepository.findById(memberId)).isNull();
-    }
-
-    @Test
-    void removeById() {
-        String loginId = "member";
-        String password = "123";
-        String name = "name";
-        String phoneNumber = "01012341234";
-        GradeType gradeType = GradeType.UNDEFINED;
-        MemberStatus memberStatus = MemberStatus.UNDEFINED;
-        List<Duty> duties = new ArrayList<>();
-
-        Duty duty = createDuty();
-        em.persist(duty);
-
-        Member member = Member.builder()
-                .loginId(loginId)
-                .password(passwordEncoder.encode(password))
-                .name(name)
-                .phoneNumber(phoneNumber)
-                .gradeType(gradeType)
-                .memberStatus(memberStatus)
-                .duties(duties)
-                .build();
-
-        Long memberId = memberRepository.save(member);
-
-        memberRepository.removeById(memberId);
+        memberRepository.removeMember(memberId);
         assertThat(memberRepository.findById(memberId)).isNull();
     }
 }

@@ -75,7 +75,7 @@ public class MemberController {
 
         Member member = Member.builder()
                 .loginId(joinMemberDTO.getLoginId())
-                .name(joinMemberDTO.getName())
+                .userName(joinMemberDTO.getName())
                 .password(passwordEncoder.encode(joinMemberDTO.getPassword()))
                 .phoneNumber(joinMemberDTO.getPhoneNumber())
                 .gradeType(GradeType.UNDEFINED)
@@ -84,7 +84,7 @@ public class MemberController {
                 .build();
 
         Long memberId = memberService.join(member);
-        log.info("회원가입 성공 / 아이디: {} / 이름: {} / 전화번호: {}", member.getLoginId(), member.getName(), member.getPhoneNumber());
+        log.info("회원가입 성공 / 아이디: {} / 이름: {} / 전화번호: {}", member.getLoginId(), member.getUserName(), member.getPhoneNumber());
         return "redirect:/";
     }
 
@@ -144,13 +144,13 @@ public class MemberController {
         // 모든 변경기록이 로그로 남아야하고, 로그는 파일로 따로 저장되어야 한다.
         Member member = memberService.findMember(memberId);
         log.info("관리자 페이지에서 {}님 정보 수정 \n{} => {}\n{} => {}\n{} => {}\n{} => {}",
-                member.getName(),
-                member.getName(), editMemberDTO.getName(),
+                member.getUserName(),
+                member.getUserName(), editMemberDTO.getUserName(),
                 member.getPhoneNumber(), editMemberDTO.getPhoneNumber(),
                 member.getGradeType(), editMemberDTO.getGradeType(),
                 member.getMemberStatus(), editMemberDTO.getMemberStatus());
 
-        memberService.changeName(memberId, editMemberDTO.getName());
+        memberService.changeUserName(memberId, editMemberDTO.getUserName());
         memberService.changePhoneNumber(memberId, editMemberDTO.getPhoneNumber());
         memberService.changeGradeType(memberId, editMemberDTO.getGradeType());
         memberService.changeMemberStatus(memberId, editMemberDTO.getMemberStatus());

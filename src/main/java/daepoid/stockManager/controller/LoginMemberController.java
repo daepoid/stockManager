@@ -80,12 +80,12 @@ public class LoginMemberController {
             return "members/editMyInfoForm";
         }
 
-        memberService.changeName(loginMember.getId(), editMyInfoDTO.getName());
+        memberService.changeUserName(loginMember.getId(), editMyInfoDTO.getUserName());
         memberService.changePhoneNumber(loginMember.getId(), editMyInfoDTO.getPhoneNumber());
         log.info("{}님이 정보를 수정하였습니다. => 이름: {} / 전화번호: {} -> 이름: {} / 전화번호: {}",
                 loginMember.getLoginId(),
-                loginMember.getName(), loginMember.getPhoneNumber(),
-                editMyInfoDTO.getName(), editMyInfoDTO.getPhoneNumber());
+                loginMember.getUserName(), loginMember.getPhoneNumber(),
+                editMyInfoDTO.getUserName(), editMyInfoDTO.getPhoneNumber());
 
         return "redirect:/";
     }

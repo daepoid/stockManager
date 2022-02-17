@@ -17,7 +17,7 @@ public class MemberDTO {
     private final String loginId;
 
     // 이름
-    private final String name;
+    private final String userName;
 
     // 전화번호 '01012341234' 형태로 저장됨
     private final String phoneNumber;
@@ -33,7 +33,7 @@ public class MemberDTO {
     public MemberDTO(Member member) {
         this.memberId = member.getId();
         this.loginId = member.getLoginId();
-        this.name = member.getName();
+        this.userName = member.getUserName();
         this.phoneNumber = member.getPhoneNumber();
         this.gradeType = member.getGradeType();
         this.memberStatus = member.getMemberStatus();

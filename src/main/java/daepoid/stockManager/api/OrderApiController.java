@@ -61,7 +61,7 @@ public class OrderApiController {
     public List<Order> ordersV1() {
         List<Order> orders = orderService.findOrders();
         for (Order order : orders) {
-            order.getCustomer().getName(); //Lazy 강제 초기화
+            order.getCustomer().getUserName(); //Lazy 강제 초기화
             List<OrderMenu> orderMenus = order.getOrderMenus();
             for (OrderMenu orderMenu : orderMenus) {
                 orderMenu.getMenu().getName(); //Lazy 강제 초기화

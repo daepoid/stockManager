@@ -38,7 +38,7 @@ public class EditOrderDTO {
     private OrderStatus orderStatus;
 
     public EditOrderDTO(OrderMenu orderMenu) {
-        this.customerName = orderMenu.getOrder().getCustomer().getName();
+        this.customerName = orderMenu.getOrder().getCustomer().getUserName();
         this.customerId = orderMenu.getOrder().getCustomer().getId();
 
         this.nameOfOrderMenu = orderMenu.getMenu().getName();

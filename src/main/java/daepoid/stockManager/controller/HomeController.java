@@ -53,7 +53,7 @@ public class HomeController {
         }
         else {
             log.info("손님 {}님 로그인", loginId);
-            model.addAttribute("customerId", customererService.findByName(loginId).getId());
+            model.addAttribute("customerId", customererService.findCustomerByLoginId(loginId).getId());
         }
         model.addAttribute("loginId", loginId);
         return "loginHome";

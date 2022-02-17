@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -34,22 +33,26 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public Customer findByName(String name) {
-        return customerRepository.findByName(name);
+    public Customer findCustomerByLoginId(String loginId) {
+        return customerRepository.findByLoginId(loginId);
     }
 
-    public Customer findByTableNumber(int tableNumber) {
+    public Customer findCustomerByUserName(String userName) {
+        return customerRepository.findByUserName(userName);
+    }
+
+    public Customer findCustomerByTableNumber(String tableNumber) {
         return customerRepository.findByTableNumber(tableNumber);
     }
 
     //==수정 로직==//
     @Transactional
-    public void changeName(Long customerId, String name) {
-        customerRepository.changeName(customerId, name);
+    public void changeUserName(Long customerId, String userName) {
+        customerRepository.changeUserName(customerId, userName);
     }
 
     @Transactional
-    public void changeTableNumber(Long customerId, int tableNumber) {
+    public void changeTableNumber(Long customerId, String tableNumber) {
         customerRepository.changeTableNumber(customerId, tableNumber);
     }
 
@@ -65,8 +68,8 @@ public class CustomerService {
 
     //==삭제 로직==//
     @Transactional
-    public void removeCustomer(Customer customer) {
-        customerRepository.removeCustomer(customer);
+    public void removeCustomer(Long customerId) {
+        customerRepository.removeCustomer(customerId);
     }
 
 }

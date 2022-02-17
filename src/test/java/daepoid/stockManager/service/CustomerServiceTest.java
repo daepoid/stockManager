@@ -3,10 +3,6 @@ package daepoid.stockManager.service;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.repository.CartRepository;
-import daepoid.stockManager.repository.jpa.JpaCartRepository;
-import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -86,13 +81,13 @@ class CustomerServiceTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -109,13 +104,13 @@ class CustomerServiceTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -134,11 +129,11 @@ class CustomerServiceTest {
 
         String name = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(name)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -154,17 +149,17 @@ class CustomerServiceTest {
     }
 
     @Test
-    void findByName() {
+    void findByUserName() {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -173,8 +168,8 @@ class CustomerServiceTest {
 
         Long customerId = customerService.saveCustomer(customer);
 
-        assertThat(customerService.findByName(name).getId()).isEqualTo(customerId);
-        assertThat(customerService.findByName(name).getId()).isEqualTo(customer.getId());
+        assertThat(customerService.findCustomerByUserName(userName).getId()).isEqualTo(customerId);
+        assertThat(customerService.findCustomerByUserName(userName).getId()).isEqualTo(customer.getId());
     }
 
     @Test
@@ -182,13 +177,13 @@ class CustomerServiceTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -197,8 +192,8 @@ class CustomerServiceTest {
 
         Long customerId = customerService.saveCustomer(customer);
 
-        assertThat(customerService.findByTableNumber(tableNumber)).isEqualTo(customer);
-        assertThat(customerService.findByTableNumber(tableNumber).getId()).isEqualTo(customerId);
+        assertThat(customerService.findCustomerByTableNumber(tableNumber)).isEqualTo(customer);
+        assertThat(customerService.findCustomerByTableNumber(tableNumber).getId()).isEqualTo(customerId);
     }
 
     @Test
@@ -206,13 +201,13 @@ class CustomerServiceTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -222,11 +217,11 @@ class CustomerServiceTest {
         Long customerId = customerService.saveCustomer(customer);
 
         String newName = "new customer name";
-        customerService.changeName(customerId, newName);
+        customerService.changeUserName(customerId, newName);
 
-        assertThat(customer.getName()).isEqualTo(newName);
-        assertThat(customerService.findCustomer(customerId).getName()).isEqualTo(newName);
-        assertThat(customerService.findByName(newName).getId()).isEqualTo(customerId);
+        assertThat(customer.getUserName()).isEqualTo(newName);
+        assertThat(customerService.findCustomer(customerId).getUserName()).isEqualTo(newName);
+        assertThat(customerService.findCustomerByUserName(newName).getId()).isEqualTo(customerId);
     }
 
     @Test
@@ -234,13 +229,13 @@ class CustomerServiceTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -249,12 +244,12 @@ class CustomerServiceTest {
 
         Long customerId = customerService.saveCustomer(customer);
 
-        int newTableNumber = 456;
+        String newTableNumber = "456";
         customerService.changeTableNumber(customerId, newTableNumber);
 
         assertThat(customer.getTableNumber()).isEqualTo(newTableNumber);
         assertThat(customerService.findCustomer(customerId).getTableNumber()).isEqualTo(newTableNumber);
-        assertThat(customerService.findByTableNumber(newTableNumber).getId()).isEqualTo(customerId);
+        assertThat(customerService.findCustomerByTableNumber(newTableNumber).getId()).isEqualTo(customerId);
     }
 
     @Test
@@ -262,13 +257,13 @@ class CustomerServiceTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -310,13 +305,13 @@ class CustomerServiceTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -356,13 +351,13 @@ class CustomerServiceTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -373,7 +368,7 @@ class CustomerServiceTest {
 
         assertThat(customerService.findCustomer(customerId)).isEqualTo(customer);
 
-        customerService.removeCustomer(customer);
+        customerService.removeCustomer(customerId);
 
         assertThat(customerService.findCustomer(customerId)).isNull();
     }

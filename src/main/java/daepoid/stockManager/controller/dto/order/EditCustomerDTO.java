@@ -17,14 +17,14 @@ public class EditCustomerDTO {
     private Long id;
 
     @NotBlank
-    private String name;
+    private String userName;
 
     @NotNull
-    private int tableNumber;
+    private String tableNumber;
 
     public EditCustomerDTO(Customer customer) {
         this.id = customer.getId();
-        this.name = customer.getName();
+        this.userName = customer.getUserName();
         this.tableNumber = customer.getTableNumber();
     }
 }

@@ -36,19 +36,22 @@ public class MemberService {
 
     //==조회 로직==//
     public Member findMember(Long memberId) {
-        return memberRepository.findById(memberId);
-    }
+        return memberRepository.findAll().stream()
+                .filter(member -> member.getId().equals(memberId))
+                .findFirst().orElse(null);
 
-    public Member findMemberByLoginId(String loginId) {
-        return memberRepository.findByLoginId(loginId);
     }
 
     public List<Member> findMembers() {
         return memberRepository.findAll();
     }
 
-    public List<Member> findMembersByName(String name) {
-        return memberRepository.findByName(name);
+    public Member findMemberByLoginId(String loginId) {
+        return memberRepository.findByLoginId(loginId);
+    }
+
+    public List<Member> findMembersByUserName(String userName) {
+        return memberRepository.findByUserName(userName);
     }
 
     public Member findMemberByPhoneNumber(String phoneNumber) {
@@ -69,18 +72,18 @@ public class MemberService {
 
     //==수정 로직==//
     @Transactional
-    public void changeName(Long memberId, String name) {
-        memberRepository.changeName(memberId, name);
+    public void changePassword(Long memberId, String password) {
+        memberRepository.changePassword(memberId, password);
+    }
+
+    @Transactional
+    public void changeUserName(Long memberId, String userName) {
+        memberRepository.changeUserName(memberId, userName);
     }
 
     @Transactional
     public void changePhoneNumber(Long memberId, String phoneNumber) {
         memberRepository.changePhoneNumber(memberId, phoneNumber);
-    }
-
-    @Transactional
-    public void changePassword(Long memberId, String password) {
-        memberRepository.changePassword(memberId, password);
     }
 
     @Transactional
@@ -112,12 +115,7 @@ public class MemberService {
 
     //==삭제 로직==//
     @Transactional
-    public void removeMember(Member member) {
-        memberRepository.removeMember(member);
-    }
-
-    @Transactional
-    public void removeById(Long memberId) {
-        memberRepository.removeById(memberId);
+    public void removeMember(Long memberId) {
+        memberRepository.removeMember(memberId);
     }
 }

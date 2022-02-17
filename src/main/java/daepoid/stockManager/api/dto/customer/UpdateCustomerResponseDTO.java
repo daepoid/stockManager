@@ -10,9 +10,9 @@ import java.util.List;
 public class UpdateCustomerResponseDTO {
     private Long customerId;
 
-    private String name;
+    private String userName;
 
-    private int tableNumber;
+    private String tableNumber;
 
     private Long cartId;
 
@@ -20,7 +20,7 @@ public class UpdateCustomerResponseDTO {
 
     public UpdateCustomerResponseDTO(Customer customer) {
         this.customerId = customer.getId();
-        this.name = customer.getName();
+        this.userName = customer.getUserName();
         this.tableNumber = customer.getTableNumber();
         this.cartId = customer.getCart().getId();
         this.orders = customer.getOrders();

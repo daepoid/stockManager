@@ -4,16 +4,12 @@ import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
-import daepoid.stockManager.repository.MemberRepository;
-import daepoid.stockManager.repository.jpa.JpaMemberRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.EntityManager;
-import javax.swing.text.html.parser.Entity;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
@@ -22,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -53,7 +48,7 @@ class MemberServiceTest {
     void join() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -62,7 +57,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -78,7 +73,7 @@ class MemberServiceTest {
     void findMember() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -87,7 +82,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -104,7 +99,7 @@ class MemberServiceTest {
     void findMemberByLoginId() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -113,7 +108,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -130,7 +125,7 @@ class MemberServiceTest {
     void findMembers() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -139,7 +134,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -158,7 +153,7 @@ class MemberServiceTest {
     void findMembersByName() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -167,7 +162,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -176,9 +171,9 @@ class MemberServiceTest {
 
         Long memberId = memberService.join(member);
 
-        assertThat(member.getName()).isEqualTo(name);
-        assertThat(memberService.findMembersByName(name).contains(member)).isTrue();
-        assertThat(memberService.findMembersByName(name).stream()
+        assertThat(member.getUserName()).isEqualTo(userName);
+        assertThat(memberService.findMembersByUserName(userName).contains(member)).isTrue();
+        assertThat(memberService.findMembersByUserName(userName).stream()
                 .filter(m -> m.getId().equals(memberId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -187,7 +182,7 @@ class MemberServiceTest {
     void findMemberByPhoneNumber() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -196,7 +191,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -214,7 +209,7 @@ class MemberServiceTest {
     void findMembersByGradeType() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -223,7 +218,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -242,7 +237,7 @@ class MemberServiceTest {
     void findMemberByMemberStatus() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -251,7 +246,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -270,7 +265,7 @@ class MemberServiceTest {
     void findMembersByDuty() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -283,7 +278,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -302,7 +297,7 @@ class MemberServiceTest {
     void changeName() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -311,7 +306,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -321,11 +316,11 @@ class MemberServiceTest {
         Long memberId = memberService.join(member);
 
         String newName = "new member name";
-        memberService.changeName(memberId, newName);
+        memberService.changeUserName(memberId, newName);
 
-        assertThat(member.getName()).isEqualTo(newName);
-        assertThat(memberService.findMember(memberId).getName()).isEqualTo(newName);
-        assertThat(memberService.findMembersByName(newName).contains(member)).isTrue();
+        assertThat(member.getUserName()).isEqualTo(newName);
+        assertThat(memberService.findMember(memberId).getUserName()).isEqualTo(newName);
+        assertThat(memberService.findMembersByUserName(newName).contains(member)).isTrue();
         assertThat(memberService.findMembersByGradeType(gradeType).stream()
                 .filter(m -> m.getId().equals(memberId))
                 .findFirst().orElse(null)).isNotNull();
@@ -335,7 +330,7 @@ class MemberServiceTest {
     void changePhoneNumber() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -344,7 +339,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -364,7 +359,7 @@ class MemberServiceTest {
     void changePassword() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -373,7 +368,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -393,7 +388,7 @@ class MemberServiceTest {
     void changeGradeType() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -402,7 +397,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -426,7 +421,7 @@ class MemberServiceTest {
     void changeMemberStatus() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.CEO;
         MemberStatus memberStatus = MemberStatus.LEAVE;
@@ -435,7 +430,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -455,7 +450,7 @@ class MemberServiceTest {
     void changeDuties() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -467,7 +462,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -513,7 +508,7 @@ class MemberServiceTest {
     void addDuty() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -525,7 +520,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -570,7 +565,7 @@ class MemberServiceTest {
     void removeDuty() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -582,7 +577,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -632,14 +627,13 @@ class MemberServiceTest {
         assertThat(memberService.findMembersByDuty(duty).stream()
                 .filter(m -> m.getId().equals(memberId))
                 .findFirst().orElse(null)).isNull();
-
     }
 
     @Test
     void removeMember() {
         String loginId = "member";
         String password = "123";
-        String name = "name";
+        String userName = "name";
         String phoneNumber = "01012341234";
         GradeType gradeType = GradeType.UNDEFINED;
         MemberStatus memberStatus = MemberStatus.UNDEFINED;
@@ -651,7 +645,7 @@ class MemberServiceTest {
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
-                .name(name)
+                .userName(userName)
                 .phoneNumber(phoneNumber)
                 .gradeType(gradeType)
                 .memberStatus(memberStatus)
@@ -660,36 +654,7 @@ class MemberServiceTest {
 
         Long memberId = memberService.join(member);
 
-        memberService.removeMember(member);
-        assertThat(memberService.findMember(memberId)).isNull();
-    }
-
-    @Test
-    void removeById() {
-        String loginId = "member";
-        String password = "123";
-        String name = "name";
-        String phoneNumber = "01012341234";
-        GradeType gradeType = GradeType.UNDEFINED;
-        MemberStatus memberStatus = MemberStatus.UNDEFINED;
-        List<Duty> duties = new ArrayList<>();
-
-        Duty duty = createDuty();
-        em.persist(duty);
-
-        Member member = Member.builder()
-                .loginId(loginId)
-                .password(passwordEncoder.encode(password))
-                .name(name)
-                .phoneNumber(phoneNumber)
-                .gradeType(gradeType)
-                .memberStatus(memberStatus)
-                .duties(duties)
-                .build();
-
-        Long memberId = memberService.join(member);
-
-        memberService.removeById(memberId);
+        memberService.removeMember(memberId);
         assertThat(memberService.findMember(memberId)).isNull();
     }
 }

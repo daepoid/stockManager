@@ -27,16 +27,19 @@ public class SecurityLoginService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("userName = {}", username);
         Member member = memberRepository.findByLoginId(username);
+        log.info("member = {}", member);
         if(member != null) {
             String role = "ROLE_" + member.getGradeType().toString();
             return new User(member.getLoginId(), member.getPassword(), List.of(new SimpleGrantedAuthority(role)));
         }
 
-        Customer customer = customerRepository.findByName(username);
+        Customer customer = customerRepository.findByLoginId(username);
+        log.info("customer = {}", customer);
         if(customer != null) {
             String role = "ROLE_CUSTOMER";
-            return new User(customer.getName(), customer.getPassword(), List.of(new SimpleGrantedAuthority(role)));
+            return new User(customer.getLoginId(), customer.getPassword(), List.of(new SimpleGrantedAuthority(role)));
         }
 
         throw new IllegalArgumentException("존재하지 않는 사용자입니다.");

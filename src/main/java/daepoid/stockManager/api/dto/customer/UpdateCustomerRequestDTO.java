@@ -10,7 +10,7 @@ public class UpdateCustomerRequestDTO {
 
     private String name;
 
-    private Integer tableNumber;
+    private String tableNumber;
 
     private List<Order> orders;
 }

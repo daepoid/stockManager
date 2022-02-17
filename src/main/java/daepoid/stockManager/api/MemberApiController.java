@@ -62,7 +62,7 @@ public class MemberApiController {
         Member member = Member.builder()
                 .loginId(requestDTO.getLoginId())
                 .password(passwordEncoder.encode(requestDTO.getPassword()))
-                .name(requestDTO.getName())
+                .userName(requestDTO.getName())
                 .phoneNumber(requestDTO.getPhoneNumber())
                 .gradeType(GradeType.UNDEFINED)
                 .memberStatus(MemberStatus.UNDEFINED)
@@ -81,7 +81,7 @@ public class MemberApiController {
                                                   @RequestBody @Valid UpdateMemberRequestDTO requestDTO) {
 
         if(!requestDTO.getName().isBlank()) {
-            memberService.changeName(memberId, requestDTO.getName());
+            memberService.changeUserName(memberId, requestDTO.getName());
         }
         if(requestDTO.getPhoneNumber().matches("^(01[0-1|6-9])-?(\\d{3,4})-?(\\d{4})$")) {
             memberService.changePhoneNumber(memberId, requestDTO.getPhoneNumber());
@@ -101,7 +101,7 @@ public class MemberApiController {
         if(!passwordEncoder.matches(requestDTO.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
-        memberService.removeMember(member);
+        memberService.removeMember(memberId);
         return new DeleteMemberResponseDTO(memberId);
     }
 }

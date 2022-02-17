@@ -56,10 +56,10 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findByName(String name) {
+    public List<Member> findByUserName(String userName) {
         return store.values()
                 .stream()
-                .filter(member -> member.getName().equals(name))
+                .filter(member -> member.getUserName().equals(userName))
                 .collect(Collectors.toList());
     }
 
@@ -105,9 +105,10 @@ public class MemoryMemberRepository implements MemberRepository {
 
 
     //==수정 로직==//
+
     @Override
-    public void changeName(Long memberId, String name) {
-        store.get(memberId).changeName(name);
+    public void changeUserName(Long userId, String userName) {
+        store.get(userId).changeUserName(userName);
     }
 
     @Override
@@ -148,14 +149,9 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     //==삭제 로직==//
-    @Override
-    public void removeMember(Member member) {
-        store.remove(member.getId(), member);
-    }
 
     @Override
-    public void removeById(Long id) {
-        Member member = store.get(id);
-        store.remove(id, member);
+    public void removeMember(Long userId) {
+        store.remove(userId);
     }
 }

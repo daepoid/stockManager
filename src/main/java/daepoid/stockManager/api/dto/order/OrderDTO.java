@@ -23,7 +23,7 @@ public class OrderDTO {
 
     public OrderDTO(Order order) {
         this.orderId = order.getId();
-        this.customerName = order.getCustomer().getName();
+        this.customerName = order.getCustomer().getUserName();
         this.orderMenus = order.getOrderMenus().stream()
                 .map(OrderMenuDTO::new)
                 .collect(Collectors.toList());

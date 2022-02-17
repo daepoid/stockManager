@@ -23,8 +23,8 @@ public class OrderInfoDTO {
     @NotBlank
     private String customerName;
 
-    @NotNull
-    private int tableNumber;
+    @NotBlank
+    private String tableNumber;
 
     @NotNull
     private LocalDateTime orderDateTime;
@@ -35,7 +35,7 @@ public class OrderInfoDTO {
 
     public OrderInfoDTO(Order order) {
         this.orderId = order.getId();
-        this.customerName = order.getCustomer().getName();
+        this.customerName = order.getCustomer().getUserName();
         this.tableNumber = order.getCustomer().getTableNumber();
 
         this.orderDateTime = order.getOrderDateTime();

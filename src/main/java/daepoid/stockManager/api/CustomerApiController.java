@@ -64,7 +64,7 @@ public class CustomerApiController {
         }
 
         Customer customer = Customer.builder()
-                .name(requestDTO.getName())
+                .userName(requestDTO.getName())
                 .password(passwordEncoder.encode(requestDTO.getPassword()))
                 .tableNumber(requestDTO.getTableNumber())
                 .cart(cart)
@@ -89,7 +89,7 @@ public class CustomerApiController {
                                                     @RequestBody @Valid UpdateCustomerRequestDTO requestDTO) {
 
         if(!requestDTO.getName().isBlank()) {
-            customerService.changeName(customerId, requestDTO.getName());
+            customerService.changeUserName(customerId, requestDTO.getName());
         }
 
         if(requestDTO.getTableNumber() != null) {
@@ -112,7 +112,7 @@ public class CustomerApiController {
         }
 
         Cart cart = customer.getCart();
-        customerService.removeCustomer(customer);
+        customerService.removeCustomer(customerId);
         return new DeleteCustomerResponseDTO(customerId, cart.getId());
     }
 }

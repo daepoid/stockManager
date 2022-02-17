@@ -1,10 +1,12 @@
 package daepoid.stockManager.repository.jpa;
 
+import daepoid.stockManager.domain.StoreUser;
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.domain.member.RoleType;
+import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,22 +28,16 @@ public class JpaMemberRepository implements MemberRepository {
 
     //==생성 로직==//
     @Override
-    public Long save(Member member) {
-        em.persist(member);
-        log.info("save member = {}", member);
-        return member.getId();
+    public Long save(Member user) {
+        em.persist(user);
+        return user.getId();
     }
 
     //==조회 로직==//
     @Override
-    public Member findById(Long id) {
-        return em.find(Member.class, id);
-    }
-
-    @Override
-    public Member findByLoginId(String loginId) {
-        return em.createQuery("select m from Member m where m.loginId = :loginId", Member.class)
-                .setParameter("loginId", loginId)
+    public Member findById(Long memberId) {
+        return em.createQuery("select m from Member m where m.id=:memberId", Member.class)
+                .setParameter("memberId", memberId)
                 .getResultList()
                 .stream().findFirst()
                 .orElse(null);
@@ -54,9 +50,17 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findByName(String name) {
-        return em.createQuery("select m from Member m where m.name = :name", Member.class)
-                .setParameter("name", name)
+    public Member findByLoginId(String loginId) {
+        return em.createQuery("select m from Member m where m.loginId=:loginId", Member.class)
+                .setParameter("loginId", loginId)
+                .getResultList().stream()
+                .findFirst().orElse(null);
+    }
+
+    @Override
+    public List<Member> findByUserName(String userName) {
+        return em.createQuery("select m from Member m where m.userName=:userName", Member.class)
+                .setParameter("userName", userName)
                 .getResultList();
     }
 
@@ -96,16 +100,15 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     //==수정 로직==//
+
     @Override
-    public void changeName(Long memberId, String name) {
-        Member member = em.find(Member.class, memberId);
-        member.changeName(name);
+    public void changePassword(Long userId, String password) {
+        em.find(StoreUser.class, userId).changePassword(password);
     }
 
     @Override
-    public void changePassword(Long memberId, String password) {
-        Member member = em.find(Member.class, memberId);
-        member.changePassword(password);
+    public void changeUserName(Long userId, String userName) {
+        em.find(StoreUser.class, userId).changeUserName(userName);
     }
 
     @Override
@@ -146,13 +149,7 @@ public class JpaMemberRepository implements MemberRepository {
 
     //==삭제 로직==//
     @Override
-    public void removeMember(Member member) {
-        em.remove(member);
-    }
-
-    @Override
-    public void removeById(Long memberId) {
-        Member member = em.find(Member.class, memberId);
-        em.remove(member);
+    public void removeMember(Long userId) {
+        em.remove(em.find(Member.class, userId));
     }
 }

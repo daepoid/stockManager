@@ -46,8 +46,8 @@ public class CustomerController {
     public String customerCartForm(@PathVariable("customerId") Long customerId,
                                    Model model,
                                    HttpServletRequest request) {
-        String userName = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Customer loginCustomer = customerService.findByName(userName);
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Customer loginCustomer = customerService.findCustomerByLoginId(loginId);
         if(!Objects.equals(loginCustomer.getId(), customerId)) {
             request.getSession(false).invalidate();
             return "redirect:/";
@@ -88,15 +88,15 @@ public class CustomerController {
                                 Model model,
                                 HttpServletRequest request) {
 
-        String userName = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        if(!Objects.equals(customerService.findByName(userName).getId(), customerId)) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(!Objects.equals(customerService.findCustomerByLoginId(loginId).getId(), customerId)) {
             request.getSession(false).invalidate();
             return "redirect:/";
         }
 
         Customer customer = customerService.findCustomer(customerId);
 
-        Integer tableNumber = customer.getTableNumber();
+        String tableNumber = customer.getTableNumber();
 
         List<CustomerOrderMenuDTO> customerOrderMenuDTOs = new ArrayList<>();
         List<Order> customerOrders = customer.getOrders();

@@ -30,7 +30,7 @@ public class EditMemberDTO {
 
     // 이름
     @NotBlank
-    private String name;
+    private String userName;
 
     // 전화번호
     @NotBlank
@@ -56,7 +56,7 @@ public class EditMemberDTO {
     public EditMemberDTO(Member member) {
         this.id = member.getId();
         this.loginId = member.getLoginId();
-        this.name = member.getName();
+        this.userName = member.getUserName();
         this.phoneNumber = member.getPhoneNumber();
 
         this.gradeType = member.getGradeType();

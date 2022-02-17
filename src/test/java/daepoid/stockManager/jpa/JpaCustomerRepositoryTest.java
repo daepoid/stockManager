@@ -87,13 +87,13 @@ class JpaCustomerRepositoryTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -114,13 +114,13 @@ class JpaCustomerRepositoryTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -142,13 +142,13 @@ class JpaCustomerRepositoryTest {
         Cart cart1 = Cart.builder().build();
         em.persist(cart1);
 
-        String name1 = "customer1";
+        String userName1 = "customer1";
         String password1 = "123";
-        int tableNumber1 = 1231;
+        String tableNumber1 = "1231";
         List<Order> orders1 = new ArrayList<>();
 
         Customer customer1 = Customer.builder()
-                .name(name1)
+                .userName(userName1)
                 .password(passwordEncoder.encode(password1))
                 .tableNumber(tableNumber1)
                 .cart(cart1)
@@ -158,13 +158,13 @@ class JpaCustomerRepositoryTest {
         Cart cart2 = Cart.builder().build();
         em.persist(cart2);
 
-        String name2 = "customer2";
+        String userName2 = "customer2";
         String password2 = "123";
-        int tableNumber2 = 1232;
+        String tableNumber2 = "1232";
         List<Order> orders2 = new ArrayList<>();
 
         Customer customer2 = Customer.builder()
-                .name(name2)
+                .userName(userName2)
                 .password(passwordEncoder.encode(password2))
                 .tableNumber(tableNumber2)
                 .cart(cart2)
@@ -200,13 +200,13 @@ class JpaCustomerRepositoryTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -217,7 +217,7 @@ class JpaCustomerRepositoryTest {
         Long customerId = customerRepository.save(customer);
 
         // then
-        assertThat(customerRepository.findByName(name)).isEqualTo(customer);
+        assertThat(customerRepository.findByUserName(userName)).isEqualTo(customer);
     }
 
     @Test
@@ -225,13 +225,13 @@ class JpaCustomerRepositoryTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -250,13 +250,13 @@ class JpaCustomerRepositoryTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -267,11 +267,11 @@ class JpaCustomerRepositoryTest {
         Long customerId = customerRepository.save(customer);
 
         String newName = "new customer Name";
-        customerRepository.changeName(customerId, newName);
+        customerRepository.changeUserName(customerId, newName);
     
         // then
-        assertThat(customerRepository.findById(customerId).getName()).isEqualTo(newName); // 영속성
-        assertThat(customerRepository.findByName(newName).getId()).isEqualTo(customer.getId());
+        assertThat(customerRepository.findById(customerId).getUserName()).isEqualTo(newName); // 영속성
+        assertThat(customerRepository.findByUserName(newName).getId()).isEqualTo(customer.getId());
     }
 
     @Test
@@ -280,13 +280,13 @@ class JpaCustomerRepositoryTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -295,7 +295,7 @@ class JpaCustomerRepositoryTest {
 
         // when
         Long customerId = customerRepository.save(customer);
-        int newTableNumber = 456;
+        String newTableNumber = "456";
         customerRepository.changeTableNumber(customerId, newTableNumber);
 
         // then
@@ -309,13 +309,13 @@ class JpaCustomerRepositoryTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -355,13 +355,13 @@ class JpaCustomerRepositoryTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -404,13 +404,13 @@ class JpaCustomerRepositoryTest {
         Cart cart = createCart();
         em.persist(cart);
 
-        String name = "customer";
+        String userName = "customer";
         String password = "123";
-        int tableNumber = 123;
+        String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .name(name)
+                .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
                 .cart(cart)
@@ -422,7 +422,7 @@ class JpaCustomerRepositoryTest {
 
         assertThat(customerRepository.findById(customerId)).isNotNull();
 
-        customerRepository.removeCustomer(customer);
+        customerRepository.removeCustomer(customerId);
     
         // then
         assertThat(customerRepository.findById(customerId)).isNull();

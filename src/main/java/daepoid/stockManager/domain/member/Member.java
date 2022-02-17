@@ -1,5 +1,6 @@
 package daepoid.stockManager.domain.member;
 
+import daepoid.stockManager.domain.StoreUser;
 import daepoid.stockManager.domain.duty.Duty;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,25 +14,9 @@ import java.util.*;
 
 @Entity
 @Getter
+@DiscriminatorValue("MEMBER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "member_id")
-    private Long id;
-
-    // 로그인 아이디
-    @NotBlank
-    private String loginId;
-
-    // 비민번호, 로그인 시 사용
-    @NotBlank
-    private String password;
-
-    // 이름
-    @NotBlank
-    private String name;
+public class Member extends StoreUser {
 
     // 전화번호 '01012341234' 형태로 저장됨
     @NotBlank
@@ -65,11 +50,11 @@ public class Member {
 
     //==생성 메서드==//
     @Builder
-    public Member(String loginId, String name, String password, String phoneNumber,
+    public Member(String loginId, String password, String userName, String phoneNumber,
                   GradeType gradeType, MemberStatus memberStatus, List<RoleType> roles, List<Duty> duties) {
-        this.loginId = loginId;
-        this.password = password;
-        this.name = name;
+        this.changeLoginId(loginId);
+        this.changePassword(password);
+        this.changeUserName(userName);
         this.phoneNumber = phoneNumber;
         this.gradeType = gradeType;
         this.memberStatus = memberStatus;
@@ -78,27 +63,8 @@ public class Member {
     }
 
     //==개발 로직==//
-    // 아이디 변경
-    public void changeId(Long id) {
-        this.id = id;
-    }
-
-    // 로그인 아이디 변경
-    public void changeLoginId(String loginId) {
-        this.loginId = loginId;
-    }
 
     //==비즈니스 로직 (setter 제거)==//
-
-    // 이름 변경
-    public void changeName(String name) {
-        this.name = name;
-    }
-
-    // 비밀번호 변경
-    public void changePassword(String password) {
-        this.password = password;
-    }
 
     // 전화번호 변경
     public void changePhoneNumber(String phoneNumber) {

@@ -48,7 +48,7 @@ public class OrderMenuController {
     public String menuListForm(Model model, HttpServletRequest request) {
 
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Customer customer = customerService.findByName(loginId);
+        Customer customer = customerService.findCustomerByLoginId(loginId);
         Member member = memberService.findMemberByLoginId(loginId);
 
         if(customer == null && member == null) {
@@ -78,7 +78,7 @@ public class OrderMenuController {
 
         Integer count = 0;
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Customer customer = customerService.findByName(loginId);
+        Customer customer = customerService.findCustomerByLoginId(loginId);
         if(customer == null) {
             request.getSession(false).invalidate();
             return "redirect:/";
@@ -107,12 +107,8 @@ public class OrderMenuController {
             return "menus/selectedMenuForm";
         }
 
-        String userName = (String) request.getSession().getAttribute(SessionConst.SECURITY_LOGIN);
-        if(userName == null) {
-            log.error("session username 사라짐");
-        }
-
-        Customer loginCustomer = customerService.findByName(userName);
+        String loginId = (String) request.getSession().getAttribute(SessionConst.SECURITY_LOGIN);
+        Customer loginCustomer = customerService.findCustomerByUserName(loginId);
         if(loginCustomer == null) {
             log.error("사용자를 찾을 수 없음");
         }
@@ -132,7 +128,7 @@ public class OrderMenuController {
     public String popularMenuForm(Model model, HttpServletRequest request) {
 
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Customer customer = customerService.findByName(loginId);
+        Customer customer = customerService.findCustomerByLoginId(loginId);
         Member member = memberService.findMemberByLoginId(loginId);
 
         if(customer == null && member == null) {
@@ -153,7 +149,7 @@ public class OrderMenuController {
     @GetMapping("/menus/new-arrivals")
     public String newArrivalsMenuForm(Model model, HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Customer customer = customerService.findByName(loginId);
+        Customer customer = customerService.findCustomerByLoginId(loginId);
         Member member = memberService.findMemberByLoginId(loginId);
 
         if(customer == null && member == null) {

@@ -20,16 +20,18 @@ public class JpaCustomerRepository implements CustomerRepository {
     private final EntityManager em;
 
     @Override
-    public Long save(Customer customer) {
-        if(customer.getId() == null) {
-            em.persist(customer);
-        }
-        return customer.getId();
+    public Long save(Customer user) {
+        em.persist(user);
+        return user.getId();
     }
 
     @Override
-    public Customer findById(Long id) {
-        return em.find(Customer.class, id);
+    public Customer findById(Long customerId) {
+        return em.createQuery("select c from Customer c where c.id=:customerId", Customer.class)
+                .setParameter("customerId", customerId)
+                .getResultList()
+                .stream().findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -39,15 +41,25 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public Customer findByName(String name) {
-        return em.createQuery("select c from Customer c where c.name=:name", Customer.class)
-                .setParameter("name", name)
-                .getResultList().stream()
-                .findFirst().orElse(null);
+    public Customer findByLoginId(String loginId) {
+        return em.createQuery("select c from Customer c where c.loginId=:loginId", Customer.class)
+                .setParameter("loginId", loginId)
+                .getResultList()
+                .stream().findFirst()
+                .orElse(null);
     }
 
     @Override
-    public Customer findByTableNumber(int tableNumber) {
+    public Customer findByUserName(String userName) {
+        return em.createQuery("select c from Customer c where c.userName=:userName", Customer.class)
+                .setParameter("userName", userName)
+                .getResultList()
+                .stream().findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public Customer findByTableNumber(String tableNumber) {
         return em.createQuery("select c from Customer c where c.tableNumber=:tableNumber", Customer.class)
                 .setParameter("tableNumber", tableNumber)
                 .getResultList()
@@ -56,12 +68,17 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public void changeName(Long customerId, String name) {
-        em.find(Customer.class, customerId).changeName(name);
+    public void changeUserName(Long userId, String userName) {
+        em.find(Customer.class, userId).changeUserName(userName);
     }
 
     @Override
-    public void changeTableNumber(Long customerId, int tableNumber) {
+    public void changePassword(Long userId, String password) {
+        em.find(Customer.class, userId).changePassword(password);
+    }
+
+    @Override
+    public void changeTableNumber(Long customerId, String tableNumber) {
         em.find(Customer.class, customerId).changeTableNumber(tableNumber);
     }
 
@@ -76,7 +93,7 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public void removeCustomer(Customer customer) {
-        em.remove(customer);
+    public void removeCustomer(Long userId) {
+        em.remove(em.find(Customer.class, userId));
     }
 }
