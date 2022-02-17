@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -50,6 +47,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.UNDEFINED;
 
+    // 직무 형태 삭제 예정, @Embeddable로 변경 예정
     @ManyToMany(mappedBy="members", cascade = CascadeType.ALL)
     private List<Duty> duties = new ArrayList<>();
 
@@ -80,16 +78,17 @@ public class Member {
     }
 
     //==개발 로직==//
+    // 아이디 변경
     public void changeId(Long id) {
         this.id = id;
     }
 
-    //==비즈니스 로직 (setter 제거)==//
-
-    // 아이디 변경
+    // 로그인 아이디 변경
     public void changeLoginId(String loginId) {
         this.loginId = loginId;
     }
+
+    //==비즈니스 로직 (setter 제거)==//
 
     // 이름 변경
     public void changeName(String name) {

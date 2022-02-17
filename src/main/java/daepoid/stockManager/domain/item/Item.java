@@ -107,6 +107,6 @@ public class Item {
 
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
-        ingredient.changeItem(this);
+        ingredient.changeItem(this); // 이 부분이 필요한가?
     }
 }

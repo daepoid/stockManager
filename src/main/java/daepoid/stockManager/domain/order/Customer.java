@@ -73,5 +73,6 @@ public class Customer {
 
     public void changeCart(Cart cart) {
         this.cart = cart;
+        cart.changeCustomer(this);
     }
 }

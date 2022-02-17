@@ -84,6 +84,9 @@ public class Menu {
 
     public void changeFoods(Set<Recipe> foods) {
         this.foods = foods;
+        for (Recipe food : foods) {
+            food.getMenus().add(this);
+        }
     }
 
     public void changeNumberOfFood(Map<Long, Integer> numberOfFoods) {
