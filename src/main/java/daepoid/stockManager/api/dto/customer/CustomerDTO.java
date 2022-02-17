@@ -1,5 +1,6 @@
 package daepoid.stockManager.api.dto.customer;
 
+import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
 import lombok.Data;
@@ -15,7 +16,7 @@ public class CustomerDTO {
 
     private String tableNumber;
 
-    private Long cartId;
+    private Cart cart;
 
     private List<Order> orders;
 
@@ -23,7 +24,7 @@ public class CustomerDTO {
         this.customerId = customer.getId();
         this.userName = customer.getUserName();
         this.tableNumber = customer.getTableNumber();
-        this.cartId = customer.getCart().getId();
+        this.cart = customer.getCart();
         this.orders = customer.getOrders();
     }
 }

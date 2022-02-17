@@ -1,56 +1,45 @@
 package daepoid.stockManager.domain.order;
 
-import daepoid.stockManager.controller.dto.order.CustomerOrderMenuDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static javax.persistence.FetchType.*;
-
-@Entity
+@Embeddable
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 public class Cart {
 
-    @Id
-    @GeneratedValue
-    @Column(name="cart_id")
-    private Long id;
-
     @ElementCollection
-    @JoinTable(
-            name="cart_number_of_menu",
-            joinColumns=@JoinColumn(name="cart_id"))
-    @MapKeyColumn(name="menu_id")
-    @Column(name="number")
+    @CollectionTable(
+            name = "cart",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            foreignKey = @ForeignKey(name = "customer_cart_fk")
+    )
     private Map<Long, Integer> numberOfMenus = new HashMap<>();
-
-    @OneToOne(mappedBy="cart", fetch = LAZY, cascade = CascadeType.ALL)
-    private Customer customer;
-
-    @Builder
-    public Cart(Map<Long, Integer> numberOfMenus, Customer customer) {
-        this.numberOfMenus = numberOfMenus;
-        this.customer = customer;
-    }
 
     public void changeNumberOfMenus(Map<Long, Integer> numberOfMenus) {
         this.numberOfMenus = numberOfMenus;
     }
 
-    public void changeCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public void addMenu(Long menuId, Integer count) {
+    public void addCart(Long menuId, Integer count) {
         this.numberOfMenus.put(menuId, count);
     }
 
-    public void addMenus(Map<Long, Integer> menus) {
+    public void addCart(Map<Long, Integer> menus) {
         this.numberOfMenus.putAll(menus);
+    }
+
+    public void removeCart(Long menuId, Integer count) {
+        this.numberOfMenus.remove(menuId, count);
+    }
+
+    public void removeCart(Long menuId) {
+        this.numberOfMenus.remove(menuId);
     }
 
     public void clearCart() {

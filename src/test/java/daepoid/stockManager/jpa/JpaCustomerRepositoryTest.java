@@ -3,10 +3,7 @@ package daepoid.stockManager.jpa;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.repository.CustomerRepository;
-import daepoid.stockManager.repository.jpa.JpaCartRepository;
 import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

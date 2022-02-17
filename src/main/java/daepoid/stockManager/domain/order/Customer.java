@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -21,15 +23,12 @@ public class Customer extends StoreUser {
     @Column(unique=true)
     private String tableNumber;
 
-    @NotNull
-    @OneToOne(fetch=FetchType.LAZY, orphanRemoval = true)
-    private Cart cart;
-
     @OneToMany(mappedBy="customer", cascade=CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
+    @NotNull
     @Embedded
-    private ShoppingCart shoppingCart;
+    private Cart cart;
 
     @Builder
     public Customer(String loginId, String password, String userName,
@@ -54,8 +53,14 @@ public class Customer extends StoreUser {
         this.orders.add(order);
     }
 
-    public void changeCart(Cart cart) {
-        this.cart = cart;
-        cart.changeCustomer(this);
+    public void changeCart(Map<Long, Integer> numberOfMenus) {
+        this.cart.changeNumberOfMenus(numberOfMenus);
+    }
+
+    public void addCart(Long menuId, Integer count) {
+        if(cart == null) {
+            cart = new Cart(new HashMap<>());
+        }
+        this.cart.addCart(menuId, count);
     }
 }

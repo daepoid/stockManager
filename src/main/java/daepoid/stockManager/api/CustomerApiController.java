@@ -5,9 +5,10 @@ import daepoid.stockManager.api.dto.customer.*;
 import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.service.CartService;
 import daepoid.stockManager.service.CustomerService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,6 @@ import java.util.stream.Collectors;
 public class CustomerApiController {
 
     private final CustomerService customerService;
-    private final CartService cartService;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -54,8 +54,7 @@ public class CustomerApiController {
 
         Cart cart = requestDTO.getCart();
         if(cart == null) {
-            cart = Cart.builder().numberOfMenus(new HashMap<>()).build();
-            Long cartId = cartService.createCart(cart);
+            cart = new Cart(new HashMap<>());
         }
 
         List<Order> orders = requestDTO.getOrders();
@@ -73,7 +72,7 @@ public class CustomerApiController {
 
         Long customerId = customerService.saveCustomer(customer);
 
-        return new CreateCustomerResponseDTO(customerId, cart.getId());
+        return new CreateCustomerResponseDTO(customerId);
     }
 
     @GetMapping("/{customerId}")
@@ -84,7 +83,7 @@ public class CustomerApiController {
     /**
      * 수정 API
      */
-    @PutMapping("/{customerId}")
+    @PatchMapping("/{customerId}")
     public UpdateCustomerResponseDTO updateMemberV2(@PathVariable("customerId") Long customerId,
                                                     @RequestBody @Valid UpdateCustomerRequestDTO requestDTO) {
 
@@ -94,6 +93,10 @@ public class CustomerApiController {
 
         if(requestDTO.getTableNumber() != null) {
            customerService.changeTableNumber(customerId, requestDTO.getTableNumber());
+        }
+
+        if(requestDTO.getCart() != null) {
+            customerService.changeCart(customerId, requestDTO.getCart().getNumberOfMenus());
         }
 
         if(requestDTO.getOrders() != null) {
@@ -113,6 +116,6 @@ public class CustomerApiController {
 
         Cart cart = customer.getCart();
         customerService.removeCustomer(customerId);
-        return new DeleteCustomerResponseDTO(customerId, cart.getId());
+        return new DeleteCustomerResponseDTO(customerId);
     }
 }

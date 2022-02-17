@@ -29,7 +29,6 @@ public class OrderManagementController {
     private final OrderService orderService;
     private final CustomerService customerService;
     private final MenuService menuService;
-    private final CartService cartService;
 
     @GetMapping("")
     public String orderList(Model model,
@@ -71,10 +70,7 @@ public class OrderManagementController {
             return "order-management/createOrderForm";
         }
 
-        Long cartId = customer.getCart().getId();
-
-        cartService.addMenu(cartId, createOrderDTO.getMenuId(), createOrderDTO.getCount());
-
+        customer.addCart(createOrderDTO.getMenuId(), createOrderDTO.getCount());
         orderService.orders(createOrderDTO.getCustomerId());
 //        orderService.order(createOrderDTO.getCustomerId(), createOrderDTO.getMenuId(), createOrderDTO.getCount(), LocalDateTime.now());
         return "redirect:/order-management";

@@ -6,6 +6,7 @@ import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface CustomerRepository {
@@ -30,6 +31,7 @@ public interface CustomerRepository {
     void changeTableNumber(Long customerId, String tableNumber);
     void changeOrders(Long customerId, List<Order> orders);
     void addOrder(Long customerId, Order order);
+    void changeCart(Long customerId, Map<Long, Integer> numberOfMenus);
 
     //==삭제 로직==//
     void removeCustomer(Long userId);

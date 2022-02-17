@@ -7,10 +7,7 @@ public class DeleteCustomerResponseDTO {
 
     private Long customerId;
 
-    private Long cartId;
-
-    public DeleteCustomerResponseDTO(Long customerId, Long cartId) {
+    public DeleteCustomerResponseDTO(Long customerId) {
         this.customerId = customerId;
-        this.cartId = cartId;
     }
 }

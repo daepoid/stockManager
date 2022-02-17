@@ -2,7 +2,6 @@ package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.controller.dto.recipe.SelectedMenuDTO;
@@ -27,7 +26,6 @@ public class OrderMenuController {
     private final CustomerService customerService;
     private final MemberService memberService;
     private final MenuService menuService;
-    private final CartService cartService;
 
     /*
     1. 메뉴 리스트가 나열되어 보임
@@ -119,8 +117,7 @@ public class OrderMenuController {
 
         //==cartService 사용==//
         // cart는 customer가 생성되면서 동시에 같이 생성되어야 한다.
-        Cart cart = loginCustomer.getCart();
-        cartService.addMenu(cart.getId(), menuId, selectedMenuDTO.getCount());
+        loginCustomer.addCart(menuId, selectedMenuDTO.getCount());
         return isCreated ? "redirect:/customers/" + loginCustomer.getId() + "/order" : "redirect:/menus";
     }
 

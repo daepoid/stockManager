@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -64,6 +65,11 @@ public class CustomerService {
     @Transactional
     public void addOrder(Long customerId, Order order) {
         customerRepository.addOrder(customerId, order);
+    }
+
+    @Transactional
+    public void changeCart(Long customerId, Map<Long, Integer> numberOfMenus) {
+        customerRepository.changeCart(customerId, numberOfMenus);
     }
 
     //==삭제 로직==//

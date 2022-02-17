@@ -5,7 +5,6 @@ import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.controller.dto.order.CreateCustomerDTO;
 import daepoid.stockManager.controller.dto.order.EditCustomerDTO;
-import daepoid.stockManager.service.CartService;
 import daepoid.stockManager.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @Slf4j
 @Controller
@@ -26,7 +26,6 @@ public class CustomerManagementController {
 
     private final CustomerService customerService;
     private final PasswordEncoder passwordEncoder;
-    private final CartService cartService;
 
     @GetMapping("")
     public String customerListForm(Model model, HttpServletRequest request) {
@@ -60,13 +59,11 @@ public class CustomerManagementController {
             return "customer-management/createCustomerForm";
         }
 
-        Long cartId = cartService.createCart(Cart.builder().build());
-
         Customer customer = Customer.builder()
                 .userName(createCustomerDTO.getUserName())
                 .password(passwordEncoder.encode(createCustomerDTO.getPassword()))
                 .tableNumber(createCustomerDTO.getTableNumber())
-                .cart(cartService.findCart(cartId))
+                .cart(new Cart(new HashMap<>()))
                 .build();
 
         customerService.saveCustomer(customer);

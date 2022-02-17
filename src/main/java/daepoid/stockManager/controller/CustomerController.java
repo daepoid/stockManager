@@ -1,13 +1,11 @@
 package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.controller.dto.order.CustomerOrderMenuDTO;
-import daepoid.stockManager.service.CartService;
 import daepoid.stockManager.service.CustomerService;
 import daepoid.stockManager.service.MenuService;
 import daepoid.stockManager.service.OrderService;
@@ -30,7 +28,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CustomerController {
 
-    private final CartService cartService;
     private final CustomerService customerService;
     private final MenuService menuService;
     private final OrderService orderService;
@@ -124,8 +121,8 @@ public class CustomerController {
                          @PathVariable("menuId") Long menuId,
                          RedirectAttributes redirectAttributes) {
 
-        Cart cart = customerService.findCustomer(customerId).getCart();
-        cartService.removeMenu(cart.getId(), menuId);
+        Customer customer = customerService.findCustomer(customerId);
+        customer.getCart().removeCart(menuId);
 
         redirectAttributes.addAttribute("customerId", customerId);
         return "redirect:/customers/{customerId}/order";

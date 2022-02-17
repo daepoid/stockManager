@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -85,6 +86,11 @@ public class JpaCustomerRepository implements CustomerRepository {
     @Override
     public void changeOrders(Long customerId, List<Order> orders) {
         em.find(Customer.class, customerId).changeOrders(orders);
+    }
+
+    @Override
+    public void changeCart(Long customerId, Map<Long, Integer> numberOfMenus) {
+        em.find(Customer.class, customerId).changeCart(numberOfMenus);
     }
 
     @Override
