@@ -4,8 +4,8 @@ import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
-import daepoid.stockManager.dto.member.EditMemberDTO;
-import daepoid.stockManager.dto.member.JoinMemberDTO;
+import daepoid.stockManager.controller.dto.member.EditMemberDTO;
+import daepoid.stockManager.controller.dto.member.JoinMemberDTO;
 import daepoid.stockManager.service.MemberService;
 
 import lombok.RequiredArgsConstructor;

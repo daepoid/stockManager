@@ -98,4 +98,9 @@ public class MemoryDutyRepository implements DutyRepository {
     public void changeIncentive(Long dutyId, double incentive) {
         store.get(dutyId).changeDutyIncentive(incentive);
     }
+
+    @Override
+    public void removeDuty(Long dutyId) {
+        store.remove(dutyId);
+    }
 }

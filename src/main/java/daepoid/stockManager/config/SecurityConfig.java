@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 // .antMatchers("/login", "/signUp")
                 .antMatchers("/members/new/**").permitAll()
+                .antMatchers("/api/**").permitAll() // 임시로 api는 모두 열어준다.
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/members/**", "/duties/**", "/customer-management/**", "/menu-management/**", "/order-management/**").hasAnyRole("CEO", "MANAGER")

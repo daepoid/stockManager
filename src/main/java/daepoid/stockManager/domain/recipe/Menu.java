@@ -33,8 +33,8 @@ public class Menu {
     )
     private Set<Recipe> foods = new HashSet<>();
 
-    @NotNull
-    private int price;
+//    @NotNull
+    private int price = 0;
 
     @ElementCollection
     @JoinTable(
@@ -50,18 +50,23 @@ public class Menu {
     private LocalDateTime addedDate;
 
     // 주문이 많이 된 음식을 찾기 위해
-    @NotNull
+//    @NotNull
     private int salesCount = 0;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private MenuStatus menuStatus = MenuStatus.ORDERABLE;
+
     @Builder
-    public Menu(String name, Set<Recipe> foods, int price,
-                Map<Long, Integer> numberOfFoods, LocalDateTime addedDate, int salesCount) {
+    public Menu(String name, Set<Recipe> foods, int price, Map<Long, Integer> numberOfFoods,
+                LocalDateTime addedDate, int salesCount, MenuStatus menuStatus) {
         this.name = name;
         this.price = price;
         this.foods = foods;
         this.numberOfFoods = numberOfFoods;
         this.addedDate = addedDate;
         this.salesCount = salesCount;
+        this.menuStatus = menuStatus;
     }
 
     public Integer getPrice() {
@@ -91,6 +96,10 @@ public class Menu {
 
     public void changeSalesCount(int salesCount) {
         this.salesCount = salesCount;
+    }
+
+    public void changeMenuStatus(MenuStatus menuStatus) {
+        this.menuStatus = menuStatus;
     }
 
     public void updatePrice() {

@@ -112,4 +112,9 @@ public class JpaDutyRepository implements DutyRepository {
         Duty duty = em.find(Duty.class, dutyId);
         duty.changeDutyIncentive(incentive);
     }
+
+    @Override
+    public void removeDuty(Long dutyId) {
+        em.remove(em.find(Duty.class, dutyId));
+    }
 }

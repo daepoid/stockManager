@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
@@ -80,6 +81,18 @@ public class JpaMenuRepository implements MenuRepository {
     }
 
     @Override
+    public void changeSalesCount(Long menuId, int salesCount) {
+        Menu menu = em.find(Menu.class, menuId);
+        menu.changeSalesCount(salesCount);
+    }
+
+    @Override
+    public void changeMenuStatus(Long menuId, MenuStatus menuStatus) {
+        Menu menu = em.find(Menu.class, menuId);
+        menu.changeMenuStatus(menuStatus);
+    }
+
+    @Override
     public void addFood(Long menuId, Recipe food, Integer numberOfFoods) {
         em.find(Menu.class, menuId).addFood(food, numberOfFoods);
     }
@@ -97,5 +110,10 @@ public class JpaMenuRepository implements MenuRepository {
     @Override
     public void removeFood(Long menuId, Recipe food) {
         em.find(Menu.class, menuId).removeFood(food);
+    }
+
+    @Override
+    public void removeMenu(Long menuId) {
+        em.remove(em.find(Menu.class, menuId));
     }
 }

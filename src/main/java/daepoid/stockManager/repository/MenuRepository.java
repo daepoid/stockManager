@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 
 import java.util.List;
@@ -26,7 +27,8 @@ public interface MenuRepository {
     void changeFoods(Long menuId, Set<Recipe> foods);
     void changeNumberOfFoods(Long menuId, Map<Long, Integer> numberOfFoods);
     void changeFoodInfo(Long menuId, Set<Recipe> foods, Map<Long, Integer> numberOfFoods);
-
+    void changeSalesCount(Long menuId, int salesCount);
+    void changeMenuStatus(Long menuId, MenuStatus menuStatus);
 
     void addFood(Long menuId, Recipe food, Integer numberOfFoods);
 
@@ -35,4 +37,5 @@ public interface MenuRepository {
 
     //==삭제 로직==//
     void removeFood(Long menuId, Recipe food);
+    void removeMenu(Long menuId);
 }

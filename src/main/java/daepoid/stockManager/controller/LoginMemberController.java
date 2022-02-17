@@ -2,8 +2,8 @@ package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.dto.member.EditMyInfoDTO;
-import daepoid.stockManager.dto.member.EditMyPasswordDTO;
+import daepoid.stockManager.controller.dto.member.EditMyInfoDTO;
+import daepoid.stockManager.controller.dto.member.EditMyPasswordDTO;
 import daepoid.stockManager.service.LoginService;
 import daepoid.stockManager.service.MemberService;
 import lombok.RequiredArgsConstructor;

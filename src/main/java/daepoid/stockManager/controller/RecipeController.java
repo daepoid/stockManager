@@ -1,8 +1,8 @@
 package daepoid.stockManager.controller;
 
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.dto.recipe.CreateRecipeDTO;
-import daepoid.stockManager.dto.recipe.EditRecipeDTO;
+import daepoid.stockManager.controller.dto.recipe.CreateRecipeDTO;
+import daepoid.stockManager.controller.dto.recipe.EditRecipeDTO;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.RecipeService;
 

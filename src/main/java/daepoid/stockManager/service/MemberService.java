@@ -68,7 +68,6 @@ public class MemberService {
     }
 
     //==수정 로직==//
-
     @Transactional
     public void changeName(Long memberId, String name) {
         memberRepository.changeName(memberId, name);

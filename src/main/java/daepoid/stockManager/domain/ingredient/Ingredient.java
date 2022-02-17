@@ -74,13 +74,18 @@ public class Ingredient {
 
     //==조회 로직==//
     public String getName() {
-        this.name = item.getName();
-        return name;
+        updateName();
+        return this.name;
     }
 
     public double getCost() {
         updateCost();
         return this.cost;
+    }
+
+    //== item name으로 업데이트 ==//
+    public void updateName() {
+        this.name = item.getName();
     }
 
     //==portion price 업데이트==//

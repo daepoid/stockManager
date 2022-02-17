@@ -30,4 +30,5 @@ public interface DutyRepository {
     void changeIncentive(Long dutyId, double incentive);
 
     //==삭제 로직==//
+    void removeDuty(Long dutyId);
 }

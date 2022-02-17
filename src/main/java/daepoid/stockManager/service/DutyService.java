@@ -88,4 +88,9 @@ public class DutyService {
 
     //==삭제 로직==//
 
+    @Transactional
+    public void removeDuty(Long dutyId) {
+        dutyRepository.removeDuty(dutyId);
+    }
+
 }

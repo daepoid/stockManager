@@ -1,6 +1,7 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaMenuRepository;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +72,16 @@ public class MenuService {
     }
 
     @Transactional
+    public void changeSalesCount(Long menuId, int salesCount) {
+        menuRepository.changeSalesCount(menuId, salesCount);
+    }
+
+    @Transactional
+    public void changeMenuStatus(Long menuId, MenuStatus menuStatus) {
+        menuRepository.changeMenuStatus(menuId, menuStatus);
+    }
+
+    @Transactional
     public void addFood(Long menuId, Recipe food, Integer numberOfFoods) {
         menuRepository.addFood(menuId, food, numberOfFoods);
     }
@@ -89,6 +100,11 @@ public class MenuService {
     @Transactional
     public void removeFood(Long menuId, Recipe food) {
         menuRepository.removeFood(menuId, food);
+    }
+
+    @Transactional
+    public void removeMenu(Long menuId) {
+        menuRepository.removeMenu(menuId);
     }
 
 }

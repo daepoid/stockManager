@@ -6,7 +6,7 @@ import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.dto.order.CustomerOrderMenuDTO;
+import daepoid.stockManager.controller.dto.order.CustomerOrderMenuDTO;
 import daepoid.stockManager.service.CartService;
 import daepoid.stockManager.service.CustomerService;
 import daepoid.stockManager.service.MenuService;

@@ -2,9 +2,9 @@ package daepoid.stockManager.controller.management;
 
 import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.dto.recipe.AddRecipeMenuDTO;
-import daepoid.stockManager.dto.recipe.CreateMenuDTO;
-import daepoid.stockManager.dto.recipe.EditMenuDTO;
+import daepoid.stockManager.controller.dto.recipe.AddRecipeMenuDTO;
+import daepoid.stockManager.controller.dto.recipe.CreateMenuDTO;
+import daepoid.stockManager.controller.dto.recipe.EditMenuDTO;
 import daepoid.stockManager.service.MenuService;
 import daepoid.stockManager.service.RecipeService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.order.Cart;
+import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.recipe.Menu;
 
 import java.util.List;
@@ -13,6 +14,10 @@ public interface CartRepository {
     Cart findById(Long cartId);
 
     List<Cart> findAll();
+
+    void changeNumberOfMenus(Long cartId, Map<Long, Integer> numberOfMenus);
+
+    void changeCustomer(Long cartId, Customer customer);
 
     void addMenu(Long cartId, Long menuId, int count);
 

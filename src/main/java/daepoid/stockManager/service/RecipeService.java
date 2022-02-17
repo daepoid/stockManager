@@ -127,4 +127,9 @@ public class RecipeService {
     }
 
     //==삭제 로직==//
+
+    @Transactional
+    public void removeRecipe(Recipe recipe) {
+        recipeRepository.removeRecipe(recipe);
+    }
 }

@@ -5,7 +5,7 @@ import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.dto.recipe.SelectedMenuDTO;
+import daepoid.stockManager.controller.dto.recipe.SelectedMenuDTO;
 import daepoid.stockManager.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

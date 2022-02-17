@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.order.Cart;
+import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,18 @@ public class JpaCartRepository implements CartRepository {
     public List<Cart> findAll() {
         return em.createQuery("select c from Cart c", Cart.class)
                 .getResultList();
+    }
+
+    @Override
+    public void changeNumberOfMenus(Long cartId, Map<Long, Integer> numberOfMenus) {
+        Cart cart = em.find(Cart.class, cartId);
+        cart.changeNumberOfMenus(numberOfMenus);
+    }
+
+    @Override
+    public void changeCustomer(Long cartId, Customer customer) {
+        Cart cart = em.find(Cart.class, cartId);
+        cart.changeCustomer(customer);
     }
 
     @Override

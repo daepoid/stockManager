@@ -36,7 +36,7 @@ public class Customer {
     private int tableNumber;
 
     @NotNull
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.LAZY, orphanRemoval = true)
     private Cart cart;
 
     @OneToMany(mappedBy="customer", cascade=CascadeType.ALL)

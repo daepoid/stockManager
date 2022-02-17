@@ -1,6 +1,7 @@
 package daepoid.stockManager.testData;
 
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.jni.Local;
@@ -24,6 +25,7 @@ public class TestMenuDataInit {
                 .price(0)
                 .addedDate(now)
                 .salesCount(0)
+                .menuStatus(MenuStatus.ORDERABLE)
                 .build());
 
         menuService.saveMenu(Menu.builder()
@@ -31,6 +33,7 @@ public class TestMenuDataInit {
                 .price(0)
                 .addedDate(now)
                 .salesCount(0)
+                .menuStatus(MenuStatus.ORDERABLE)
                 .build());
 
         menuService.saveMenu(Menu.builder()
@@ -38,6 +41,7 @@ public class TestMenuDataInit {
                 .price(0)
                 .addedDate(now)
                 .salesCount(0)
+                .menuStatus(MenuStatus.ORDERABLE)
                 .build());
     }
 }

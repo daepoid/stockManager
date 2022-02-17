@@ -1,10 +1,13 @@
 package daepoid.stockManager.domain.order;
 
+import daepoid.stockManager.controller.dto.order.CustomerOrderMenuDTO;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import static javax.persistence.FetchType.*;
 
 @Entity
 @Getter
@@ -25,12 +28,20 @@ public class Cart {
     @Column(name="number")
     private Map<Long, Integer> numberOfMenus = new HashMap<>();
 
-    @OneToOne(mappedBy="cart", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy="cart", fetch = LAZY, cascade = CascadeType.ALL)
     private Customer customer;
 
     @Builder
     public Cart(Map<Long, Integer> numberOfMenus, Customer customer) {
         this.numberOfMenus = numberOfMenus;
+        this.customer = customer;
+    }
+
+    public void changeNumberOfMenus(Map<Long, Integer> numberOfMenus) {
+        this.numberOfMenus = numberOfMenus;
+    }
+
+    public void changeCustomer(Customer customer) {
         this.customer = customer;
     }
 
