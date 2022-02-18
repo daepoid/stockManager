@@ -1,7 +1,9 @@
 package daepoid.stockManager.jpa;
 
+import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
 import org.junit.jupiter.api.Test;
@@ -30,11 +32,6 @@ class JpaCustomerRepositoryTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    private Cart createCart() {
-        Map<Long, Integer> numberOfMenus = new HashMap<>();
-        return Cart.builder().numberOfMenus(numberOfMenus).build();
-    }
-
     private Menu createMenu() {
         String menuName = "menu name";
         Set<Recipe> menuFoods = new HashSet<>();
@@ -42,6 +39,7 @@ class JpaCustomerRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 123;
+        MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
 
         return Menu.builder()
                 .name(menuName)
@@ -50,6 +48,7 @@ class JpaCustomerRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
+                .menuStatus(menuMenuStatus)
                 .build();
     }
 
@@ -80,19 +79,19 @@ class JpaCustomerRepositoryTest {
     @Test
     public void save_성공() throws Exception {
         // given
-        Cart cart = createCart();
-        em.persist(cart);
 
-        String userName = "customer";
+        String loginId = "customer";
         String password = "123";
+        String userName = "customer";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
+                .loginId(loginId)
                 .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -107,19 +106,18 @@ class JpaCustomerRepositoryTest {
     @Test
     public void findById() throws Exception {
         // given
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
         String password = "123";
+        String userName = "customer";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
+                .loginId(loginId)
                 .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -135,35 +133,33 @@ class JpaCustomerRepositoryTest {
     @Test
     public void findAll() throws Exception {
         // given
-        Cart cart1 = Cart.builder().build();
-        em.persist(cart1);
-
+        String loginId1 = "customer1";
+        String password1 = "1231";
         String userName1 = "customer1";
-        String password1 = "123";
         String tableNumber1 = "1231";
         List<Order> orders1 = new ArrayList<>();
 
         Customer customer1 = Customer.builder()
+                .loginId(loginId1)
                 .userName(userName1)
                 .password(passwordEncoder.encode(password1))
                 .tableNumber(tableNumber1)
-                .cart(cart1)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders1)
                 .build();
 
-        Cart cart2 = Cart.builder().build();
-        em.persist(cart2);
-
+        String loginId2 = "customer2";
+        String password2 = "1232";
         String userName2 = "customer2";
-        String password2 = "123";
         String tableNumber2 = "1232";
         List<Order> orders2 = new ArrayList<>();
 
         Customer customer2 = Customer.builder()
+                .loginId(loginId2)
                 .userName(userName2)
                 .password(passwordEncoder.encode(password2))
                 .tableNumber(tableNumber2)
-                .cart(cart2)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders2)
                 .build();
 
@@ -193,19 +189,18 @@ class JpaCustomerRepositoryTest {
     @Test
     public void findByName() throws Exception {
         // given
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
         String password = "123";
+        String userName = "customer";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
+                .loginId(loginId)
                 .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -218,19 +213,18 @@ class JpaCustomerRepositoryTest {
 
     @Test
     void findByTableNumber() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
         String password = "123";
+        String userName = "customer";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
+                .loginId(loginId)
                 .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -243,19 +237,18 @@ class JpaCustomerRepositoryTest {
     @Test
     public void changeName() throws Exception {
         // given
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
         String password = "123";
+        String userName = "customer";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
+                .loginId(loginId)
                 .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -273,19 +266,18 @@ class JpaCustomerRepositoryTest {
     @Test
     public void changeTableNumber() throws Exception {
         // given
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
         String password = "123";
+        String userName = "customer";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
+                .loginId(loginId)
                 .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -302,19 +294,18 @@ class JpaCustomerRepositoryTest {
     @Test
     public void changeOrders() throws Exception {
         // given
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
         String password = "123";
+        String userName = "customer";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
+                .loginId(loginId)
                 .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -348,19 +339,18 @@ class JpaCustomerRepositoryTest {
     @Test
     public void addOrder() throws Exception {
         // given
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
         String password = "123";
+        String userName = "customer";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
+                .loginId(loginId)
                 .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -397,19 +387,18 @@ class JpaCustomerRepositoryTest {
     @Test
     public void removeCustomer() throws Exception {
         // given
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
         String password = "123";
+        String userName = "customer";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
+                .loginId(loginId)
                 .userName(userName)
                 .password(passwordEncoder.encode(password))
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 

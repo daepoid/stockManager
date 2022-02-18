@@ -37,13 +37,14 @@ public class JpaOrderRepository implements OrderRepository {
 
     @Override
     public List<Order> findAll() {
-        return em.createQuery("select o from Order o", Order.class).getResultList();
+        return em.createQuery("select o from Order o", Order.class)
+                .getResultList();
     }
 
     @Override
-    public List<Order> findByCustomer(Customer customer) {
-        return em.createQuery("select o from Order o where o.customer=:customer", Order.class)
-                .setParameter("customer", customer)
+    public List<Order> findByCustomer(Long customerId) {
+        return em.createQuery("select o from Order o where o.customer.id=:customerId", Order.class)
+                .setParameter("customerId", customerId)
                 .getResultList();
     }
 

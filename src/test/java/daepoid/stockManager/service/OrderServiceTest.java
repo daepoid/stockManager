@@ -4,6 +4,7 @@ import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,7 @@ class OrderServiceTest {
         Map<Long, Integer> menuNumberOfFood = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 789;
+        MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
 
         menuFoods.add(recipe);
 
@@ -79,26 +81,22 @@ class OrderServiceTest {
                 .numberOfFoods(menuNumberOfFood)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
+                .menuStatus(menuMenuStatus)
                 .build();
     }
 
-    private Cart createCart(Menu menu) {
-        Map<Long, Integer> cartNumberOfMenus = new HashMap<>();
-        int cartOrderCount = 123;
-        cartNumberOfMenus.put(menu.getId(), cartOrderCount);
-        return Cart.builder().numberOfMenus(cartNumberOfMenus).build();
-    }
-
-    private Customer createCustomer(Cart customerCart) {
-        String customerName = "name";
+    private Customer createCustomer() {
+        String customerLoginId = "customer";
         String customerPassword = "123";
-        int customerTableNumber = 123;
+        String customerName = "name";
+        String customerTableNumber = "123";
         List<Order> customerOrders = new ArrayList<>();
         return Customer.builder()
-                .name(customerName)
+                .loginId(customerLoginId)
                 .password(passwordEncoder.encode(customerPassword))
+                .userName(customerName)
                 .tableNumber(customerTableNumber)
-                .cart(customerCart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(customerOrders)
                 .build();
     }
@@ -111,10 +109,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         LocalDateTime orderDateTime = LocalDateTime.now();
@@ -132,19 +127,17 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
+
+        // cart에 order 할 Menu 추가
+        int orderCount = 123;
+        customer.addCart(menu.getId(), orderCount);
 
         Long orderId = orderService.orders(customer.getId());
 
-        assertThat(orderService.findOrder(orderId).getCustomer().getId()).isEqualTo(customer.getId());
-
-        assertThat(orderService.findByCustomer(customer).stream()
-                .filter(o -> o.getId().equals(orderId))
-                .findFirst().orElse(null)).isNotNull();
+        assertThat(orderService.findByCustomer(customer.getId()).stream()
+                .anyMatch(o -> o.getId().equals(orderId))).isTrue();
     }
 
     @Test
@@ -155,10 +148,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         // 확인을 위해 빼 놓음
@@ -184,10 +174,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -223,10 +210,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -264,10 +248,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -307,10 +288,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -335,8 +313,8 @@ class OrderServiceTest {
 
         Long orderId = orderService.save(order);
 
-        assertThat(orderService.findByCustomer(customer).contains(order)).isTrue();
-        assertThat(orderService.findByCustomer(customer).stream()
+        assertThat(orderService.findByCustomer(customer.getId()).contains(order)).isTrue();
+        assertThat(orderService.findByCustomer(customer.getId()).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -349,10 +327,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -391,10 +366,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -433,10 +405,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -464,18 +433,17 @@ class OrderServiceTest {
         assertThat(orderService.findOrder(orderId)).isEqualTo(order);
         assertThat(orderService.findOrder(orderId).getCustomer().getId()).isEqualTo(customer.getId());
 
-        Cart newCart = createCart(menu);
-        em.persist(newCart);
-
-        String newCustomerName = "new customer name";
+        String newLoginId = "newCustomer";
         String newCustomerPassword = "456";
-        int newCustomerTableNumber = 456;
+        String newCustomerName = "new customer name";
+        String newCustomerTableNumber = "456";
         List<Order> newCustomerOrders = new ArrayList<>();
         Customer newCustomer = Customer.builder()
-                .name(newCustomerName)
+                .loginId(newLoginId)
                 .password(passwordEncoder.encode(newCustomerPassword))
+                .userName(newCustomerName)
                 .tableNumber(newCustomerTableNumber)
-                .cart(newCart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(newCustomerOrders)
                 .build();
         em.persist(newCustomer);
@@ -483,8 +451,8 @@ class OrderServiceTest {
 
         assertThat(order.getCustomer()).isEqualTo(newCustomer);
         assertThat(orderService.findOrder(orderId).getCustomer().getId()).isEqualTo(newCustomer.getId());
-        assertThat(orderService.findByCustomer(newCustomer).contains(order)).isTrue();
-        assertThat(orderService.findByCustomer(newCustomer).stream()
+        assertThat(orderService.findByCustomer(newCustomer.getId()).contains(order)).isTrue();
+        assertThat(orderService.findByCustomer(newCustomer.getId()).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -497,10 +465,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -552,10 +517,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -604,10 +566,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -649,10 +608,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -701,10 +657,7 @@ class OrderServiceTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();

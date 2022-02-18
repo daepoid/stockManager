@@ -4,6 +4,7 @@ import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaOrderRepository;
 
@@ -67,6 +68,7 @@ class JpaOrderRepositoryTest {
         Map<Long, Integer> menuNumberOfFood = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 789;
+        MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
 
         menuFoods.add(recipe);
 
@@ -80,26 +82,22 @@ class JpaOrderRepositoryTest {
                 .numberOfFoods(menuNumberOfFood)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
+                .menuStatus(menuMenuStatus)
                 .build();
     }
 
-    private Cart createCart(Menu menu) {
-        Map<Long, Integer> cartNumberOfMenus = new HashMap<>();
-        int cartOrderCount = 123;
-        cartNumberOfMenus.put(menu.getId(), cartOrderCount);
-        return Cart.builder().numberOfMenus(cartNumberOfMenus).build();
-    }
-
-    private Customer createCustomer(Cart customerCart) {
+    private Customer createCustomer() {
+        String loginId = "customer";
         String customerName = "name";
         String customerPassword = "123";
-        int customerTableNumber = 123;
+        String customerTableNumber = "123";
         List<Order> customerOrders = new ArrayList<>();
         return Customer.builder()
-                .name(customerName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(customerPassword))
+                .userName(customerName)
                 .tableNumber(customerTableNumber)
-                .cart(customerCart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(customerOrders)
                 .build();
     }
@@ -112,10 +110,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -152,10 +147,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -194,10 +186,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -237,10 +226,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -265,8 +251,8 @@ class JpaOrderRepositoryTest {
 
         Long orderId = orderRepository.save(order);
 
-        assertThat(orderRepository.findByCustomer(customer).contains(order)).isTrue();
-        assertThat(orderRepository.findByCustomer(customer).stream()
+        assertThat(orderRepository.findByCustomer(customer.getId()).contains(order)).isTrue();
+        assertThat(orderRepository.findByCustomer(customer.getId()).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -279,10 +265,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -321,10 +304,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -363,10 +343,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -391,23 +368,23 @@ class JpaOrderRepositoryTest {
 
         Long orderId = orderRepository.save(order);
 
-        assertThat(orderRepository.findByCustomer(customer).contains(order)).isTrue();
-        assertThat(orderRepository.findByCustomer(customer).stream()
+        assertThat(orderRepository.findByCustomer(customer.getId()).contains(order)).isTrue();
+        assertThat(orderRepository.findByCustomer(customer.getId()).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
 
-        String newCustomerName = "new customer name";
+        String newLoginId = "customer";
         String newCustomerPassword = "456";
-        int newCustomerTableNumber = 456;
-        Cart newCustomerCart = createCart(menu);
-        em.persist(newCustomerCart);
+        String newCustomerName = "new customer name";
+        String newCustomerTableNumber = "456";
 
         List<Order> newCustomerOrders = new ArrayList<>();
         Customer newCustomer = Customer.builder()
-                .name(newCustomerName)
+                .loginId(newLoginId)
                 .password(passwordEncoder.encode(newCustomerPassword))
+                .userName(newCustomerName)
                 .tableNumber(newCustomerTableNumber)
-                .cart(newCustomerCart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(newCustomerOrders)
                 .build();
         em.persist(newCustomer);
@@ -418,8 +395,8 @@ class JpaOrderRepositoryTest {
 
         assertThat(order.getCustomer()).isEqualTo(newCustomer);
         assertThat(orderRepository.findById(orderId).getCustomer()).isEqualTo(newCustomer);
-        assertThat(orderRepository.findByCustomer(newCustomer).contains(order)).isTrue();
-        assertThat(orderRepository.findByCustomer(newCustomer).stream()
+        assertThat(orderRepository.findByCustomer(newCustomer.getId()).contains(order)).isTrue();
+        assertThat(orderRepository.findByCustomer(newCustomer.getId()).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -432,10 +409,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -488,10 +462,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -542,10 +513,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -585,10 +553,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();
@@ -637,10 +602,7 @@ class JpaOrderRepositoryTest {
         Menu menu = createMenu(recipe);
         em.persist(menu);
 
-        Cart cart = createCart(menu);
-        em.persist(cart);
-
-        Customer customer = createCustomer(cart);
+        Customer customer = createCustomer();
         em.persist(customer);
 
         List<OrderMenu> orderMenus = new ArrayList<>();

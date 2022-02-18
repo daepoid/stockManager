@@ -96,7 +96,7 @@ public class OrderService {
                 .orderDateTime(orderDateTime)
                 .orderStatus(OrderStatus.ORDERED)
                 .build();
-        orderRepository.save(order);
+        Long orderId = orderRepository.save(order);
 
         // 주문 환료 후 장바구니 비우기
         cart.clearCart();
@@ -106,7 +106,7 @@ public class OrderService {
             menuRepository.addSalesCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
         }
 
-        return order.getId();
+        return orderId;
     }
 
     @Transactional
@@ -135,8 +135,8 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public List<Order> findByCustomer(Customer customer) {
-        return orderRepository.findByCustomer(customer);
+    public List<Order> findByCustomer(Long customerId) {
+        return orderRepository.findByCustomer(customerId);
     }
 
     public List<Order> findByOrderMenu(OrderMenu orderMenu) {

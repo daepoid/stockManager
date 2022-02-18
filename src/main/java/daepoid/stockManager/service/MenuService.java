@@ -46,6 +46,18 @@ public class MenuService {
         return menuRepository.findByRecipe(recipe);
     }
 
+    public List<Menu> findByOverSalesCount(int salesCount) {
+        return menuRepository.findByOverSalesCount(salesCount);
+    }
+
+    public List<Menu> findByUnderSalesCount(int salesCount) {
+        return menuRepository.findByUnderSalesCount(salesCount);
+    }
+
+    public List<Menu> findByMenuStatus(MenuStatus menuStatus) {
+        return menuRepository.findByMenuStatus(menuStatus);
+    }
+
     public Integer getNumberOfFoodByRecipeId(Long menuId, Long recipeId) {
         return menuRepository.getNumberOfFoodByRecipeId(menuId, recipeId);
     }

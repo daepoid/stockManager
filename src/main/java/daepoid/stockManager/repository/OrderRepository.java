@@ -17,7 +17,7 @@ public interface OrderRepository {
     Order findById(Long id);
     List<Order> findAll();
 
-    List<Order> findByCustomer(Customer customer);
+    List<Order> findByCustomer(Long customerId);
     List<Order> findByOrderMenu(OrderMenu orderMenu);
     List<Order> findByOrderStatus(OrderStatus orderStatus);
 

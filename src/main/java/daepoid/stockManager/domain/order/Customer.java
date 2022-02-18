@@ -58,9 +58,6 @@ public class Customer extends StoreUser {
     }
 
     public void addCart(Long menuId, Integer count) {
-        if(cart == null) {
-            cart = new Cart(new HashMap<>());
-        }
         this.cart.addCart(menuId, count);
     }
 }

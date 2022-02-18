@@ -42,7 +42,7 @@ class DutyServiceTest {
         return Member.builder()
                 .loginId(memberLoginId)
                 .password(passwordEncoder.encode(memberPassword))
-                .name(memberName)
+                .userName(memberName)
                 .phoneNumber(memberPhoneNumber)
                 .gradeType(memberGradeType)
                 .memberStatus(memberMemberStatus)

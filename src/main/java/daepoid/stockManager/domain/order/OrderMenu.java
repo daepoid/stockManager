@@ -50,7 +50,7 @@ public class OrderMenu {
 
     public void changeOrder(Order order) {
         this.order = order;
-        order.getOrderMenus().add(this);
+//        order.getOrderMenus().add(this);
     }
 
     public void changeOrderPrice(int orderPrice) {

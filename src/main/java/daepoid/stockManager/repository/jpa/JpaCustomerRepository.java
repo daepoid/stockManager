@@ -94,6 +94,11 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
+    public void addCart(Long customerId, Long menuId, int count) {
+        em.find(Customer.class, customerId).addCart(menuId, count);
+    }
+
+    @Override
     public void addOrder(Long customerId, Order order) {
         em.find(Customer.class, customerId).addOrder(order);
     }

@@ -32,6 +32,7 @@ public interface CustomerRepository {
     void changeOrders(Long customerId, List<Order> orders);
     void addOrder(Long customerId, Order order);
     void changeCart(Long customerId, Map<Long, Integer> numberOfMenus);
+    void addCart(Long customerId, Long menuId, int count);
 
     //==삭제 로직==//
     void removeCustomer(Long userId);

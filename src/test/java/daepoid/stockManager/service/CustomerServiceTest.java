@@ -2,6 +2,7 @@ package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,6 @@ class CustomerServiceTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    private Cart createCart() {
-        Map<Long, Integer> numberOfMenus = new HashMap<>();
-        return Cart.builder().numberOfMenus(numberOfMenus).build();
-    }
-
     private Menu createMenu() {
         String menuName = "menu name";
         Set<Recipe> menuFoods = new HashSet<>();
@@ -41,6 +37,7 @@ class CustomerServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 123;
+        MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
 
         return Menu.builder()
                 .name(menuName)
@@ -49,6 +46,7 @@ class CustomerServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
+                .menuStatus(menuMenuStatus)
                 .build();
     }
 
@@ -78,19 +76,18 @@ class CustomerServiceTest {
 
     @Test
     void saveCustomer() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(userName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -101,19 +98,18 @@ class CustomerServiceTest {
 
     @Test
     void findCustomer() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(userName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -124,19 +120,18 @@ class CustomerServiceTest {
 
     @Test
     void findCustomers() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String name = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(name)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -150,19 +145,18 @@ class CustomerServiceTest {
 
     @Test
     void findByUserName() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(userName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -174,19 +168,18 @@ class CustomerServiceTest {
 
     @Test
     void findByTableNumber() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(userName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -198,19 +191,18 @@ class CustomerServiceTest {
 
     @Test
     void changeName() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(userName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -226,19 +218,18 @@ class CustomerServiceTest {
 
     @Test
     void changeTableNumber() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(userName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -254,19 +245,18 @@ class CustomerServiceTest {
 
     @Test
     void changeOrders() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(userName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -302,19 +292,18 @@ class CustomerServiceTest {
 
     @Test
     void addOrder() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(userName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 
@@ -348,19 +337,18 @@ class CustomerServiceTest {
 
     @Test
     void removeCustomer() {
-        Cart cart = createCart();
-        em.persist(cart);
-
-        String userName = "customer";
+        String loginId = "customer";
+        String userName = "customer name";
         String password = "123";
         String tableNumber = "123";
         List<Order> orders = new ArrayList<>();
 
         Customer customer = Customer.builder()
-                .userName(userName)
+                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
                 .tableNumber(tableNumber)
-                .cart(cart)
+                .cart(new Cart(new HashMap<>()))
                 .orders(orders)
                 .build();
 

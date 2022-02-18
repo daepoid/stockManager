@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +21,8 @@ public class SelectedMenuDTO {
     private String name;
 
     @NotNull
-    private int count;
+    @Positive
+    private Integer count;
 
     public SelectedMenuDTO(Menu menu, Integer count) {
         this.menuId = menu.getId();

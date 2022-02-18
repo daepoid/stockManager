@@ -6,6 +6,7 @@ import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaRecipeRepository;
 
@@ -77,6 +78,7 @@ class JpaRecipeRepositoryTest {
         Map<Long, Integer> menuNumberOfFood = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 789;
+        MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
 
         return Menu.builder()
                 .name(menuName)
@@ -85,6 +87,7 @@ class JpaRecipeRepositoryTest {
                 .numberOfFoods(menuNumberOfFood)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
+                .menuStatus(menuMenuStatus)
                 .build();
     }
 

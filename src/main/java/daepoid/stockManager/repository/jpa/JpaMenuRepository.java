@@ -54,6 +54,27 @@ public class JpaMenuRepository implements MenuRepository {
     }
 
     @Override
+    public List<Menu> findByOverSalesCount(int salesCount) {
+        return em.createQuery("select m from Menu m where m.salesCount>=:salesCount", Menu.class)
+                .setParameter("salesCount", salesCount)
+                .getResultList();
+    }
+
+    @Override
+    public List<Menu> findByUnderSalesCount(int salesCount) {
+        return em.createQuery("select m from Menu m where m.salesCount<=:salesCount", Menu.class)
+                .setParameter("salesCount", salesCount)
+                .getResultList();
+    }
+
+    @Override
+    public List<Menu> findByMenuStatus(MenuStatus menuStatus) {
+        return em.createQuery("select m from Menu m where m.menuStatus=:menuStatus", Menu.class)
+                .setParameter("menuStatus", menuStatus)
+                .getResultList();
+    }
+
+    @Override
     public Integer getNumberOfFoodByRecipeId(Long menuId, Long recipeId) {
         return em.find(Menu.class, menuId).getNumberOfFoods().get(recipeId);
     }

@@ -17,7 +17,7 @@ spring:
   # mysql
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/stockManager?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://localhost:3308/stockManager?allowPublicKeyRetrieval=true&useSSL=false
   #    url: jdbc:mysql://localhost:3306/stockManager?characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
 
   jpa:

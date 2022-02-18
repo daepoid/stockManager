@@ -3,6 +3,7 @@ package daepoid.stockManager.jpa;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaMenuRepository;
 import org.junit.jupiter.api.Test;
@@ -64,6 +65,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -77,6 +79,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -95,6 +98,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -108,6 +112,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -128,6 +133,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -141,6 +147,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -162,6 +169,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -175,6 +183,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -197,6 +206,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -210,6 +220,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -224,7 +235,7 @@ class JpaMenuRepositoryTest {
     }
 
     @Test
-    void getNumberOfFoodByRecipeId() {
+    void findByOverSalesCount() {
         Recipe recipe = createRecipe();
         em.persist(recipe);
 
@@ -233,7 +244,8 @@ class JpaMenuRepositoryTest {
         int price = 123;
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
-        int salesCount = 0;
+        int salesCount = 123;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -247,6 +259,130 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
+                .build();
+
+        Long menuId = menuRepository.save(menu);
+
+        assertThat(menuRepository.findByOverSalesCount(salesCount - 1).stream()
+                .filter(m -> m.getId().equals(menuId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(menuRepository.findByOverSalesCount(salesCount).stream()
+                .filter(m -> m.getId().equals(menuId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(menuRepository.findByOverSalesCount(salesCount + 1).stream()
+                .filter(m -> m.getId().equals(menuId))
+                .findFirst().orElse(null)).isNull();
+    }
+
+    @Test
+    void findByUnderSalesCount() {
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
+
+        String name = "name";
+        Set<Recipe> foods = new HashSet<>();
+        int price = 123;
+        Map<Long, Integer> numberOfFoods = new HashMap<>();
+        LocalDateTime addedDate = LocalDateTime.now();
+        int salesCount = 123;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+
+        foods.add(recipe);
+
+        int numberOfFood = 123;
+        numberOfFoods.put(recipe.getId(), numberOfFood);
+
+        Menu menu = Menu.builder()
+                .name(name)
+                .foods(foods)
+                .price(price)
+                .numberOfFoods(numberOfFoods)
+                .addedDate(addedDate)
+                .salesCount(salesCount)
+                .menuStatus(menuStatus)
+                .build();
+
+        Long menuId = menuRepository.save(menu);
+
+        assertThat(menuRepository.findByUnderSalesCount(salesCount - 1).stream()
+                .filter(m -> m.getId().equals(menuId))
+                .findFirst().orElse(null)).isNull();
+
+        assertThat(menuRepository.findByUnderSalesCount(salesCount).stream()
+                .filter(m -> m.getId().equals(menuId))
+                .findFirst().orElse(null)).isNotNull();
+
+        assertThat(menuRepository.findByUnderSalesCount(salesCount + 1).stream()
+                .filter(m -> m.getId().equals(menuId))
+                .findFirst().orElse(null)).isNotNull();
+    }
+
+    @Test
+    void findByMenuStatus() {
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
+
+        String name = "name";
+        Set<Recipe> foods = new HashSet<>();
+        int price = 123;
+        Map<Long, Integer> numberOfFoods = new HashMap<>();
+        LocalDateTime addedDate = LocalDateTime.now();
+        int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        MenuStatus otherMenuStatus = MenuStatus.CLOSED;
+
+        foods.add(recipe);
+
+        int numberOfFood = 123;
+        numberOfFoods.put(recipe.getId(), numberOfFood);
+
+        Menu menu = Menu.builder()
+                .name(name)
+                .foods(foods)
+                .price(price)
+                .numberOfFoods(numberOfFoods)
+                .addedDate(addedDate)
+                .salesCount(salesCount)
+                .menuStatus(menuStatus)
+                .build();
+
+        Long menuId = menuRepository.save(menu);
+
+        assertThat(menuRepository.findByMenuStatus(menuStatus).stream()
+                .anyMatch(m -> m.getId().equals(menuId))).isTrue();
+        assertThat(menuRepository.findByMenuStatus(otherMenuStatus).stream()
+                .anyMatch(m -> m.getId().equals(menuId))).isFalse();
+    }
+
+    @Test
+    void getNumberOfFoodByRecipeId() {
+        Recipe recipe = createRecipe();
+        em.persist(recipe);
+
+        String name = "name";
+        Set<Recipe> foods = new HashSet<>();
+        int price = 123;
+        Map<Long, Integer> numberOfFoods = new HashMap<>();
+        LocalDateTime addedDate = LocalDateTime.now();
+        int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+
+        foods.add(recipe);
+
+        int numberOfFood = 123;
+        numberOfFoods.put(recipe.getId(), numberOfFood);
+
+        Menu menu = Menu.builder()
+                .name(name)
+                .foods(foods)
+                .price(price)
+                .numberOfFoods(numberOfFoods)
+                .addedDate(addedDate)
+                .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -265,6 +401,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -278,6 +415,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -303,6 +441,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -316,6 +455,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -351,6 +491,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -364,6 +505,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -387,6 +529,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -400,6 +543,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -426,6 +570,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -439,6 +584,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -486,6 +632,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -499,6 +646,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -519,6 +667,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -532,6 +681,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);
@@ -552,6 +702,7 @@ class JpaMenuRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
+        MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -565,6 +716,7 @@ class JpaMenuRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
+                .menuStatus(menuStatus)
                 .build();
 
         Long menuId = menuRepository.save(menu);

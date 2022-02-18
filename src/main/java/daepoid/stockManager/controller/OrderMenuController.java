@@ -106,19 +106,18 @@ public class OrderMenuController {
         }
 
         String loginId = (String) request.getSession().getAttribute(SessionConst.SECURITY_LOGIN);
-        Customer loginCustomer = customerService.findCustomerByUserName(loginId);
-        if(loginCustomer == null) {
+        Customer customer = customerService.findCustomerByLoginId(loginId);
+        if(customer == null) {
             log.error("사용자를 찾을 수 없음");
+            request.getSession(false).invalidate();
+            return "redirect:/";
         }
 
-        boolean isCreated = loginCustomer.getCart().getNumberOfMenus().containsKey(menuId);
+        boolean alreadyCreated = customer.getCart().getNumberOfMenus().containsKey(menuId);
 
-        //==loginCustomer.getCart().addMenu()==//
+        customerService.addCart(customer.getId(), selectedMenuDTO.getMenuId(), selectedMenuDTO.getCount());
 
-        //==cartService 사용==//
-        // cart는 customer가 생성되면서 동시에 같이 생성되어야 한다.
-        loginCustomer.addCart(menuId, selectedMenuDTO.getCount());
-        return isCreated ? "redirect:/customers/" + loginCustomer.getId() + "/order" : "redirect:/menus";
+        return alreadyCreated ? "redirect:/customers/" + customer.getId() + "/order" : "redirect:/menus";
     }
 
     @GetMapping("/menus/popular")

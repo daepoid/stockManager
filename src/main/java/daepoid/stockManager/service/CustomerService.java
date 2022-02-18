@@ -72,6 +72,11 @@ public class CustomerService {
         customerRepository.changeCart(customerId, numberOfMenus);
     }
 
+    @Transactional
+    public void addCart(Long customerId, Long menuId, int count) {
+        customerRepository.addCart(customerId, menuId, count);
+    }
+
     //==삭제 로직==//
     @Transactional
     public void removeCustomer(Long customerId) {

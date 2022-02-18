@@ -19,6 +19,9 @@ public interface MenuRepository {
 
     List<Menu> findByName(String name);
     List<Menu> findByRecipe(Recipe recipe);
+    List<Menu> findByOverSalesCount(int salesCount);
+    List<Menu> findByUnderSalesCount(int salesCount);
+    List<Menu> findByMenuStatus(MenuStatus menuStatus);
 
     Integer getNumberOfFoodByRecipeId(Long menuId, Long recipeId);
 

@@ -53,6 +53,7 @@ public class CustomerController {
         Map<Menu, Integer> selectedMenus = new HashMap<>();
 
         Map<Long, Integer> numberOfMenus = customerService.findCustomer(customerId).getCart().getNumberOfMenus();
+        log.info("nnumberOfMenus = {}", numberOfMenus);
         for (Long menuId : numberOfMenus.keySet()) {
             selectedMenus.put(menuService.findMenu(menuId), numberOfMenus.get(menuId));
         }
