@@ -1,14 +1,17 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuSearch;
 import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,6 +74,28 @@ public class JpaMenuRepository implements MenuRepository {
     public List<Menu> findByMenuStatus(MenuStatus menuStatus) {
         return em.createQuery("select m from Menu m where m.menuStatus=:menuStatus", Menu.class)
                 .setParameter("menuStatus", menuStatus)
+                .getResultList();
+    }
+
+    @Override
+    public List<Menu> findByMenuSearch(MenuSearch menuSearch) {
+        String jpql = "select m from Menu m";
+        if(StringUtils.hasText(menuSearch.getMenuName())) {
+            jpql += " where m.name like :name";
+        }
+
+        TypedQuery<Menu> query = em.createQuery(jpql, Menu.class);
+
+        if(StringUtils.hasText(menuSearch.getMenuName())) {
+            query = query.setParameter("name", "%" + menuSearch.getMenuName() + "%");
+        }
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Menu> findOrderableMenu() {
+        return em.createQuery("select m from Menu m where m.menuStatus=:menuStatus", Menu.class)
+                .setParameter("menuStatus", MenuStatus.ORDERABLE)
                 .getResultList();
     }
 

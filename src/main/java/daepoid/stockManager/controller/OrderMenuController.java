@@ -5,6 +5,7 @@ import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.controller.dto.recipe.SelectedMenuDTO;
+import daepoid.stockManager.domain.recipe.MenuSearch;
 import daepoid.stockManager.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,8 @@ public class OrderMenuController {
      * @return
      */
     @GetMapping("/menus")
-    public String menuListForm(Model model, HttpServletRequest request) {
+    public String menuListForm(@ModelAttribute("menuSearch") MenuSearch menuSearch,
+                               Model model, HttpServletRequest request) {
 
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         Customer customer = customerService.findCustomerByLoginId(loginId);
@@ -57,7 +59,8 @@ public class OrderMenuController {
             model.addAttribute("customerId", customer.getId());
         }
 
-        model.addAttribute("menus", menuService.findMenus());
+        model.addAttribute("menus", menuService.findByMenuSearch(menuSearch));
+//        model.addAttribute("menus", menuService.findMenus());
         return "menus/menuList";
     }
 

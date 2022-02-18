@@ -1,15 +1,15 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.order.Customer;
-import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.domain.order.OrderMenu;
-import daepoid.stockManager.domain.order.OrderStatus;
+import daepoid.stockManager.domain.order.*;
+import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,7 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuSearch;
 import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaMenuRepository;
@@ -56,6 +57,10 @@ public class MenuService {
 
     public List<Menu> findByMenuStatus(MenuStatus menuStatus) {
         return menuRepository.findByMenuStatus(menuStatus);
+    }
+
+    public List<Menu> findByMenuSearch(MenuSearch menuSearch) {
+        return menuRepository.findByMenuSearch(menuSearch);
     }
 
     public Integer getNumberOfFoodByRecipeId(Long menuId, Long recipeId) {

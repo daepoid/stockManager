@@ -4,6 +4,7 @@ import daepoid.stockManager.domain.StoreUser;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
+import daepoid.stockManager.domain.order.OrderSearch;
 
 import java.util.List;
 import java.util.Map;

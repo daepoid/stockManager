@@ -2,6 +2,7 @@ package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
+import daepoid.stockManager.domain.order.OrderSearch;
 import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.recipe.MenuSearch;
 import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 
@@ -22,6 +23,8 @@ public interface MenuRepository {
     List<Menu> findByOverSalesCount(int salesCount);
     List<Menu> findByUnderSalesCount(int salesCount);
     List<Menu> findByMenuStatus(MenuStatus menuStatus);
+    List<Menu> findByMenuSearch(MenuSearch menuSearch);
+    List<Menu> findOrderableMenu();
 
     Integer getNumberOfFoodByRecipeId(Long menuId, Long recipeId);
 
