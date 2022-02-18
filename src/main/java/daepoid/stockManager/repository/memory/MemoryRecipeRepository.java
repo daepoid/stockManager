@@ -3,6 +3,7 @@ package daepoid.stockManager.repository.memory;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.domain.recipe.RecipeSearch;
 import daepoid.stockManager.repository.RecipeRepository;
 import org.springframework.stereotype.Repository;
 
@@ -74,6 +75,11 @@ public class MemoryRecipeRepository implements RecipeRepository {
         return store.values().stream()
                 .filter(recipe -> recipe.getDishType().equals(dishType))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Recipe> findByRecipeSearch(RecipeSearch recipeSearch) {
+        return null;
     }
 
     //==수정 로직==//

@@ -1,14 +1,18 @@
 package daepoid.stockManager.repository.jpa;
 
+import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.domain.recipe.RecipeSearch;
 import daepoid.stockManager.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -82,6 +86,39 @@ public class JpaRecipeRepository implements RecipeRepository {
         return em.createQuery("select r from Recipe r where r.dishType = :dishType", Recipe.class)
                 .setParameter("dishType", dishType)
                 .getResultList();
+    }
+
+    @Override
+    public List<Recipe> findByRecipeSearch(RecipeSearch recipeSearch) {
+        // language=JPAQL
+        String jpql = "select r From Recipe r";
+
+        boolean isFirstCondition = true;
+        // 재고 타입 검색
+        if (recipeSearch.getDishType() != null) {
+            jpql += " where r.dishType = :dishType";
+            isFirstCondition = false;
+        }
+
+        // 재고 이름 검색
+        if (StringUtils.hasText(recipeSearch.getName())) {
+            if (isFirstCondition) {
+                jpql += " where";
+                isFirstCondition = false;
+            } else {
+                jpql += " and";
+            }
+            jpql += " r.name like :name";
+        }
+        TypedQuery<Recipe> query = em.createQuery(jpql, Recipe.class).setMaxResults(1000); //최대 1000건
+
+        if (recipeSearch.getDishType() != null) {
+            query = query.setParameter("dishType", recipeSearch.getDishType());
+        }
+        if (StringUtils.hasText(recipeSearch.getName())) {
+            query = query.setParameter("name", "%" + recipeSearch.getName() + "%");
+        }
+        return query.getResultList();
     }
 
     //==수정 로직==//

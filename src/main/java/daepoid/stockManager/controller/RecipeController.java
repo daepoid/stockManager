@@ -3,6 +3,7 @@ package daepoid.stockManager.controller;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.controller.dto.recipe.CreateRecipeDTO;
 import daepoid.stockManager.controller.dto.recipe.EditRecipeDTO;
+import daepoid.stockManager.domain.recipe.RecipeSearch;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.RecipeService;
 
@@ -32,8 +33,10 @@ public class RecipeController {
      * @return
      */
     @GetMapping("")
-    public String recipeList(Model model) {
-        model.addAttribute("recipes", recipeService.findRecipes());
+    public String recipeList(@ModelAttribute("recipeSearch")RecipeSearch recipeSearch,
+                             Model model) {
+        model.addAttribute("recipes", recipeService.findByRecipeSearch(recipeSearch));
+//        model.addAttribute("recipes", recipeService.findRecipes());
         return "recipes/recipeList";
     }
 

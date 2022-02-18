@@ -98,7 +98,7 @@ public class JpaItemRepository implements ItemRepository {
             query = query.setParameter("itemType", itemSearch.getItemType());
         }
         if (StringUtils.hasText(itemSearch.getName())) {
-            query = query.setParameter("name", itemSearch.getName());
+            query = query.setParameter("name", "%" + itemSearch.getName() + "%");
         }
         return query.getResultList();
     }

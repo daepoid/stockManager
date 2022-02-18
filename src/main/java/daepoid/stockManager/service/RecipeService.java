@@ -3,6 +3,7 @@ package daepoid.stockManager.service;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.domain.recipe.RecipeSearch;
 import daepoid.stockManager.repository.jpa.JpaRecipeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -60,6 +61,9 @@ public class RecipeService {
         return recipeRepository.findByDishType(dishType);
     }
 
+    public List<Recipe> findByRecipeSearch(RecipeSearch recipeSearch) {
+        return recipeRepository.findByRecipeSearch(recipeSearch);
+    }
 
     //==수정 로직==//
     @Transactional

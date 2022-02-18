@@ -10,6 +10,24 @@
         <div th:replace="fragments/memberNavigation::navigation(tab='member')"></div>
         <div class="container">
             <div>
+                <form th:object="${recipeSearch}" class="form-inline">
+                    <div class="form-group mb-2">
+                        <input type="text" th:field="*{name}" class="form-control"
+                               placeholder="레시피 이름"/>
+                    </div>
+                    <div class="form-group mx-sm-1 mb-2">
+                        <select th:field="*{dishType}" class="form-control">
+                            <option value="">접시</option>
+                            <option th:each="dishType : ${T(daepoid.stockManager.domain.recipe.DishType).values()}"
+                                    th:value="${dishType}"
+                                    th:text="${dishType}">option
+                            </option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">검색</button>
+                </form>
+            </div>
+            <div>
                 <table class="table table-striped">
                     <thead>
                     <tr>
