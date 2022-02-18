@@ -1,9 +1,6 @@
 package daepoid.stockManager.repository;
 
-import daepoid.stockManager.domain.order.Customer;
-import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.domain.order.OrderMenu;
-import daepoid.stockManager.domain.order.OrderStatus;
+import daepoid.stockManager.domain.order.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +17,7 @@ public interface OrderRepository {
     List<Order> findByCustomer(Long customerId);
     List<Order> findByOrderMenu(OrderMenu orderMenu);
     List<Order> findByOrderStatus(OrderStatus orderStatus);
+    List<Order> findByManagerOrderSearch(ManagerOrderSearch orderSearch);
 
     //==수정 로직==//
     void changeCustomer(Long orderId, Customer customer);

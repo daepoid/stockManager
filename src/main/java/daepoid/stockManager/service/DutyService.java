@@ -1,6 +1,7 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.duty.Duty;
+import daepoid.stockManager.domain.duty.DutySearch;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.repository.jpa.JpaDutyRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,10 @@ public class DutyService {
 
     public List<Duty> findOverIncentive(double incentive) {
         return dutyRepository.findOverIncentive(incentive);
+    }
+
+    public List<Duty> findByDutySearch(DutySearch dutySearch) {
+        return dutyRepository.findByDutySearch(dutySearch);
     }
 
     //==수정 로직==//

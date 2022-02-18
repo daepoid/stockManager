@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository.memory;
 
 import daepoid.stockManager.domain.duty.Duty;
+import daepoid.stockManager.domain.duty.DutySearch;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.repository.DutyRepository;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +71,11 @@ public class MemoryDutyRepository implements DutyRepository {
         return store.values().stream()
                 .filter(duty -> duty.getIncentive() >= incentive)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Duty> findByDutySearch(DutySearch dutySearch) {
+        return null;
     }
 
     //==수정 로직==//

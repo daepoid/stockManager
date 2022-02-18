@@ -22,7 +22,7 @@ public class TestCustomerDataInit {
 
         customerService.saveCustomer(Customer.builder()
                 .loginId("table001")
-                .userName("table name")
+                .userName("customer name or table name1")
                 .password(passwordEncoder.encode("123"))
                 .tableNumber("1")
                 .cart(new Cart(new HashMap<>()))
@@ -30,7 +30,7 @@ public class TestCustomerDataInit {
 
         customerService.saveCustomer(Customer.builder()
                 .loginId("table002")
-                .userName("table name")
+                .userName("customer name or table name2")
                 .password(passwordEncoder.encode("123"))
                 .tableNumber("2")
                 .cart(new Cart(new HashMap<>()))
@@ -38,7 +38,7 @@ public class TestCustomerDataInit {
 
         customerService.saveCustomer(Customer.builder()
                 .loginId("table003")
-                .userName("table name")
+                .userName("customer name or table name3")
                 .password(passwordEncoder.encode("123"))
                 .tableNumber("3")
                 .cart(new Cart(new HashMap<>()))

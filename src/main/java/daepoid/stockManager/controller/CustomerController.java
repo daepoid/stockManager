@@ -4,7 +4,7 @@ import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
-import daepoid.stockManager.domain.order.OrderSearch;
+import daepoid.stockManager.domain.order.CustomerOrderSearch;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.controller.dto.order.CustomerOrderMenuDTO;
 import daepoid.stockManager.service.CustomerService;
@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -82,7 +81,7 @@ public class CustomerController {
      */
     @GetMapping("/orders")
     public String orderListForm(@PathVariable("customerId") Long customerId,
-                                @ModelAttribute("orderSearch") OrderSearch orderSearch,
+                                @ModelAttribute("orderSearch") CustomerOrderSearch orderSearch,
                                 Model model,
                                 HttpServletRequest request) {
 

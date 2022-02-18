@@ -2,10 +2,7 @@ package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.StoreUser;
 import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.domain.member.MemberStatus;
-import daepoid.stockManager.domain.member.RoleType;
+import daepoid.stockManager.domain.member.*;
 import daepoid.stockManager.domain.order.Customer;
 
 import java.util.List;
@@ -27,6 +24,7 @@ public interface MemberRepository {
     List<Member> findByMemberStatus(MemberStatus memberStatus);
     List<Member> findByDuty(Duty duty);
     List<Member> findByRoles(RoleType... roleType);
+    List<Member> findByMemberSearch(MemberSearch memberSearch);
 
     //==수정 로직==//
     void changePassword(Long userId, String password);

@@ -147,6 +147,10 @@ public class OrderService {
         return orderRepository.findByOrderStatus(orderStatus);
     }
 
+    public List<Order> findByManagerOrderSearch(ManagerOrderSearch orderSearch) {
+        return orderRepository.findByManagerOrderSearch(orderSearch);
+    }
+
     //==수정 로직==//
     @Transactional
     public void changeCustomer(Long orderId, Customer customer) {

@@ -1,9 +1,8 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.domain.order.CustomerSearch;
 import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.domain.order.OrderSearch;
-import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Repository
@@ -70,6 +67,22 @@ public class JpaCustomerRepository implements CustomerRepository {
                 .getResultList()
                 .stream().findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public List<Customer> findCustomerByCustomerSearch(CustomerSearch customerSearch) {
+        String jpql = "select c from Customer c";
+
+        if(StringUtils.hasText(customerSearch.getName())) {
+            jpql += " where c.userName like :name";
+        }
+
+        TypedQuery<Customer> query = em.createQuery(jpql, Customer.class);
+
+        if(StringUtils.hasText(customerSearch.getName())) {
+            query = query.setParameter("name", "%" + customerSearch.getName() + "%");
+        }
+        return query.getResultList();
     }
 
     @Override

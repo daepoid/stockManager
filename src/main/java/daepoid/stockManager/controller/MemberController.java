@@ -3,6 +3,7 @@ package daepoid.stockManager.controller;
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.member.MemberSearch;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.controller.dto.member.EditMemberDTO;
 import daepoid.stockManager.controller.dto.member.JoinMemberDTO;
@@ -36,8 +37,10 @@ public class MemberController {
      * @return
      */
     @GetMapping("")
-    public String memberList(Model model) {
-        model.addAttribute("members", memberService.findMembers());
+    public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch,
+                             Model model) {
+        model.addAttribute("members", memberService.findByMemberSearch(memberSearch));
+//        model.addAttribute("members", memberService.findMembers());
         return "members/memberList";
     }
 

@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.duty.Duty;
+import daepoid.stockManager.domain.duty.DutySearch;
 import daepoid.stockManager.domain.member.Member;
 
 import java.util.List;
@@ -17,10 +18,12 @@ public interface DutyRepository {
     List<Duty> findAll();
     List<Duty> findByName(String name);
     List<Duty> findByMember(Member member);
-    List<Duty> findByIncentive(double incentive);
 
+    List<Duty> findByIncentive(double incentive);
     List<Duty> findUnderIncentive(double incentive);
     List<Duty> findOverIncentive(double incentive);
+
+    List<Duty> findByDutySearch(DutySearch dutySearch);
 
     //==수정 로직==//
     void changeName(Long dutyId, String name);

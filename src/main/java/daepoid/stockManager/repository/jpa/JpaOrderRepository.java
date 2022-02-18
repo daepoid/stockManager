@@ -1,5 +1,6 @@
 package daepoid.stockManager.repository.jpa;
 
+import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.repository.OrderRepository;
@@ -61,6 +62,39 @@ public class JpaOrderRepository implements OrderRepository {
         return em.createQuery("select o from Order o where  o.orderStatus=:orderStatus", Order.class)
                 .setParameter("orderStatus", orderStatus)
                 .getResultList();
+    }
+
+    @Override
+    public List<Order> findByManagerOrderSearch(ManagerOrderSearch orderSearch) {
+        // language=JPAQL
+        String jpql = "select o From Order o";
+
+        boolean isFirstCondition = true;
+        // 재고 타입 검색
+        if (orderSearch.getOrderStatus() != null) {
+            jpql += " where o.orderStatus = :orderStatus";
+            isFirstCondition = false;
+        }
+
+        // 재고 이름 검색
+        if (StringUtils.hasText(orderSearch.getCustomerName())) {
+            if (isFirstCondition) {
+                jpql += " where";
+                isFirstCondition = false;
+            } else {
+                jpql += " and";
+            }
+            jpql += " o.customer.userName like :customerName";
+        }
+        TypedQuery<Order> query = em.createQuery(jpql, Order.class).setMaxResults(1000); //최대 1000건
+
+        if (orderSearch.getOrderStatus() != null) {
+            query = query.setParameter("orderStatus", orderSearch.getOrderStatus());
+        }
+        if (StringUtils.hasText(orderSearch.getCustomerName())) {
+            query = query.setParameter("customerName", "%" + orderSearch.getCustomerName() + "%");
+        }
+        return query.getResultList();
     }
 
     //==수정 로직==//

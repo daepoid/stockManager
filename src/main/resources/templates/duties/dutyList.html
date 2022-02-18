@@ -10,6 +10,15 @@
 <div th:replace="fragments/memberNavigation::navigation(tab='manager')"></div>
 <div class="container">
     <div>
+        <form th:object="${dutySearch}" class="form-inline">
+            <div class="form-group mb-2">
+                <input type="text" th:field="*{dutyName}" class="form-control"
+                       placeholder="직무 이름"/>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">검색</button>
+        </form>
+    </div>
+    <div>
         <table class="table table-striped">
             <thead>
             <tr>

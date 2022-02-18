@@ -3,6 +3,7 @@ package daepoid.stockManager.service;
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.member.MemberSearch;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 
@@ -68,6 +69,10 @@ public class MemberService {
 
     public List<Member> findMembersByDuty(Duty duty) {
         return memberRepository.findByDuty(duty);
+    }
+
+    public List<Member> findByMemberSearch(MemberSearch memberSearch) {
+        return memberRepository.findByMemberSearch(memberSearch);
     }
 
     //==수정 로직==//

@@ -1,9 +1,7 @@
 package daepoid.stockManager.controller.management;
 
 import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.order.Customer;
-import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.domain.order.OrderMenu;
+import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.controller.dto.order.CreateOrderDTO;
 import daepoid.stockManager.controller.dto.order.EditOrderDTO;
 import daepoid.stockManager.controller.dto.member.OrderInfoDTO;
@@ -31,13 +29,15 @@ public class OrderManagementController {
     private final MenuService menuService;
 
     @GetMapping("")
-    public String orderList(Model model,
+    public String orderList(@ModelAttribute("orderSearch") ManagerOrderSearch orderSearch,
+                            Model model,
                             HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         if(loginId != null) {
             model.addAttribute("loginId", loginId);
         }
-        model.addAttribute("orders", orderService.findOrders());
+        model.addAttribute("orders", orderService.findByManagerOrderSearch(orderSearch));
+//        model.addAttribute("orders", orderService.findOrders());
         return "order-management/orderList";
     }
 

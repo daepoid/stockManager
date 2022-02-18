@@ -9,10 +9,20 @@
 <div th:replace="fragments/memberNavigation::navigation('manager')"></div>
 <div class="container" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
     <div>
+        <form th:object="${customerSearch}" class="form-inline">
+            <div class="form-group mb-2">
+                <input type="text" th:field="*{name}" class="form-control"
+                       placeholder="레시피 이름"/>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">검색</button>
+        </form>
+    </div>
+    <div>
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
+                <th>고객 로그인 아이디</th>
                 <th>고객 이름</th>
                 <th>테이블 번호</th>
                 <th>
@@ -24,7 +34,8 @@
             <tbody>
             <tr th:each="customer : ${customers}">
                 <td th:text="${customer.id}"></td>
-                <td th:text="${customer.name}"></td>
+                <td th:text="${customer.loginId}"></td>
+                <td th:text="${customer.userName}"></td>
                 <td th:text="${customer.tableNumber}"></td>
                 <td>
                     <a href="#" th:href="@{/customer-management/{id} (id=${customer.id})}"

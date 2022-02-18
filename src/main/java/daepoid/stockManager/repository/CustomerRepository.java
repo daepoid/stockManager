@@ -1,14 +1,12 @@
 package daepoid.stockManager.repository;
 
-import daepoid.stockManager.domain.StoreUser;
-import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.domain.order.CustomerSearch;
+import daepoid.stockManager.domain.order.ManagerOrderSearch;
 import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.domain.order.OrderSearch;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface CustomerRepository {
 
@@ -25,6 +23,7 @@ public interface CustomerRepository {
 
     //==조회 로직==//
     Customer findByTableNumber(String tableNumber);
+    List<Customer> findCustomerByCustomerSearch(CustomerSearch customerSearch);
 
     //==수정 로직==//
     void changeUserName(Long userId, String userName);

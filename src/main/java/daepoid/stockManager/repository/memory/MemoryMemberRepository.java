@@ -2,10 +2,7 @@ package daepoid.stockManager.repository.memory;
 
 
 import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.domain.member.MemberStatus;
-import daepoid.stockManager.domain.member.RoleType;
+import daepoid.stockManager.domain.member.*;
 import daepoid.stockManager.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -103,6 +100,10 @@ public class MemoryMemberRepository implements MemberRepository {
         return null;
     }
 
+    @Override
+    public List<Member> findByMemberSearch(MemberSearch memberSearch) {
+        return null;
+    }
 
     //==수정 로직==//
 

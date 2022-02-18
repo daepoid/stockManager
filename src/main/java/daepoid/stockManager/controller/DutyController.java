@@ -4,6 +4,7 @@ import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.controller.dto.duty.CreateDutyDTO;
 import daepoid.stockManager.controller.dto.duty.CreateDutyMemberDTO;
 import daepoid.stockManager.controller.dto.duty.EditDutyDTO;
+import daepoid.stockManager.domain.duty.DutySearch;
 import daepoid.stockManager.service.DutyService;
 import daepoid.stockManager.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,10 @@ public class DutyController {
      * @return
      */
     @GetMapping("")
-    public String dutyListForm(Model model) {
-        model.addAttribute("duties", dutyService.findDuties());
+    public String dutyListForm(@ModelAttribute("dutySearch") DutySearch dutySearch,
+                               Model model) {
+        model.addAttribute("duties", dutyService.findByDutySearch(dutySearch));
+//        model.addAttribute("duties", dutyService.findDuties());
         return "duties/dutyList";
     }
 

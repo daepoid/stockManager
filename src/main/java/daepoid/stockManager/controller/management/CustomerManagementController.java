@@ -5,6 +5,7 @@ import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.controller.dto.order.CreateCustomerDTO;
 import daepoid.stockManager.controller.dto.order.EditCustomerDTO;
+import daepoid.stockManager.domain.order.CustomerSearch;
 import daepoid.stockManager.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,13 +29,14 @@ public class CustomerManagementController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("")
-    public String customerListForm(Model model, HttpServletRequest request) {
+    public String customerListForm(@ModelAttribute("customerSearch") CustomerSearch customerSearch,
+                                   Model model, HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         if(loginId != null) {
             model.addAttribute("loginId", loginId);
         }
-
-        model.addAttribute("customers", customerService.findCustomers());
+        model.addAttribute("customers", customerService.findCustomersByCustomerSearch(customerSearch));
+//        model.addAttribute("customers", customerService.findCustomers());
         return "customer-management/customerListForm";
     }
 

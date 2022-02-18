@@ -2,18 +2,18 @@ package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.StoreUser;
 import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.domain.member.MemberStatus;
-import daepoid.stockManager.domain.member.RoleType;
+import daepoid.stockManager.domain.item.Item;
+import daepoid.stockManager.domain.member.*;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.sql.Array;
 import java.util.List;
 import java.util.Optional;
@@ -97,6 +97,53 @@ public class JpaMemberRepository implements MemberRepository {
     @Override
     public List<Member> findByRoles(RoleType... roleType) {
         return null;
+    }
+
+    @Override
+    public List<Member> findByMemberSearch(MemberSearch memberSearch) {
+        // language=JPAQL
+        String jpql = "select m From Member m";
+
+        boolean isFirstCondition = true;
+        // 직원 등급 검색
+        if (memberSearch.getGradeType() != null) {
+            jpql += " where m.gradeType = :gradeType";
+            isFirstCondition = false;
+        }
+
+        // 직원 근무 상태 검색
+        if (memberSearch.getMemberStatus() != null) {
+            if (isFirstCondition) {
+                jpql += " where";
+                isFirstCondition = false;
+            } else {
+                jpql += " and";
+            }
+            jpql += " m.memberStatus = :memberStatus";
+        }
+
+        // 직원 이름 검색
+        if (StringUtils.hasText(memberSearch.getName())) {
+            if (isFirstCondition) {
+                jpql += " where";
+                isFirstCondition = false;
+            } else {
+                jpql += " and";
+            }
+            jpql += " m.userName like :name";
+        }
+        TypedQuery<Member> query = em.createQuery(jpql, Member.class).setMaxResults(1000); //최대 1000건
+
+        if (memberSearch.getGradeType() != null) {
+            query = query.setParameter("gradeType", memberSearch.getGradeType());
+        }
+        if (memberSearch.getMemberStatus() != null) {
+            query = query.setParameter("memberStatus", memberSearch.getMemberStatus());
+        }
+        if (StringUtils.hasText(memberSearch.getName())) {
+            query = query.setParameter("name", "%" + memberSearch.getName() + "%");
+        }
+        return query.getResultList();
     }
 
     //==수정 로직==//

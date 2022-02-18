@@ -1,13 +1,17 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.duty.Duty;
+import daepoid.stockManager.domain.duty.DutySearch;
 import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.repository.DutyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -79,6 +83,22 @@ public class JpaDutyRepository implements DutyRepository {
         return em.createQuery("select d from Duty d where d.incentive >= :incentive", Duty.class)
                 .setParameter("incentive", incentive)
                 .getResultList();
+    }
+
+    @Override
+    public List<Duty> findByDutySearch(DutySearch dutySearch) {
+        String jpql = "select d from Duty d";
+
+        if(StringUtils.hasText(dutySearch.getDutyName())) {
+            jpql += " where d.name like :name";
+        }
+
+        TypedQuery<Duty> query = em.createQuery(jpql, Duty.class);
+
+        if(StringUtils.hasText(dutySearch.getDutyName())) {
+            query = query.setParameter("name", "%" + dutySearch.getDutyName() + "%");
+        }
+        return query.getResultList();
     }
 
     //==변경 로직==//
