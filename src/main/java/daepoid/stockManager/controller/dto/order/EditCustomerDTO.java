@@ -1,6 +1,7 @@
 package daepoid.stockManager.controller.dto.order;
 
 import daepoid.stockManager.domain.order.Customer;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

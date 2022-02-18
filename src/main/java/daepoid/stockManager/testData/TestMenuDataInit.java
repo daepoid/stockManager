@@ -3,8 +3,9 @@ package daepoid.stockManager.testData;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.service.MenuService;
+
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
+
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;

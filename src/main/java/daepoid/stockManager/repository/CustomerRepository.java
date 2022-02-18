@@ -1,8 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.order.Customer;
-import daepoid.stockManager.domain.order.CustomerSearch;
-import daepoid.stockManager.domain.order.ManagerOrderSearch;
+import daepoid.stockManager.domain.search.CustomerSearch;
 import daepoid.stockManager.domain.order.Order;
 
 import java.util.List;

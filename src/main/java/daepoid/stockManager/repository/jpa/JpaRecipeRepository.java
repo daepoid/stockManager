@@ -1,20 +1,20 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.domain.recipe.RecipeSearch;
+import daepoid.stockManager.domain.search.RecipeSearch;
 import daepoid.stockManager.repository.RecipeRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j

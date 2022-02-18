@@ -1,12 +1,14 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.domain.recipe.MenuSearch;
+import daepoid.stockManager.domain.search.MenuSearch;
 import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.repository.jpa.JpaMenuRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

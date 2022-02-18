@@ -1,14 +1,14 @@
 package daepoid.stockManager.api;
 
 import daepoid.stockManager.api.dto.Result;
-import daepoid.stockManager.api.dto.item.*;
 import daepoid.stockManager.api.dto.recipe.*;
 import daepoid.stockManager.domain.ingredient.Ingredient;
-import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.RecipeService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,13 +27,11 @@ public class RecipeApiController {
     @GetMapping("")
     public Result findRecipesV1() {
         List<Recipe> recipes = recipeService.findRecipes();
-
         //엔티티 -> DTO 변환
-        List<RecipeDTO> collect = recipes.stream()
+        List<RecipeDTO> RecipeDTOs = recipes.stream()
                 .map(RecipeDTO::new)
                 .collect(Collectors.toList());
-
-        return new Result(collect);
+        return new Result(RecipeDTOs);
     }
 
     @PostMapping("")
@@ -69,7 +67,6 @@ public class RecipeApiController {
     @PutMapping("/{recipeId}")
     public UpdateRecipeResponseDTO updateRecipeV1(@PathVariable("recipeId") Long recipeId,
                                                   @RequestBody @Valid UpdateRecipeRequestDTO requestDTO) {
-
         List<Long> ingredientIds = requestDTO.getIngredientIds();
         List<Ingredient> ingredients = new ArrayList<>();
 
@@ -127,6 +124,4 @@ public class RecipeApiController {
         recipeService.removeRecipe(recipe);
         return new DeleteRecipeResponseDTO(recipe.getId());
     }
-
-
 }

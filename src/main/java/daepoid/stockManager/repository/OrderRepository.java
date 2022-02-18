@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.order.*;
+import daepoid.stockManager.domain.search.ManagerOrderSearch;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,7 +1,7 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.item.Item;
-import daepoid.stockManager.domain.item.ItemSearch;
+import daepoid.stockManager.domain.search.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.jpa.JpaItemRepository;

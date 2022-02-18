@@ -1,6 +1,7 @@
 package daepoid.stockManager.domain.recipe;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
+
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 

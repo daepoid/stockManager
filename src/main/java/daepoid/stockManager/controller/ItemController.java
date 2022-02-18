@@ -3,7 +3,7 @@ package daepoid.stockManager.controller;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.controller.dto.item.CreateItemDTO;
 import daepoid.stockManager.controller.dto.item.EditItemDTO;
-import daepoid.stockManager.domain.item.ItemSearch;
+import daepoid.stockManager.domain.search.ItemSearch;
 import daepoid.stockManager.service.ItemService;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Slf4j
 @Controller

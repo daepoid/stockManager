@@ -1,11 +1,9 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.item.Item;
-import daepoid.stockManager.domain.item.ItemSearch;
+import daepoid.stockManager.domain.search.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.MemberStatus;
 
 import java.util.List;
 

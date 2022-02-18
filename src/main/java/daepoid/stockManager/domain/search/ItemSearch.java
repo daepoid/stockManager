@@ -1,4 +1,6 @@
-package daepoid.stockManager.domain.item;
+package daepoid.stockManager.domain.search;
+
+import daepoid.stockManager.domain.item.ItemType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

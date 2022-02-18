@@ -1,11 +1,13 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.order.Customer;
-import daepoid.stockManager.domain.order.CustomerSearch;
+import daepoid.stockManager.domain.search.CustomerSearch;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.repository.CustomerRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 

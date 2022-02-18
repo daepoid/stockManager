@@ -4,10 +4,11 @@ import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.controller.dto.member.EditMyInfoDTO;
 import daepoid.stockManager.controller.dto.member.EditMyPasswordDTO;
-import daepoid.stockManager.service.LoginService;
 import daepoid.stockManager.service.MemberService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,6 @@ public class LoginMemberController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
-    private final LoginService loginService;
 
     @GetMapping("")
     public String myInfoRedirect(HttpServletRequest request,

@@ -7,7 +7,9 @@ import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.service.MenuService;
 import daepoid.stockManager.service.RecipeService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,11 +29,10 @@ public class MenuApiController {
     public Result findMenusV1() {
         List<Menu> menus = menuService.findMenus();
         //엔티티 -> DTO 변환
-        List<MenuDTO> collect = menus.stream()
+        List<MenuDTO> MenuDTOs = menus.stream()
                 .map(MenuDTO::new)
                 .collect(Collectors.toList());
-
-        return new Result(collect);
+        return new Result(MenuDTOs);
     }
 
     @PostMapping("")
@@ -64,7 +65,6 @@ public class MenuApiController {
                 .sorted(Comparator.comparing(Menu::getSalesCount).reversed())
                 .map(MenuDTO::new)
                 .collect(Collectors.toList());
-
         return new Result(collect);
     }
 
@@ -76,7 +76,6 @@ public class MenuApiController {
                 .sorted(Comparator.comparing(Menu::getAddedDate).reversed())
                 .map(MenuDTO::new)
                 .collect(Collectors.toList());
-
         return new Result(collect);
     }
 
@@ -85,13 +84,9 @@ public class MenuApiController {
         return new MenuDTO(menuService.findMenu(menuId));
     }
 
-    /**
-     * 수정 API
-     */
     @PutMapping("/{menuId}")
     public UpdateMenuResponseDTO updateMenuV1(@PathVariable("menuId") Long menuId,
                                               @RequestBody @Valid UpdateMenuRequestDTO requestDTO) {
-
         Map<Long, Integer> numberOfFoods = requestDTO.getNumberOfFoods();
         Set<Recipe> foods = new HashSet<>();
         for (Long recipeId : numberOfFoods.keySet()) {
@@ -110,7 +105,6 @@ public class MenuApiController {
     @PatchMapping("/{menuId}")
     public UpdateMenuResponseDTO updatePatchMenuV1(@PathVariable("menuId") Long menuId,
                                                    @RequestBody @Valid UpdatePatchMenuRequestDTO requestDTO) {
-
         if(requestDTO.getNumberOfFoods() != null) {
             Map<Long, Integer> numberOfFoods = requestDTO.getNumberOfFoods();
             Set<Recipe> foods = new HashSet<>();
@@ -139,7 +133,6 @@ public class MenuApiController {
     @DeleteMapping("/{menuId}")
     public DeleteMenuResponseDTO deleteMenuV1(@PathVariable("menuId") Long menuId,
                                               @RequestBody @Valid DeleteMenuRequestDTO requestDTO) {
-//        menuService.removeMenu(menuId);
         if(requestDTO.getMenuStatus().equals(MenuStatus.ORDERABLE)) {
             throw new IllegalArgumentException("잘못된 상태");
         }

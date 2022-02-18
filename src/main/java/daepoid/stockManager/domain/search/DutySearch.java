@@ -1,4 +1,4 @@
-package daepoid.stockManager.domain.duty;
+package daepoid.stockManager.domain.search;
 
 import lombok.Getter;
 import lombok.Setter;

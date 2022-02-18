@@ -5,10 +5,12 @@ import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.controller.dto.order.CreateCustomerDTO;
 import daepoid.stockManager.controller.dto.order.EditCustomerDTO;
-import daepoid.stockManager.domain.order.CustomerSearch;
+import daepoid.stockManager.domain.search.CustomerSearch;
 import daepoid.stockManager.service.CustomerService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

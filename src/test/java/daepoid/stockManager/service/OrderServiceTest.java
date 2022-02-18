@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,7 +38,7 @@ class OrderServiceTest {
         String recipeName = "name";
         int recipePrice = 456;
         int recipeWeight = 456;
-        DishType recipeDishType = DishType.BASKET;
+        DishType recipeDishType = DishType.BOWL;
         List<Ingredient> recipeIngredients = new ArrayList<>();
         int recipeCost = 456;
         int recipeNetIncome = 456;

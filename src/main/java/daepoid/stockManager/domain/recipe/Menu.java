@@ -50,7 +50,6 @@ public class Menu {
     private LocalDateTime addedDate;
 
     // 주문이 많이 된 음식을 찾기 위해
-//    @NotNull
     private int salesCount = 0;
 
     @NotNull

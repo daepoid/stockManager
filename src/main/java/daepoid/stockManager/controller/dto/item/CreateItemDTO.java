@@ -2,6 +2,7 @@ package daepoid.stockManager.controller.dto.item;
 
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
+
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

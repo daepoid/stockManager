@@ -1,4 +1,6 @@
-package daepoid.stockManager.domain.order;
+package daepoid.stockManager.domain.search;
+
+import daepoid.stockManager.domain.order.OrderStatus;
 
 import lombok.Getter;
 import lombok.Setter;

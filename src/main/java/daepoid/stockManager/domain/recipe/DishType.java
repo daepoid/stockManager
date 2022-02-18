@@ -1,5 +1,5 @@
 package daepoid.stockManager.domain.recipe;
 
 public enum DishType {
-    FLATTER, PASTA, PILAF, PANINI, MAIN, DESSERT, BOWL, BASKET
+    PLATE, SOUP, BOWL, MAIN, MEAT, DESSERT, PLATTER, GRAVY
 }

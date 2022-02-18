@@ -44,7 +44,7 @@ Store stock management
 
 ## 향후 추가할 기능
 
-- Rest API 기준에 만족하도록 변경
+- RestAPI 기준에 부합하도록 추가 및 수정
 - ~~cart를 entity에서 embedded로 변경~~
 - ~~customer와 member의 공통 부분을 추출하고 이를 상속하는 방식으로 변경~~
 - 테이블에 있는 QR 코드를 이용하여 로그인
@@ -60,3 +60,6 @@ Store stock management
 - 다양한 테스트 추가
   - 단위 테스트, 통합 테스트 등등..
 - docker 사용하도록 설정
+- 소셜 로그인
+- AWS
+- 리팩토링

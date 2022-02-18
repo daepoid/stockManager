@@ -2,6 +2,7 @@ package daepoid.stockManager.domain.member;
 
 import daepoid.stockManager.domain.StoreUser;
 import daepoid.stockManager.domain.duty.Duty;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,7 +39,6 @@ public class Member extends StoreUser {
 
 
     // 직급 이외에 특별한 권한을 부여, 특정 물품에 대한 주문 발주 등등...
-    // https://www.inflearn.com/questions/21303
     @ElementCollection(targetClass = RoleType.class)
     @Enumerated(EnumType.STRING)
     private Collection<RoleType> roles = new ArrayList<>();

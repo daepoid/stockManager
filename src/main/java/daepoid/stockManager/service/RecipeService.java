@@ -3,7 +3,7 @@ package daepoid.stockManager.service;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.domain.recipe.RecipeSearch;
+import daepoid.stockManager.domain.search.RecipeSearch;
 import daepoid.stockManager.repository.jpa.JpaRecipeRepository;
 
 import lombok.RequiredArgsConstructor;

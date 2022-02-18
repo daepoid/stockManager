@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -40,7 +39,7 @@ class JpaOrderRepositoryTest {
         String recipeName = "name";
         int recipePrice = 456;
         int recipeWeight = 456;
-        DishType recipeDishType = DishType.BASKET;
+        DishType recipeDishType = DishType.BOWL;
         List<Ingredient> recipeIngredients = new ArrayList<>();
         int recipeCost = 456;
         int recipeNetIncome = 456;

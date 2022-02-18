@@ -3,11 +3,9 @@ package daepoid.stockManager.repository;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.domain.recipe.RecipeSearch;
-import daepoid.stockManager.service.RecipeService;
+import daepoid.stockManager.domain.search.RecipeSearch;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface RecipeRepository {
 

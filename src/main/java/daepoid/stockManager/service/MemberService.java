@@ -3,7 +3,7 @@ package daepoid.stockManager.service;
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.domain.member.MemberSearch;
+import daepoid.stockManager.domain.search.MemberSearch;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 

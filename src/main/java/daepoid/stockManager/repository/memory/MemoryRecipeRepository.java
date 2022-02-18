@@ -3,8 +3,9 @@ package daepoid.stockManager.repository.memory;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.domain.recipe.RecipeSearch;
+import daepoid.stockManager.domain.search.RecipeSearch;
 import daepoid.stockManager.repository.RecipeRepository;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

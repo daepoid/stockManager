@@ -3,6 +3,7 @@ package daepoid.stockManager.domain.ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.domain.recipe.Recipe;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

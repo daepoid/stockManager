@@ -6,7 +6,9 @@ import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.service.MemberService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,25 +24,14 @@ public class MemberApiController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
-//    @Data
-//    @AllArgsConstructor
-//    static class Result<T> {
-//        private T data;
-//    }
-
-    /**
-     * 조회 V2: 응답 값으로 엔티티가 아닌 별도의 DTO를 반환한다.
-     */
     @GetMapping("/api/v1/members")
     public Result membersV1() {
-
         List<Member> findMembers = memberService.findMembers();
         //엔티티 -> DTO 변환
-        List<MemberDTO> collect = findMembers.stream()
+        List<MemberDTO> MemberDTOs = findMembers.stream()
                 .map(MemberDTO::new)
                 .collect(Collectors.toList());
-
-        return new Result(collect);
+        return new Result(MemberDTOs);
     }
 
     @GetMapping("/api/v1/members/{memberId}")
@@ -48,17 +39,8 @@ public class MemberApiController {
         return new MemberDTO(memberService.findMember(memberId));
     }
 
-    /**
-     * 등록 V1: 요청 값으로 CreateMemberRequestDTO DTO를 파라미터로 받는다.
-     * 이점:
-     * - 엔티티에 프레젠테이션 계층을 위한 로직이 추가된다.
-     *   - 엔티티에 API 검증을 위한 로직이 들어간다. (@NotEmpty 등등)
-     *   - 실무에서는 회원 엔티티를 위한 API가 다양하게 만들어지는데, 한 엔티티에 각각의 API를 위한 모든 요청 요구사항을 담기는 어렵다.
-     * - 엔티티가 변경되면 API 스펙이 변한다.
-     */
     @PostMapping("/api/v1/members")
     public CreateMemberResponseDTO saveMemberV1(@RequestBody @Valid CreateMemberRequestDTO requestDTO) {
-
         Member member = Member.builder()
                 .loginId(requestDTO.getLoginId())
                 .password(passwordEncoder.encode(requestDTO.getPassword()))
@@ -73,13 +55,9 @@ public class MemberApiController {
         return new CreateMemberResponseDTO(memberId);
     }
 
-    /**
-     * 수정 API
-     */
     @PutMapping("/api/v1/members/{memberId}")
     public UpdateMemberResponseDTO updateMemberV2(@PathVariable("memberId") Long memberId,
                                                   @RequestBody @Valid UpdateMemberRequestDTO requestDTO) {
-
         if(!requestDTO.getName().isBlank()) {
             memberService.changeUserName(memberId, requestDTO.getName());
         }

@@ -1,19 +1,19 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.duty.DutySearch;
+import daepoid.stockManager.domain.search.DutySearch;
 import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.repository.DutyRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

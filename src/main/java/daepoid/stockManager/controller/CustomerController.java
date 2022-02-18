@@ -4,14 +4,16 @@ import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
-import daepoid.stockManager.domain.order.CustomerOrderSearch;
+import daepoid.stockManager.domain.search.CustomerOrderSearch;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.controller.dto.order.CustomerOrderMenuDTO;
 import daepoid.stockManager.service.CustomerService;
 import daepoid.stockManager.service.MenuService;
 import daepoid.stockManager.service.OrderService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

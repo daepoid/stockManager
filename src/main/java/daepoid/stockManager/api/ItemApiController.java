@@ -4,7 +4,9 @@ import daepoid.stockManager.api.dto.Result;
 import daepoid.stockManager.api.dto.item.*;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.service.ItemService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,15 +23,12 @@ public class ItemApiController {
 
     @GetMapping("")
     public Result findItemsV1() {
-
         List<Item> items = itemService.findItems();
-
         //엔티티 -> DTO 변환
-        List<ItemDTO> collect = items.stream()
+        List<ItemDTO> ItemDTOs = items.stream()
                 .map(ItemDTO::new)
                 .collect(Collectors.toList());
-
-        return new Result(collect);
+        return new Result(ItemDTOs);
     }
 
     @PostMapping("")
@@ -56,7 +55,6 @@ public class ItemApiController {
     @PutMapping("/{itemId}")
     public UpdateItemResponseDTO updateItemV1(@PathVariable("itemId") Long itemId,
                                               @RequestBody @Valid UpdateItemRequestDTO requestDTO) {
-
         itemService.changeName(itemId, requestDTO.getName());
         itemService.changeItemType(itemId, requestDTO.getItemType());
         itemService.changePrice(itemId, requestDTO.getPrice());
@@ -70,7 +68,6 @@ public class ItemApiController {
     @PatchMapping("/{itemId}")
     public UpdateItemResponseDTO updatePatchItemV1(@PathVariable("itemId") Long itemId,
                                                    @RequestBody @Valid UpdatePatchItemRequestDTO requestDTO) {
-
         if(requestDTO.getName() != null) {
             itemService.changeName(itemId, requestDTO.getName());
         }

@@ -1,11 +1,13 @@
 package daepoid.stockManager.repository.memory;
 
 import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.duty.DutySearch;
+import daepoid.stockManager.domain.search.DutySearch;
 import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.repository.DutyRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

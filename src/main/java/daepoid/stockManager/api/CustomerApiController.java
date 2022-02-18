@@ -27,31 +27,26 @@ public class CustomerApiController {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 조회 V1: 응답 값으로 엔티티가 아닌 별도의 DTO를 반환한다.
+     * 조회 V1
+     * @return
      */
     @GetMapping("")
     public Result findCustomersV1() {
-
         List<Customer> customers = customerService.findCustomers();
         //엔티티 -> DTO 변환
         List<CustomerDTO> CustomerDTOs = customers.stream()
                 .map(CustomerDTO::new)
                 .collect(Collectors.toList());
-
         return new Result(CustomerDTOs);
     }
 
     /**
-     * 등록 V1: 요청 값으로 CreateCustomerRequestDTO DTO를 파라미터로 받는다.
-     * 이점:
-     * - 엔티티에 프레젠테이션 계층을 위한 로직이 추가된다.
-     *   - 엔티티에 API 검증을 위한 로직이 들어간다. (@NotEmpty 등등)
-     *   - 실무에서는 회원 엔티티를 위한 API가 다양하게 만들어지는데, 한 엔티티에 각각의 API를 위한 모든 요청 요구사항을 담기는 어렵다.
-     * - 엔티티가 변경되면 API 스펙이 변한다.
+     * 등록 V1
+     * @param requestDTO
+     * @return
      */
     @PostMapping("")
     public CreateCustomerResponseDTO saveCustomerV1(@RequestBody @Valid CreateCustomerRequestDTO requestDTO) {
-
         Cart cart = requestDTO.getCart();
         if(cart == null) {
             cart = new Cart(new HashMap<>());
@@ -75,13 +70,21 @@ public class CustomerApiController {
         return new CreateCustomerResponseDTO(customerId);
     }
 
+    /**
+     * 단일 조회 V1
+     * @param customerId
+     * @return
+     */
     @GetMapping("/{customerId}")
     public CustomerDTO findCustomerV1(@PathVariable("customerId") Long customerId) {
         return new CustomerDTO(customerService.findCustomer(customerId));
     }
 
     /**
-     * 수정 API
+     * Patch 수정 V1
+     * @param customerId
+     * @param requestDTO
+     * @return
      */
     @PatchMapping("/{customerId}")
     public UpdateCustomerResponseDTO updateMemberV2(@PathVariable("customerId") Long customerId,
@@ -106,6 +109,12 @@ public class CustomerApiController {
         return new UpdateCustomerResponseDTO(customerService.findCustomer(customerId));
     }
 
+    /**
+     * 삭제 V1
+     * @param customerId
+     * @param requestDTO
+     * @return
+     */
     @DeleteMapping("/{customerId}")
     public DeleteCustomerResponseDTO deleteCustomerV1(@PathVariable("customerId") Long customerId,
                                                       @RequestBody @Valid DeleteCustomerRequestDTO requestDTO) {
@@ -114,7 +123,6 @@ public class CustomerApiController {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        Cart cart = customer.getCart();
         customerService.removeCustomer(customerId);
         return new DeleteCustomerResponseDTO(customerId);
     }

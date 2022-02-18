@@ -1,12 +1,14 @@
 package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.item.Item;
-import daepoid.stockManager.domain.item.ItemSearch;
+import daepoid.stockManager.domain.search.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.ItemRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 

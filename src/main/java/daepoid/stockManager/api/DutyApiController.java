@@ -5,7 +5,9 @@ import daepoid.stockManager.api.dto.duty.*;
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.service.DutyService;
 import daepoid.stockManager.service.MemberService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,19 +22,25 @@ public class DutyApiController {
     private final DutyService dutyService;
     private final MemberService memberService;
 
+    /**
+     * 조회 V1
+     * @return
+     */
     @GetMapping("")
     public Result dutiesV1() {
-
         List<Duty> duties = dutyService.findDuties();
-
         //엔티티 -> DTO 변환
-        List<DutyDTO> collect = duties.stream()
+        List<DutyDTO> DutyDTOs = duties.stream()
                 .map(DutyDTO::new)
                 .collect(Collectors.toList());
-
-        return new Result(collect);
+        return new Result(DutyDTOs);
     }
 
+    /**
+     * 등록 V1
+     * @param requestDTO
+     * @return
+     */
     @PostMapping("")
     public CreateDutyResponseDTO createDutyV1(@RequestBody @Valid CreateDutyRequestDTO requestDTO) {
         Duty duty = Duty.builder()
@@ -44,11 +52,22 @@ public class DutyApiController {
         return new CreateDutyResponseDTO(dutyId);
     }
 
+    /**
+     * 단일 조회 V1
+     * @param dutyId
+     * @return
+     */
     @GetMapping("/{dutyId}")
     public DutyDTO findDutyV1(@PathVariable("dutyId") Long dutyId) {
         return new DutyDTO(dutyService.findDuty(dutyId));
     }
 
+    /**
+     * 부분 등록 V1
+     * @param dutyId
+     * @param requestDTO
+     * @return
+     */
     @PostMapping("/{dutyId}")
     public AddDutyMemberResponseDTO AddDutyMemberV1(@PathVariable("dutyId") Long dutyId,
                                                     @RequestBody @Valid AddDutyMemberRequestDTO requestDTO) {
@@ -65,6 +84,12 @@ public class DutyApiController {
         return new AddDutyMemberResponseDTO(dutyService.findDuty(dutyId));
     }
 
+    /**
+     * Put 수정 V1
+     * @param dutyId
+     * @param requestDTO
+     * @return
+     */
     @PutMapping("/{dutyId}")
     public UpdateDutyResponseDTO updateDutyV1(@PathVariable("dutyId") Long dutyId,
                                               @RequestBody @Valid UpdateDutyRequestDTO requestDTO) {
@@ -82,6 +107,11 @@ public class DutyApiController {
         return new UpdateDutyResponseDTO(duty);
     }
 
+    /**
+     * 삭제 V1
+     * @param dutyId
+     * @return
+     */
     @DeleteMapping("/{dutyId}")
     public DeleteDutyResponseDTO deleteDutyV1(@PathVariable("dutyId") Long dutyId) {
         Duty duty = dutyService.findDuty(dutyId);
@@ -89,6 +119,12 @@ public class DutyApiController {
         return new DeleteDutyResponseDTO(duty.getId());
     }
 
+    /**
+     * 부분 삭제 V1
+     * @param dutyId
+     * @param memberId
+     * @return
+     */
     @DeleteMapping("/{dutyId}/{memberId}")
     public DeleteDutyMemberResponseDTO deleteDutyMemberV1(@PathVariable("dutyId") Long dutyId,
                                                           @PathVariable("memberId") Long memberId) {

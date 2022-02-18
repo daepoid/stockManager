@@ -1,6 +1,7 @@
 package daepoid.stockManager.domain.order;
 
 import daepoid.stockManager.domain.recipe.Menu;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

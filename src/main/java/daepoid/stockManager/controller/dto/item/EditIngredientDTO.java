@@ -1,14 +1,12 @@
 package daepoid.stockManager.controller.dto.item;
 
-import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
-import daepoid.stockManager.domain.recipe.Recipe;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data

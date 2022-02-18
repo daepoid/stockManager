@@ -1,11 +1,10 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.duty.DutySearch;
+import daepoid.stockManager.domain.search.DutySearch;
 import daepoid.stockManager.domain.member.Member;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public interface DutyRepository {

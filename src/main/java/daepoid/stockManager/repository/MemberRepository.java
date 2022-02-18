@@ -1,12 +1,10 @@
 package daepoid.stockManager.repository;
 
-import daepoid.stockManager.domain.StoreUser;
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.*;
-import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.domain.search.MemberSearch;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MemberRepository {
 

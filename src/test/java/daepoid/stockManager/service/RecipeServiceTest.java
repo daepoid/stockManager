@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -105,7 +104,7 @@ class RecipeServiceTest {
         String name = "name";
         int price = 123;
         int weight = 123;
-        DishType dishType = DishType.BASKET;
+        DishType dishType = DishType.BOWL;
         List<Ingredient> ingredients = new ArrayList<>();
         int cost = 123;
         int netIncome = 123;
@@ -145,7 +144,7 @@ class RecipeServiceTest {
         String name = "name";
         int price = 123;
         int weight = 123;
-        DishType dishType = DishType.BASKET;
+        DishType dishType = DishType.BOWL;
         List<Ingredient> ingredients = new ArrayList<>();
         int cost = 123;
         int netIncome = 123;
@@ -185,7 +184,7 @@ class RecipeServiceTest {
         String name = "name";
         int price = 123;
         int weight = 123;
-        DishType dishType = DishType.BASKET;
+        DishType dishType = DishType.BOWL;
         List<Ingredient> ingredients = new ArrayList<>();
         int cost = 123;
         int netIncome = 123;

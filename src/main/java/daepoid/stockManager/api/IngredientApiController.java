@@ -27,15 +27,12 @@ public class IngredientApiController {
 
     @GetMapping("")
     public Result ingredientsV1() {
-
         List<Ingredient> ingredients = ingredientService.findIngredients();
-
         //엔티티 -> DTO 변환
-        List<IngredientDTO> collect = ingredients.stream()
+        List<IngredientDTO> IngredientDTOs = ingredients.stream()
                 .map(IngredientDTO::new)
                 .collect(Collectors.toList());
-
-        return new Result(collect);
+        return new Result(IngredientDTOs);
     }
 
     @PostMapping("")
@@ -65,7 +62,6 @@ public class IngredientApiController {
     @PutMapping("/{ingredientId}")
     public UpdateIngredientResponseDTO updateIngredientV1(@PathVariable("ingredientId") Long ingredientId,
                                                     @RequestBody @Valid UpdateIngredientRequestDTO requestDTO) {
-
         ingredientService.changeQuantity(ingredientId, requestDTO.getQuantity());
         ingredientService.changeUnitType(ingredientId, requestDTO.getUnitType());
         ingredientService.changeUnitPrice(ingredientId, requestDTO.getUnitPrice());
@@ -77,7 +73,6 @@ public class IngredientApiController {
     @PatchMapping("/{ingredientId}")
     public UpdateIngredientResponseDTO updatePatchIngredientV1(@PathVariable("ingredientId") Long ingredientId,
                                                          @RequestBody @Valid UpdatePatchIngredientRequestDTO requestDTO) {
-
         if(requestDTO.getQuantity() != null) {
             ingredientService.changeQuantity(ingredientId, requestDTO.getQuantity());
         }

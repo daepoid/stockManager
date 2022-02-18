@@ -5,10 +5,12 @@ import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.controller.dto.recipe.SelectedMenuDTO;
-import daepoid.stockManager.domain.recipe.MenuSearch;
+import daepoid.stockManager.domain.search.MenuSearch;
 import daepoid.stockManager.service.*;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

@@ -1,7 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.domain.recipe.MenuSearch;
+import daepoid.stockManager.domain.search.MenuSearch;
 import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
 

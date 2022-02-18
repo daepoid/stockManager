@@ -1,4 +1,6 @@
-package daepoid.stockManager.domain.recipe;
+package daepoid.stockManager.domain.search;
+
+import daepoid.stockManager.domain.recipe.DishType;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -5,13 +5,14 @@ import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.domain.recipe.Recipe;
+
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -32,7 +33,7 @@ class MenuServiceTest {
         String recipeName = "name";
         int recipePrice = 123;
         int recipeWeight = 123;
-        DishType recipeDishType = DishType.BASKET;
+        DishType recipeDishType = DishType.BOWL;
         List<Ingredient> recipeIngredients = new ArrayList<>();
         int recipeCost = 123;
         int recipeNetIncome = 123;
@@ -468,7 +469,7 @@ class MenuServiceTest {
         String newRecipeName = "456";
         int newPrice = 456;
         int newWeight = 456;
-        DishType newRecipeDishType = DishType.BASKET;
+        DishType newRecipeDishType = DishType.MAIN;
         List<Ingredient> newRecipeIngredients = new ArrayList<>();
         double newRecipeCost = 45.6;
         double newRecipeNetIncome = 45.6;

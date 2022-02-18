@@ -4,11 +4,13 @@ import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.controller.dto.duty.CreateDutyDTO;
 import daepoid.stockManager.controller.dto.duty.CreateDutyMemberDTO;
 import daepoid.stockManager.controller.dto.duty.EditDutyDTO;
-import daepoid.stockManager.domain.duty.DutySearch;
+import daepoid.stockManager.domain.search.DutySearch;
 import daepoid.stockManager.service.DutyService;
 import daepoid.stockManager.service.MemberService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
