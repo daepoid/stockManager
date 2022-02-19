@@ -65,6 +65,10 @@ public class MenuService {
         return menuRepository.findByMenuSearch(menuSearch);
     }
 
+    public List<Menu> findOrderableMenu() {
+        return menuRepository.findOrderableMenu();
+    }
+
     public Integer getNumberOfFoodByRecipeId(Long menuId, Long recipeId) {
         return menuRepository.getNumberOfFoodByRecipeId(menuId, recipeId);
     }
