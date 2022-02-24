@@ -51,6 +51,8 @@ dependencies {
 //	implementation group: 'com.mysema.querydsl', name: 'querydsl-jpa', version: '3.6.3'
 //	implementation group: 'com.mysema.querydsl', name: 'querydsl-apt', version: '3.6.3'
 
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 test {

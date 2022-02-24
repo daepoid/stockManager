@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,15 +31,18 @@ public class Customer extends StoreUser {
     @Embedded
     private Cart cart;
 
+    private LocalDateTime expirationTime;
+
     @Builder
     public Customer(String loginId, String password, String userName,
-                    String tableNumber, Cart cart, List<Order> orders) {
+                    String tableNumber, Cart cart, List<Order> orders, LocalDateTime expirationTime) {
         this.changeLoginId(loginId);
         this.changePassword(password);
         this.changeUserName(userName);
         this.tableNumber = tableNumber;
         this.cart = cart;
         this.orders = orders;
+        this.expirationTime = expirationTime;
     }
 
     public void changeTableNumber(String tableNumber) {
@@ -59,5 +63,9 @@ public class Customer extends StoreUser {
 
     public void addCart(Long menuId, Integer count) {
         this.cart.addCart(menuId, count);
+    }
+
+    public void changeExpirationTime(LocalDateTime expirationTime) {
+        this.expirationTime = expirationTime;
     }
 }

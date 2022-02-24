@@ -38,6 +38,7 @@ public class SecurityLoginService implements UserDetailsService {
         Customer customer = customerRepository.findByLoginId(username);
         log.info("customer = {}", customer);
         if(customer != null) {
+
             String role = "ROLE_CUSTOMER";
             return new User(customer.getLoginId(), customer.getPassword(), List.of(new SimpleGrantedAuthority(role)));
         }

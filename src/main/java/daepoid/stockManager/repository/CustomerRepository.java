@@ -4,6 +4,7 @@ import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.search.CustomerSearch;
 import daepoid.stockManager.domain.order.Order;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ public interface CustomerRepository {
     void addOrder(Long customerId, Order order);
     void changeCart(Long customerId, Map<Long, Integer> numberOfMenus);
     void addCart(Long customerId, Long menuId, int count);
+    void changeExpirationTime(Long customerId, LocalDateTime expirationTime);
 
     //==삭제 로직==//
     void removeCustomer(Long userId);

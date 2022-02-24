@@ -15,7 +15,9 @@ public class DatabaseConfig {
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
         dataSourceBuilder.username("root");
         dataSourceBuilder.password("root");
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/stockManager?useSSL=false&serverTimezone=UTC");
+//        dataSourceBuilder.url("jdbc:mysql://localhost:3306/stockManager?useSSL=false&serverTimezone=UTC&autoReconnect=true");
+        dataSourceBuilder.url("jdbc:mysql://mysql-container:3306/stockManager?useSSL=false&serverTimezone=UTC&autoReconnect=true");
+//        dataSourceBuilder.url("jdbc:mysql://mysql-container:3306/stockManager?useSSL=false&serverTimezone=UTC");
         return dataSourceBuilder.build();
     }
 }

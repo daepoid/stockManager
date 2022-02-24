@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -120,6 +121,11 @@ public class JpaCustomerRepository implements CustomerRepository {
     @Override
     public void addOrder(Long customerId, Order order) {
         em.find(Customer.class, customerId).addOrder(order);
+    }
+
+    @Override
+    public void changeExpirationTime(Long customerId, LocalDateTime expirationTime) {
+        em.find(Customer.class, customerId).changeExpirationTime(expirationTime);
     }
 
     @Override
