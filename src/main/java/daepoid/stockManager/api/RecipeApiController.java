@@ -7,6 +7,8 @@ import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.RecipeService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +19,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/recipes")
+@RequestMapping("/api")
+@Api(tags = {"레시피 관리 API"})
 @RequiredArgsConstructor
 public class RecipeApiController {
 
     private final RecipeService recipeService;
     private final IngredientService ingredientService;
 
-    @GetMapping("")
+    @GetMapping("/v1/recipes")
+    @ApiOperation(value="전체 레시피 조회", notes="전체 레시피 정보를 반환")
     public Result findRecipesV1() {
         List<Recipe> recipes = recipeService.findRecipes();
         //엔티티 -> DTO 변환
@@ -34,7 +38,8 @@ public class RecipeApiController {
         return new Result(RecipeDTOs);
     }
 
-    @PostMapping("")
+    @PostMapping("/v1/recipes")
+    @ApiOperation(value="레시피 생성", notes="새로운 레시피 생성 후 레시피 아이디를 반환")
     public CreateRecipeResponseDTO createRecipeV1(@RequestBody @Valid CreateRecipeRequestDTO requestDTO) {
         List<Long> ingredientIds = requestDTO.getIngredientIds();
         List<Ingredient> ingredients = new ArrayList<>();
@@ -59,12 +64,14 @@ public class RecipeApiController {
         return new CreateRecipeResponseDTO(recipeId);
     }
 
-    @GetMapping("/{recipeId}")
+    @GetMapping("/v1/recipes/{recipeId}")
+    @ApiOperation(value="레시피 조회", notes="레시피 아이디로 레시피를 조회하여 반환")
     public RecipeDTO findRecipe(@PathVariable("recipeId") Long recipeId) {
         return new RecipeDTO(recipeService.findRecipe(recipeId));
     }
 
-    @PutMapping("/{recipeId}")
+    @PutMapping("/v1/recipes/{recipeId}")
+    @ApiOperation(value="레시피 수정", notes="레시피 정보를 수정하고 수정된 레시피의 정보를 반환")
     public UpdateRecipeResponseDTO updateRecipeV1(@PathVariable("recipeId") Long recipeId,
                                                   @RequestBody @Valid UpdateRecipeRequestDTO requestDTO) {
         List<Long> ingredientIds = requestDTO.getIngredientIds();
@@ -84,7 +91,8 @@ public class RecipeApiController {
         return new UpdateRecipeResponseDTO(recipeService.findRecipe(recipeId));
     }
 
-    @PatchMapping("/{recipeId}")
+    @PatchMapping("/v1/recipes/{recipeId}")
+    @ApiOperation(value="레시피 수정", notes="레시피 정보를 수정하고 수정된 레시피의 정보를 반환")
     public UpdateRecipeResponseDTO updatePatchRecipeV1(@PathVariable("recipeId") Long recipeId,
                                                        @RequestBody @Valid UpdatePatchRecipeRequestDTO requestDTO) {
         if(requestDTO.getRecipeNumber() != null) {
@@ -118,7 +126,8 @@ public class RecipeApiController {
         return new UpdateRecipeResponseDTO(recipeService.findRecipe(recipeId));
     }
 
-    @DeleteMapping("/{recipeId}")
+    @DeleteMapping("/v1/recipes/{recipeId}")
+    @ApiOperation(value="레시피 삭제", notes="레시피의 아이디로 레시피의 정보를 삭제")
     public DeleteRecipeResponseDTO deleteRecipeV1(@PathVariable("recipeId") Long recipeId) {
         Recipe recipe = recipeService.findRecipe(recipeId);
         recipeService.removeRecipe(recipe);

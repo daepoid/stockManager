@@ -31,6 +31,17 @@ Store stock management
 
 ## Backend Architecture
 
+- Java 11
+- Spring MVC / Spring Boot:2.6.1
+  - data jpa
+  - thymeleaf
+  - validation
+  - web
+  - security
+- Swagger:3.0.0
+  - Swagger:2.9.2에서 바뀌는 부분들이 다음 버전의 Swagger에 적용될 것으로 판단되어 미리 적용하였다.
+- Mysql 8.0
+
 ## Routes / Endpoint 소개
 
 ## Controller, Service, Repository, Store Procedure 관계도
@@ -89,6 +100,25 @@ docker network inspect stock-manager-network
 
 ```
 
+### Swagger
+
+Swagger 3.0.0 사용을 위해서는 2.9.2 버전에서 변경되는 부분이 있다.
+
+```gradle
+implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+```
+
+```gradle
+implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+```
+
+springfox-swagger2 대신에 springfox-boot-starter를 사용한다.
+
+SwaggerConfig에서 @EnableSwagger2 대신 @EnableWebMVC를 사용한다.
+
+Swagger 접속 URL이 localhost:8080/swagger-ui.html에서 localhost:8080/swagger-ui/index.html로 변경되었다.
 
 ## 향후 추가할 기능
 
@@ -115,3 +145,9 @@ docker network inspect stock-manager-network
 - ~~aws, 배포 자동화~~
 - 댓글, 평점 등의 기능 추가
 - 리팩토링
+- 페이징
+
+## 참고자료
+
+Swagger 2.9.2 -> 3.0.0 마이그레이션
+https://nahwasa.com/entry/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-Swagger-UI-292-300-%EB%A7%88%EC%9D%B4%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%85%98-%EB%B0%A9%EB%B2%95-Spring-Boot-Swagger-UI

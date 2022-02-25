@@ -7,8 +7,11 @@ import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.service.MemberService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +20,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
+@RequestMapping("/api")
+@Api(tags = {"직원 관리 API"})
 @RequiredArgsConstructor
 public class MemberApiController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/api/v1/members")
+    @GetMapping("/v1/members")
+    @ApiOperation(value="전체 직원 조회", notes="전체 직원 정보를 조회하고 반환")
     public Result membersV1() {
         List<Member> findMembers = memberService.findMembers();
         //엔티티 -> DTO 변환
@@ -34,12 +41,14 @@ public class MemberApiController {
         return new Result(MemberDTOs);
     }
 
-    @GetMapping("/api/v1/members/{memberId}")
+    @GetMapping("/v1/members/{memberId}")
+    @ApiOperation(value="직원 조회", notes="직원 아이디를 이용하여 직원 정보 조회")
     public MemberDTO findMemberV1(@PathVariable("memberId") Long memberId) {
         return new MemberDTO(memberService.findMember(memberId));
     }
 
-    @PostMapping("/api/v1/members")
+    @PostMapping("/v1/members")
+    @ApiOperation(value="직원 추가", notes="새로운 직원의 가입 및 정보 추가")
     public CreateMemberResponseDTO saveMemberV1(@RequestBody @Valid CreateMemberRequestDTO requestDTO) {
         Member member = Member.builder()
                 .loginId(requestDTO.getLoginId())
@@ -55,8 +64,9 @@ public class MemberApiController {
         return new CreateMemberResponseDTO(memberId);
     }
 
-    @PutMapping("/api/v1/members/{memberId}")
-    public UpdateMemberResponseDTO updateMemberV2(@PathVariable("memberId") Long memberId,
+    @PatchMapping("/v1/members/{memberId}")
+    @ApiOperation(value="직원 정보 수정", notes="직원의 정보를 수정 후 수정한 정보를 반환")
+    public UpdateMemberResponseDTO updateMemberV1(@PathVariable("memberId") Long memberId,
                                                   @RequestBody @Valid UpdateMemberRequestDTO requestDTO) {
         if(!requestDTO.getName().isBlank()) {
             memberService.changeUserName(memberId, requestDTO.getName());
@@ -64,15 +74,19 @@ public class MemberApiController {
         if(requestDTO.getPhoneNumber().matches("^(01[0-1|6-9])-?(\\d{3,4})-?(\\d{4})$")) {
             memberService.changePhoneNumber(memberId, requestDTO.getPhoneNumber());
         }
-
-        memberService.changeGradeType(memberId, requestDTO.getGradeType());
-        memberService.changeMemberStatus(memberId, requestDTO.getMemberStatus());
+        if(requestDTO.getGradeType() != null) {
+            memberService.changeGradeType(memberId, requestDTO.getGradeType());
+        }
+        if(requestDTO.getMemberStatus() != null) {
+            memberService.changeMemberStatus(memberId, requestDTO.getMemberStatus());
+        }
 
         Member member = memberService.findMember(memberId);
         return new UpdateMemberResponseDTO(member);
     }
 
-    @DeleteMapping("/api/v1/members/{memberId}")
+    @DeleteMapping("/v1/members/{memberId}")
+    @ApiOperation(value="직원 정보 삭제", notes="직원 정보를 삭제하고 아이디를 반환한다.")
     public DeleteMemberResponseDTO deleteMemberV1(@PathVariable("memberId") Long memberId,
                                                   @RequestBody @Valid DeleteMemberRequestDTO requestDTO) {
         Member member = memberService.findMember(memberId);

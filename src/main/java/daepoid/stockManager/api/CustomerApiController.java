@@ -7,6 +7,8 @@ import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.service.CustomerService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +21,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/customers")
+@RequestMapping("/api")
+@Api(tags = {"고객(테이블) 관리 API"})
 @RequiredArgsConstructor
 public class CustomerApiController {
 
@@ -30,7 +33,8 @@ public class CustomerApiController {
      * 조회 V1
      * @return
      */
-    @GetMapping("")
+    @GetMapping("/v1/customers")
+    @ApiOperation(value="전체 고객 조회", notes="전체 고객에 대한 리스트 반환")
     public Result findCustomersV1() {
         List<Customer> customers = customerService.findCustomers();
         //엔티티 -> DTO 변환
@@ -45,7 +49,8 @@ public class CustomerApiController {
      * @param requestDTO
      * @return
      */
-    @PostMapping("")
+    @PostMapping("/v1/customers")
+    @ApiOperation(value="고객 가입", notes="관리자 권한으로 고객 생성")
     public CreateCustomerResponseDTO saveCustomerV1(@RequestBody @Valid CreateCustomerRequestDTO requestDTO) {
         Cart cart = requestDTO.getCart();
         if(cart == null) {
@@ -75,7 +80,8 @@ public class CustomerApiController {
      * @param customerId
      * @return
      */
-    @GetMapping("/{customerId}")
+    @GetMapping("/v1/customers/{customerId}")
+    @ApiOperation(value="고객 조회", notes="고객 정보 반환")
     public CustomerDTO findCustomerV1(@PathVariable("customerId") Long customerId) {
         return new CustomerDTO(customerService.findCustomer(customerId));
     }
@@ -86,8 +92,9 @@ public class CustomerApiController {
      * @param requestDTO
      * @return
      */
-    @PatchMapping("/{customerId}")
-    public UpdateCustomerResponseDTO updateMemberV2(@PathVariable("customerId") Long customerId,
+    @PatchMapping("/v1/customers/{customerId}")
+    @ApiOperation(value="고객 정보 수정", notes="고객 정보 수정 - 이름, 테이블 번호, 장바구니, 주문내역")
+    public UpdateCustomerResponseDTO updateMemberV1(@PathVariable("customerId") Long customerId,
                                                     @RequestBody @Valid UpdateCustomerRequestDTO requestDTO) {
 
         if(!requestDTO.getName().isBlank()) {
@@ -115,7 +122,8 @@ public class CustomerApiController {
      * @param requestDTO
      * @return
      */
-    @DeleteMapping("/{customerId}")
+    @DeleteMapping("/v1/customers/{customerId}")
+    @ApiOperation(value="고객 삭제", notes="고객 삭제 - 고객 비밀번호 필요")
     public DeleteCustomerResponseDTO deleteCustomerV1(@PathVariable("customerId") Long customerId,
                                                       @RequestBody @Valid DeleteCustomerRequestDTO requestDTO) {
         Customer customer = customerService.findCustomer(customerId);

@@ -8,6 +8,8 @@ import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.service.MenuService;
 import daepoid.stockManager.service.RecipeService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +20,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/menus")
+@RequestMapping("/api")
+@Api(tags = {"메뉴 관리 API"})
 @RequiredArgsConstructor
 public class MenuApiController {
 
     private final MenuService menuService;
     private final RecipeService recipeService;
 
-    @GetMapping("")
+    @GetMapping("/v1/menus")
+    @ApiOperation(value="전체 메뉴 조회", notes="전체 메뉴 정보를 조회하고 반환")
     public Result findMenusV1() {
         List<Menu> menus = menuService.findMenus();
         //엔티티 -> DTO 변환
@@ -35,7 +39,8 @@ public class MenuApiController {
         return new Result(MenuDTOs);
     }
 
-    @PostMapping("")
+    @PostMapping("/v1/menus")
+    @ApiOperation(value="메뉴 생성", notes="새로운 메뉴를 생성하고 메뉴 아이디를 반환")
     public CreateMenuResponseDTO createMenuV1(@RequestBody @Valid CreateMenuRequestDTO requestDTO) {
         recipeService.findRecipes();
         Set<Recipe> foods = new HashSet<>();
@@ -57,7 +62,8 @@ public class MenuApiController {
         return new CreateMenuResponseDTO(menuId);
     }
 
-    @GetMapping("/popular")
+    @GetMapping("/v1/menus/popular")
+    @ApiOperation(value="인기 메뉴 조회", notes="메뉴 누적 주문 수량이 많은 순으로 메뉴의 정보를 반환")
     public Result popularMenusV1() {
         List<Menu> menus = menuService.findMenus();
         //엔티티 -> DTO 변환
@@ -68,7 +74,8 @@ public class MenuApiController {
         return new Result(collect);
     }
 
-    @GetMapping("/new-arrival")
+    @GetMapping("/v1/menus/new-arrival")
+    @ApiOperation(value="신메뉴 조회", notes="메뉴 추가 시간이 최근 순으로 메뉴 정보를 반환")
     public Result newArrivalMenusV1() {
         List<Menu> menus = menuService.findMenus();
         //엔티티 -> DTO 변환
@@ -79,12 +86,14 @@ public class MenuApiController {
         return new Result(collect);
     }
 
-    @GetMapping("/{menuId}")
+    @GetMapping("/v1/menus/{menuId}")
+    @ApiOperation(value="메뉴 조회", notes="메뉴의 아이디를 이용하여 메뉴 정보를 조회")
     public MenuDTO findMenuV1(@PathVariable("menuId") Long menuId) {
         return new MenuDTO(menuService.findMenu(menuId));
     }
 
-    @PutMapping("/{menuId}")
+    @PutMapping("/v1/menus/{menuId}")
+    @ApiOperation(value="메뉴 수정", notes="메뉴의 정보를 수정하고 수정한 메뉴의 정보를 반환")
     public UpdateMenuResponseDTO updateMenuV1(@PathVariable("menuId") Long menuId,
                                               @RequestBody @Valid UpdateMenuRequestDTO requestDTO) {
         Map<Long, Integer> numberOfFoods = requestDTO.getNumberOfFoods();
@@ -102,7 +111,8 @@ public class MenuApiController {
         return new UpdateMenuResponseDTO(menuService.findMenu(menuId));
     }
 
-    @PatchMapping("/{menuId}")
+    @PatchMapping("/v1/menus/{menuId}")
+    @ApiOperation(value="메뉴 수정", notes="메뉴의 정보를 수정하고 수정한 메뉴의 정보를 반환")
     public UpdateMenuResponseDTO updatePatchMenuV1(@PathVariable("menuId") Long menuId,
                                                    @RequestBody @Valid UpdatePatchMenuRequestDTO requestDTO) {
         if(requestDTO.getNumberOfFoods() != null) {
@@ -130,7 +140,8 @@ public class MenuApiController {
         return new UpdateMenuResponseDTO(menuService.findMenu(menuId));
     }
 
-    @DeleteMapping("/{menuId}")
+    @DeleteMapping("/v1/menus/{menuId}")
+    @ApiOperation(value="메뉴 삭제", notes="메뉴의 아이디와 삭제 유형을 이용하여 DB에서 삭제하거나 판매하지 않는 상태로 만든다.")
     public DeleteMenuResponseDTO deleteMenuV1(@PathVariable("menuId") Long menuId,
                                               @RequestBody @Valid DeleteMenuRequestDTO requestDTO) {
         if(requestDTO.getMenuStatus().equals(MenuStatus.ORDERABLE)) {

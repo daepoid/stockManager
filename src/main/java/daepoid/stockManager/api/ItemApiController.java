@@ -5,6 +5,8 @@ import daepoid.stockManager.api.dto.item.*;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.service.ItemService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +17,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/items")
+@RequestMapping("/api")
+@Api(tags = {"재고 관리 API"})
 @RequiredArgsConstructor
 public class ItemApiController {
 
     private final ItemService itemService;
 
-    @GetMapping("")
+    @GetMapping("/v1/items")
+    @ApiOperation(value="전체 재고 조회", notes="전체 재고 정보를 조회하고 반환")
     public Result findItemsV1() {
         List<Item> items = itemService.findItems();
         //엔티티 -> DTO 변환
@@ -31,7 +35,8 @@ public class ItemApiController {
         return new Result(ItemDTOs);
     }
 
-    @PostMapping("")
+    @PostMapping("/v1/items")
+    @ApiOperation(value="재고 품목 생성", notes="새로운 재고 품목을 생성하고 아이디를 반환")
     public CreateItemResponseDTO createItemV1(@RequestBody @Valid CreateItemRequestDTO requestDTO) {
         Item item = Item.builder()
                 .name(requestDTO.getName())
@@ -47,12 +52,14 @@ public class ItemApiController {
         return new CreateItemResponseDTO(itemId);
     }
 
-    @GetMapping("/{itemId}")
+    @GetMapping("/v1/items/{itemId}")
+    @ApiOperation(value="재고 조회", notes="아이디를 이용하여 재고 품목의 정보를 조회")
     public ItemDTO findItemV1(@PathVariable("itemId") Long itemId) {
         return new ItemDTO(itemService.findItem(itemId));
     }
 
-    @PutMapping("/{itemId}")
+    @PutMapping("/v1/items/{itemId}")
+    @ApiOperation(value="재고 수정", notes="재고의 정보를 수정하고 수정된 정보를 반환")
     public UpdateItemResponseDTO updateItemV1(@PathVariable("itemId") Long itemId,
                                               @RequestBody @Valid UpdateItemRequestDTO requestDTO) {
         itemService.changeName(itemId, requestDTO.getName());
@@ -65,7 +72,8 @@ public class ItemApiController {
         return new UpdateItemResponseDTO(itemService.findItem(itemId));
     }
 
-    @PatchMapping("/{itemId}")
+    @PatchMapping("/v1/items/{itemId}")
+    @ApiOperation(value="재고 수정", notes="재고의 정보를 수정하고 수정된 정보를 반환")
     public UpdateItemResponseDTO updatePatchItemV1(@PathVariable("itemId") Long itemId,
                                                    @RequestBody @Valid UpdatePatchItemRequestDTO requestDTO) {
         if(requestDTO.getName() != null) {
@@ -90,7 +98,8 @@ public class ItemApiController {
         return new UpdateItemResponseDTO(itemService.findItem(itemId));
     }
 
-    @DeleteMapping("/{itemId}")
+    @DeleteMapping("/v1/items/{itemId}")
+    @ApiOperation(value="재고 품목 삭제", notes="재고 품목 자체를 삭제하고 아이디를 반환")
     public DeleteItemResponseDTO deleteItemV1(@PathVariable("itemId") Long itemId) {
         Item item = itemService.findItem(itemId);
         itemService.removeItem(item);

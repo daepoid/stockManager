@@ -7,6 +7,8 @@ import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.service.OrderService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +21,14 @@ import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/api")
+@Api(tags = {"주문 관리 API"})
 @RequiredArgsConstructor
 public class OrderApiController {
 
     private final OrderService orderService;
 
     @GetMapping("/v1/orders")
+    @ApiOperation(value="전체 주문 조회", notes="전체 주문을 조회하여 반환")
     public List<Order> ordersV1() {
         List<Order> orders = orderService.findOrders();
         for (Order order : orders) {
@@ -38,6 +42,7 @@ public class OrderApiController {
     }
 
     @GetMapping("/v2/orders")
+    @ApiOperation(value="전체 주문 조회", notes="전체 주문을 조회하여 반환")
     public List<OrderDTO> ordersV2() {
         return orderService.findOrders().stream()
                 .map(OrderDTO::new)
@@ -45,6 +50,7 @@ public class OrderApiController {
     }
 
     @PostMapping("/v1/orders")
+    @ApiOperation(value="주문 생성", notes="주문 생성 후 아이디를 반환")
     public CreateOrderResponseDTO createOrderV1(@RequestBody @Valid CreateOrderRequestDTO requestDTO) {
 
         Long orderId = orderService.order(requestDTO.getCustomerId(), requestDTO.getMenuId(), requestDTO.getOrderCount(), LocalDateTime.now());
