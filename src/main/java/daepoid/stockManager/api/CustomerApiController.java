@@ -62,6 +62,25 @@ public class CustomerApiController {
         return new Result(CustomerDTOs);
     }
 
+    @GetMapping("/v3/customers")
+    @ApiOperation(value="전체 고객 조회", notes="전체 고객에 대한 리스트 반환")
+    public Result findCustomersV3(@RequestParam("firstResult") Integer firstResult,
+                                  @RequestParam("maxResult") Integer maxResult) {
+        List<Customer> customers;
+
+        if(firstResult == null) {
+            customers = customerService.findCustomers(maxResult);
+        } else {
+            customers = customerService.findCustomers(firstResult, maxResult);
+        }
+
+        //엔티티 -> DTO 변환
+        List<CustomerDTO> CustomerDTOs = customers.stream()
+                .map(CustomerDTO::new)
+                .collect(Collectors.toList());
+        return new Result(CustomerDTOs);
+    }
+
     /**
      * 등록 V1
      * @param requestDTO
@@ -101,6 +120,11 @@ public class CustomerApiController {
     @GetMapping("/v1/customers/{customerId}")
     @ApiOperation(value="고객 조회", notes="고객 정보 반환")
     public CustomerDTO findCustomerV1(@PathVariable("customerId") Long customerId) {
+        Customer customer = customerService.findCustomer(customerId);
+        if(customer == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         return new CustomerDTO(customerService.findCustomer(customerId));
     }
 
@@ -114,6 +138,9 @@ public class CustomerApiController {
     @ApiOperation(value="고객 정보 수정", notes="고객 정보 수정 - 이름, 테이블 번호, 장바구니, 주문내역")
     public UpdateCustomerResponseDTO updateMemberV1(@PathVariable("customerId") Long customerId,
                                                     @RequestBody @Valid UpdateCustomerRequestDTO requestDTO) {
+        if(customerService.findCustomer(customerId) == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
 
         if(!requestDTO.getName().isBlank()) {
             customerService.changeUserName(customerId, requestDTO.getName());
@@ -145,11 +172,15 @@ public class CustomerApiController {
     public DeleteCustomerResponseDTO deleteCustomerV1(@PathVariable("customerId") Long customerId,
                                                       @RequestBody @Valid DeleteCustomerRequestDTO requestDTO) {
         Customer customer = customerService.findCustomer(customerId);
+        if(customer == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         if(!passwordEncoder.matches(requestDTO.getPassword(), customer.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
         customerService.removeCustomer(customerId);
-        return new DeleteCustomerResponseDTO(customerId);
+        return new DeleteCustomerResponseDTO(customer.getId());
     }
 }

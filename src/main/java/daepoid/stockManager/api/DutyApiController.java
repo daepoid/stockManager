@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +58,25 @@ public class DutyApiController {
         return new Result(DutyDTOs);
     }
 
+    @GetMapping("/v3/duties")
+    @ApiOperation(value="전체 직무 조회", notes="전체 직무 리스트를 반환")
+    public Result dutiesV3(@RequestParam("firstResult") Integer firstResult,
+                           @RequestParam("maxResult") Integer maxResult) {
+        List<Duty> duties;
+
+        if(firstResult == null) {
+            duties = dutyService.findDuties(maxResult);
+        } else {
+            duties = dutyService.findDuties(firstResult, maxResult);
+        }
+
+        //엔티티 -> DTO 변환
+        List<DutyDTO> DutyDTOs = duties.stream()
+                .map(DutyDTO::new)
+                .collect(Collectors.toList());
+        return new Result(DutyDTOs);
+    }
+
     /**
      * 등록 V1
      * @param requestDTO
@@ -84,7 +102,11 @@ public class DutyApiController {
     @GetMapping("/v1/duties/{dutyId}")
     @ApiOperation(value="직무 조회", notes="직무 아이디를 이용하여 직무를 조회하고 직무 정보를 반환")
     public DutyDTO findDutyV1(@PathVariable("dutyId") Long dutyId) {
-        return new DutyDTO(dutyService.findDuty(dutyId));
+        Duty duty = dutyService.findDuty(dutyId);
+        if(duty == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+        return new DutyDTO(duty);
     }
 
     /**
@@ -120,6 +142,10 @@ public class DutyApiController {
     public UpdateDutyResponseDTO updateDutyV1(@PathVariable("dutyId") Long dutyId,
                                               @RequestBody @Valid UpdateDutyRequestDTO requestDTO) {
         Duty duty = dutyService.findDuty(dutyId);
+        if(duty == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         if(requestDTO.getName() != null) {
             dutyService.changeName(dutyId, requestDTO.getName());
         }
@@ -142,6 +168,10 @@ public class DutyApiController {
     @ApiOperation(value="직무 삭제", notes="직무 아이디를 이용하여 직무를 삭제하고 삭제된 직무 아이디를 반환")
     public DeleteDutyResponseDTO deleteDutyV1(@PathVariable("dutyId") Long dutyId) {
         Duty duty = dutyService.findDuty(dutyId);
+        if(duty == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         dutyService.removeDuty(dutyId);
         return new DeleteDutyResponseDTO(duty.getId());
     }
@@ -156,6 +186,11 @@ public class DutyApiController {
     @ApiOperation(value="직무 할당 직원정보 삭제", notes="직무 아이디와 직원 아이디를 이용하여 해당 직원을 직무할당 해제 후 직무 아이디와 직원 아이디 반환")
     public DeleteDutyMemberResponseDTO deleteDutyMemberV1(@PathVariable("dutyId") Long dutyId,
                                                           @PathVariable("memberId") Long memberId) {
+        Duty duty = dutyService.findDuty(dutyId);
+        if(duty == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         dutyService.removeMember(dutyId, memberService.findMember(memberId));
         return new DeleteDutyMemberResponseDTO(dutyId, memberId);
     }

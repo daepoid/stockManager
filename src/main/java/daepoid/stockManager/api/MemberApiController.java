@@ -59,10 +59,34 @@ public class MemberApiController {
         return new Result(MemberDTOs);
     }
 
+    @GetMapping("/v3/members")
+    @ApiOperation(value="전체 직원 조회", notes="전체 직원 정보를 조회하고 반환")
+    public Result membersV3(@RequestParam("firstResult") Integer firstResult,
+                            @RequestParam("maxResult") Integer maxResult) {
+        List<Member> members;
+
+        if(firstResult == null) {
+            members = memberService.findMembers(maxResult);
+        } else {
+            members = memberService.findMembers(firstResult, maxResult);
+        }
+
+        //엔티티 -> DTO 변환
+        List<MemberDTO> MemberDTOs = members.stream()
+                .map(MemberDTO::new)
+                .collect(Collectors.toList());
+        return new Result(MemberDTOs);
+    }
+
     @GetMapping("/v1/members/{memberId}")
     @ApiOperation(value="직원 조회", notes="직원 아이디를 이용하여 직원 정보 조회")
     public MemberDTO findMemberV1(@PathVariable("memberId") Long memberId) {
-        return new MemberDTO(memberService.findMember(memberId));
+        Member member = memberService.findMember(memberId);
+        if(member == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
+        return new MemberDTO(member);
     }
 
     @PostMapping("/v1/members")
@@ -86,6 +110,11 @@ public class MemberApiController {
     @ApiOperation(value="직원 정보 수정", notes="직원의 정보를 수정 후 수정한 정보를 반환")
     public UpdateMemberResponseDTO updateMemberV1(@PathVariable("memberId") Long memberId,
                                                   @RequestBody @Valid UpdateMemberRequestDTO requestDTO) {
+        Member member = memberService.findMember(memberId);
+        if(member == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         if(!requestDTO.getName().isBlank()) {
             memberService.changeUserName(memberId, requestDTO.getName());
         }
@@ -99,8 +128,7 @@ public class MemberApiController {
             memberService.changeMemberStatus(memberId, requestDTO.getMemberStatus());
         }
 
-        Member member = memberService.findMember(memberId);
-        return new UpdateMemberResponseDTO(member);
+        return new UpdateMemberResponseDTO(memberService.findMember(memberId));
     }
 
     @DeleteMapping("/v1/members/{memberId}")
@@ -108,10 +136,14 @@ public class MemberApiController {
     public DeleteMemberResponseDTO deleteMemberV1(@PathVariable("memberId") Long memberId,
                                                   @RequestBody @Valid DeleteMemberRequestDTO requestDTO) {
         Member member = memberService.findMember(memberId);
+        if(member == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         if(!passwordEncoder.matches(requestDTO.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
         memberService.removeMember(memberId);
-        return new DeleteMemberResponseDTO(memberId);
+        return new DeleteMemberResponseDTO(member.getId());
     }
 }

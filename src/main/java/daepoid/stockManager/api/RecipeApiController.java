@@ -56,6 +56,25 @@ public class RecipeApiController {
         return new Result(RecipeDTOs);
     }
 
+    @GetMapping("/v3/recipes")
+    @ApiOperation(value="전체 레시피 조회", notes="전체 레시피 정보를 반환")
+    public Result findRecipesV3(@RequestParam("firstResult") Integer firstResult,
+                                @RequestParam("maxResult") Integer maxResult) {
+        List<Recipe> recipes;
+
+        if(firstResult == null) {
+            recipes = recipeService.findRecipes(maxResult);
+        } else {
+            recipes = recipeService.findRecipes(firstResult, maxResult);
+        }
+
+        //엔티티 -> DTO 변환
+        List<RecipeDTO> RecipeDTOs = recipes.stream()
+                .map(RecipeDTO::new)
+                .collect(Collectors.toList());
+        return new Result(RecipeDTOs);
+    }
+
     @PostMapping("/v1/recipes")
     @ApiOperation(value="레시피 생성", notes="새로운 레시피 생성 후 레시피 아이디를 반환")
     public CreateRecipeResponseDTO createRecipeV1(@RequestBody @Valid CreateRecipeRequestDTO requestDTO) {
@@ -84,14 +103,24 @@ public class RecipeApiController {
 
     @GetMapping("/v1/recipes/{recipeId}")
     @ApiOperation(value="레시피 조회", notes="레시피 아이디로 레시피를 조회하여 반환")
-    public RecipeDTO findRecipe(@PathVariable("recipeId") Long recipeId) {
-        return new RecipeDTO(recipeService.findRecipe(recipeId));
+    public RecipeDTO findRecipeV1(@PathVariable("recipeId") Long recipeId) {
+        Recipe recipe = recipeService.findRecipe(recipeId);
+        if(recipe == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
+        return new RecipeDTO(recipe);
     }
 
     @PutMapping("/v1/recipes/{recipeId}")
     @ApiOperation(value="레시피 수정", notes="레시피 정보를 수정하고 수정된 레시피의 정보를 반환")
     public UpdateRecipeResponseDTO updateRecipeV1(@PathVariable("recipeId") Long recipeId,
                                                   @RequestBody @Valid UpdateRecipeRequestDTO requestDTO) {
+        Recipe recipe = recipeService.findRecipe(recipeId);
+        if(recipe == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         List<Long> ingredientIds = requestDTO.getIngredientIds();
         List<Ingredient> ingredients = new ArrayList<>();
 
@@ -113,6 +142,11 @@ public class RecipeApiController {
     @ApiOperation(value="레시피 수정", notes="레시피 정보를 수정하고 수정된 레시피의 정보를 반환")
     public UpdateRecipeResponseDTO updatePatchRecipeV1(@PathVariable("recipeId") Long recipeId,
                                                        @RequestBody @Valid UpdatePatchRecipeRequestDTO requestDTO) {
+        Recipe recipe = recipeService.findRecipe(recipeId);
+        if(recipe == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         if(requestDTO.getRecipeNumber() != null) {
             recipeService.changeRecipeNumber(recipeId, requestDTO.getRecipeNumber());
         }
@@ -148,6 +182,10 @@ public class RecipeApiController {
     @ApiOperation(value="레시피 삭제", notes="레시피의 아이디로 레시피의 정보를 삭제")
     public DeleteRecipeResponseDTO deleteRecipeV1(@PathVariable("recipeId") Long recipeId) {
         Recipe recipe = recipeService.findRecipe(recipeId);
+        if(recipe == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
         recipeService.removeRecipe(recipe);
         return new DeleteRecipeResponseDTO(recipe.getId());
     }

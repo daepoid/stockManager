@@ -130,8 +130,8 @@ public class OrderService {
     }
 
     //==조회 로직==//
-    public Order findOrder(Long id) {
-        return orderRepository.findById(id);
+    public Order findOrder(Long orderId) {
+        return orderRepository.findById(orderId);
     }
 
     public List<Order> findOrders() {
