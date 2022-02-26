@@ -44,6 +44,21 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
+    public List<Recipe> findAll(int maxResult) {
+        return em.createQuery("select r from Recipe r", Recipe.class)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
+    public List<Recipe> findAll(int firstResult, int maxResult) {
+        return em.createQuery("select r from Recipe r", Recipe.class)
+                .setFirstResult(firstResult)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
     public Recipe findByRecipeNumber(String recipeNumber) {
         return em.createQuery("select r from Recipe r where r.recipeNumber = :recipeNumber", Recipe.class)
                 .setParameter("recipeNumber", recipeNumber)

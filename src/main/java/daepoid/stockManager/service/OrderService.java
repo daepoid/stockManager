@@ -138,6 +138,14 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+    public List<Order> findOrders(int maxResult) {
+        return orderRepository.findAll(maxResult);
+    }
+
+    public List<Order> findOrders(int firstResult, int maxResult) {
+        return orderRepository.findAll(firstResult, maxResult);
+    }
+
     public List<Order> findByCustomer(Long customerId) {
         return orderRepository.findByCustomer(customerId);
     }

@@ -44,6 +44,21 @@ public class JpaMenuRepository implements MenuRepository {
     }
 
     @Override
+    public List<Menu> findAll(int maxResult) {
+        return em.createQuery("select m from Menu m", Menu.class)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
+    public List<Menu> findAll(int firstResult, int maxResult) {
+        return em.createQuery("select m from Menu m", Menu.class)
+                .setFirstResult(firstResult)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
     public List<Menu> findByName(String name) {
         return em.createQuery("select m from Menu m where m.name = :name", Menu.class)
                 .setParameter("name", name)

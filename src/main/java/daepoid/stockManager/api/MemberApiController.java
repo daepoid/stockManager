@@ -41,6 +41,24 @@ public class MemberApiController {
         return new Result(MemberDTOs);
     }
 
+    @GetMapping("/v2/members")
+    @ApiOperation(value="전체 직원 조회", notes="전체 직원 정보를 조회하고 반환")
+    public Result membersV2(@RequestBody @Valid PagingMemberRequestDTO requestDTO) {
+        List<Member> members;
+
+        if(requestDTO.getFirstResult() == null) {
+            members = memberService.findMembers(requestDTO.getMaxResult());
+        } else {
+            members = memberService.findMembers(requestDTO.getFirstResult(), requestDTO.getMaxResult());
+        }
+
+        //엔티티 -> DTO 변환
+        List<MemberDTO> MemberDTOs = members.stream()
+                .map(MemberDTO::new)
+                .collect(Collectors.toList());
+        return new Result(MemberDTOs);
+    }
+
     @GetMapping("/v1/members/{memberId}")
     @ApiOperation(value="직원 조회", notes="직원 아이디를 이용하여 직원 정보 조회")
     public MemberDTO findMemberV1(@PathVariable("memberId") Long memberId) {

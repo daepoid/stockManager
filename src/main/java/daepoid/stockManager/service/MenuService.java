@@ -31,7 +31,6 @@ public class MenuService {
         return menu.getId();
     }
 
-
     //==조회 로직==//
     public Menu findMenu(Long menuId) {
         return menuRepository.findById(menuId);
@@ -39,6 +38,14 @@ public class MenuService {
 
     public List<Menu> findMenus() {
         return menuRepository.findAll();
+    }
+
+    public List<Menu> findMenus(int maxResult) {
+        return menuRepository.findAll(maxResult);
+    }
+
+    public List<Menu> findMenus(int firstResult, int maxResult) {
+        return menuRepository.findAll(firstResult, maxResult);
     }
 
     public List<Menu> findByName(String name) {

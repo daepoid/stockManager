@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.order.*;
+import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.search.ManagerOrderSearch;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,8 @@ public interface OrderRepository {
     //==조회 로직==//
     Order findById(Long id);
     List<Order> findAll();
+    List<Order> findAll(int maxResult);
+    List<Order> findAll(int firstResult, int maxResult);
 
     List<Order> findByCustomer(Long customerId);
     List<Order> findByOrderMenu(OrderMenu orderMenu);

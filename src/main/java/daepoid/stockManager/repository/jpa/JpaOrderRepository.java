@@ -43,6 +43,21 @@ public class JpaOrderRepository implements OrderRepository {
     }
 
     @Override
+    public List<Order> findAll(int maxResult) {
+        return em.createQuery("select o from Order o", Order.class)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
+    public List<Order> findAll(int firstResult, int maxResult) {
+        return em.createQuery("select o from Order o", Order.class)
+                .setFirstResult(firstResult)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
     public List<Order> findByCustomer(Long customerId) {
         return em.createQuery("select o from Order o where o.customer.id=:customerId", Order.class)
                 .setParameter("customerId", customerId)

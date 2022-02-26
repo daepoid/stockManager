@@ -47,6 +47,14 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    public List<Member> findMembers(int maxResult) {
+        return memberRepository.findAll(maxResult);
+    }
+
+    public List<Member> findMembers(int firstResult, int maxResult) {
+        return memberRepository.findAll(firstResult, maxResult);
+    }
+
     public Member findMemberByLoginId(String loginId) {
         return memberRepository.findByLoginId(loginId);
     }

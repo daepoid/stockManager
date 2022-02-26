@@ -37,6 +37,14 @@ public class RecipeService {
         return recipeRepository.findAll();
     }
 
+    public List<Recipe> findRecipes(int maxResult) {
+        return recipeRepository.findAll(maxResult);
+    }
+
+    public List<Recipe> findRecipes(int firstResult, int maxResult) {
+        return recipeRepository.findAll(firstResult, maxResult);
+    }
+
     public Recipe findRecipeByRecipeNumber(String recipeNumber) {
         return recipeRepository.findByRecipeNumber(recipeNumber);
     }

@@ -36,6 +36,14 @@ public class IngredientService {
         return ingredientRepository.findAll();
     }
 
+    public List<Ingredient> findIngredients(int maxResult) {
+        return ingredientRepository.findAll(maxResult);
+    }
+
+    public List<Ingredient> findIngredients(int firstResult, int maxResult) {
+        return ingredientRepository.findAll(firstResult, maxResult);
+    }
+
     public List<Ingredient> findByName(String name) {
         return ingredientRepository.findByName(name);
     }

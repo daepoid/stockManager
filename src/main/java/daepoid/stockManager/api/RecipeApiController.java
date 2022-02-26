@@ -38,6 +38,24 @@ public class RecipeApiController {
         return new Result(RecipeDTOs);
     }
 
+    @GetMapping("/v2/recipes")
+    @ApiOperation(value="전체 레시피 조회", notes="전체 레시피 정보를 반환")
+    public Result findRecipesV2(@RequestBody @Valid PagingRecipeRequestDTO requestDTO) {
+        List<Recipe> recipes;
+
+        if(requestDTO.getFirstResult() == null) {
+            recipes = recipeService.findRecipes(requestDTO.getMaxResult());
+        } else {
+            recipes = recipeService.findRecipes(requestDTO.getFirstResult(), requestDTO.getMaxResult());
+        }
+
+        //엔티티 -> DTO 변환
+        List<RecipeDTO> RecipeDTOs = recipes.stream()
+                .map(RecipeDTO::new)
+                .collect(Collectors.toList());
+        return new Result(RecipeDTOs);
+    }
+
     @PostMapping("/v1/recipes")
     @ApiOperation(value="레시피 생성", notes="새로운 레시피 생성 후 레시피 아이디를 반환")
     public CreateRecipeResponseDTO createRecipeV1(@RequestBody @Valid CreateRecipeRequestDTO requestDTO) {

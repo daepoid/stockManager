@@ -1,5 +1,6 @@
 package daepoid.stockManager.repository;
 
+import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.search.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
@@ -14,11 +15,10 @@ public interface ItemRepository {
 
     //==조회 로직==//
     Item findById(Long itemId);
-
     List<Item> findAll();
-
+    List<Item> findAll(int maxResult);
+    List<Item> findAll(int firstResult, int maxResult);
     List<Item> findByName(String name);
-
     List<Item> findByItemType(ItemType itemType);
 
     // 일정 수량 이하인 경우에 찾아서 반환하다.

@@ -44,6 +44,21 @@ public class JpaDutyRepository implements DutyRepository {
     }
 
     @Override
+    public List<Duty> findAll(int maxResult) {
+        return em.createQuery("select d from Duty d", Duty.class)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
+    public List<Duty> findAll(int firstResult, int maxResult) {
+        return em.createQuery("select d from Duty d", Duty.class)
+                .setFirstResult(firstResult)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
     public List<Duty> findByName(String name) {
         return em.createQuery("select d from Duty d where d.name = :name", Duty.class)
                 .setParameter("name", name)

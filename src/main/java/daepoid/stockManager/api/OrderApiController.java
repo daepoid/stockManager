@@ -3,6 +3,7 @@ package daepoid.stockManager.api;
 import daepoid.stockManager.api.dto.order.CreateOrderRequestDTO;
 import daepoid.stockManager.api.dto.order.CreateOrderResponseDTO;
 import daepoid.stockManager.api.dto.order.OrderDTO;
+import daepoid.stockManager.api.dto.order.PagingOrderRequestDTO;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.service.OrderService;
@@ -45,6 +46,22 @@ public class OrderApiController {
     @ApiOperation(value="전체 주문 조회", notes="전체 주문을 조회하여 반환")
     public List<OrderDTO> ordersV2() {
         return orderService.findOrders().stream()
+                .map(OrderDTO::new)
+                .collect(toList());
+    }
+
+    @GetMapping("/v3/orders")
+    @ApiOperation(value="전체 주문 조회", notes="전체 주문을 조회하여 반환")
+    public List<OrderDTO> ordersV3(@RequestBody @Valid PagingOrderRequestDTO requestDTO) {
+        List<Order> orders;
+
+        if(requestDTO.getFirstResult() == null) {
+            orders = orderService.findOrders(requestDTO.getMaxResult());
+        } else {
+            orders = orderService.findOrders(requestDTO.getFirstResult(), requestDTO.getMaxResult());
+        }
+
+        return orders.stream()
                 .map(OrderDTO::new)
                 .collect(toList());
     }

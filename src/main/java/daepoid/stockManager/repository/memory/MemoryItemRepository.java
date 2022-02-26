@@ -42,6 +42,16 @@ public class MemoryItemRepository implements ItemRepository {
     }
 
     @Override
+    public List<Item> findAll(int maxResult) {
+        return null;
+    }
+
+    @Override
+    public List<Item> findAll(int firstResult, int maxResult) {
+        return null;
+    }
+
+    @Override
     public List<Item> findByName(String name) {
         return store.values()
                 .stream()

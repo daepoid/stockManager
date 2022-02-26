@@ -35,6 +35,24 @@ public class ItemApiController {
         return new Result(ItemDTOs);
     }
 
+    @GetMapping("/v2/items")
+    @ApiOperation(value="전체 재고 조회", notes="전체 재고 정보를 조회하고 반환")
+    public Result findItemsV2(@RequestBody @Valid PagingItemRequestDTO requestDTO) {
+        List<Item> items;
+
+        if(requestDTO.getFirstResult() == null) {
+            items = itemService.findItems(requestDTO.getMaxResult());
+        } else {
+            items = itemService.findItems(requestDTO.getFirstResult(), requestDTO.getMaxResult());
+        }
+
+        //엔티티 -> DTO 변환
+        List<ItemDTO> ItemDTOs = items.stream()
+                .map(ItemDTO::new)
+                .collect(Collectors.toList());
+        return new Result(ItemDTOs);
+    }
+
     @PostMapping("/v1/items")
     @ApiOperation(value="재고 품목 생성", notes="새로운 재고 품목을 생성하고 아이디를 반환")
     public CreateItemResponseDTO createItemV1(@RequestBody @Valid CreateItemRequestDTO requestDTO) {

@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.duty.Duty;
+import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.member.*;
 import daepoid.stockManager.domain.search.MemberSearch;
 
@@ -14,6 +15,8 @@ public interface MemberRepository {
     //==조회 로직==//
     Member findById(Long id);
     List<Member> findAll();
+    List<Member> findAll(int maxResult);
+    List<Member> findAll(int firstResult, int maxResult);
     Member findByLoginId(String loginId);
     List<Member> findByUserName(String userName);
 

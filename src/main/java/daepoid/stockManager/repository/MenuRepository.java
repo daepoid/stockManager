@@ -1,5 +1,6 @@
 package daepoid.stockManager.repository;
 
+import daepoid.stockManager.domain.member.Member;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.search.MenuSearch;
 import daepoid.stockManager.domain.recipe.MenuStatus;
@@ -17,6 +18,8 @@ public interface MenuRepository {
     //==조회 로직==//
     Menu findById(Long menuId);
     List<Menu> findAll();
+    List<Menu> findAll(int maxResult);
+    List<Menu> findAll(int firstResult, int maxResult);
 
     List<Menu> findByName(String name);
     List<Menu> findByRecipe(Recipe recipe);

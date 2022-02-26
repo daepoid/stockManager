@@ -1,6 +1,7 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.duty.Duty;
+import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.domain.search.DutySearch;
 import daepoid.stockManager.domain.member.Member;
 
@@ -15,6 +16,8 @@ public interface DutyRepository {
     //==조회 로직==//
     Duty findById(Long id);
     List<Duty> findAll();
+    List<Duty> findAll(int maxResult);
+    List<Duty> findAll(int firstResult, int maxResult);
     List<Duty> findByName(String name);
     List<Duty> findByMember(Member member);
 

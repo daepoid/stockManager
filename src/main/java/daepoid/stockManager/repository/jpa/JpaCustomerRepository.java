@@ -46,6 +46,21 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
+    public List<Customer> findAll(int maxResult) {
+        return em.createQuery("select c from Customer c", Customer.class)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
+    public List<Customer> findAll(int firstResult, int maxResult) {
+        return em.createQuery("select c from Customer c", Customer.class)
+                .setFirstResult(firstResult)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
     public Customer findByLoginId(String loginId) {
         return em.createQuery("select c from Customer c where c.loginId=:loginId", Customer.class)
                 .setParameter("loginId", loginId)

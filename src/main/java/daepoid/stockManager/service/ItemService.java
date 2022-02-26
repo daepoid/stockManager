@@ -38,6 +38,14 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
+    public List<Item> findItems(int maxResult) {
+        return itemRepository.findAll(maxResult);
+    }
+
+    public List<Item> findItems(int firstResult, int maxResult) {
+        return itemRepository.findAll(firstResult, maxResult);
+    }
+
     public List<Item> findByName(String name) {
         return itemRepository.findByName(name);
     }

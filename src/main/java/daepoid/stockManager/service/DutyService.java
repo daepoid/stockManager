@@ -37,6 +37,14 @@ public class DutyService {
         return dutyRepository.findAll();
     }
 
+    public List<Duty> findDuties(int maxResult) {
+        return dutyRepository.findAll(maxResult);
+    }
+
+    public List<Duty> findDuties(int firstResult, int maxResult) {
+        return dutyRepository.findAll(firstResult, maxResult);
+    }
+
     public List<Duty> findByName(String name) {
         return dutyRepository.findByName(name);
     }

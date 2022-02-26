@@ -41,6 +41,16 @@ public class MemoryDutyRepository implements DutyRepository {
     }
 
     @Override
+    public List<Duty> findAll(int maxResult) {
+        return null;
+    }
+
+    @Override
+    public List<Duty> findAll(int firstResult, int maxResult) {
+        return null;
+    }
+
+    @Override
     public List<Duty> findByName(String name) {
         return store.values().stream()
                 .filter(duty -> duty.getName().equals(name))

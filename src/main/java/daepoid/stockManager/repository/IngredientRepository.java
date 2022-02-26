@@ -1,5 +1,6 @@
 package daepoid.stockManager.repository;
 
+import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.UnitType;
@@ -14,6 +15,8 @@ public interface IngredientRepository {
     //==조회 메서드==//
     Ingredient findById(Long ingredientId);
     List<Ingredient> findAll();
+    List<Ingredient> findAll(int maxResult);
+    List<Ingredient> findAll(int firstResult, int maxResult);
     List<Ingredient> findByName(String name);
     List<Ingredient> findByRecipe(Long recipeId);
     List<Ingredient> findByUnitType(UnitType unitType);

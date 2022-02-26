@@ -37,6 +37,16 @@ public class MemoryRecipeRepository implements RecipeRepository {
     }
 
     @Override
+    public List<Recipe> findAll(int maxResult) {
+        return null;
+    }
+
+    @Override
+    public List<Recipe> findAll(int firstResult, int maxResult) {
+        return null;
+    }
+
+    @Override
     public Recipe findByRecipeNumber(String recipeNumber) {
         return store.values().stream()
                 .filter(recipe -> recipe.getRecipeNumber().equals(recipeNumber))

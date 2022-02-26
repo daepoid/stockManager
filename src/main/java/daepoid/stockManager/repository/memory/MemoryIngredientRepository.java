@@ -42,6 +42,16 @@ public class MemoryIngredientRepository implements IngredientRepository {
     }
 
     @Override
+    public List<Ingredient> findAll(int maxResult) {
+        return null;
+    }
+
+    @Override
+    public List<Ingredient> findAll(int firstResult, int maxResult) {
+        return null;
+    }
+
+    @Override
     public List<Ingredient> findByRecipe(Long recipeId) {
         return store.values().stream()
                 .filter(ingredient -> ingredient.getRecipe().getId().equals(recipeId))

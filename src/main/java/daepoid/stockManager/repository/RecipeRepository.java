@@ -1,5 +1,6 @@
 package daepoid.stockManager.repository;
 
+import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.Recipe;
@@ -15,6 +16,9 @@ public interface RecipeRepository {
     //==조회 로직==//
     Recipe findById(Long id);
     List<Recipe> findAll();
+    List<Recipe> findAll(int maxResult);
+    List<Recipe> findAll(int firstResult, int maxResult);
+
     Recipe findByRecipeNumber(String recipeNumber);
     Recipe findByName(String name);
     List<Recipe> findByPrice(int price);

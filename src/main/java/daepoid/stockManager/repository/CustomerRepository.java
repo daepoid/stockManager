@@ -16,6 +16,8 @@ public interface CustomerRepository {
     //==조회 로직==//
     Customer findById(Long id);
     List<Customer> findAll();
+    List<Customer> findAll(int maxResult);
+    List<Customer> findAll(int firstResult, int maxResult);
     Customer findByLoginId(String loginId);
     Customer findByUserName(String userName);
 

@@ -38,6 +38,21 @@ public class JpaIngredientRepository implements IngredientRepository {
     }
 
     @Override
+    public List<Ingredient> findAll(int maxResult) {
+        return em.createQuery("select i from Ingredient i", Ingredient.class)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
+    public List<Ingredient> findAll(int firstResult, int maxResult) {
+        return em.createQuery("select i from Ingredient i", Ingredient.class)
+                .setFirstResult(firstResult)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
     public List<Ingredient> findByRecipe(Long recipeId) {
         return em.createQuery("select i from Ingredient i where i.recipe.id = :recipeId", Ingredient.class)
                 .setParameter("recipeId", recipeId)

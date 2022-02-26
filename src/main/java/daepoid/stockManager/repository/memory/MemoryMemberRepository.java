@@ -46,6 +46,16 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
+    public List<Member> findAll(int maxResult) {
+        return null;
+    }
+
+    @Override
+    public List<Member> findAll(int firstResult, int maxResult) {
+        return null;
+    }
+
+    @Override
     public Member findByLoginId(String loginId) {
         return store.values()
                 .stream()

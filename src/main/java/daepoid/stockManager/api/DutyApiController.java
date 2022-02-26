@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,13 +27,31 @@ public class DutyApiController {
     private final MemberService memberService;
 
     /**
-     * 조회 V1
+     * 조회
      * @return
      */
     @GetMapping("/v1/duties")
     @ApiOperation(value="전체 직무 조회", notes="전체 직무 리스트를 반환")
     public Result dutiesV1() {
         List<Duty> duties = dutyService.findDuties();
+        //엔티티 -> DTO 변환
+        List<DutyDTO> DutyDTOs = duties.stream()
+                .map(DutyDTO::new)
+                .collect(Collectors.toList());
+        return new Result(DutyDTOs);
+    }
+
+    @GetMapping("/v2/duties")
+    @ApiOperation(value="전체 직무 조회", notes="전체 직무 리스트를 반환")
+    public Result dutiesV2(@RequestBody @Valid PagingDutyRequestDTO requestDTO) {
+        List<Duty> duties;
+
+        if(requestDTO.getFirstResult() == null) {
+            duties = dutyService.findDuties(requestDTO.getMaxResult());
+        } else {
+            duties = dutyService.findDuties(requestDTO.getFirstResult(), requestDTO.getMaxResult());
+        }
+
         //엔티티 -> DTO 변환
         List<DutyDTO> DutyDTOs = duties.stream()
                 .map(DutyDTO::new)

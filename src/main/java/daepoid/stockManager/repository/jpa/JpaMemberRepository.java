@@ -48,6 +48,21 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
+    public List<Member> findAll(int maxResult) {
+        return em.createQuery("select m from Member m", Member.class)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
+    public List<Member> findAll(int firstResult, int maxResult) {
+        return em.createQuery("select m from Member m", Member.class)
+                .setFirstResult(firstResult)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
     public Member findByLoginId(String loginId) {
         return em.createQuery("select m from Member m where m.loginId=:loginId", Member.class)
                 .setParameter("loginId", loginId)

@@ -30,13 +30,31 @@ public class CustomerApiController {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 조회 V1
+     * 조회
      * @return
      */
     @GetMapping("/v1/customers")
     @ApiOperation(value="전체 고객 조회", notes="전체 고객에 대한 리스트 반환")
     public Result findCustomersV1() {
         List<Customer> customers = customerService.findCustomers();
+        //엔티티 -> DTO 변환
+        List<CustomerDTO> CustomerDTOs = customers.stream()
+                .map(CustomerDTO::new)
+                .collect(Collectors.toList());
+        return new Result(CustomerDTOs);
+    }
+
+    @GetMapping("/v2/customers")
+    @ApiOperation(value="전체 고객 조회", notes="전체 고객에 대한 리스트 반환")
+    public Result findCustomersV2(@RequestBody @Valid PagingCustomerRequestDTO requestDTO) {
+        List<Customer> customers;
+
+        if(requestDTO.getFirstResult() == null) {
+            customers = customerService.findCustomers(requestDTO.getMaxResult());
+        } else {
+            customers = customerService.findCustomers(requestDTO.getFirstResult(), requestDTO.getMaxResult());
+        }
+
         //엔티티 -> DTO 변환
         List<CustomerDTO> CustomerDTOs = customers.stream()
                 .map(CustomerDTO::new)

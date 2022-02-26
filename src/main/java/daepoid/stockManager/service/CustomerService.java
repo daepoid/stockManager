@@ -38,6 +38,14 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
+    public List<Customer> findCustomers(int maxResult) {
+        return customerRepository.findAll(maxResult);
+    }
+
+    public List<Customer> findCustomers(int firstResult, int maxResult) {
+        return customerRepository.findAll(firstResult, maxResult);
+    }
+
     public Customer findCustomerByLoginId(String loginId) {
         return customerRepository.findByLoginId(loginId);
     }

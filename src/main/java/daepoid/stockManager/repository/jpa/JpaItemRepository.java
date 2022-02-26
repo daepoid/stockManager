@@ -43,6 +43,21 @@ public class JpaItemRepository implements ItemRepository {
     }
 
     @Override
+    public List<Item> findAll(int maxResult) {
+        return em.createQuery("select i from Item i", Item.class)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
+    public List<Item> findAll(int firstResult, int maxResult) {
+        return em.createQuery("select i from Item i", Item.class)
+                .setFirstResult(firstResult)
+                .setMaxResults(maxResult)
+                .getResultList();
+    }
+
+    @Override
     public List<Item> findByName(String name) {
         return em.createQuery("select i from Item i where i.name = :name", Item.class)
                 .setParameter("name", name)

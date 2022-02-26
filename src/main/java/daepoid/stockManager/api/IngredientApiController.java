@@ -39,6 +39,24 @@ public class IngredientApiController {
         return new Result(IngredientDTOs);
     }
 
+    @GetMapping("/v2/ingredients")
+    @ApiOperation(value="전체 재료 조회", notes="레시피에 할당된 재료들을 일괄적으로 조회")
+    public Result ingredientsV2(@RequestBody @Valid PagingIngredientRequestDTO requestDTO) {
+        List<Ingredient> ingredients;
+
+        if(requestDTO.getFirstResult() == null) {
+            ingredients = ingredientService.findIngredients(requestDTO.getMaxResult());
+        } else {
+            ingredients = ingredientService.findIngredients(requestDTO.getFirstResult(), requestDTO.getMaxResult());
+        }
+
+        //엔티티 -> DTO 변환
+        List<IngredientDTO> IngredientDTOs = ingredients.stream()
+                .map(IngredientDTO::new)
+                .collect(Collectors.toList());
+        return new Result(IngredientDTOs);
+    }
+
     @PostMapping("/v1/ingredients")
     @ApiOperation(value="재료 생성", notes="재고 정보를 받아와 레시피에 들어가는 재료의 정보를 생성하고 재료의 아이디를 반환")
     public CreateIngredientResponseDTO createIngredientV1(@RequestBody @Valid CreateIngredientRequestDTO requestDTO) {

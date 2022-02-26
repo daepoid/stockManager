@@ -39,6 +39,24 @@ public class MenuApiController {
         return new Result(MenuDTOs);
     }
 
+    @GetMapping("/v2/menus")
+    @ApiOperation(value="전체 메뉴 조회", notes="전체 메뉴 정보를 조회하고 반환")
+    public Result findMenusV2(@RequestBody @Valid PagingMenuRequestDTO requestDTO) {
+        List<Menu> menus;
+
+        if(requestDTO.getFirstResult() == null) {
+            menus = menuService.findMenus(requestDTO.getMaxResult());
+        } else {
+            menus = menuService.findMenus(requestDTO.getFirstResult(), requestDTO.getMaxResult());
+        }
+
+        //엔티티 -> DTO 변환
+        List<MenuDTO> MenuDTOs = menus.stream()
+                .map(MenuDTO::new)
+                .collect(Collectors.toList());
+        return new Result(MenuDTOs);
+    }
+
     @PostMapping("/v1/menus")
     @ApiOperation(value="메뉴 생성", notes="새로운 메뉴를 생성하고 메뉴 아이디를 반환")
     public CreateMenuResponseDTO createMenuV1(@RequestBody @Valid CreateMenuRequestDTO requestDTO) {
