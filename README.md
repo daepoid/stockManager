@@ -124,6 +124,7 @@ Swagger 접속 URL이 localhost:8080/swagger-ui.html에서 localhost:8080/swagge
 
 - RestAPI 기준에 부합하도록 추가 및 수정
   - Swagger 작성
+  - API 예외처리 및 인증
 - ~~cart 를 entity 에서 embedded 로 변경~~
 - ~~customer 와 member 의 공통 부분을 추출하고 이를 상속하는 방식으로 변경~~
 - 테이블에 있는 QR 코드를 이용하여 로그인 vs 개인 아이디를 통해 로그인

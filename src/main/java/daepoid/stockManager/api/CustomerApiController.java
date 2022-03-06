@@ -11,8 +11,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -120,12 +122,14 @@ public class CustomerApiController {
     @GetMapping("/v1/customers/{customerId}")
     @ApiOperation(value="고객 조회", notes="고객 정보 반환")
     public CustomerDTO findCustomerV1(@PathVariable("customerId") Long customerId) {
-        Customer customer = customerService.findCustomer(customerId);
-        if(customer == null) {
-            throw new IllegalArgumentException("잘못된 아이디");
+        try {
+            Customer customer = customerService.findCustomer(customerId);
+            return new CustomerDTO(customerService.findCustomer(customerId));
+        } catch(Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 아이디", e);
         }
 
-        return new CustomerDTO(customerService.findCustomer(customerId));
+
     }
 
     /**

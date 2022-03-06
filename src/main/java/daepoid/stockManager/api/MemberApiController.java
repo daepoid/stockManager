@@ -78,17 +78,6 @@ public class MemberApiController {
         return new Result(MemberDTOs);
     }
 
-    @GetMapping("/v1/members/{memberId}")
-    @ApiOperation(value="직원 조회", notes="직원 아이디를 이용하여 직원 정보 조회")
-    public MemberDTO findMemberV1(@PathVariable("memberId") Long memberId) {
-        Member member = memberService.findMember(memberId);
-        if(member == null) {
-            throw new IllegalArgumentException("잘못된 아이디");
-        }
-
-        return new MemberDTO(member);
-    }
-
     @PostMapping("/v1/members")
     @ApiOperation(value="직원 추가", notes="새로운 직원의 가입 및 정보 추가")
     public CreateMemberResponseDTO saveMemberV1(@RequestBody @Valid CreateMemberRequestDTO requestDTO) {
@@ -104,6 +93,17 @@ public class MemberApiController {
         Long memberId = memberService.join(member);
 
         return new CreateMemberResponseDTO(memberId);
+    }
+
+    @GetMapping("/v1/members/{memberId}")
+    @ApiOperation(value="직원 조회", notes="직원 아이디를 이용하여 직원 정보 조회")
+    public MemberDTO findMemberV1(@PathVariable("memberId") Long memberId) {
+        Member member = memberService.findMember(memberId);
+        if(member == null) {
+            throw new IllegalArgumentException("잘못된 아이디");
+        }
+
+        return new MemberDTO(member);
     }
 
     @PatchMapping("/v1/members/{memberId}")

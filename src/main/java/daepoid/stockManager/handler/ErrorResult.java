@@ -1,4 +1,4 @@
-package daepoid.stockManager.exhandler;
+package daepoid.stockManager.handler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
