@@ -209,6 +209,12 @@ public class JpaRecipeRepository implements RecipeRepository {
                 .changeNotes(notes);
     }
 
+    @Override
+    public void changeImgUrl(Long recipeId, String imgUrl) {
+        em.find(Recipe.class, recipeId)
+                .changeImgUrl(imgUrl);
+    }
+
     //==삭제 로직==//
     @Override
     public void removeRecipe(Recipe recipe) {

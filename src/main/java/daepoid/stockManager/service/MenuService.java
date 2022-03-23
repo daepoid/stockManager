@@ -112,6 +112,11 @@ public class MenuService {
     }
 
     @Transactional
+    public void changeImgUrl(Long menuId, String imgUrl) {
+        menuRepository.changeImgUrl(menuId, imgUrl);
+    }
+
+    @Transactional
     public void addFood(Long menuId, Recipe food, Integer numberOfFoods) {
         menuRepository.addFood(menuId, food, numberOfFoods);
     }

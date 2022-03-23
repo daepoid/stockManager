@@ -14,10 +14,24 @@
 
 <div class="container">
     <form th:object="${selectedMenuDTO}" method="post">
+        <div class="form-group col" >
+            <label th:for="menuImg">메뉴 사진</label>
+            <img src="/static/images/sample001.jpg"
+                 th:src="@{images/sample001.jpg}"
+                 alt=""
+                 th:width="400px" th:height="400px"/>
+        </div>
         <div class="form-group">
             <label th:for="name">메뉴 이름</label>
             <input type="text" name="name" id="name"
                    th:field="*{name}" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+            <label th:for="menuInfo">메뉴 정보</label>
+            <textarea name="menuInfo" id="menuInfo"
+                      th:value="*{menuInfo}"
+                      th:text="*{menuInfo}"
+                      class="form-control" readonly></textarea>
         </div>
         <div class="form-group">
             <label th:for="count">수량</label>

@@ -25,9 +25,15 @@ public class SelectedMenuDTO {
     @Positive
     private Integer count;
 
+    private String imgUrl;
+
+    private String menuInfo;
+
     public SelectedMenuDTO(Menu menu, Integer count) {
         this.menuId = menu.getId();
         this.name = menu.getName();
+        this.imgUrl = menu.getImgUrl();
+        this.menuInfo = menu.getMenuInfo();
         this.count = count;
     }
 }

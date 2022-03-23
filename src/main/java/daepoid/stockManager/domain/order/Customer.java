@@ -2,6 +2,7 @@ package daepoid.stockManager.domain.order;
 
 import daepoid.stockManager.domain.StoreUser;
 
+import daepoid.stockManager.domain.member.GradeType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,11 +35,13 @@ public class Customer extends StoreUser {
     private LocalDateTime expirationTime;
 
     @Builder
-    public Customer(String loginId, String password, String userName,
+    public Customer(String loginId, String password, String userName, GradeType gradeType,
                     String tableNumber, Cart cart, List<Order> orders, LocalDateTime expirationTime) {
         this.changeLoginId(loginId);
         this.changePassword(password);
         this.changeUserName(userName);
+        this.changeGradeType(gradeType);
+
         this.tableNumber = tableNumber;
         this.cart = cart;
         this.orders = orders;

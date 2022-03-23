@@ -27,6 +27,8 @@ public class TestMenuDataInit {
                 .addedDate(now)
                 .salesCount(0)
                 .menuStatus(MenuStatus.ORDERABLE)
+                .imgUrl("url")
+                .menuInfo("menu info")
                 .build());
 
         menuService.saveMenu(Menu.builder()
@@ -35,6 +37,8 @@ public class TestMenuDataInit {
                 .addedDate(now)
                 .salesCount(0)
                 .menuStatus(MenuStatus.ORDERABLE)
+                .imgUrl("url")
+                .menuInfo("menu info")
                 .build());
 
         menuService.saveMenu(Menu.builder()
@@ -43,6 +47,8 @@ public class TestMenuDataInit {
                 .addedDate(now)
                 .salesCount(0)
                 .menuStatus(MenuStatus.ORDERABLE)
+                .imgUrl("url")
+                .menuInfo("menu info")
                 .build());
     }
 }

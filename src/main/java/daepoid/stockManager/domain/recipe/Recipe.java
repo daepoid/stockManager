@@ -64,9 +64,12 @@ public class Recipe {
     @Lob
     private String notes;
 
+    @NotBlank
+    private String imgUrl;
+
     @Builder
     public Recipe(String recipeNumber, String name, int price, double weight, DishType dishType,
-                  double cost, double netIncome, List<Ingredient> ingredients, Set<Menu> menus, String notes) {
+                  double cost, double netIncome, List<Ingredient> ingredients, Set<Menu> menus, String notes, String imgUrl) {
         this.recipeNumber = recipeNumber;
         this.name = name;
         this.price = price;
@@ -77,6 +80,7 @@ public class Recipe {
         this.ingredients = ingredients;
         this.menus = menus;
         this.notes = notes;
+        this.imgUrl = imgUrl;
     }
 
     //==개발 로직==//
@@ -120,6 +124,10 @@ public class Recipe {
 
     public void changeNetIncome(double netIncome) {
         this.netIncome = netIncome;
+    }
+
+    public void changeImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     //==연관 관계 메서드==//

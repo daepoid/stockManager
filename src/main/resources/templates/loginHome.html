@@ -6,7 +6,6 @@
         <title>Home</title>
     </head>
     <body>
-
         <!-- Navigation-->
         <div sec:authorize="hasAnyRole('ROLE_CUSTOMER')"
              th:replace="fragments/customerNavigation::navigation(${customerId}, 'home')"></div>

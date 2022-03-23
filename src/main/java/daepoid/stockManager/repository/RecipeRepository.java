@@ -39,6 +39,7 @@ public interface RecipeRepository {
     void changeCost(Long recipeId, double cost);
     void updateCost(Long recipeId);
     void changeNotes(Long recipeId, String notes);
+    void changeImgUrl(Long recipeId, String imgUrl);
 
     //==삭제 로직==//
     void removeRecipe(Recipe recipe);

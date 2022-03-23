@@ -36,6 +36,8 @@ dependencies {
 	// spring security 추가 시작
 	implementation 'org.springframework.boot:spring-boot-starter-security:2.6.4'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
+	testImplementation 'org.springframework.security:spring-security-test:5.6.2'
+
 	// spring security 추가 완료
 
 //	runtimeOnly 'com.h2database:h2:2.0.202'
@@ -43,7 +45,6 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
-	testImplementation 'org.springframework.security:spring-security-test:5.6.2'
 
 	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
@@ -59,6 +60,10 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
 //	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
+//	// JWT 추가
+//	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+//	// JWT 추가 완료
 }
 
 test {

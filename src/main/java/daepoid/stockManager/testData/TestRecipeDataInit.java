@@ -27,6 +27,7 @@ public class TestRecipeDataInit {
                 .cost(0.0)
                 .netIncome(11000 - 0.0)
                 .notes("note1")
+                .imgUrl("url")
                 .build());
 
         recipeService.saveRecipe(Recipe.builder()
@@ -38,6 +39,7 @@ public class TestRecipeDataInit {
                 .cost(0.0)
                 .netIncome(12000 - 0.0)
                 .notes("note2")
+                .imgUrl("url")
                 .build());
 
         recipeService.saveRecipe(Recipe.builder()
@@ -49,6 +51,7 @@ public class TestRecipeDataInit {
                 .cost(0.0)
                 .netIncome(13000 - 0.0)
                 .notes("note3")
+                .imgUrl("url")
                 .build());
 
         recipeService.saveRecipe(Recipe.builder()
@@ -60,6 +63,7 @@ public class TestRecipeDataInit {
                 .cost(0.0)
                 .netIncome(14000 - 0.0)
                 .notes("note4")
+                .imgUrl("url")
                 .build());
     }
 }

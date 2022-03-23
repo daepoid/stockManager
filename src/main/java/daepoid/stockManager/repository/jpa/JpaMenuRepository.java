@@ -156,6 +156,12 @@ public class JpaMenuRepository implements MenuRepository {
     }
 
     @Override
+    public void changeImgUrl(Long menuId, String imgUrl) {
+        Menu menu = em.find(Menu.class, menuId);
+        menu.changeImgUrl(imgUrl);
+    }
+
+    @Override
     public void addFood(Long menuId, Recipe food, Integer numberOfFoods) {
         em.find(Menu.class, menuId).addFood(food, numberOfFoods);
     }

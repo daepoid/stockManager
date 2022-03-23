@@ -138,6 +138,12 @@ public class RecipeService {
         recipeRepository.changeNotes(recipeId, notes);
     }
 
+    @Transactional
+    public void changeImgUrl(Long recipeId, String imgUrl) {
+        recipeRepository.changeImgUrl(recipeId, imgUrl);
+
+    }
+
     //==삭제 로직==//
 
     @Transactional

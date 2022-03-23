@@ -38,6 +38,7 @@ public interface MenuRepository {
     void changeFoodInfo(Long menuId, Set<Recipe> foods, Map<Long, Integer> numberOfFoods);
     void changeSalesCount(Long menuId, int salesCount);
     void changeMenuStatus(Long menuId, MenuStatus menuStatus);
+    void changeImgUrl(Long menuId, String imgUrl);
 
     void addFood(Long menuId, Recipe food, Integer numberOfFoods);
 

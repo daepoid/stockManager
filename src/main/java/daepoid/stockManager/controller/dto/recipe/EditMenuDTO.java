@@ -36,6 +36,8 @@ public class EditMenuDTO {
 
     private Map<Recipe, Integer> foodMap = new HashMap<>();
 
+    private String menuInfo;
+
 //    private Set<Recipe> foods = new HashSet<>();
 //
 //    private Map<Long, Integer> numberOfFoods = new HashMap<>();
@@ -63,6 +65,7 @@ public class EditMenuDTO {
 //        this.foods = menu.getFoods();
 //        this.numberOfFoods = menu.getNumberOfFood();
         this.price = sum;
+        this.menuInfo = menu.getMenuInfo();
     }
 
 }

@@ -28,8 +28,10 @@
             </ul>
           </li>
 
-          <li class="nav-item dropdown" th:classappend="${tab == 'member'} ? active"
-              sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
+          <li class="nav-item dropdown"
+              sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+              th:classappend="${tab == 'member'} ? active"
+              >
             <a class="nav-link dropdown-toggle" id="memberNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">직원</a>
             <ul class="dropdown-menu" aria-labelledby="memberNavbarDropdown">
               <li><a class="dropdown-item" href="#!" th:href="@{/items}">재고 관리</a></li>
@@ -37,7 +39,8 @@
             </ul>
           </li>
 
-          <li class="nav-item dropdown" th:classappend="${tab == 'manager'} ? active"
+          <li class="nav-item dropdown"
+              th:classappend="${tab == 'manager'} ? active"
               sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')">
             <a class="nav-link dropdown-toggle" id="managerNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">매니저</a>
             <ul class="dropdown-menu" aria-labelledby="managerNavbarDropdown">

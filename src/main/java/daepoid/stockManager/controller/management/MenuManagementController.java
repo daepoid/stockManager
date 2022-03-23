@@ -5,6 +5,7 @@ import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.controller.dto.recipe.AddRecipeMenuDTO;
 import daepoid.stockManager.controller.dto.recipe.CreateMenuDTO;
 import daepoid.stockManager.controller.dto.recipe.EditMenuDTO;
+import daepoid.stockManager.domain.recipe.MenuStatus;
 import daepoid.stockManager.service.MenuService;
 import daepoid.stockManager.service.RecipeService;
 
@@ -15,10 +16,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -55,6 +58,9 @@ public class MenuManagementController {
     public String createMenu(@Valid @ModelAttribute("createMenuDTO") CreateMenuDTO createMenuDTO,
                              BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
+            log.info("============================================");
+            log.info("{}", createMenuDTO.getMenuName());
+            log.info("============================================");
             return "menu-management/createMenuForm";
         }
 
@@ -64,9 +70,12 @@ public class MenuManagementController {
                 .price(0)
                 .addedDate(LocalDateTime.now())
                 .salesCount(0)
+                .menuStatus(MenuStatus.ORDERABLE)
+                .imgUrl("")
                 .build();
 
         Long savedId = menuService.saveMenu(menu);
+        log.info("create Menu {}", savedId);
         return "redirect:/menu-management";
     }
 
@@ -99,7 +108,57 @@ public class MenuManagementController {
         return "redirect:/menu-management/{menuId}";
     }
 
-    @GetMapping("/{menuId}/new")
+    @GetMapping("/{menuId}/image")
+    public String editMenuAddImageForm(@PathVariable Long menuId,
+                                        Model model,
+                                        HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
+        }
+        return "menu-management/addImageMenuForm";
+    }
+
+    @PostMapping("/{menuId}/image")
+    public String editMenuAddRecipe(@PathVariable Long menuId,
+                                    @RequestParam("file") MultipartFile file,
+                                    RedirectAttributes redirectAttributes) {
+        if(file == null) {
+            return "menu-management/addImageMenuForm";
+        }
+        // 파일 저장
+        try {
+            String originalFilename = file.getOriginalFilename();
+            String filename = originalFilename;
+            /* 실행되는 위치의 'file' 폴더에 파일이 저장됩니다. */
+            String savePath = System.getProperty("user.dir") + "\\files";
+            /* 파일이 저장되는 폴더가 없으면 폴더를 생성합니다. */
+            if (!new File(savePath).exists()) {
+                try{
+                    new File(savePath).mkdir();
+                }
+                catch(Exception e){
+                    e.getStackTrace();
+                }
+            }
+
+            String filePath = savePath + "\\" + filename;
+            file.transferTo(new File(filePath));
+
+            log.info("=========================================");
+            log.info("filePath = {}", filePath);
+            log.info("=========================================");
+            menuService.changeImgUrl(menuId, filePath);
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        redirectAttributes.addAttribute("menuId", menuId);
+        return "redirect:/menu-management/{menuId}";
+    }
+
+    @GetMapping("/{menuId}/food")
     public String editMenuAddRecipeForm(@PathVariable Long menuId,
                                         Model model,
                                         HttpServletRequest request) {
@@ -113,7 +172,7 @@ public class MenuManagementController {
         return "menu-management/addRecipeMenuForm";
     }
 
-    @PostMapping("/{menuId}/new")
+    @PostMapping("/{menuId}/food")
     public String editMenuAddRecipe(@PathVariable Long menuId,
                                     @Valid @ModelAttribute("addRecipeMenuDTO") AddRecipeMenuDTO addRecipeMenuDTO,
                                     BindingResult bindingResult,

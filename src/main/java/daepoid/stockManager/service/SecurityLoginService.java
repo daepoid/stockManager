@@ -27,19 +27,20 @@ public class SecurityLoginService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("userName = {}", username);
+        log.info("===================================================");
+        log.info("user name = {}", username);
+        log.info("===================================================");
         Member member = memberRepository.findByLoginId(username);
-        log.info("member = {}", member);
         if(member != null) {
             String role = "ROLE_" + member.getGradeType().toString();
+//            String role = member.getGradeType().toString();
             return new User(member.getLoginId(), member.getPassword(), List.of(new SimpleGrantedAuthority(role)));
         }
 
         Customer customer = customerRepository.findByLoginId(username);
-        log.info("customer = {}", customer);
         if(customer != null) {
-
             String role = "ROLE_CUSTOMER";
+//            String role = "CUSTOMER";
             return new User(customer.getLoginId(), customer.getPassword(), List.of(new SimpleGrantedAuthority(role)));
         }
 

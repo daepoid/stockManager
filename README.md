@@ -136,6 +136,8 @@ Swagger 접속 URL이 localhost:8080/swagger-ui.html에서 localhost:8080/swagge
 
 ### DB Schema
 
+
+🔧수정 중
 ![stockManager](https://user-images.githubusercontent.com/46220202/158642693-f1a28806-2e3b-4f9d-b986-b74a7c769c08.png)
 
 ### 설치 방법

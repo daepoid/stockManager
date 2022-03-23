@@ -56,9 +56,14 @@ public class Menu {
     @Enumerated(EnumType.STRING)
     private MenuStatus menuStatus = MenuStatus.ORDERABLE;
 
+    private String imgUrl;
+
+    @Lob
+    private String menuInfo;
+
     @Builder
     public Menu(String name, Set<Recipe> foods, int price, Map<Long, Integer> numberOfFoods,
-                LocalDateTime addedDate, int salesCount, MenuStatus menuStatus) {
+                LocalDateTime addedDate, int salesCount, MenuStatus menuStatus, String imgUrl, String menuInfo) {
         this.name = name;
         this.price = price;
         this.foods = foods;
@@ -66,6 +71,8 @@ public class Menu {
         this.addedDate = addedDate;
         this.salesCount = salesCount;
         this.menuStatus = menuStatus;
+        this.imgUrl = imgUrl;
+        this.menuInfo = menuInfo;
     }
 
     public Integer getPrice() {
@@ -102,6 +109,10 @@ public class Menu {
 
     public void changeMenuStatus(MenuStatus menuStatus) {
         this.menuStatus = menuStatus;
+    }
+
+    public void changeImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public void updatePrice() {

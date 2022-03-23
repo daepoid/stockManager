@@ -23,11 +23,6 @@ public class Member extends StoreUser {
     @NotBlank
     private String phoneNumber;
 
-    // 직급
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private GradeType gradeType = GradeType.UNDEFINED;
-
     // 직원 상태 {재직, 휴직, 퇴직}
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -50,13 +45,14 @@ public class Member extends StoreUser {
 
     //==생성 메서드==//
     @Builder
-    public Member(String loginId, String password, String userName, String phoneNumber,
-                  GradeType gradeType, MemberStatus memberStatus, List<RoleType> roles, List<Duty> duties) {
+    public Member(String loginId, String password, String userName, GradeType gradeType,
+                  String phoneNumber, MemberStatus memberStatus, List<RoleType> roles, List<Duty> duties) {
         this.changeLoginId(loginId);
         this.changePassword(password);
         this.changeUserName(userName);
+        this.changeGradeType(gradeType);
+
         this.phoneNumber = phoneNumber;
-        this.gradeType = gradeType;
         this.memberStatus = memberStatus;
         this.roles = roles;
         this.duties = duties;
@@ -69,11 +65,6 @@ public class Member extends StoreUser {
     // 전화번호 변경
     public void changePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    // 직급 변경
-    public void changeGradeType(GradeType gradeType) {
-        this.gradeType = gradeType;
     }
 
     // 재직 상태 변경

@@ -158,6 +158,11 @@ public class MemoryRecipeRepository implements RecipeRepository {
         store.get(recipeId).changeNotes(notes);
     }
 
+    @Override
+    public void changeImgUrl(Long recipeId, String imgUrl) {
+
+    }
+
     //==삭제 로직==//
     @Override
     public void removeRecipe(Recipe recipe) {

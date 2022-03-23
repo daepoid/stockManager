@@ -1,5 +1,6 @@
 package daepoid.stockManager.testData;
 
+import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Customer;
 import daepoid.stockManager.service.CustomerService;
@@ -26,6 +27,7 @@ public class TestCustomerDataInit {
                 .loginId("table001")
                 .userName("customer name or table name1")
                 .password(passwordEncoder.encode("123"))
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber("1")
                 .cart(new Cart(new HashMap<>()))
                 .build());
@@ -34,6 +36,7 @@ public class TestCustomerDataInit {
                 .loginId("table002")
                 .userName("customer name or table name2")
                 .password(passwordEncoder.encode("123"))
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber("2")
                 .cart(new Cart(new HashMap<>()))
                 .build());
@@ -42,6 +45,7 @@ public class TestCustomerDataInit {
                 .loginId("table003")
                 .userName("customer name or table name3")
                 .password(passwordEncoder.encode("123"))
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber("3")
                 .cart(new Cart(new HashMap<>()))
                 .build());
