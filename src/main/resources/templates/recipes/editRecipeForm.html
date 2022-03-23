@@ -11,6 +11,15 @@
             <form th:object="${editRecipeDTO}" method="post">
                 <!-- id -->
                 <input type="hidden" th:field="*{id}" />
+                <div class="form-group col" >
+                    <label th:for="menuImg">음식 사진</label>
+                    <img src="/static/images/sample001.jpg"
+                         th:src="@{images/sample001.jpg}"
+                         alt="" th:width="320px" th:height="180px"/>
+                    <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                       th:href="@{/recipes/{recipeId}/image (recipeId=${recipeId})}"
+                       class="w-100 btn btn-primary btn-sm" role="button">이미지 변경</a>
+                </div>
                 <div>
                     <label for="recipeNumber">레시피 번호</label>
                     <input type="text" id="recipeNumber" th:field="*{recipeNumber}"

@@ -109,23 +109,24 @@ public class MenuManagementController {
     }
 
     @GetMapping("/{menuId}/image")
-    public String editMenuAddImageForm(@PathVariable Long menuId,
+    public String editMenuImageForm(@PathVariable Long menuId,
                                         Model model,
                                         HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         if(loginId != null) {
             model.addAttribute("loginId", loginId);
         }
-        return "menu-management/addImageMenuForm";
+        return "menu-management/editImageMenuForm";
     }
 
     @PostMapping("/{menuId}/image")
-    public String editMenuAddRecipe(@PathVariable Long menuId,
-                                    @RequestParam("file") MultipartFile file,
-                                    RedirectAttributes redirectAttributes) {
+    public String editMenuImage(@PathVariable Long menuId,
+                                @RequestParam("file") MultipartFile file,
+                                RedirectAttributes redirectAttributes) {
         if(file == null) {
-            return "menu-management/addImageMenuForm";
+            return "menu-management/editImageMenuForm";
         }
+
         // 파일 저장
         try {
             String originalFilename = file.getOriginalFilename();
