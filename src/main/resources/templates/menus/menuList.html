@@ -34,24 +34,15 @@
                                 <!-- Sale badge-->
                                 <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                                 <!-- Product image-->
-                                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                                    <img class="card-img-top" th:src="@{https://via.placeholder.com/200x200.jpg}" alt="..."/>
                                 <!-- Product details-->
                                 <div class="card-body p-4">
                                     <div class="text-center">
                                         <!-- Product name-->
                                         <h5 class="fw-bolder" th:text="${menu.name}">Special Item</h5>
-                                        <!-- Product reviews-->
-                                        <div class="d-flex justify-content-center small text-warning mb-2">
-                                            <div class="bi-star-fill"></div>
-                                            <div class="bi-star-fill"></div>
-                                            <div class="bi-star-fill"></div>
-                                            <div class="bi-star-fill"></div>
-                                            <div class="bi-star-fill"></div>
-                                        </div>
                                         <!-- Product price-->
                                         <span class="text-muted text-decoration-line-through"
-                                              th:text="|$${menu.price}|">$20.00</span>
-                                        $18.00
+                                              th:text="|$${menu.price}|"></span>
                                     </div>
                                 </div>
                                 <!-- Product actions-->
@@ -71,5 +62,6 @@
 
     <div th:replace="fragments/footer::footer"></div>
 </div> <!-- /container -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
 </body>
 </html>

@@ -22,7 +22,7 @@ public class EditDutyDTO {
 
     // 직무 이름
     @NotBlank
-    private String name;
+    private String dutyName;
 
     // 직무 인센티브
     @NotNull
@@ -33,7 +33,7 @@ public class EditDutyDTO {
 
     public EditDutyDTO(Duty duty) {
         this.id = duty.getId();
-        this.name = duty.getName();
+        this.dutyName = duty.getName();
         this.incentive = duty.getIncentive();
         this.members = duty.getMembers();
     }

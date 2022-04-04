@@ -87,7 +87,7 @@ public class DutyController {
             return "duties/editDutyForm";
         }
 
-        dutyService.changeName(dutyId, editDutyDTO.getName());
+        dutyService.changeName(dutyId, editDutyDTO.getDutyName());
         dutyService.changeIncentive(dutyId, editDutyDTO.getIncentive());
         return "redirect:/duties";
     }

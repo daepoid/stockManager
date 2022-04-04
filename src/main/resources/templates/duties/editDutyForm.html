@@ -12,10 +12,10 @@
         <!-- id -->
         <input type="hidden" th:field="*{id}" />
         <div>
-            <label for="name">직무 이름</label>
-            <input type="text" id="name" th:field="*{name}"
+            <label for="dutyName">직무 이름</label>
+            <input type="text" id="dutyName" th:field="*{dutyName}"
                    class="form-control" th:errorclass="field-error">
-            <div class="field-error" th:errors="*{name}"></div>
+            <div class="field-error" th:errors="*{dutyName}"></div>
             <p></p>
         </div>
         <div>
@@ -38,7 +38,7 @@
                     </th>
                 </tr>
                 <tr th:each="member : *{members}">
-                    <td th:text="${member.name}"></td>
+                    <td th:text="${member.userName}"></td>
                     <td th:text="${member.gradeType}"></td>
 <!--                    <td th:text="${member.gradeType}"></td>-->
                     <td>

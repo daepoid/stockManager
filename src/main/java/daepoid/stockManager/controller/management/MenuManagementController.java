@@ -58,9 +58,6 @@ public class MenuManagementController {
     public String createMenu(@Valid @ModelAttribute("createMenuDTO") CreateMenuDTO createMenuDTO,
                              BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            log.info("============================================");
-            log.info("{}", createMenuDTO.getMenuName());
-            log.info("============================================");
             return "menu-management/createMenuForm";
         }
 
@@ -145,12 +142,7 @@ public class MenuManagementController {
 
             String filePath = savePath + "\\" + filename;
             file.transferTo(new File(filePath));
-
-            log.info("=========================================");
-            log.info("filePath = {}", filePath);
-            log.info("=========================================");
             menuService.changeImgUrl(menuId, filePath);
-
         } catch(Exception e) {
             e.printStackTrace();
         }

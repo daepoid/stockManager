@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @Controller
-@RequestMapping("/myInfo")
+@RequestMapping("/my-info")
 @RequiredArgsConstructor
 public class LoginMemberController {
 
@@ -29,17 +29,16 @@ public class LoginMemberController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("")
-    public String myInfoRedirect(HttpServletRequest request,
-                                 RedirectAttributes redirectAttributes) {
+    public String myInfoRedirect(HttpServletRequest request) {
 
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        if(loginId == null) {
+        Member findMember = memberService.findMemberByLoginId(loginId);
+        if(findMember == null) {
+            log.info("My Info Error loginId = {}", loginId);
             request.getSession(false).invalidate();
             return "redirect:/login";
         }
-
-        redirectAttributes.addAttribute("loginId", loginId);
-        return "redirect:/myInfo/{loginId}";
+        return "forward:/my-info/" + findMember.getLoginId();
     }
 
     /**
@@ -55,6 +54,7 @@ public class LoginMemberController {
         String sessionId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
 
         if(!sessionId.equals(loginId)) {
+            log.info("My Info Error loginId = {}, SessionId = {}", loginId, sessionId);
             request.getSession(false).invalidate();
             return "redirect:/";
         }

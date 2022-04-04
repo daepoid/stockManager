@@ -40,7 +40,6 @@ public class OrderManagementController {
             model.addAttribute("loginId", loginId);
         }
         model.addAttribute("orders", orderService.findByManagerOrderSearch(orderSearch));
-//        model.addAttribute("orders", orderService.findOrders());
         return "order-management/orderList";
     }
 
@@ -52,6 +51,7 @@ public class OrderManagementController {
         if(loginId != null) {
             model.addAttribute("loginId", loginId);
         }
+
         model.addAttribute("customers", customerService.findCustomers());
         model.addAttribute("menus", menuService.findMenus());
         return "order-management/createOrderForm";
@@ -75,7 +75,6 @@ public class OrderManagementController {
 
         customer.addCart(createOrderDTO.getMenuId(), createOrderDTO.getCount());
         orderService.orders(createOrderDTO.getCustomerId());
-//        orderService.order(createOrderDTO.getCustomerId(), createOrderDTO.getMenuId(), createOrderDTO.getCount(), LocalDateTime.now());
         return "redirect:/order-management";
     }
 

@@ -12,13 +12,12 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class CreateDutyMemberDTO {
 
-    @NotBlank
-    private String name;
+    private String dutyName;
 
     @NotNull
     private Long MemberId;
 
-    public CreateDutyMemberDTO(String name) {
-        this.name = name;
+    public CreateDutyMemberDTO(String dutyName) {
+        this.dutyName = dutyName;
     }
 }

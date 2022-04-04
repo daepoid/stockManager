@@ -1,5 +1,6 @@
 package daepoid.stockManager.controller;
 
+import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.member.Member;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -122,13 +124,19 @@ public class MemberController {
      */
     @GetMapping("/{memberId}/edit")
     public String editMemberByAdminForm(@PathVariable("memberId") Long memberId,
-                                        Model model) {
-        model.addAttribute("editMemberDTO", new EditMemberDTO(memberService.findMember(memberId)));
+                                        Model model,
+                                        HttpServletRequest request) {
 
-        // 권한 등급이 관리자인 경우, 사용자인 경우, 권한이 없는 경우
-        // 각각에 맞는 editMemberForm 로 넘겨야한다.
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        Member findMember = memberService.findMemberByLoginId(loginId);
 
-        return "members/editMemberForm";
+        if (findMember != null && findMember.getGradeType().equals(GradeType.CEO) || findMember.getId().equals(memberId)) {
+            model.addAttribute("editMemberDTO", new EditMemberDTO(findMember));
+            return "members/editMemberForm";
+        }
+
+        request.getSession(false).invalidate();
+        return "redirect:/";
     }
 
     @PostMapping("/{memberId}/edit")

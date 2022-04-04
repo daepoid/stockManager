@@ -43,7 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/*.ico", "/error", "/images/**");
+//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .antMatchers("resources/**", "/css/**", "/js/**", "/img/**", "/*.ico", "/error", "/images/**", "/static/**");
     }
 
 //    @Override
@@ -53,78 +54,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/css/**", "/js/**", "/img/**", "/*.ico", "/error");
 //    }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//            // csrf 코튼 검사 비활성화
-//            .csrf()
-//                .disable()
-//            .authorizeRequests()
-//                .antMatchers("/members/new/**").permitAll()
-//                .antMatchers("/api/**").permitAll() // 임시로 api는 모두 열어준다.
-//                .antMatchers("/login").permitAll()
-//                .antMatchers("/signup").permitAll()
-//                .antMatchers("/members/**", "/duties/**", "/customer-management/**", "/menu-management/**", "/order-management/**").hasAnyRole("CEO", "MANAGER")
-//                .antMatchers("/customers/**").hasAnyRole("CUSTOMER")
-//                .antMatchers("/menus/**").authenticated()
-//                // 나머지 요청들은 종류에 상관없이 권한이 있어야 접근 가능하다.
-//                .anyRequest()
-//                    .authenticated()
-//            .and()
-//            // form을 통한 로그인 활성화, custom login form page를 보여줗 url을 지정
-//            .formLogin()
-//                .loginPage("/login")
-//                .failureHandler(authFailureHandler).permitAll()
-////                .loginProcessingUrl("/login")
-//                .defaultSuccessUrl("/")
-//                .usernameParameter("loginId")
-//                .passwordParameter("password")
-//                .successHandler(authSuccessHandler)
-//                .and()
-//            // logout을 csrf와 사용하는 경우 무조건 post를 통해 logout을 해야한다.
-//            .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID", "remember-me")
-//                .permitAll()
-//            .and()
-//                .sessionManagement()
-//                .maximumSessions(1);
-//
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                // csrf 코튼 검사 비활성화
-                .csrf()
+            // csrf 코튼 검사 비활성화
+            .csrf()
                 .disable()
-                .authorizeRequests()
-                .antMatchers("/").permitAll()
+            .authorizeRequests()
+                .antMatchers("/members/new/**").permitAll()
+                .antMatchers("/api/**").permitAll() // 임시로 api는 모두 열어준다.
+                .antMatchers("/login").permitAll()
+                .antMatchers("/signup").permitAll()
+                .antMatchers("/members/**", "/duties/**", "/customer-management/**", "/menu-management/**", "/order-management/**").hasAnyRole("CEO", "MANAGER")
+                .antMatchers("/customers/**").hasAnyRole("CUSTOMER")
+                .antMatchers("/menus/**", "/my-info").authenticated()
                 // 나머지 요청들은 종류에 상관없이 권한이 있어야 접근 가능하다.
                 .anyRequest()
-                .authenticated()
-                .and()
-                // form을 통한 로그인 활성화, custom login form page를 보여줗 url을 지정
-                .formLogin()
+                    .authenticated()
+            .and()
+            // form을 통한 로그인 활성화, custom login form page를 보여줗 url을 지정
+            .formLogin()
                 .loginPage("/login")
                 .failureHandler(authFailureHandler).permitAll()
+//                .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("loginId")
                 .passwordParameter("password")
                 .successHandler(authSuccessHandler)
                 .and()
-                // logout을 csrf와 사용하는 경우 무조건 post를 통해 logout을 해야한다.
-                .logout()
+            // logout을 csrf와 사용하는 경우 무조건 post를 통해 logout을 해야한다.
+            .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "remember-me")
                 .permitAll()
-                .and()
+            .and()
                 .sessionManagement()
                 .maximumSessions(1);
-
     }
 }

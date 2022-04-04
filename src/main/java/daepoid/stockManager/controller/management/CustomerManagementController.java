@@ -38,7 +38,6 @@ public class CustomerManagementController {
             model.addAttribute("loginId", loginId);
         }
         model.addAttribute("customers", customerService.findCustomersByCustomerSearch(customerSearch));
-//        model.addAttribute("customers", customerService.findCustomers());
         return "customer-management/customerListForm";
     }
 

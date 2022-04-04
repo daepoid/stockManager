@@ -19,8 +19,8 @@
                th:text="${err}">전체 오류 메시지</p>
         </div>
         <div class="form-group">
-            <label th:for="name">직무 이름</label>
-            <input type="text" th:field="*{name}" class="form-control"
+            <label th:for="dutyName">직무 이름</label>
+            <input type="text" th:field="*{dutyName}" class="form-control"
                    placeholder="직무 이름을 입력하세요" readonly>
         </div>
         <div>
@@ -29,7 +29,7 @@
                 <option value="">직원 이름</option>
                 <option th:each="member : ${members}"
                         th:value="${member.id}"
-                        th:text="${member.name}">직원 이름</option>
+                        th:text="${member.userName}">직원 이름</option>
             </select>
             <div class="field-error" th:errors="*{memberId}"></div>
         </div>

@@ -54,7 +54,7 @@
           </li>
 
           <form class="d-flex" sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER', 'ROLE_CHEF', 'ROLE_COOK', 'ROLE_PART_TIME')">
-            <a class="btn btn-outline-dark" href="#" th:href="@{/myInfo}">
+            <a class="btn btn-outline-dark" href="#" th:href="@{/my-info}">
               내 정보
             </a>
           </form>
