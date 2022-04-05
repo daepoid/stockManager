@@ -16,10 +16,16 @@
             <img th:src="@{https://via.placeholder.com/200x200.jpg}"
                  alt="..."
                  th:width="400px" th:height="400px"/>
+            <div class="row">
+                <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                   th:href="@{/menu-management/{menuId}/image (menuId=${menuId})}"
+                   class="w-50 btn btn-primary btn-sm" role="button">이미지 변경</a>
 
-            <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
-               th:href="@{/menu-management/{menuId}/image (menuId=${menuId})}"
-               class="w-100 btn btn-primary btn-sm" role="button">이미지 변경</a>
+                <a sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"
+                   th:href="@{/menu-management/{menuId}/delete (menuId=${menuId})}"
+                   class="w-50 btn btn-danger btn-sm" role="button">메뉴 삭제</a>
+            </div>
+
         </div>
         <div>
             <label for="name">전체 메뉴 이름</label>

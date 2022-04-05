@@ -62,7 +62,6 @@ public class OrderMenuController {
         }
 
         model.addAttribute("menus", menuService.findByMenuSearch(menuSearch));
-//        model.addAttribute("menus", menuService.findMenus());
         return "menus/menuList";
     }
 

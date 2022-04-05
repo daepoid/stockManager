@@ -64,7 +64,7 @@ public class Recipe {
     @Lob
     private String notes;
 
-    @NotBlank
+    @NotNull
     private String imgUrl;
 
     @Builder

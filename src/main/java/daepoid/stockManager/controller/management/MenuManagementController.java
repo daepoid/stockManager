@@ -183,6 +183,20 @@ public class MenuManagementController {
         return "redirect:/menu-management/{menuId}";
     }
 
+    @GetMapping("/{menuId}/delete")
+    public String removeMenu(@PathVariable Long menuId,
+                             Model model,
+                             HttpServletRequest request) {
+        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
+        if(loginId != null) {
+            model.addAttribute("loginId", loginId);
+        }
+
+        menuService.removeMenu(menuId);
+
+        return "redirect:/menu-management";
+    }
+
     @PostMapping("/{menuId}/{recipeId}/cancel")
     public String cancel(@PathVariable Long menuId,
                          @PathVariable Long recipeId,

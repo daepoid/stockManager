@@ -67,8 +67,8 @@ public class RecipeController {
                 .dishType(createRecipeDTO.getDishType())
                 .cost(0.0)
                 .netIncome(createRecipeDTO.getPrice() - 0.0)
-//                .ingredients()
                 .notes(createRecipeDTO.getNotes())
+                .imgUrl("")
                 .build();
 
         recipeService.saveRecipe(recipe);
