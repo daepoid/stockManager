@@ -1,4 +1,4 @@
-package daepoid.stockManager.jpa;
+package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
@@ -78,6 +78,7 @@ class JpaRecipeRepositoryTest {
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 789;
         MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
+        String menuImgUrl = "";
 
         return Menu.builder()
                 .name(menuName)
@@ -87,6 +88,7 @@ class JpaRecipeRepositoryTest {
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
                 .menuStatus(menuMenuStatus)
+                .imgUrl(menuImgUrl)
                 .build();
     }
 
@@ -196,6 +198,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -211,6 +214,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -242,6 +246,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -257,6 +262,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -286,6 +292,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -301,6 +308,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -330,6 +338,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -345,6 +354,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -376,6 +386,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -391,6 +402,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -422,6 +434,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -437,6 +450,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -468,6 +482,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -483,6 +498,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -514,6 +530,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -529,6 +546,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -563,6 +581,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -578,6 +597,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -612,6 +632,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -627,6 +648,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -669,6 +691,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -684,6 +707,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -721,6 +745,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -736,6 +761,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -776,6 +802,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -791,6 +818,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -833,6 +861,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -848,6 +877,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);
@@ -888,6 +918,7 @@ class JpaRecipeRepositoryTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -903,6 +934,7 @@ class JpaRecipeRepositoryTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeRepository.save(recipe);

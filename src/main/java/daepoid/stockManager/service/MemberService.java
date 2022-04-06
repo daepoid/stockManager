@@ -85,6 +85,11 @@ public class MemberService {
 
     //==수정 로직==//
     @Transactional
+    public void changeLoginId(Long memberId, String loginId) {
+        memberRepository.changeLoginId(memberId, loginId);
+    }
+
+    @Transactional
     public void changePassword(Long memberId, String password) {
         memberRepository.changePassword(memberId, password);
     }

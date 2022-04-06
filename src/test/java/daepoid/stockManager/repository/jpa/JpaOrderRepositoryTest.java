@@ -1,6 +1,7 @@
-package daepoid.stockManager.jpa;
+package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
@@ -45,6 +46,7 @@ class JpaOrderRepositoryTest {
         int recipeNetIncome = 456;
         Set<Menu> recipeMenus = new HashSet<>();
         String recipeNotes = "recipe notes";
+        String recipeImgUrl = "";
 
         return Recipe.builder()
                 .recipeNumber(recipeRecipeNumber)
@@ -57,6 +59,7 @@ class JpaOrderRepositoryTest {
                 .netIncome(recipeNetIncome)
                 .menus(recipeMenus)
                 .notes(recipeNotes)
+                .imgUrl(recipeImgUrl)
                 .build();
     }
 
@@ -68,6 +71,7 @@ class JpaOrderRepositoryTest {
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 789;
         MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
+        String menuImgUrl = "";
 
         menuFoods.add(recipe);
 
@@ -82,6 +86,7 @@ class JpaOrderRepositoryTest {
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
                 .menuStatus(menuMenuStatus)
+                .imgUrl(menuImgUrl)
                 .build();
     }
 
@@ -95,6 +100,7 @@ class JpaOrderRepositoryTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(customerPassword))
                 .userName(customerName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(customerTableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(customerOrders)
@@ -382,6 +388,7 @@ class JpaOrderRepositoryTest {
                 .loginId(newLoginId)
                 .password(passwordEncoder.encode(newCustomerPassword))
                 .userName(newCustomerName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(newCustomerTableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(newCustomerOrders)

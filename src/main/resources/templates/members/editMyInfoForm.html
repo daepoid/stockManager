@@ -14,8 +14,11 @@
         <div class="form-group">
             <label for="loginId">로그인 ID</label>
             <input type="text" id="loginId" th:field="*{loginId}"
-                   class="form-control" th:errorclass="field-error" readonly>
+                   class="form-control" th:errorclass="field-error">
             <div class="field-error" th:errors="*{loginId}"></div>
+            <div>
+                <button class="idCheck" type="button" id="idCheck" onclick="fn_idCheck();" value="N">중복 확인</button>
+            </div>
         </div>
         <div class="form-group">
             <label for="userName">이름</label>
@@ -68,4 +71,22 @@
     <div th:replace="fragments/footer::footer"></div>
 </div> <!-- /container -->
 </body>
+<script>
+    function fn_idCheck() {
+        $.ajax({
+            url: "/members/new/idCheck",
+            type: "POST",
+            dataType: "JSON",
+            data: {"loginId" : $("#loginId").val()},
+            success: function(data) {
+                if(data) {
+                    alert("중복된 아이디입니다.");
+                } else {
+                    $("#idCheck").attr("value", "Y")
+                    alert("사용 가능한 아이디입니다.");
+                }
+            }
+        })
+    }
+</script>
 </html>

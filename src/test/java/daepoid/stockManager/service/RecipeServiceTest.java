@@ -77,6 +77,7 @@ class RecipeServiceTest {
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 789;
         MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
+        String menuImgUrl = "";
 
         return Menu.builder()
                 .name(menuName)
@@ -86,6 +87,7 @@ class RecipeServiceTest {
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
                 .menuStatus(menuMenuStatus)
+                .imgUrl(menuImgUrl)
                 .build();
     }
 
@@ -186,10 +188,14 @@ class RecipeServiceTest {
         int weight = 123;
         DishType dishType = DishType.BOWL;
         List<Ingredient> ingredients = new ArrayList<>();
-        int cost = 123;
-        int netIncome = 123;
+        double cost = 123;
+        double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
-        String notes = "recipe notes";
+        String notes = "notes";
+        String imgUrl = "";
+
+        ingredients.add(ingredient);
+        menus.add(menu);
 
         Recipe recipe = Recipe.builder()
                 .recipeNumber(recipeNumber)
@@ -202,6 +208,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -233,6 +240,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -248,6 +256,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -277,6 +286,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -292,6 +302,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -321,6 +332,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -336,6 +348,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -369,6 +382,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -384,6 +398,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -415,6 +430,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -430,6 +446,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -463,6 +480,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -478,6 +496,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -511,6 +530,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -526,6 +546,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -560,6 +581,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -575,6 +597,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -609,6 +632,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -624,6 +648,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -671,6 +696,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -686,6 +712,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -722,6 +749,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -737,6 +765,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -783,8 +812,9 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
-//        ingredients.add(ingredient);
+        ingredients.add(ingredient);
         menus.add(menu);
 
         Recipe recipe = Recipe.builder()
@@ -798,27 +828,28 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
 
         List<Ingredient> newIngredients = new ArrayList<>();
-        newIngredients.add(ingredient);
 
-        assertThat(recipeService.findRecipe(recipeId).getIngredients().contains(ingredient)).isFalse();
-        assertThat(recipeService.findRecipe(recipeId).getIngredients().stream()
-                .filter(i -> i.getId().equals(ingredient.getId()))
-                .findFirst().orElse(null)).isNull();
-        assertThat(recipeService.findRecipesByIngredient(ingredient).stream()
-                .anyMatch(r -> r.getId().equals(recipeId))).isFalse();
-
-        recipeService.changeIngredients(recipeId, newIngredients);
-        assertThat(recipe.getIngredients().stream()
-                .anyMatch(i -> i.getId().equals(ingredient.getId()))).isTrue();
         assertThat(recipeService.findRecipe(recipeId).getIngredients().contains(ingredient)).isTrue();
         assertThat(recipeService.findRecipe(recipeId).getIngredients().stream()
                 .filter(i -> i.getId().equals(ingredient.getId()))
                 .findFirst().orElse(null)).isNotNull();
+        assertThat(recipeService.findRecipesByIngredient(ingredient).stream()
+                .anyMatch(r -> r.getId().equals(recipeId))).isTrue();
+
+        recipeService.changeIngredients(recipeId, newIngredients);
+
+        assertThat(recipe.getIngredients().stream()
+                .anyMatch(i -> i.getId().equals(ingredient.getId()))).isFalse();
+        assertThat(recipeService.findRecipe(recipeId).getIngredients().contains(ingredient)).isFalse();
+        assertThat(recipeService.findRecipe(recipeId).getIngredients().stream()
+                .filter(i -> i.getId().equals(ingredient.getId()))
+                .findFirst().orElse(null)).isNull();
     }
 
     @Test
@@ -842,8 +873,8 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
-//        ingredients.add(ingredient);
         menus.add(menu);
 
         Recipe recipe = Recipe.builder()
@@ -857,6 +888,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);
@@ -898,6 +930,7 @@ class RecipeServiceTest {
         double netIncome = 123;
         Set<Menu> menus = new HashSet<>();
         String notes = "notes";
+        String imgUrl = "";
 
         ingredients.add(ingredient);
         menus.add(menu);
@@ -913,6 +946,7 @@ class RecipeServiceTest {
                 .netIncome(netIncome)
                 .menus(menus)
                 .notes(notes)
+                .imgUrl(imgUrl)
                 .build();
 
         Long recipeId = recipeService.saveRecipe(recipe);

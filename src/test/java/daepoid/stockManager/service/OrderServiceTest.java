@@ -1,6 +1,7 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.DishType;
 import daepoid.stockManager.domain.recipe.Menu;
@@ -44,6 +45,7 @@ class OrderServiceTest {
         int recipeNetIncome = 456;
         Set<Menu> recipeMenus = new HashSet<>();
         String recipeNotes = "recipe notes";
+        String recipeImgUrl = "";
 
         return Recipe.builder()
                 .recipeNumber(recipeRecipeNumber)
@@ -56,6 +58,7 @@ class OrderServiceTest {
                 .netIncome(recipeNetIncome)
                 .menus(recipeMenus)
                 .notes(recipeNotes)
+                .imgUrl(recipeImgUrl)
                 .build();
     }
 
@@ -67,6 +70,7 @@ class OrderServiceTest {
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 789;
         MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
+        String menuImgUrl = "";
 
         menuFoods.add(recipe);
 
@@ -81,6 +85,7 @@ class OrderServiceTest {
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
                 .menuStatus(menuMenuStatus)
+                .imgUrl(menuImgUrl)
                 .build();
     }
 
@@ -94,6 +99,7 @@ class OrderServiceTest {
                 .loginId(customerLoginId)
                 .password(passwordEncoder.encode(customerPassword))
                 .userName(customerName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(customerTableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(customerOrders)
@@ -441,6 +447,7 @@ class OrderServiceTest {
                 .loginId(newLoginId)
                 .password(passwordEncoder.encode(newCustomerPassword))
                 .userName(newCustomerName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(newCustomerTableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(newCustomerOrders)

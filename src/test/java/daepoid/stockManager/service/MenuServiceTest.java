@@ -39,6 +39,7 @@ class MenuServiceTest {
         int recipeNetIncome = 123;
         Set<Menu> recipeMenus = new HashSet<>();
         String recipeNotes = "recipe notes";
+        String recipeImgUrl = "";
 
         return Recipe.builder()
                 .recipeNumber(recipeRecipeNumber)
@@ -51,6 +52,7 @@ class MenuServiceTest {
                 .netIncome(recipeNetIncome)
                 .menus(recipeMenus)
                 .notes(recipeNotes)
+                .imgUrl(recipeImgUrl)
                 .build();
     }
 
@@ -134,6 +136,7 @@ class MenuServiceTest {
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
         MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        String menuImgUrl = "";
 
         foods.add(recipe);
 
@@ -148,6 +151,7 @@ class MenuServiceTest {
                 .addedDate(addedDate)
                 .salesCount(salesCount)
                 .menuStatus(menuStatus)
+                .imgUrl(menuImgUrl)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -170,6 +174,7 @@ class MenuServiceTest {
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
         MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        String menuImgUrl = "";
 
         foods.add(recipe);
 
@@ -184,6 +189,7 @@ class MenuServiceTest {
                 .addedDate(addedDate)
                 .salesCount(salesCount)
                 .menuStatus(menuStatus)
+                .imgUrl(menuImgUrl)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -207,6 +213,7 @@ class MenuServiceTest {
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
         MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        String menuImgUrl = "";
 
         foods.add(recipe);
 
@@ -221,6 +228,7 @@ class MenuServiceTest {
                 .addedDate(addedDate)
                 .salesCount(salesCount)
                 .menuStatus(menuStatus)
+                .imgUrl(menuImgUrl)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -279,6 +287,7 @@ class MenuServiceTest {
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
         MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        String menuImgUrl = "";
 
         foods.add(recipe);
 
@@ -293,6 +302,7 @@ class MenuServiceTest {
                 .addedDate(addedDate)
                 .salesCount(salesCount)
                 .menuStatus(menuStatus)
+                .imgUrl(menuImgUrl)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -584,6 +594,7 @@ class MenuServiceTest {
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
         MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        String menuImgUrl = "";
 
         foods.add(recipe);
 
@@ -598,6 +609,7 @@ class MenuServiceTest {
                 .addedDate(addedDate)
                 .salesCount(salesCount)
                 .menuStatus(menuStatus)
+                .imgUrl(menuImgUrl)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);

@@ -1,5 +1,6 @@
 package daepoid.stockManager.service;
 
+import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.MenuStatus;
@@ -109,6 +110,7 @@ class CustomerServiceTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -131,6 +133,7 @@ class CustomerServiceTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -156,6 +159,7 @@ class CustomerServiceTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -179,6 +183,7 @@ class CustomerServiceTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -202,6 +207,7 @@ class CustomerServiceTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -229,6 +235,7 @@ class CustomerServiceTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -256,6 +263,7 @@ class CustomerServiceTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -303,6 +311,7 @@ class CustomerServiceTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -348,6 +357,7 @@ class CustomerServiceTest {
                 .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)

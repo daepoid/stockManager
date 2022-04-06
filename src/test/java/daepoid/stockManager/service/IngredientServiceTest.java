@@ -56,6 +56,7 @@ class IngredientServiceTest {
         DishType recipeDishType = DishType.BOWL;
         double recipeCost = 456;
         double recipeNetIncome = 456;
+        String recipeImgUrl = "";
 
         return Recipe.builder()
                 .recipeNumber(recipeRecipeNumber)
@@ -64,6 +65,7 @@ class IngredientServiceTest {
                 .dishType(recipeDishType)
                 .cost(recipeCost)
                 .netIncome(recipeNetIncome)
+                .imgUrl(recipeImgUrl)
                 .build();
     }
 

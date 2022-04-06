@@ -11,11 +11,6 @@ spring:
   #    driverClassName: org.mariadb.jdbc.Driver
   #    url: jdbc:mariadb://localhost:3306/stockManager?characterEncoding=UTF-8&serverTimezone=UTC
 
-  # mysql
-  datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/stockManager?allowPublicKeyRetrieval=true&useSSL=false
-
   jpa:
     show-sql: true
     hibernate:

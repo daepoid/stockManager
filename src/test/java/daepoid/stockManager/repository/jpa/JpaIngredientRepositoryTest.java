@@ -1,4 +1,4 @@
-package daepoid.stockManager.jpa;
+package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.item.Item;
@@ -65,6 +65,7 @@ class JpaIngredientRepositoryTest {
                 .dishType(recipeDishType)
                 .cost(recipeCost)
                 .netIncome(recipeNetIncome)
+                .imgUrl("")
                 .build();
     }
 

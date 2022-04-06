@@ -160,6 +160,10 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     //==수정 로직==//
+    @Override
+    public void changeLoginId(Long userId, String loginId) {
+        em.find(StoreUser.class, userId).changeLoginId(loginId);
+    }
 
     @Override
     public void changePassword(Long userId, String password) {

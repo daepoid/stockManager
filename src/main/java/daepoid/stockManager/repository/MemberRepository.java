@@ -28,6 +28,7 @@ public interface MemberRepository {
     List<Member> findByMemberSearch(MemberSearch memberSearch);
 
     //==수정 로직==//
+    void changeLoginId(Long userId, String loginId);
     void changePassword(Long userId, String password);
     void changeUserName(Long userId, String userName);
     void changePhoneNumber(Long memberId, String phoneNumber);

@@ -1,5 +1,6 @@
-package daepoid.stockManager.jpa;
+package daepoid.stockManager.repository.jpa;
 
+import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.recipe.MenuStatus;
@@ -114,8 +115,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer = Customer.builder()
                 .loginId(loginId)
-                .userName(userName)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -141,8 +143,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer1 = Customer.builder()
                 .loginId(loginId1)
-                .userName(userName1)
                 .password(passwordEncoder.encode(password1))
+                .userName(userName1)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber1)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders1)
@@ -156,8 +159,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer2 = Customer.builder()
                 .loginId(loginId2)
-                .userName(userName2)
                 .password(passwordEncoder.encode(password2))
+                .userName(userName2)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber2)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders2)
@@ -197,8 +201,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer = Customer.builder()
                 .loginId(loginId)
-                .userName(userName)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -221,8 +226,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer = Customer.builder()
                 .loginId(loginId)
-                .userName(userName)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -245,8 +251,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer = Customer.builder()
                 .loginId(loginId)
-                .userName(userName)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -274,8 +281,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer = Customer.builder()
                 .loginId(loginId)
-                .userName(userName)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -302,8 +310,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer = Customer.builder()
                 .loginId(loginId)
-                .userName(userName)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -347,8 +356,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer = Customer.builder()
                 .loginId(loginId)
-                .userName(userName)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)
@@ -395,8 +405,9 @@ class JpaCustomerRepositoryTest {
 
         Customer customer = Customer.builder()
                 .loginId(loginId)
-                .userName(userName)
                 .password(passwordEncoder.encode(password))
+                .userName(userName)
+                .gradeType(GradeType.CUSTOMER)
                 .tableNumber(tableNumber)
                 .cart(new Cart(new HashMap<>()))
                 .orders(orders)

@@ -1,4 +1,4 @@
-package daepoid.stockManager.jpa;
+package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.ingredient.Ingredient;
 import daepoid.stockManager.domain.recipe.DishType;
@@ -40,6 +40,7 @@ class JpaMenuRepositoryTest {
         int recipeNetIncome = 123;
         Set<Menu> recipeMenus = new HashSet<>();
         String recipeNotes = "recipe notes";
+        String imgUrl = "";
 
         return Recipe.builder()
                 .recipeNumber(recipeRecipeNumber)
@@ -52,6 +53,7 @@ class JpaMenuRepositoryTest {
                 .netIncome(recipeNetIncome)
                 .menus(recipeMenus)
                 .notes(recipeNotes)
+                .imgUrl(imgUrl)
                 .build();
     }
 
@@ -403,6 +405,7 @@ class JpaMenuRepositoryTest {
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
         MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        String imgUrl = "";
 
         foods.add(recipe);
 
@@ -417,6 +420,7 @@ class JpaMenuRepositoryTest {
                 .addedDate(addedDate)
                 .salesCount(salesCount)
                 .menuStatus(menuStatus)
+                .imgUrl(imgUrl)
                 .build();
 
         Long menuId = menuRepository.save(menu);

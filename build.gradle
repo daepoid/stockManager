@@ -20,10 +20,10 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.4'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.4'
-	implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.4'
-	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.4'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.5'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.5'
+	implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.5'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.5'
 
 	// mongoDB 추가 시작
 //	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.6.1'
@@ -62,7 +62,8 @@ dependencies {
 //	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 
 //	// JWT 추가
-//	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation "javax.xml.bind:jaxb-api"
 //	// JWT 추가 완료
 }
 

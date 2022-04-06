@@ -1,5 +1,6 @@
 package daepoid.stockManager.config;
 
+import com.nimbusds.oauth2.sdk.auth.JWTAuthentication;
 import daepoid.stockManager.handler.AuthFailureHandler;
 import daepoid.stockManager.handler.AuthSuccessHandler;
 import daepoid.stockManager.service.SecurityLoginService;
@@ -29,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthSuccessHandler authSuccessHandler;
     private final AuthFailureHandler authFailureHandler;
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -47,22 +49,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("resources/**", "/css/**", "/js/**", "/img/**", "/*.ico", "/error", "/images/**", "/static/**");
     }
 
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring()
-//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-//                .antMatchers("/css/**", "/js/**", "/img/**", "/*.ico", "/error");
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            // 교차출처 리소스 공유(CORS)
+            .cors()
+                .and()
             // csrf 코튼 검사 비활성화
             .csrf()
                 .disable()
             .authorizeRequests()
-                .antMatchers("/members/new/**").permitAll()
-                .antMatchers("/api/**").permitAll() // 임시로 api는 모두 열어준다.
+                .antMatchers("/api/**").permitAll() // api 관련 경로는 열어준다.
+                .antMatchers("/members/new/**").permitAll() // 회원가입
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/members/**", "/duties/**", "/customer-management/**", "/menu-management/**", "/order-management/**").hasAnyRole("CEO", "MANAGER")
@@ -71,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 나머지 요청들은 종류에 상관없이 권한이 있어야 접근 가능하다.
                 .anyRequest()
                     .authenticated()
-            .and()
+                .and()
             // form을 통한 로그인 활성화, custom login form page를 보여줗 url을 지정
             .formLogin()
                 .loginPage("/login")
@@ -89,8 +87,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "remember-me")
                 .permitAll()
-            .and()
-                .sessionManagement()
-                .maximumSessions(1);
+        ;
     }
 }
