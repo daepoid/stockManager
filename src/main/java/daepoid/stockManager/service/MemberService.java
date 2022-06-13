@@ -1,8 +1,8 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.users.Customer;
+import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.domain.search.MemberSearch;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
@@ -10,10 +10,12 @@ import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -27,6 +29,8 @@ public class MemberService {
      */
 
     private final JpaMemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final PasswordService passwordService;
 
     //==생성 로직==//
     @Transactional
@@ -36,11 +40,8 @@ public class MemberService {
     }
 
     //==조회 로직==//
-    public Member findMember(Long memberId) {
-        return memberRepository.findAll().stream()
-                .filter(member -> member.getId().equals(memberId))
-                .findFirst().orElse(null);
-
+    public Optional<Member> findMember(Long memberId) {
+        return memberRepository.findById(memberId);
     }
 
     public List<Member> findMembers() {
@@ -55,7 +56,7 @@ public class MemberService {
         return memberRepository.findAll(firstResult, maxResult);
     }
 
-    public Member findMemberByLoginId(String loginId) {
+    public Optional<Member> findMemberByLoginId(String loginId) {
         return memberRepository.findByLoginId(loginId);
     }
 
@@ -63,20 +64,16 @@ public class MemberService {
         return memberRepository.findByUserName(userName);
     }
 
-    public Member findMemberByPhoneNumber(String phoneNumber) {
-        return memberRepository.findByPhoneNumber(phoneNumber);
-    }
-
     public List<Member> findMembersByGradeType(GradeType gradeType) {
         return memberRepository.findByGradeType(gradeType);
     }
 
-    public List<Member> findMembersByMemberStatus(MemberStatus memberStatus) {
-        return memberRepository.findByMemberStatus(memberStatus);
+    public Optional<Member> findMemberByPhoneNumber(String phoneNumber) {
+        return memberRepository.findByPhoneNumber(phoneNumber);
     }
 
-    public List<Member> findMembersByDuty(Duty duty) {
-        return memberRepository.findByDuty(duty);
+    public List<Member> findMembersByMemberStatus(MemberStatus memberStatus) {
+        return memberRepository.findByMemberStatus(memberStatus);
     }
 
     public List<Member> findByMemberSearch(MemberSearch memberSearch) {
@@ -85,55 +82,77 @@ public class MemberService {
 
     //==수정 로직==//
     @Transactional
-    public void changeLoginId(Long memberId, String loginId) {
-        memberRepository.changeLoginId(memberId, loginId);
+    public boolean changeLoginId(Long memberId, String loginId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            member.get().changeLoginId(loginId);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changePassword(Long memberId, String password) {
-        memberRepository.changePassword(memberId, password);
+    public boolean changePassword(Long memberId, String password) {
+        if(passwordService.createPasswordValid(password)) {
+            Optional<Member> member = memberRepository.findById(memberId);
+            if(member.isPresent()) {
+                member.get().changePassword(passwordEncoder.encode(password));
+                return true;
+            }
+        }
+        return false;
     }
 
     @Transactional
-    public void changeUserName(Long memberId, String userName) {
-        memberRepository.changeUserName(memberId, userName);
+    public boolean changeUserName(Long memberId, String userName) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            member.get().changeUserName(userName);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changePhoneNumber(Long memberId, String phoneNumber) {
-        memberRepository.changePhoneNumber(memberId, phoneNumber);
+    public boolean changeGradeType(Long memberId, GradeType gradeType) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            member.get().changeGradeType(gradeType);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeGradeType(Long memberId, GradeType gradeType) {
-        memberRepository.changeGradeType(memberId, gradeType);
+    public boolean changePhoneNumber(Long memberId, String phoneNumber) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            member.get().changePhoneNumber(phoneNumber);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeMemberStatus(Long memberId, MemberStatus memberStatus) {
-        memberRepository.changeMemberStatus(memberId, memberStatus);
-    }
-
-    @Transactional
-    public void changeDuties(Long memberId, List<Duty> duties) {
-        memberRepository.changeDuties(memberId, duties);
-    }
-
-    @Transactional
-    public void addDuty(Long memberId, Duty... duties) {
-        memberRepository.addDuty(memberId, duties);
-    }
-
-    @Transactional
-    public void removeDuty(Long memberId, Duty... duties) {
-        memberRepository.removeDuty(memberId, duties);
+    public boolean changeMemberStatus(Long memberId, MemberStatus memberStatus) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            member.get().changeMemberStatus(memberStatus);
+            return true;
+        }
+        return false;
     }
 
     //==비즈니스 로직==//
 
     //==삭제 로직==//
     @Transactional
-    public void removeMember(Long memberId) {
-        memberRepository.removeMember(memberId);
+    public boolean removeMember(Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            memberRepository.remove(memberId);
+            return true;
+        }
+        return false;
     }
 }

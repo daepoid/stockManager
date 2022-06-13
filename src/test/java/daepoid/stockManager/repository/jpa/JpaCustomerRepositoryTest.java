@@ -2,10 +2,9 @@ package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.order.*;
-import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.domain.recipe.MenuStatus;
-import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
+import daepoid.stockManager.domain.food.Menu;
+import daepoid.stockManager.domain.food.FoodStatus;
+import daepoid.stockManager.domain.users.Customer;
 
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +39,7 @@ class JpaCustomerRepositoryTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 123;
-        MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
+        FoodStatus menuFoodStatus = FoodStatus.ORDERABLE;
 
         return Menu.builder()
                 .name(menuName)
@@ -49,7 +48,7 @@ class JpaCustomerRepositoryTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
-                .menuStatus(menuMenuStatus)
+                .menuStatus(menuFoodStatus)
                 .build();
     }
 
@@ -418,7 +417,7 @@ class JpaCustomerRepositoryTest {
 
         assertThat(customerRepository.findById(customerId)).isNotNull();
 
-        customerRepository.removeCustomer(customerId);
+        customerRepository.remove(customerId);
     
         // then
         assertThat(customerRepository.findById(customerId)).isNull();

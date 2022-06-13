@@ -1,7 +1,7 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.member.Member;
-import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.domain.users.Member;
+import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 
@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,18 +31,16 @@ public class SecurityLoginService implements UserDetailsService {
         log.info("===================================================");
         log.info("user name = {}", username);
         log.info("===================================================");
-        Member member = memberRepository.findByLoginId(username);
-        if(member != null) {
-            String role = "ROLE_" + member.getGradeType().toString();
-//            String role = member.getGradeType().toString();
-            return new User(member.getLoginId(), member.getPassword(), List.of(new SimpleGrantedAuthority(role)));
+        Optional<Member> member = memberRepository.findByLoginId(username);
+        if(member.isPresent()) {
+            String role = "ROLE_" + member.get().getGradeType().toString();
+            return new User(member.get().getLoginId(), member.get().getPassword(), List.of(new SimpleGrantedAuthority(role)));
         }
 
-        Customer customer = customerRepository.findByLoginId(username);
-        if(customer != null) {
+        Optional<Customer> customer = customerRepository.findByLoginId(username);
+        if(customer.isPresent()) {
             String role = "ROLE_CUSTOMER";
-//            String role = "CUSTOMER";
-            return new User(customer.getLoginId(), customer.getPassword(), List.of(new SimpleGrantedAuthority(role)));
+            return new User(customer.get().getLoginId(), customer.get().getPassword(), List.of(new SimpleGrantedAuthority(role)));
         }
 
         throw new IllegalArgumentException("존재하지 않는 사용자입니다.");

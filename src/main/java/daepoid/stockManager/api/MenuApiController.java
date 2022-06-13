@@ -2,11 +2,8 @@ package daepoid.stockManager.api;
 
 import daepoid.stockManager.api.dto.Result;
 import daepoid.stockManager.api.dto.menu.*;
-import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.domain.recipe.MenuStatus;
-import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.service.MenuService;
-import daepoid.stockManager.service.RecipeService;
+import daepoid.stockManager.domain.food.Menu;
+import daepoid.stockManager.domain.food.FoodStatus;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -92,7 +89,7 @@ public class MenuApiController {
                 .numberOfFoods(requestDTO.getNumberOfFoods())
                 .addedDate(LocalDateTime.now())
                 .salesCount(requestDTO.getSalesCount())
-                .menuStatus(requestDTO.getMenuStatus())
+                .menuStatus(requestDTO.getFoodStatus())
                 .build();
         menu.updatePrice();
         Long menuId = menuService.saveMenu(menu);
@@ -153,7 +150,7 @@ public class MenuApiController {
         menuService.changeFoods(menuId, foods);
         menuService.changeNumberOfFoods(menuId, numberOfFoods);
         menuService.changeSalesCount(menuId, requestDTO.getSalesCount());
-        menuService.changeMenuStatus(menuId,  requestDTO.getMenuStatus());
+        menuService.changeMenuStatus(menuId,  requestDTO.getFoodStatus());
 
         return new UpdateMenuResponseDTO(menuService.findMenu(menuId));
     }
@@ -185,8 +182,8 @@ public class MenuApiController {
             menuService.changeSalesCount(menuId, requestDTO.getSalesCount());
         }
 
-        if(requestDTO.getMenuStatus() != null) {
-            menuService.changeMenuStatus(menuId, requestDTO.getMenuStatus());
+        if(requestDTO.getFoodStatus() != null) {
+            menuService.changeMenuStatus(menuId, requestDTO.getFoodStatus());
         }
 
         return new UpdateMenuResponseDTO(menuService.findMenu(menuId));
@@ -201,11 +198,11 @@ public class MenuApiController {
             throw new IllegalArgumentException("잘못된 아이디");
         }
 
-        if(requestDTO.getMenuStatus().equals(MenuStatus.ORDERABLE)) {
+        if(requestDTO.getFoodStatus().equals(FoodStatus.ORDERABLE)) {
             throw new IllegalArgumentException("잘못된 상태");
         }
 
-        menuService.changeMenuStatus(menuId, requestDTO.getMenuStatus());
+        menuService.changeMenuStatus(menuId, requestDTO.getFoodStatus());
         return new DeleteMenuResponseDTO(menu.getId());
     }
 }

@@ -1,11 +1,10 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.search.ItemSearch;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
-import daepoid.stockManager.repository.jpa.JpaItemRepository;
 
 import org.junit.jupiter.api.Test;
 
@@ -217,8 +216,8 @@ class JpaItemRepositoryTest {
 
         Long itemId = itemRepository.save(item);
 
-        assertThat(itemRepository.findByUnderQuantity(quantity).contains(item)).isTrue();
-        assertThat(itemRepository.findByUnderQuantity(quantity).stream()
+        assertThat(itemRepository.findByQuantityLessThanEqual(quantity).contains(item)).isTrue();
+        assertThat(itemRepository.findByQuantityLessThanEqual(quantity).stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -449,7 +448,7 @@ class JpaItemRepositoryTest {
         itemRepository.changeQuantity(itemId, newQuantity);
 
         // 변경전의 값을 이용해서 찾는 경우 결과가 null이다.
-        assertThat(itemRepository.findByUnderQuantity(quantity).stream()
+        assertThat(itemRepository.findByQuantityLessThanEqual(quantity).stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst().orElse(null)).isNull();
 
@@ -541,7 +540,7 @@ class JpaItemRepositoryTest {
         assertThat(item.getId()).isEqualTo(itemId);
         assertThat(itemRepository.findById(itemId)).isEqualTo(item);
 
-        itemRepository.removeById(item.getId());
+        itemRepository.remove(item.getId());
         assertThat(itemRepository.findById(itemId)).isNull();
     }
 }

@@ -2,10 +2,10 @@ package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.member.GradeType;
 import daepoid.stockManager.domain.order.*;
-import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.domain.recipe.MenuStatus;
-import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.domain.food.Menu;
+import daepoid.stockManager.domain.food.FoodStatus;
 
+import daepoid.stockManager.domain.users.Customer;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ class CustomerServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 123;
-        MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
+        FoodStatus menuFoodStatus = FoodStatus.ORDERABLE;
 
         return Menu.builder()
                 .name(menuName)
@@ -48,7 +48,7 @@ class CustomerServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
-                .menuStatus(menuMenuStatus)
+                .menuStatus(menuFoodStatus)
                 .build();
     }
 

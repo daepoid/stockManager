@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -32,8 +33,8 @@ public class JpaItemRepository implements ItemRepository {
 
     //==조회 로직==//
     @Override
-    public Item findById(Long itemId) {
-        return em.find(Item.class, itemId);
+    public Optional<Item> findById(Long itemId) {
+        return Optional.of(em.find(Item.class, itemId));
     }
 
     @Override
@@ -72,15 +73,14 @@ public class JpaItemRepository implements ItemRepository {
     }
 
     @Override
-    public List<Item> findByPackageCount(int packageCount) {
+    public List<Item> findByPackageCountLessThanEqual(Integer packageCount) {
         return em.createQuery("select i from Item i where i.packageCount <= :packageCount", Item.class)
                 .setParameter("packageCount", packageCount)
                 .getResultList();
     }
 
-    // 일정 수량 이하인 경우에 찾아서 반환한다.
     @Override
-    public List<Item> findByUnderQuantity(double quantity) {
+    public List<Item> findByQuantityLessThanEqual(Double quantity) {
         return em.createQuery("select  i from Item i where i.quantity <= :quantity", Item.class)
                 .setParameter("quantity", quantity)
                 .getResultList();
@@ -123,49 +123,42 @@ public class JpaItemRepository implements ItemRepository {
     //==수정 로직==//
     @Override
     public void changeName(Long itemId, String name) {
-        Item item = em.find(Item.class, itemId);
-        item.changeName(name);
+        em.find(Item.class, itemId).changeName(name);
     }
 
     @Override
-    public void changeItemType(Long itemId, ItemType itemType) {
-        Item item = em.find(Item.class, itemId);
-        item.changeItemType(itemType);
+    public void changePrice(Long itemId, Integer price) {
+        em.find(Item.class, itemId).changePrice(price);
     }
 
     @Override
-    public void changePrice(Long itemId, int price) {
-        Item item = em.find(Item.class, itemId);
-        item.changePrice(price);
-    }
-
-    @Override
-    public void changePackageCount(Long itemId, int packageCount) {
-        Item item = em.find(Item.class, itemId);
-        item.changePackageCount(packageCount);
-    }
-
-    @Override
-    public void changeQuantity(Long itemId, double quantity) {
-        Item item = em.find(Item.class, itemId);
-        item.changeQuantity(quantity);
+    public void changeQuantity(Long itemId, Double quantity) {
+        em.find(Item.class, itemId).changeQuantity(quantity);
     }
 
     @Override
     public void changeUnitType(Long itemId, UnitType unitType) {
-        Item item = em.find(Item.class, itemId);
-        item.changeUnitType(unitType);
+        em.find(Item.class, itemId).changeUnitType(unitType);
+    }
+
+    @Override
+    public void changePackageCount(Long itemId, Integer packageCount) {
+        em.find(Item.class, itemId).changePackageCount(packageCount);
+    }
+
+    @Override
+    public void changeCountryOfOrigin(Long itemId, String countryOfOrigin) {
+        em.find(Item.class, itemId).changeCountryOfOrigin(countryOfOrigin);
+    }
+
+    @Override
+    public void changeNotice(Long itemId, String notice) {
+        em.find(Item.class, itemId).changeNotice(notice);
     }
 
     //==삭제 로직==//
     @Override
-    public void removeItem(Item item) {
-        em.remove(item);
-    }
-
-    @Override
-    public void removeById(Long id) {
-        Item item = em.find(Item.class, id);
-        em.remove(item);
+    public void remove(Long itemId) {
+        em.remove(em.find(Item.class, itemId));
     }
 }

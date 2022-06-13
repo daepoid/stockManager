@@ -1,7 +1,7 @@
 package daepoid.stockManager.api.dto.menu;
 
-import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.domain.recipe.MenuStatus;
+import daepoid.stockManager.domain.food.Menu;
+import daepoid.stockManager.domain.food.FoodStatus;
 import lombok.Data;
 
 import javax.persistence.EnumType;
@@ -34,7 +34,7 @@ public class MenuDTO {
     private int salesCount;
 
     @Enumerated(EnumType.STRING)
-    private MenuStatus menuStatus = MenuStatus.ORDERABLE;
+    private FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
     public MenuDTO(Menu menu) {
         this.menuId = menu.getId();
@@ -43,6 +43,6 @@ public class MenuDTO {
         this.numberOfFoods = menu.getNumberOfFoods();
         this.addedDate = menu.getAddedDate();
         this.salesCount = menu.getSalesCount();
-        this.menuStatus = menu.getMenuStatus();
+        this.foodStatus = menu.getMenuStatus();
     }
 }

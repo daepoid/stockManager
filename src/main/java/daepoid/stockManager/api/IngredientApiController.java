@@ -2,11 +2,10 @@ package daepoid.stockManager.api;
 
 import daepoid.stockManager.api.dto.Result;
 import daepoid.stockManager.api.dto.ingredient.*;
-import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.ItemService;
-import daepoid.stockManager.service.RecipeService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

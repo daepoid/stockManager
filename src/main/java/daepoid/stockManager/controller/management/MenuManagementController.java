@@ -1,13 +1,11 @@
 package daepoid.stockManager.controller.management;
 
 import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.food.Menu;
 import daepoid.stockManager.controller.dto.recipe.AddRecipeMenuDTO;
 import daepoid.stockManager.controller.dto.recipe.CreateMenuDTO;
 import daepoid.stockManager.controller.dto.recipe.EditMenuDTO;
-import daepoid.stockManager.domain.recipe.MenuStatus;
-import daepoid.stockManager.service.MenuService;
-import daepoid.stockManager.service.RecipeService;
+import daepoid.stockManager.domain.food.FoodStatus;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +65,7 @@ public class MenuManagementController {
                 .price(0)
                 .addedDate(LocalDateTime.now())
                 .salesCount(0)
-                .menuStatus(MenuStatus.ORDERABLE)
+                .menuStatus(FoodStatus.ORDERABLE)
                 .imgUrl("")
                 .build();
 

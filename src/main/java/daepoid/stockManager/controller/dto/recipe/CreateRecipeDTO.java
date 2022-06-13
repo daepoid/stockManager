@@ -1,6 +1,6 @@
 package daepoid.stockManager.controller.dto.recipe;
 
-import daepoid.stockManager.domain.recipe.DishType;
+import daepoid.stockManager.domain.food.DishType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

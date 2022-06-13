@@ -2,6 +2,7 @@ package daepoid.stockManager.repository.jpa;
 
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.search.ManagerOrderSearch;
+import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.repository.OrderRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -12,9 +13,10 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -32,8 +34,8 @@ public class JpaOrderRepository implements OrderRepository {
 
     //==조회 로직==//
     @Override
-    public Order findById(Long id) {
-        return em.find(Order.class, id);
+    public Optional<Order> findById(Long id) {
+        return Optional.of(em.find(Order.class, id));
     }
 
     @Override
@@ -65,17 +67,23 @@ public class JpaOrderRepository implements OrderRepository {
     }
 
     @Override
-    public List<Order> findByOrderMenu(OrderMenu orderMenu) {
-        List<Order> orders = em.createQuery("select o from Order o", Order.class).getResultList();
-        return orders.stream()
-                .filter(order -> order.getOrderMenus().contains(orderMenu))
-                .collect(Collectors.toList());
+    public List<Order> findByOrderStatus(OrderStatus orderStatus) {
+        return em.createQuery("select o from Order o where o.orderStatus=:orderStatus", Order.class)
+                .setParameter("orderStatus", orderStatus)
+                .getResultList();
     }
 
     @Override
-    public List<Order> findByOrderStatus(OrderStatus orderStatus) {
-        return em.createQuery("select o from Order o where  o.orderStatus=:orderStatus", Order.class)
-                .setParameter("orderStatus", orderStatus)
+    public List<Order> findByOrderDateTimeAfterThanEqual(LocalDateTime orderDateTime) {
+        return em.createQuery("select o from Order o where o.orderDateTime <= :orderDateTime", Order.class)
+                .setParameter("orderDateTime", orderDateTime)
+                .getResultList();
+    }
+
+    @Override
+    public List<Order> findByOrderDateTimeBeforeThanEqual(LocalDateTime orderDateTime) {
+        return em.createQuery("select o from Order o where o.orderDateTime >= :orderDateTime", Order.class)
+                .setParameter("orderDateTime", orderDateTime)
                 .getResultList();
     }
 
@@ -112,6 +120,20 @@ public class JpaOrderRepository implements OrderRepository {
         return query.getResultList();
     }
 
+    @Override
+    public List<Order> findByTotalOrderPriceGreaterThanEqual(Double totalOrderPrice) {
+        return em.createQuery("select o from Order o where o.totalOrderPrice <= :totalOrderPrice", Order.class)
+                .setParameter("totalOrderPrice", totalOrderPrice)
+                .getResultList();
+    }
+
+    @Override
+    public List<Order> findByTotalOrderPriceLessThanEqual(Double totalOrderPrice) {
+        return em.createQuery("select o from Order o where o.totalOrderPrice >= :totalOrderPrice", Order.class)
+                .setParameter("totalOrderPrice", totalOrderPrice)
+                .getResultList();
+    }
+
     //==수정 로직==//
     @Override
     public void changeCustomer(Long orderId, Customer customer) {
@@ -119,32 +141,18 @@ public class JpaOrderRepository implements OrderRepository {
     }
 
     @Override
-    public void changeOrderMenus(Long orderId, List<OrderMenu> orderMenus) {
-        em.find(Order.class, orderId)
-                .changeOrderMenus(orderMenus);
-    }
-
-    @Override
-    public void addOrderMenus(Long orderId, OrderMenu orderMenu) {
-        em.find(Order.class, orderId)
-                .addOrderMenu(orderMenu);
-    }
-
-    @Override
-    public void changeOrderDate(Long orderId, LocalDateTime orderDateTime) {
-        em.find(Order.class, orderId)
-                .changeOrderDateTime(orderDateTime);
-    }
-
-    @Override
     public void changeOrderStatus(Long orderId, OrderStatus orderStatus) {
-        em.find(Order.class, orderId)
-                .changeOrderStatus(orderStatus);
+        em.find(Order.class, orderId).changeOrderStatus(orderStatus);
+    }
+
+    @Override
+    public void changeTotalOrderPrice(Long orderId, Double totalOrderPrice) {
+        em.find(Order.class, orderId).changeTotalOrderPrice(totalOrderPrice);
     }
 
     //==삭제 로직==//
     @Override
-    public void removeOrder(Order order) {
-        em.remove(order);
+    public void remove(Long orderId) {
+        em.remove(em.find(Order.class, orderId));
     }
 }

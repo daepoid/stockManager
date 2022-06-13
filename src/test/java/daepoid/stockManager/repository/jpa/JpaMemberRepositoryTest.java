@@ -1,10 +1,8 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
-import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 
 import org.junit.jupiter.api.Test;
 
@@ -714,7 +712,7 @@ class JpaMemberRepositoryTest {
 
         Long memberId = memberRepository.save(member);
 
-        memberRepository.removeMember(memberId);
+        memberRepository.remove(memberId);
         assertThat(memberRepository.findById(memberId)).isNull();
     }
 }

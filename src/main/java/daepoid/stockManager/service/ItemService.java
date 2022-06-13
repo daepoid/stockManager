@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,7 +31,7 @@ public class ItemService {
     }
 
     //==조회 로직==//
-    public Item findItem(Long itemId) {
+    public Optional<Item> findItem(Long itemId) {
         return itemRepository.findById(itemId);
     }
 
@@ -54,12 +55,16 @@ public class ItemService {
         return itemRepository.findByItemType(itemType);
     }
 
-    public List<Item> findByPackageCount(int packageCount) {
-        return itemRepository.findByPackageCount(packageCount);
+    public List<Item> findByPackageCountLessThanEqual(Integer packageCount) {
+        return itemRepository.findByPackageCountLessThanEqual(packageCount);
     }
 
-    public List<Item> findByUnderQuantity(double quantity) {
-        return itemRepository.findByUnderQuantity(quantity);
+    public List<Item> findByQuantityLessThanEqual(Double quantity) {
+        return itemRepository.findByQuantityLessThanEqual(quantity);
+    }
+
+    public List<Item> findByUnderQuantity(Double quantity) {
+        return itemRepository.findByQuantityLessThanEqual(quantity);
     }
 
     public List<Item> findByItemSearch(ItemSearch itemSearch) {
@@ -68,43 +73,83 @@ public class ItemService {
 
     //==수정 로직==//
     @Transactional
-    public void changeName(Long itemId, String name) {
-        itemRepository.changeName(itemId, name);
+    public boolean changeName(Long itemId, String name) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isPresent()) {
+            item.get().changeName(name);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeItemType(Long itemId, ItemType itemType) {
-        itemRepository.changeItemType(itemId, itemType);
-    }
-
-    @Transactional
-    public void changePrice(Long itemId, int price) {
-        itemRepository.changePrice(itemId, price);
-    }
-
-    @Transactional
-    public void changePackageCount(Long itemId, int packageCount) {
-        itemRepository.changePackageCount(itemId, packageCount);
+    public boolean changePrice(Long itemId, Integer price) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isPresent()) {
+            item.get().changePrice(price);
+            return true;
+        }
+        return false;
     }
     
     @Transactional
-    public void changeQuantity(Long itemId, double quantity) {
-        itemRepository.changeQuantity(itemId, quantity);
+    public boolean changeQuantity(Long itemId, Double quantity) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isPresent()) {
+            item.get().changeQuantity(quantity);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeUnitType(Long itemId, UnitType unitType) {
-        itemRepository.changeUnitType(itemId, unitType);
+    public boolean changeUnitType(Long itemId, UnitType unitType) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isPresent()) {
+            item.get().changeUnitType(unitType);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean changePackageCount(Long itemId, Integer packageCount) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isPresent()) {
+            item.get().changePackageCount(packageCount);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean changeCountryOfOrigin(Long itemId, String countryOfOrigin) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isPresent()) {
+            item.get().changeCountryOfOrigin(countryOfOrigin);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean changeNotice(Long itemId, String notice) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isPresent()) {
+            item.get().changeNotice(notice);
+            return true;
+        }
+        return false;
     }
 
     //==삭제 로직==//
     @Transactional
-    public void removeItem(Item item) {
-        itemRepository.removeItem(item);
-    }
-
-    @Transactional
-    public void removeById(Long itemId) {
-        itemRepository.removeById(itemId);
+    public boolean removeItem(Long itemId) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isPresent()) {
+            itemRepository.remove(itemId);
+            return true;
+        }
+        return false;
     }
 }

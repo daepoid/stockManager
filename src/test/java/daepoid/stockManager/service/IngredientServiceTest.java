@@ -1,11 +1,10 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
-import daepoid.stockManager.domain.recipe.DishType;
-import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.domain.food.DishType;
 
 import org.junit.jupiter.api.Test;
 

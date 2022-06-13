@@ -1,11 +1,8 @@
 package daepoid.stockManager.api.dto.duty;
 
-import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.users.Member;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 

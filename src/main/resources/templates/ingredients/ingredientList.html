@@ -35,7 +35,7 @@
                 <td th:text="${ingredient.loss}"></td>
                 <td th:text="${ingredient.cost}"></td>
                 <td>
-                    <a href="#" th:href="@{/recipes/{recipeId}/ingredients/{ingredientId}/edit (recipeId=${ingredient.recipe.id}, ingredientId=${ingredient.id})}"
+                    <a href="#" th:href="@{/recipes/{recipeId}/ingredients/{ingredientId}/edit (recipeId=${ingredient.getFood.id}, ingredientId=${ingredient.id})}"
                        class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
                 </td>
             </tr>

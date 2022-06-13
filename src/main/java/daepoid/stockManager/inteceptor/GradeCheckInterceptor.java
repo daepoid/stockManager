@@ -2,7 +2,7 @@ package daepoid.stockManager.inteceptor;
 
 import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.controller.dto.member.LoginMemberDTO;
 import daepoid.stockManager.service.MemberService;
 

@@ -1,6 +1,6 @@
 package daepoid.stockManager.domain.order;
 
-import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.food.Food;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Entity
 @Getter
@@ -21,52 +22,64 @@ public class OrderMenu {
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="menu_id")
-    private Menu menu;
-
-    @NotNull
-    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="order_id")
     private Order order;
 
-    // 주문 당시 가격
     @NotNull
-    private int orderPrice;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="food_id")
+    private Food food;
+
+    // 주문 가격
+    // 주문 가격은 가격 변동이나 할인 등으로 현재 가격과 다를 수 있으므로 따로 저장한다.
+    @NotNull
+    @Positive
+    private Double orderPrice;
 
     // 주문 수량
     @NotNull
-    private int orderCount;
+    @Positive
+    private Integer orderCount;
 
     @Builder
-    public OrderMenu(Menu menu, Order order, int orderPrice, int orderCount) {
-        this.menu = menu;
+    public OrderMenu(Order order, Food food, Double orderPrice, Integer orderCount) {
         this.order = order;
+        this.food = food;
         this.orderPrice = orderPrice;
         this.orderCount = orderCount;
     }
 
-    public void changeMenu(Menu menu) {
-        this.menu = menu;
+    public void changeFood(Food food) {
+        this.food.cancelSalesCount(orderCount);
+        this.food = food;
+        food.addSalesCount(orderCount);
     }
 
-    public void changeOrder(Order order) {
-        this.order = order;
-//        order.getOrderMenus().add(this);
-    }
-
-    public void changeOrderPrice(int orderPrice) {
+    public void changeOrderPrice(Double orderPrice) {
+        this.order.updateOrderPriceByChangeOrderMenu(
+                this.orderPrice * this.orderCount,
+                orderPrice * this.orderCount
+        );
         this.orderPrice = orderPrice;
     }
 
-    public void changeOrderCount(int orderCount) {
+    public void changeOrderCount(Integer orderCount) {
+        this.order.updateOrderPriceByChangeOrderMenu(
+                this.orderPrice * this.orderCount,
+                this.orderPrice * orderCount
+        );
         this.orderCount = orderCount;
+    }
+
+    public void orderFood(Integer orderCount) {
+        this.food.addSalesCount(orderCount);
     }
 
     public void cancel() {
-        getMenu().cancelMenu(orderCount);
+        food.cancelSalesCount(orderCount);
     }
 
-    public int getTotalPrice() {
-        return getOrderPrice() * getOrderCount();
+    public Double getOrderMenuPrice() {
+        return this.orderPrice * this.orderCount;
     }
 }

@@ -5,6 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MenuSearch {
-    private String menuName;
+public class IngredientSearch {
+
+    String ingredientName;
+
+    String recipeName;
+
 }

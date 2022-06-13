@@ -1,14 +1,12 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
-import daepoid.stockManager.domain.recipe.DishType;
-import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.domain.recipe.MenuStatus;
-import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.repository.jpa.JpaRecipeRepository;
+import daepoid.stockManager.domain.food.DishType;
+import daepoid.stockManager.domain.food.Menu;
+import daepoid.stockManager.domain.food.FoodStatus;
 
 import org.junit.jupiter.api.Test;
 
@@ -77,7 +75,7 @@ class JpaRecipeRepositoryTest {
         Map<Long, Integer> menuNumberOfFood = new HashMap<>();
         LocalDateTime menuAddedDate = LocalDateTime.now();
         int menuSalesCount = 789;
-        MenuStatus menuMenuStatus = MenuStatus.ORDERABLE;
+        FoodStatus menuFoodStatus = FoodStatus.ORDERABLE;
         String menuImgUrl = "";
 
         return Menu.builder()
@@ -87,7 +85,7 @@ class JpaRecipeRepositoryTest {
                 .numberOfFoods(menuNumberOfFood)
                 .addedDate(menuAddedDate)
                 .salesCount(menuSalesCount)
-                .menuStatus(menuMenuStatus)
+                .menuStatus(menuFoodStatus)
                 .imgUrl(menuImgUrl)
                 .build();
     }

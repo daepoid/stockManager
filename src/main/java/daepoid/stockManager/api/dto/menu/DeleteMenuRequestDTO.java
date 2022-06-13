@@ -1,6 +1,6 @@
 package daepoid.stockManager.api.dto.menu;
 
-import daepoid.stockManager.domain.recipe.MenuStatus;
+import daepoid.stockManager.domain.food.FoodStatus;
 import lombok.Data;
 
 import javax.persistence.EnumType;
@@ -10,5 +10,5 @@ import javax.persistence.Enumerated;
 public class DeleteMenuRequestDTO {
 
     @Enumerated(EnumType.STRING)
-    private MenuStatus menuStatus = MenuStatus.CLOSED;
+    private FoodStatus foodStatus = FoodStatus.CLOSED;
 }

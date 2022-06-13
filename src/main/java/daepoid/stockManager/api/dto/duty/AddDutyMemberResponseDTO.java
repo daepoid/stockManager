@@ -1,12 +1,9 @@
 package daepoid.stockManager.api.dto.duty;
 
 import daepoid.stockManager.api.dto.member.MemberDTO;
-import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.member.Member;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data

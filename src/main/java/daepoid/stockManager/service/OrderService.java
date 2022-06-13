@@ -1,11 +1,10 @@
 package daepoid.stockManager.service;
 
+import daepoid.stockManager.domain.food.CartFood;
 import daepoid.stockManager.domain.order.*;
-import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.search.ManagerOrderSearch;
-import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
-import daepoid.stockManager.repository.jpa.JpaMenuRepository;
-import daepoid.stockManager.repository.jpa.JpaOrderRepository;
+import daepoid.stockManager.domain.users.Customer;
+import daepoid.stockManager.repository.jpa.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,101 +23,56 @@ import java.util.Map;
 public class OrderService {
 
     private final JpaOrderRepository orderRepository;
-    private final JpaCustomerRepository customerRepository;
-    private final JpaMenuRepository menuRepository;
+    private final OrderMenuService orderMenuService;
+    private final CustomerService customerService;
+    private final CartFoodService cartFoodService;
 
     //==비즈니스 로직==//
-    @Transactional
-    public Long order(Long customerId, Long menuId, int orderCount, LocalDateTime orderDateTime) {
-        // 엔티티 조회
-        Customer customer = customerRepository.findById(customerId);
-        Menu menu = menuRepository.findById(menuId);
-
-        // 주문 메뉴 단일 생성
-        OrderMenu orderMenu = OrderMenu.builder()
-                .menu(menu)
-                .orderPrice(menu.getPrice())
-                .orderCount(orderCount)
-                .build();
-
-        List<OrderMenu> orderMenus = new ArrayList<>();
-        orderMenus.add(orderMenu);
-        menuRepository.addSalesCount(menuId, orderCount);
-
-        // 주문 생성
-        Order order = Order.builder()
-                .customer(customer)
-                .orderMenus(orderMenus)
-                .orderDateTime(orderDateTime)
-                .orderStatus(OrderStatus.ORDERED)
-                .build();
-
-        // 주문 저장
-        orderRepository.save(order);
-        return order.getId();
-    }
-
     @Transactional
     public Long orders(Long customerId) {
 
         // 엔티티 조회
-        Customer customer = customerRepository.findById(customerId);
-        if(customer == null) {
+        Optional<Customer> customer = customerService.findCustomer(customerId);
+        if(customer.isEmpty()) {
             return null;
         }
 
-        Cart cart = customer.getCart();
-        if(cart == null || cart.getNumberOfMenus().size() < 1) {
-            return null;
-        }
+        List<CartFood> cartFoods = cartFoodService.findCartFoodsByCustomer(customerId);
 
-        Map<Long, Integer> numberOfMenus = cart.getNumberOfMenus();
-        LocalDateTime orderDateTime = LocalDateTime.now();
-
-        List<OrderMenu> orderMenus = new ArrayList<>();
-
-        for (Long menuId : numberOfMenus.keySet()) {
-            Menu menu = menuRepository.findById(menuId);
-
-            // 주문 메뉴 단일 생성
-            orderMenus.add(
-                    OrderMenu.builder()
-                            .menu(menu)
-                            .orderPrice(menu.getPrice())
-                            .orderCount(numberOfMenus.get(menuId))
-                            .build()
-            );
-        }
-
-        // 주문 생성 및 저장
-
+        // 주문 생성
         Order order = Order.builder()
-                .customer(customer)
-                .orderMenus(orderMenus)
-                .orderDateTime(orderDateTime)
+                .customer(customer.get())
+                .orderDateTime(LocalDateTime.now())
                 .orderStatus(OrderStatus.ORDERED)
                 .build();
-        Long orderId = orderRepository.save(order);
 
-        // 주문 환료 후 장바구니 비우기
-        cart.clearCart();
-
-        // 주문 수량 카운팅
-        for (OrderMenu orderMenu : orderMenus) {
-            menuRepository.addSalesCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
+        for (CartFood cartFood : cartFoods) {
+            OrderMenu orderMenu = OrderMenu.builder()
+                    .order(order)
+                    .food(cartFood.getFood())
+                    .orderPrice(cartFood.getFood().getFoodPrice())
+                    .orderCount(cartFood.getCount())
+                    .build();
+            orderMenuService.saveOrderMenu(orderMenu);
         }
 
-        return orderId;
+        // 주문 환료 후 장바구니 비우기
+        cartFoodService.removeByCustomerId(customerId);
+        return order.getId();
     }
 
     @Transactional
-    public void cancelOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId);
-        List<OrderMenu> orderMenus = order.getOrderMenus();
-        for (OrderMenu orderMenu : orderMenus) {
-            menuRepository.cancelSalesCount(orderMenu.getMenu().getId(), orderMenu.getOrderCount());
+    public boolean cancelOrder(Long orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isPresent()) {
+            List<OrderMenu> orderMenus = orderMenuService.findOrderMenusByOrderId(orderId);
+            for (OrderMenu orderMenu : orderMenus) {
+                orderMenu.cancel();
+            }
+            order.get().cancel();
+            return true;
         }
-        order.cancel();
+        return false;
     }
 
 
@@ -130,7 +83,7 @@ public class OrderService {
     }
 
     //==조회 로직==//
-    public Order findOrder(Long orderId) {
+    public Optional<Order> findOrder(Long orderId) {
         return orderRepository.findById(orderId);
     }
 
@@ -150,10 +103,6 @@ public class OrderService {
         return orderRepository.findByCustomer(customerId);
     }
 
-    public List<Order> findByOrderMenu(OrderMenu orderMenu) {
-        return orderRepository.findByOrderMenu(orderMenu);
-    }
-
     public List<Order> findByOrderStatus(OrderStatus orderStatus) {
         return orderRepository.findByOrderStatus(orderStatus);
     }
@@ -164,33 +113,43 @@ public class OrderService {
 
     //==수정 로직==//
     @Transactional
-    public void changeCustomer(Long orderId, Customer customer) {
-        orderRepository.changeCustomer(orderId, customer);
+    public boolean changeCustomer(Long orderId, Customer customer) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isPresent()) {
+            order.get().changeCustomer(customer);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeOrderMenus(Long orderId, List<OrderMenu> orderMenus) {
-        orderRepository.changeOrderMenus(orderId, orderMenus);
+    public boolean changeOrderStatus(Long orderId, OrderStatus orderStatus) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isPresent()) {
+            order.get().changeOrderStatus(orderStatus);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void addOrderMenus(Long orderId, OrderMenu orderMenu) {
-        orderRepository.addOrderMenus(orderId, orderMenu);
-    }
-
-    @Transactional
-    public void changeOrderDate(Long orderId, LocalDateTime orderDateTime) {
-        orderRepository.changeOrderDate(orderId, orderDateTime);
-    }
-
-    @Transactional
-    public void changeOrderStatus(Long orderId, OrderStatus orderStatus) {
-        orderRepository.changeOrderStatus(orderId, orderStatus);
+    public boolean changeTotalOrderPrice(Long orderId, Double totalOrderPrice) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isPresent()) {
+            order.get().changeTotalOrderPrice(totalOrderPrice);
+            return true;
+        }
+        return false;
     }
 
     //==삭제 로직==//
     @Transactional
-    public void removeOrder(Order order) {
-        orderRepository.removeOrder(order);
+    public boolean removeOrder(Long orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isPresent()) {
+            orderRepository.remove(orderId);
+            return true;
+        }
+        return false;
     }
 }

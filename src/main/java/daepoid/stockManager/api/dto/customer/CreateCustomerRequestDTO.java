@@ -1,6 +1,5 @@
 package daepoid.stockManager.api.dto.customer;
 
-import daepoid.stockManager.domain.order.Cart;
 import daepoid.stockManager.domain.order.Order;
 import lombok.Data;
 

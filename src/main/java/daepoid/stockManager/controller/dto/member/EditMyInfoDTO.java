@@ -1,7 +1,6 @@
 package daepoid.stockManager.controller.dto.member;
 
-import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.users.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

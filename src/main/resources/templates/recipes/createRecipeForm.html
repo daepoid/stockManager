@@ -41,7 +41,7 @@
                     <label th:for="dishType">접시</label>
                     <select th:field="*{dishType}" class="form-control">
                         <option value="">접시</option>
-                        <option th:each="dishType : ${T(daepoid.stockManager.domain.recipe.DishType).values()}"
+                        <option th:each="dishType : ${T(daepoid.stockManager.domain.food.DishType).values()}"
                                 th:value="${dishType}"
                                 th:text="${dishType}">option
                         </option>

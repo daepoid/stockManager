@@ -2,8 +2,7 @@ package daepoid.stockManager.api;
 
 import daepoid.stockManager.api.dto.Result;
 import daepoid.stockManager.api.dto.customer.*;
-import daepoid.stockManager.domain.order.Cart;
-import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.service.CustomerService;
 

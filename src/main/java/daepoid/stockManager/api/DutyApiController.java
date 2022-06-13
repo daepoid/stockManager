@@ -2,8 +2,6 @@ package daepoid.stockManager.api;
 
 import daepoid.stockManager.api.dto.Result;
 import daepoid.stockManager.api.dto.duty.*;
-import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.service.DutyService;
 import daepoid.stockManager.service.MemberService;
 
 import io.swagger.annotations.Api;

@@ -1,15 +1,13 @@
 package daepoid.stockManager.domain.item;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
-
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @Slf4j
 @Entity
@@ -31,33 +29,37 @@ public class Item {
 
     // 재료 개당 가격 평균
     @NotNull
-    private int price;
+    @Positive
+    private Integer price = 0;
 
     // 수량
     @NotNull
-    private double quantity;
+    @PositiveOrZero
+    private Double quantity = 0.0;
 
     // 단위 (g, ml, ...)
     @NotNull
-    private UnitType unitType;
+    private UnitType unitType = UnitType.kg;
 
-    // 패키지 수량 (개, 박스, 통)
+    // 패키지 수량 (박스, 통)
     @NotNull
-    private int packageCount;
-
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<Ingredient> ingredients = new ArrayList<>();
+    @PositiveOrZero
+    private Integer packageCount = 0;
 
     // 원산지
+    @NotBlank
+    private String countryOfOrigin;
 
     // 주의 사항
+    private String notice;
 
     // 거래처
 
     //==생성 메서드==//
     @Builder
-    public Item(String name, ItemType itemType, int price, double quantity,
-                UnitType unitType, int packageCount, List<Ingredient> ingredients) {
+    public Item(String name, ItemType itemType, Integer price,
+                Double quantity, UnitType unitType,
+                Integer packageCount, String countryOfOrigin, String notice) {
         this.name = name;
 
         this.itemType = itemType;
@@ -68,29 +70,22 @@ public class Item {
         this.unitType = unitType;
 
         this.packageCount = packageCount;
-
-        this.ingredients = ingredients;
+        this.countryOfOrigin = countryOfOrigin;
+        this.notice = notice;
     }
 
     //==개발 로직==//
-    public void changeId(Long id) {
-        this.id = id;
-    }
 
     //==비즈니스 로직==//
     public void changeName(String name) {
         this.name = name;
     }
 
-    public void changeItemType(ItemType itemType) {
-        this.itemType = itemType;
-    }
-
-    public void changePrice(int price) {
+    public void changePrice(Integer price) {
         this.price = price;
     }
 
-    public void changeQuantity(double quantity) {
+    public void changeQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
@@ -98,16 +93,15 @@ public class Item {
         this.unitType = unitType;
     }
 
-    public void changePackageCount(int packageCount) {
+    public void changePackageCount(Integer packageCount) {
         this.packageCount = packageCount;
     }
 
-    public void changeIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public void changeCountryOfOrigin(String countryOfOrigin) {
+        this.countryOfOrigin = countryOfOrigin;
     }
 
-    public void addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
-        ingredient.changeItem(this); // 이 부분이 필요한가?
+    public void changeNotice(String notice) {
+        this.notice = notice;
     }
 }

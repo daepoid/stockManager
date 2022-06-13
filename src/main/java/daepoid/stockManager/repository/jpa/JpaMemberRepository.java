@@ -1,7 +1,7 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.StoreUser;
-import daepoid.stockManager.domain.duty.Duty;
+import daepoid.stockManager.domain.users.Member;
+import daepoid.stockManager.domain.users.StoreUser;
 import daepoid.stockManager.domain.member.*;
 import daepoid.stockManager.domain.search.MemberSearch;
 import daepoid.stockManager.repository.MemberRepository;
@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -33,12 +34,11 @@ public class JpaMemberRepository implements MemberRepository {
 
     //==조회 로직==//
     @Override
-    public Member findById(Long memberId) {
+    public Optional<Member> findById(Long memberId) {
         return em.createQuery("select m from Member m where m.id=:memberId", Member.class)
                 .setParameter("memberId", memberId)
                 .getResultList()
-                .stream().findFirst()
-                .orElse(null);
+                .stream().findFirst();
     }
 
     @Override
@@ -63,11 +63,11 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findByLoginId(String loginId) {
+    public Optional<Member> findByLoginId(String loginId) {
         return em.createQuery("select m from Member m where m.loginId=:loginId", Member.class)
                 .setParameter("loginId", loginId)
-                .getResultList().stream()
-                .findFirst().orElse(null);
+                .getResultList()
+                .stream().findFirst();
     }
 
     @Override
@@ -78,15 +78,6 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findByPhoneNumber(String phoneNumber) {
-        return em.createQuery("select m from Member m where m.phoneNumber = :phoneNumber", Member.class)
-                .setParameter("phoneNumber", phoneNumber)
-                .getResultList()
-                .stream().findFirst()
-                .orElse(null);
-    }
-
-    @Override
     public List<Member> findByGradeType(GradeType gradeType) {
         return em.createQuery("select m from Member m where m.gradeType = :gradeType", Member.class)
                 .setParameter("gradeType", gradeType)
@@ -94,22 +85,18 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findByPhoneNumber(String phoneNumber) {
+        return em.createQuery("select m from Member m where m.phoneNumber = :phoneNumber", Member.class)
+                .setParameter("phoneNumber", phoneNumber)
+                .getResultList()
+                .stream().findFirst();
+    }
+
+    @Override
     public List<Member> findByMemberStatus(MemberStatus memberStatus) {
         return em.createQuery("select m from Member m where m.memberStatus = :memberStatus", Member.class)
                 .setParameter("memberStatus", memberStatus)
                 .getResultList();
-    }
-
-    @Override
-    public List<Member> findByDuty(Duty duty) {
-        return em.createQuery("select m from Member m", Member.class).getResultList()
-                .stream().filter(m -> m.getDuties().stream().anyMatch(d -> d.getId().equals(duty.getId())))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Member> findByRoles(RoleType... roleType) {
-        return null;
     }
 
     @Override
@@ -176,44 +163,23 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public void changePhoneNumber(Long memberId, String phoneNumber) {
-        Member member = em.find(Member.class, memberId);
-        member.changePhoneNumber(phoneNumber);
+    public void changeGradeType(Long memberId, GradeType gradeType) {
+        em.find(Member.class, memberId).changeGradeType(gradeType);
     }
 
     @Override
-    public void changeGradeType(Long memberId, GradeType gradeType) {
-        Member member = em.find(Member.class, memberId);
-        member.changeGradeType(gradeType);
+    public void changePhoneNumber(Long memberId, String phoneNumber) {
+        em.find(Member.class, memberId).changePhoneNumber(phoneNumber);
     }
 
     @Override
     public void changeMemberStatus(Long memberId, MemberStatus memberStatus) {
-        Member member = em.find(Member.class, memberId);
-        member.changeMemberStatus(memberStatus);
-    }
-
-    @Override
-    public void changeDuties(Long memberId, List<Duty> duties) {
-        Member member = em.find(Member.class, memberId);
-        member.changeDuties(duties);
-    }
-
-    @Override
-    public void addDuty(Long memberId, Duty... duties) {
-        Member member = em.find(Member.class, memberId);
-        member.addDuty(duties);
-    }
-
-    @Override
-    public void removeDuty(Long memberId, Duty... duties) {
-        Member member = em.find(Member.class, memberId);
-        member.removeDuty(duties);
+        em.find(Member.class, memberId).changeMemberStatus(memberStatus);
     }
 
     //==삭제 로직==//
     @Override
-    public void removeMember(Long userId) {
+    public void remove(Long userId) {
         em.remove(em.find(Member.class, userId));
     }
 }

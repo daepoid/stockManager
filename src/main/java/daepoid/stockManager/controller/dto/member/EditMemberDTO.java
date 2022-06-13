@@ -1,10 +1,8 @@
 package daepoid.stockManager.controller.dto.member;
 
-import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
-import daepoid.stockManager.domain.member.RoleType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,9 +45,9 @@ public class EditMemberDTO {
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.WORK;
 
-    @ElementCollection(targetClass = RoleType.class)
+    @ElementCollection(targetClass = MemberRole.class)
     @Enumerated(EnumType.STRING)
-    private Collection<RoleType> roles = new ArrayList<>();
+    private Collection<MemberRole> roles = new ArrayList<>();
 
     @NotNull
     private List<Duty> duties = new ArrayList<>();

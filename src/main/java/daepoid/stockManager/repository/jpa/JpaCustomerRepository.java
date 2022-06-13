@@ -1,8 +1,8 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.domain.search.CustomerSearch;
-import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.repository.CustomerRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -31,12 +31,8 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public Customer findById(Long customerId) {
-        return em.createQuery("select c from Customer c where c.id=:customerId", Customer.class)
-                .setParameter("customerId", customerId)
-                .getResultList()
-                .stream().findFirst()
-                .orElse(null);
+    public Optional<Customer> findById(Long customerId) {
+        return Optional.of(em.find(Customer.class, customerId));
     }
 
     @Override
@@ -61,30 +57,27 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public Customer findByLoginId(String loginId) {
+    public Optional<Customer> findByLoginId(String loginId) {
         return em.createQuery("select c from Customer c where c.loginId=:loginId", Customer.class)
                 .setParameter("loginId", loginId)
                 .getResultList()
-                .stream().findFirst()
-                .orElse(null);
+                .stream().findFirst();
     }
 
     @Override
-    public Customer findByUserName(String userName) {
+    public Optional<Customer> findByUserName(String userName) {
         return em.createQuery("select c from Customer c where c.userName=:userName", Customer.class)
                 .setParameter("userName", userName)
                 .getResultList()
-                .stream().findFirst()
-                .orElse(null);
+                .stream().findFirst();
     }
 
     @Override
-    public Customer findByTableNumber(String tableNumber) {
+    public Optional<Customer> findByTableNumber(String tableNumber) {
         return em.createQuery("select c from Customer c where c.tableNumber=:tableNumber", Customer.class)
                 .setParameter("tableNumber", tableNumber)
                 .getResultList()
-                .stream().findFirst()
-                .orElse(null);
+                .stream().findFirst();
     }
 
     @Override
@@ -104,13 +97,18 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
+    public void changePassword(Long userId, String password) {
+        em.find(Customer.class, userId).changePassword(password);
+    }
+
+    @Override
     public void changeUserName(Long userId, String userName) {
         em.find(Customer.class, userId).changeUserName(userName);
     }
 
     @Override
-    public void changePassword(Long userId, String password) {
-        em.find(Customer.class, userId).changePassword(password);
+    public void changeGradeType(Long userId, GradeType gradeType) {
+        em.find(Customer.class, userId).changeGradeType(gradeType);
     }
 
     @Override
@@ -119,32 +117,12 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public void changeOrders(Long customerId, List<Order> orders) {
-        em.find(Customer.class, customerId).changeOrders(orders);
-    }
-
-    @Override
-    public void changeCart(Long customerId, Map<Long, Integer> numberOfMenus) {
-        em.find(Customer.class, customerId).changeCart(numberOfMenus);
-    }
-
-    @Override
-    public void addCart(Long customerId, Long menuId, int count) {
-        em.find(Customer.class, customerId).addCart(menuId, count);
-    }
-
-    @Override
-    public void addOrder(Long customerId, Order order) {
-        em.find(Customer.class, customerId).addOrder(order);
-    }
-
-    @Override
     public void changeExpirationTime(Long customerId, LocalDateTime expirationTime) {
         em.find(Customer.class, customerId).changeExpirationTime(expirationTime);
     }
 
     @Override
-    public void removeCustomer(Long userId) {
+    public void remove(Long userId) {
         em.remove(em.find(Customer.class, userId));
     }
 }

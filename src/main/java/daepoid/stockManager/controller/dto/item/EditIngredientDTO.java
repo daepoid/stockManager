@@ -1,7 +1,7 @@
 package daepoid.stockManager.controller.dto.item;
 
 import daepoid.stockManager.domain.item.UnitType;
-import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.food.Ingredient;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

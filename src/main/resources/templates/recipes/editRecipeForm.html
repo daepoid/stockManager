@@ -51,7 +51,7 @@
                     <label th:for="dishType">접시</label>
                     <select th:field="*{dishType}" class="form-control">
                         <option value="">접시</option>
-                        <option th:each="dishType : ${T(daepoid.stockManager.domain.recipe.DishType).values()}"
+                        <option th:each="dishType : ${T(daepoid.stockManager.domain.food.DishType).values()}"
                                 th:value="${dishType}"
                                 th:text="${dishType}">option
                         </option>
@@ -98,7 +98,7 @@
                             <td th:text="${ingredient.loss}"></td>
                             <td th:text="${ingredient.cost}"></td>
                             <td>
-                                <a href="#" th:href="@{/recipes/{recipeId}/ingredients/{ingredientId} (recipeId=${ingredient.recipe.id}, ingredientId=${ingredient.id})}"
+                                <a href="#" th:href="@{/recipes/{recipeId}/ingredients/{ingredientId} (recipeId=${ingredient.getFood.id}, ingredientId=${ingredient.id})}"
                                    class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
                             </td>
                             <td>

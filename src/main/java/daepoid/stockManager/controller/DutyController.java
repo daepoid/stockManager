@@ -1,11 +1,9 @@
 package daepoid.stockManager.controller;
 
-import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.controller.dto.duty.CreateDutyDTO;
 import daepoid.stockManager.controller.dto.duty.CreateDutyMemberDTO;
 import daepoid.stockManager.controller.dto.duty.EditDutyDTO;
 import daepoid.stockManager.domain.search.DutySearch;
-import daepoid.stockManager.service.DutyService;
 import daepoid.stockManager.service.MemberService;
 
 import lombok.RequiredArgsConstructor;

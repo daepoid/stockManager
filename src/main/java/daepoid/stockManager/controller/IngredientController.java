@@ -1,13 +1,11 @@
 package daepoid.stockManager.controller;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.Item;
-import daepoid.stockManager.domain.recipe.Recipe;
 import daepoid.stockManager.controller.dto.item.CreateIngredientDTO;
 import daepoid.stockManager.controller.dto.item.EditIngredientDTO;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.ItemService;
-import daepoid.stockManager.service.RecipeService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

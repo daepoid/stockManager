@@ -1,14 +1,16 @@
 package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.controller.dto.CartFoodsDTO;
+import daepoid.stockManager.domain.food.CartFood;
+import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.search.CustomerOrderSearch;
-import daepoid.stockManager.domain.recipe.Menu;
+import daepoid.stockManager.domain.food.Menu;
 import daepoid.stockManager.controller.dto.order.CustomerOrderMenuDTO;
+import daepoid.stockManager.service.CartFoodService;
 import daepoid.stockManager.service.CustomerService;
-import daepoid.stockManager.service.MenuService;
 import daepoid.stockManager.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -31,6 +34,8 @@ public class CustomerController {
     private final CustomerService customerService;
     private final MenuService menuService;
     private final OrderService orderService;
+
+    private final CartFoodService cartFoodService;
 
     /**
      * 주문 하기
@@ -44,21 +49,22 @@ public class CustomerController {
                                    Model model,
                                    HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Customer loginCustomer = customerService.findCustomerByLoginId(loginId);
-        if(!Objects.equals(loginCustomer.getId(), customerId)) {
+        Optional<Customer> customer = customerService.findCustomerByLoginId(loginId);
+        if(customer.isEmpty() || customer.get().getId().equals(customerId)) {
             request.getSession(false).invalidate();
             return "redirect:/";
         }
 
-        Map<Menu, Integer> selectedMenus = new HashMap<>();
-
-        Map<Long, Integer> numberOfMenus = customerService.findCustomer(customerId).getCart().getNumberOfMenus();
-        log.info("nnumberOfMenus = {}", numberOfMenus);
-        for (Long menuId : numberOfMenus.keySet()) {
-            selectedMenus.put(menuService.findMenu(menuId), numberOfMenus.get(menuId));
-        }
-
-        model.addAttribute("selectedMenus", selectedMenus);
+        List<CartFood> cartFoods = cartFoodService.findCartFoodsByCustomer(customerId);
+        List<CartFoodsDTO> cartFoodsDTOs = cartFoods.stream()
+                .map(cf -> new CartFoodsDTO(
+                        cf.getId(),
+                        cf.getFood().getId(),
+                        cf.getFood().getFoodName(),
+                        cf.getFood().getFoodPrice(),
+                        cf.getCount()))
+                .collect(Collectors.toList());
+        model.addAttribute("cartFoodsDTOs", cartFoodsDTOs);
         return "orders/customerCartForm";
     }
 

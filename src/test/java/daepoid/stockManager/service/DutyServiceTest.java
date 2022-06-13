@@ -1,8 +1,7 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.duty.Duty;
 import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
 
 import org.junit.jupiter.api.Test;

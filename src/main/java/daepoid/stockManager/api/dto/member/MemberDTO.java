@@ -1,13 +1,12 @@
 package daepoid.stockManager.api.dto.member;
 
 import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
 import lombok.Data;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotBlank;
 
 @Data
 public class MemberDTO {

@@ -1,6 +1,6 @@
 package daepoid.stockManager.api.dto.ingredient;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.UnitType;
 import lombok.Data;
 

@@ -1,8 +1,7 @@
 package daepoid.stockManager.controller.management;
 
 import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.order.Cart;
-import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.controller.dto.order.CreateCustomerDTO;
 import daepoid.stockManager.controller.dto.order.EditCustomerDTO;
 import daepoid.stockManager.domain.search.CustomerSearch;

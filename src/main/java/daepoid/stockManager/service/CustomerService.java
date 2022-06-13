@@ -1,19 +1,20 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.order.Customer;
+import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.domain.search.CustomerSearch;
-import daepoid.stockManager.domain.order.Order;
 import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -22,6 +23,8 @@ import java.util.Map;
 public class CustomerService {
 
     private final JpaCustomerRepository customerRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final PasswordService passwordService;
 
     //==생성 로직==//
     @Transactional
@@ -30,7 +33,7 @@ public class CustomerService {
     }
 
     //==조회 로직==//
-    public Customer findCustomer(Long customerId) {
+    public Optional<Customer> findCustomer(Long customerId) {
         return customerRepository.findById(customerId);
     }
 
@@ -46,15 +49,15 @@ public class CustomerService {
         return customerRepository.findAll(firstResult, maxResult);
     }
 
-    public Customer findCustomerByLoginId(String loginId) {
+    public Optional<Customer> findCustomerByLoginId(String loginId) {
         return customerRepository.findByLoginId(loginId);
     }
 
-    public Customer findCustomerByUserName(String userName) {
+    public Optional<Customer> findCustomerByUserName(String userName) {
         return customerRepository.findByUserName(userName);
     }
 
-    public Customer findCustomerByTableNumber(String tableNumber) {
+    public Optional<Customer> findCustomerByTableNumber(String tableNumber) {
         return customerRepository.findByTableNumber(tableNumber);
     }
 
@@ -64,44 +67,65 @@ public class CustomerService {
 
     //==수정 로직==//
     @Transactional
-    public void changeUserName(Long customerId, String userName) {
-        customerRepository.changeUserName(customerId, userName);
+    public boolean changePassword(Long customerId, String password) {
+        if(passwordService.createPasswordValid(password)) {
+            Optional<Customer> customer = customerRepository.findById(customerId);
+            if(customer.isPresent()) {
+                customer.get().changePassword(passwordEncoder.encode(password));
+                return true;
+            }
+        }
+        return false;
     }
 
     @Transactional
-    public void changeTableNumber(Long customerId, String tableNumber) {
-        customerRepository.changeTableNumber(customerId, tableNumber);
+    public boolean changeUserName(Long customerId, String userName) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()) {
+            customer.get().changeUserName(userName);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeOrders(Long customerId, List<Order> orders) {
-        customerRepository.changeOrders(customerId, orders);
+    public boolean changeGradeType(Long customerId, GradeType gradeType) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()) {
+            customer.get().changeGradeType(gradeType);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void addOrder(Long customerId, Order order) {
-        customerRepository.addOrder(customerId, order);
+    public boolean changeTableNumber(Long customerId, String tableNumber) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()) {
+            customer.get().changeTableNumber(tableNumber);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeCart(Long customerId, Map<Long, Integer> numberOfMenus) {
-        customerRepository.changeCart(customerId, numberOfMenus);
-    }
-
-    @Transactional
-    public void addCart(Long customerId, Long menuId, int count) {
-        customerRepository.addCart(customerId, menuId, count);
-    }
-
-    @Transactional
-    public void changeExpirationTime(Long customerId, LocalDateTime expirationTime) {
-        customerRepository.changeExpirationTime(customerId, expirationTime);
+    public boolean changeExpirationTime(Long customerId, LocalDateTime expirationTime) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()) {
+            customer.get().changeExpirationTime(expirationTime);
+            return true;
+        }
+        return false;
     }
 
     //==삭제 로직==//
     @Transactional
-    public void removeCustomer(Long customerId) {
-        customerRepository.removeCustomer(customerId);
+    public boolean removeCustomer(Long customerId) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()) {
+            customerRepository.remove(customerId);
+            return true;
+        }
+        return false;
     }
-
 }

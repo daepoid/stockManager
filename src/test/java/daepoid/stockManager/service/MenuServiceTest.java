@@ -1,10 +1,9 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
-import daepoid.stockManager.domain.recipe.DishType;
-import daepoid.stockManager.domain.recipe.Menu;
-import daepoid.stockManager.domain.recipe.MenuStatus;
-import daepoid.stockManager.domain.recipe.Recipe;
+import daepoid.stockManager.domain.food.Ingredient;
+import daepoid.stockManager.domain.food.DishType;
+import daepoid.stockManager.domain.food.Menu;
+import daepoid.stockManager.domain.food.FoodStatus;
 
 import org.junit.jupiter.api.Test;
 
@@ -67,7 +66,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -81,7 +80,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -100,7 +99,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -114,7 +113,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -135,7 +134,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
         String menuImgUrl = "";
 
         foods.add(recipe);
@@ -150,7 +149,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .imgUrl(menuImgUrl)
                 .build();
 
@@ -173,7 +172,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
         String menuImgUrl = "";
 
         foods.add(recipe);
@@ -188,7 +187,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .imgUrl(menuImgUrl)
                 .build();
 
@@ -212,7 +211,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
         String menuImgUrl = "";
 
         foods.add(recipe);
@@ -227,7 +226,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .imgUrl(menuImgUrl)
                 .build();
 
@@ -253,7 +252,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -267,7 +266,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -286,7 +285,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
         String menuImgUrl = "";
 
         foods.add(recipe);
@@ -301,7 +300,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .imgUrl(menuImgUrl)
                 .build();
 
@@ -328,7 +327,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -342,7 +341,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -378,7 +377,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -392,7 +391,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -416,7 +415,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -430,7 +429,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -456,7 +455,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -470,7 +469,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -519,7 +518,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -533,7 +532,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -556,7 +555,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
 
         foods.add(recipe);
 
@@ -570,7 +569,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .build();
 
         Long menuId = menuService.saveMenu(menu);
@@ -593,7 +592,7 @@ class MenuServiceTest {
         Map<Long, Integer> numberOfFoods = new HashMap<>();
         LocalDateTime addedDate = LocalDateTime.now();
         int salesCount = 0;
-        MenuStatus menuStatus = MenuStatus.ORDERABLE;
+        FoodStatus foodStatus = FoodStatus.ORDERABLE;
         String menuImgUrl = "";
 
         foods.add(recipe);
@@ -608,7 +607,7 @@ class MenuServiceTest {
                 .numberOfFoods(numberOfFoods)
                 .addedDate(addedDate)
                 .salesCount(salesCount)
-                .menuStatus(menuStatus)
+                .menuStatus(foodStatus)
                 .imgUrl(menuImgUrl)
                 .build();
 

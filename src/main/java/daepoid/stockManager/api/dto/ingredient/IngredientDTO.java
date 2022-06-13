@@ -1,16 +1,8 @@
 package daepoid.stockManager.api.dto.ingredient;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
-import daepoid.stockManager.domain.item.Item;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.UnitType;
-import daepoid.stockManager.domain.recipe.Recipe;
 import lombok.Data;
-
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 public class IngredientDTO {
@@ -47,7 +39,7 @@ public class IngredientDTO {
         this.unitPrice = ingredient.getUnitPrice();
         this.loss = ingredient.getLoss();
         this.cost = ingredient.getCost();
-        this.recipeId = ingredient.getRecipe().getId();
-        this.recipeName = ingredient.getRecipe().getName();
+        this.recipeId = ingredient.getFood().getId();
+        this.recipeName = ingredient.getFood().getName();
     }
 }

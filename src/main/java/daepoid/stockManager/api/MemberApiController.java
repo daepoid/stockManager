@@ -3,7 +3,7 @@ package daepoid.stockManager.api;
 import daepoid.stockManager.api.dto.Result;
 import daepoid.stockManager.api.dto.member.*;
 import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.Member;
+import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.domain.member.MemberStatus;
 import daepoid.stockManager.service.MemberService;
 

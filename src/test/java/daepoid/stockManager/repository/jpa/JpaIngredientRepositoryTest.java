@@ -1,12 +1,10 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.domain.item.ItemType;
 import daepoid.stockManager.domain.item.UnitType;
-import daepoid.stockManager.domain.recipe.DishType;
-import daepoid.stockManager.domain.recipe.Recipe;
-import daepoid.stockManager.repository.jpa.JpaIngredientRepository;
+import daepoid.stockManager.domain.food.DishType;
 
 import org.junit.jupiter.api.Test;
 
@@ -96,7 +94,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         // then
         assertThat(ingredientId).isEqualTo(ingredient.getId());
@@ -129,7 +127,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         // then
         assertThat(ingredientRepository.findById(ingredientId)).isEqualTo(ingredient);
@@ -165,7 +163,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         // then
         assertThat(ingredientRepository.findAll().size()).isEqualTo(size + 1);
@@ -202,7 +200,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         // then
         assertThat(ingredientRepository.findByName(item.getName()).contains(ingredient)).isTrue();
@@ -238,11 +236,11 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         // then
-        assertThat(ingredientRepository.findByRecipe(recipe.getId()).contains(ingredient)).isTrue();
-        assertThat(ingredientRepository.findByRecipe(recipe.getId()).stream()
+        assertThat(ingredientRepository.findByRecipeId(recipe.getId()).contains(ingredient)).isTrue();
+        assertThat(ingredientRepository.findByRecipeId(recipe.getId()).stream()
                 .filter(i -> i.getId().equals(ingredientId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -274,7 +272,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
         // then
         assertThat(ingredientRepository.findByUnitType(unitType).contains(ingredient)).isTrue();
         assertThat(ingredientRepository.findByUnitType(unitType).stream()
@@ -309,7 +307,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         String newItemName ="new item name";
         ItemType newItemItemType = ItemType.MEAT;
@@ -379,7 +377,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         String newName = "newIngredientName";
         ingredientRepository.changeName(ingredientId, newName);
@@ -425,7 +423,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         int newQuantity = 456456;
         ingredientRepository.changeQuantity(ingredientId, newQuantity);
@@ -462,7 +460,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         UnitType newUnitType = UnitType.kg;
         ingredientRepository.changeUnitType(ingredientId, newUnitType);
@@ -506,7 +504,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         double newUnitPrice = 456.456;
         ingredientRepository.changeUnitPrice(ingredientId, newUnitPrice);
@@ -543,7 +541,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         double newLoss = 45.6;
         ingredientRepository.changeLoss(ingredientId, newLoss);
@@ -580,7 +578,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         double newCost = 456456456;
         ingredientRepository.changeCost(ingredientId, newCost);
@@ -627,7 +625,7 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
         double newCost = 456456456;
         ingredientRepository.changeCost(ingredientId, newCost);
@@ -677,9 +675,9 @@ class JpaIngredientRepositoryTest {
                 .build();
 
         // when
-        Long ingredientId = ingredientRepository.saveIngredient(ingredient);
+        Long ingredientId = ingredientRepository.save(ingredient);
 
-        ingredientRepository.deleteIngredient(ingredientId);
+        ingredientRepository.remove(ingredientId);
 
         // then
         assertThat(ingredientRepository.findById(ingredientId)).isNull();

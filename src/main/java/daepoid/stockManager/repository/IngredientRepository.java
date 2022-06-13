@@ -1,38 +1,36 @@
 package daepoid.stockManager.repository;
 
-import daepoid.stockManager.domain.duty.Duty;
-import daepoid.stockManager.domain.ingredient.Ingredient;
-import daepoid.stockManager.domain.item.Item;
+import daepoid.stockManager.domain.food.Food;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.UnitType;
+import daepoid.stockManager.domain.search.IngredientSearch;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IngredientRepository {
 
     //==생성 메서드==//
-    Long saveIngredient(Ingredient ingredient);
+    Long save(Ingredient ingredient);
 
     //==조회 메서드==//
-    Ingredient findById(Long ingredientId);
+    Optional<Ingredient> findById(Long ingredientId);
     List<Ingredient> findAll();
     List<Ingredient> findAll(int maxResult);
     List<Ingredient> findAll(int firstResult, int maxResult);
+    List<Ingredient> findByItemId(Long itemId);
     List<Ingredient> findByName(String name);
-    List<Ingredient> findByRecipe(Long recipeId);
-    List<Ingredient> findByUnitType(UnitType unitType);
+    List<Ingredient> findByFoodId(Long foodId);
+
+    List<Ingredient> findByIngredientSearch(IngredientSearch ingredientSearch);
 
     //==수정 메서드==//
-    void changeItem(Long ingredientId, Item item);
-    void changeName(Long ingredientId, String name);
-    void changeQuantity(Long ingredientId, int quantity);
+    void changeQuantity(Long ingredientId, Double quantity);
     void changeUnitType(Long ingredientId, UnitType unitType);
-    void changeUnitPrice(Long ingredientId, double unitPrice);
-    void changeLoss(Long ingredientId, double loss);
-    void changeCost(Long ingredientId, double cost);
-
-    void updateCost(Long ingredientId);
+    void changeUnitPrice(Long ingredientId, Double unitPrice);
+    void changeLoss(Long ingredientId, Double loss);
+    void changeFood(Long ingredientId, Food food);
 
     //==삭제 메서드==//
-    void deleteIngredient(Long ingredientId);
-
+    void remove(Long ingredientId);
 }

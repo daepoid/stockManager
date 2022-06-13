@@ -1,11 +1,12 @@
 package daepoid.stockManager.repository;
 
 import daepoid.stockManager.domain.order.*;
-import daepoid.stockManager.domain.recipe.Menu;
 import daepoid.stockManager.domain.search.ManagerOrderSearch;
+import daepoid.stockManager.domain.users.Customer;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository {
 
@@ -13,25 +14,24 @@ public interface OrderRepository {
     Long save(Order order);
 
     //==조회 로직==//
-    Order findById(Long id);
+    Optional<Order> findById(Long id);
     List<Order> findAll();
     List<Order> findAll(int maxResult);
     List<Order> findAll(int firstResult, int maxResult);
 
     List<Order> findByCustomer(Long customerId);
-    List<Order> findByOrderMenu(OrderMenu orderMenu);
     List<Order> findByOrderStatus(OrderStatus orderStatus);
+    List<Order> findByOrderDateTimeAfterThanEqual(LocalDateTime orderDateTime);
+    List<Order> findByOrderDateTimeBeforeThanEqual(LocalDateTime orderDateTime);
     List<Order> findByManagerOrderSearch(ManagerOrderSearch orderSearch);
+    List<Order> findByTotalOrderPriceGreaterThanEqual(Double totalOrderPrice);
+    List<Order> findByTotalOrderPriceLessThanEqual(Double totalOrderPrice);
 
     //==수정 로직==//
     void changeCustomer(Long orderId, Customer customer);
-
-    void changeOrderMenus(Long orderId, List<OrderMenu> orderMenus);
-    void addOrderMenus(Long orderId, OrderMenu orderMenu);
-
-    void changeOrderDate(Long orderId, LocalDateTime orderDateTime);
     void changeOrderStatus(Long orderId, OrderStatus orderStatus);
+    void changeTotalOrderPrice(Long orderId, Double totalOrderPrice);
 
     //==삭제 로직==//
-    void removeOrder(Order order);
+    void remove(Long orderId);
 }

@@ -1,7 +1,7 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.ingredient.Ingredient;
-import daepoid.stockManager.domain.item.Item;
+import daepoid.stockManager.domain.food.Food;
+import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.UnitType;
 import daepoid.stockManager.repository.jpa.JpaIngredientRepository;
 
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -20,15 +21,16 @@ import java.util.List;
 public class IngredientService {
 
     private final JpaIngredientRepository ingredientRepository;
+    private final FoodService foodService;
 
     //==생성 메서드==//
     @Transactional
     public Long saveIngredient(Ingredient ingredient) {
-        return ingredientRepository.saveIngredient(ingredient);
+        return ingredientRepository.save(ingredient);
     }
 
     //==조회 메서드==//
-    public Ingredient findIngredient(Long ingredientId) {
+    public Optional<Ingredient> findIngredient(Long ingredientId) {
         return ingredientRepository.findById(ingredientId);
     }
 
@@ -48,57 +50,65 @@ public class IngredientService {
         return ingredientRepository.findByName(name);
     }
 
-    public List<Ingredient> findByRecipe(Long recipeId) {
-        return ingredientRepository.findByRecipe(recipeId);
-    }
-
-    public List<Ingredient> findByUnitType(UnitType unitType) {
-        return ingredientRepository.findByUnitType(unitType);
+    public List<Ingredient> findByFoodId(Long foodId) {
+        return ingredientRepository.findByFoodId(foodId);
     }
 
     //==수정 메서드==//
+
     @Transactional
-    public void changeItem(Long ingredientId, Item item) {
-        ingredientRepository.changeItem(ingredientId, item);
+    public boolean changeQuantity(Long ingredientId, Double quantity) {
+        Optional<Ingredient> ingredient = ingredientRepository.findById(ingredientId);
+        if(ingredient.isPresent()) {
+            ingredient.get().changeQuantity(quantity);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeName(Long ingredientId, String name) {
-        ingredientRepository.findById(ingredientId).changeName(name);
+    public boolean changeUnitType(Long ingredientId, UnitType unitType) {
+        Optional<Ingredient> ingredient = ingredientRepository.findById(ingredientId);
+        if(ingredient.isPresent()) {
+            ingredient.get().changeUnitType(unitType);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeQuantity(Long ingredientId, int quantity) {
-        ingredientRepository.findById(ingredientId).changeQuantity(quantity);
+    public boolean changeUnitPrice(Long ingredientId, Double unitPrice) {
+        Optional<Ingredient> ingredient = ingredientRepository.findById(ingredientId);
+        if(ingredient.isPresent()) {
+            ingredient.get().changeUnitPrice(unitPrice);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeUnitType(Long ingredientId, UnitType unitType) {
-        ingredientRepository.findById(ingredientId).changeUnitType(unitType);
+    public boolean changeLoss(Long ingredientId, Double loss) {
+        Optional<Ingredient> ingredient = ingredientRepository.findById(ingredientId);
+        if(ingredient.isPresent()) {
+            ingredient.get().changeLoss(loss);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeUnitPrice(Long ingredientId, double unitPrice) {
-        ingredientRepository.findById(ingredientId).changeUnitPrice(unitPrice);
+    public boolean changeFood(Long ingredientId, Long foodId) {
+        Optional<Ingredient> ingredient = ingredientRepository.findById(ingredientId);
+        Optional<Food> food = foodService.findFood(foodId);
+        if(ingredient.isPresent() && food.isPresent()) {
+            ingredient.get().changeFood(food.get());
+            return true;
+        }
+        return false;
     }
 
     @Transactional
-    public void changeLoss(Long ingredientId, double loss) {
-        ingredientRepository.findById(ingredientId).changeLoss(loss);
-    }
-
-    @Transactional
-    public void changeCost(Long ingredientId, double cost) {
-        ingredientRepository.findById(ingredientId).changeCost(cost);
-    }
-
-    @Transactional
-    public void updateCost(Long ingredientId) {
-        ingredientRepository.findById(ingredientId).updateCost();
-    }
-
-    @Transactional
-    public void deleteIngredient(Long ingredientId) {
-        ingredientRepository.deleteIngredient(ingredientId);
+    public void removeIngredient(Long ingredientId) {
+        ingredientRepository.remove(ingredientId);
     }
 }
