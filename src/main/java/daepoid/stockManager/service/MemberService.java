@@ -1,10 +1,9 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.users.Customer;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.domain.search.MemberSearch;
-import daepoid.stockManager.domain.member.MemberStatus;
+import daepoid.stockManager.domain.users.MemberStatus;
 import daepoid.stockManager.repository.jpa.JpaMemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class MemberService {
 
     private final JpaMemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final PasswordService passwordService;
+    private final LoginUtilService loginUtilService;
 
     //==생성 로직==//
     @Transactional
@@ -93,7 +92,7 @@ public class MemberService {
 
     @Transactional
     public boolean changePassword(Long memberId, String password) {
-        if(passwordService.createPasswordValid(password)) {
+        if(loginUtilService.createPasswordValid(password)) {
             Optional<Member> member = memberRepository.findById(memberId);
             if(member.isPresent()) {
                 member.get().changePassword(passwordEncoder.encode(password));

@@ -32,4 +32,9 @@ public class CreateItemRequestDTO {
     // 패키지 수량 (개, 박스, 통)
     @NotNull
     private int packageCount;
+
+    @NotBlank
+    private String countryOfOrigin;
+
+    private String notice;
 }

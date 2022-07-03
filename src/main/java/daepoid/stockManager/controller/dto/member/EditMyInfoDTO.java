@@ -35,14 +35,10 @@ public class EditMyInfoDTO {
     @NotBlank
     private String password;
 
-    @NotNull
-    private List<Duty> duties = new ArrayList<>();
-
     public EditMyInfoDTO(Member member) {
         this.id = member.getId();
         this.loginId = member.getLoginId();
         this.userName = member.getUserName();
         this.phoneNumber = member.getPhoneNumber();
-        this.duties = member.getDuties();
     }
 }

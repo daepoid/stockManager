@@ -1,6 +1,6 @@
 package daepoid.stockManager.testData;
 
-import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.service.CustomerService;
 
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
 @Component
 @RequiredArgsConstructor

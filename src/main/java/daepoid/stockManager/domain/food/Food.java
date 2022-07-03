@@ -25,7 +25,7 @@ public class Food {
 
     @NotNull
     @PositiveOrZero
-    private Integer salesCount = 0;
+    private Integer salesCount;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -59,7 +59,7 @@ public class Food {
 
     //==관리자 제공 정보==//
     @NotNull
-    @Positive
+    @PositiveOrZero
     private Double foodCost = 0.0;
 
     @NotNull
@@ -95,7 +95,7 @@ public class Food {
         this.salesCount++;
     }
 
-    public void addSalesCount(Integer count) {
+    public void addSalesCount(int count) {
         this.salesCount += count;
     }
 
@@ -103,11 +103,11 @@ public class Food {
         this.salesCount--;
     }
 
-    public void cancelSalesCount(Integer count) {
+    public void cancelSalesCount(int count) {
         this.salesCount -= count;
     }
 
-    public void changeSalesCount(Integer salesCount) {
+    public void changeSalesCount(int salesCount) {
         this.salesCount = salesCount;
     }
 
@@ -121,7 +121,7 @@ public class Food {
         this.foodName = foodName;
     }
 
-    public void changeFoodPrice(Double foodPrice) {
+    public void changeFoodPrice(double foodPrice) {
         this.foodPrice = foodPrice;
         updateIncome(foodPrice, this.foodCost);
     }
@@ -144,20 +144,20 @@ public class Food {
     }
 
     //==관리자 제공 정보 수정 메서드==//
-    public void changeFoodCost(Double foodCost) {
+    public void changeFoodCost(double foodCost) {
         this.foodCost = foodCost;
         updateIncome(this.foodPrice, foodCost);
     }
 
-    public void increaseFoodCost(Double foodCost) {
+    public void increaseFoodCost(double foodCost) {
         this.foodCost += foodCost;
     }
 
-    public void reduceFoodCost(Double foodCost) {
+    public void reduceFoodCost(double foodCost) {
         this.foodCost -= foodCost;
     }
 
-    public void updateIncome(Double foodPrice, Double foodCost) {
+    public void updateIncome(double foodPrice, double foodCost) {
         this.income = foodPrice - foodCost;
     }
 }

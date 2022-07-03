@@ -1,18 +1,18 @@
 package daepoid.stockManager.api.dto.customer;
 
-import daepoid.stockManager.domain.order.Order;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
 public class UpdateCustomerRequestDTO {
 
-    private String name;
+    @NotBlank
+    private String password;
+
+    private String userName;
 
     private String tableNumber;
-
-    private Cart cart;
-
-    private List<Order> orders;
 }

@@ -1,9 +1,11 @@
 package daepoid.stockManager.controller;
 
+import daepoid.stockManager.domain.food.Food;
 import daepoid.stockManager.domain.food.Ingredient;
 import daepoid.stockManager.domain.item.Item;
 import daepoid.stockManager.controller.dto.item.CreateIngredientDTO;
 import daepoid.stockManager.controller.dto.item.EditIngredientDTO;
+import daepoid.stockManager.service.FoodService;
 import daepoid.stockManager.service.IngredientService;
 import daepoid.stockManager.service.ItemService;
 
@@ -18,45 +20,46 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("/recipes/{recipeId}/ingredients")
+@RequestMapping("/foods/{foodId}/ingredients")
 @RequiredArgsConstructor
 public class IngredientController {
 
-    private final RecipeService recipeService;
+    private final FoodService foodService;
     private final IngredientService ingredientService;
     private final ItemService itemService;
 
     /**
      * 재료 리스트
-     * @param recipeId
+     * @param foodId
      * @param model
      * @param request
      * @return
      */
     @GetMapping("")
-    public String ingredientsList(@PathVariable("recipeId") Long recipeId, Model model, HttpServletRequest request) {
-        model.addAttribute("ingredients", ingredientService.findByRecipe(recipeId));
+    public String ingredientsList(@PathVariable("foodId") Long foodId, Model model, HttpServletRequest request) {
+        model.addAttribute("ingredients", ingredientService.findByFoodId(foodId));
         return "ingredients/ingredientList";
     }
 
     /**
      * 레시피 재료 정보 생성
-     * @param recipeId
+     * @param foodId
      * @param model
      * @return
      */
     @GetMapping("/new")
-    public String createIngredientsForm(@PathVariable("recipeId") Long recipeId, Model model) {
+    public String createIngredientsForm(@PathVariable("foodId") Long foodId, Model model) {
         model.addAttribute("createIngredientDTO", new CreateIngredientDTO());
         model.addAttribute("items", itemService.findItems());
         return "ingredients/createIngredientForm";
     }
 
     @PostMapping("/new")
-    public String createIngredients(@PathVariable("recipeId") Long recipeId,
+    public String createIngredients(@PathVariable("foodId") Long foodId,
                                     @Valid @ModelAttribute("createIngredientDTO") CreateIngredientDTO createIngredientDTO,
                                     BindingResult bindingResult,
                                     Model model,
@@ -68,48 +71,55 @@ public class IngredientController {
         }
 
         // 레시피에 같은 재료가 들어가는 것으로 선택된 경우 문제가 있다고 판단한다.
-        Recipe recipe = recipeService.findRecipe(recipeId);
-        Item item = itemService.findItem(createIngredientDTO.getItemId());
-        if(recipe.hasIngredient(item.getName())) {
+        Optional<Food> food = foodService.findFood(foodId);
+        Optional<Item> item = itemService.findItem(createIngredientDTO.getItemId());
+
+        if(food.isEmpty() || item.isEmpty()) {
             model.addAttribute("items", itemService.findItems());
             return "ingredients/createIngredientForm";
         }
 
         Ingredient ingredient = Ingredient.builder()
-                .item(item)
-                .name(item.getName())
+                .item(item.get())
+                .name(item.get().getName())
                 .quantity(createIngredientDTO.getQuantity())
                 .unitType(createIngredientDTO.getUnitType())
                 .unitPrice(createIngredientDTO.getUnitPrice())
                 .loss(createIngredientDTO.getLoss())
-                .cost(createIngredientDTO.getQuantity() * createIngredientDTO.getUnitPrice())
-                .recipe(recipe)
+                .food(food.get())
                 .build();
         ingredientService.saveIngredient(ingredient);
 
-        redirectAttributes.addAttribute("recipeId", recipeId);
-        return "redirect:/recipes/{recipeId}";
+        redirectAttributes.addAttribute("foodId", foodId);
+        return "redirect:/foods/{foodId}";
     }
 
     /**
      * 레시피 재료 정보 수정 및 레시피 재료 정보 보기
-     * @param recipeId
+     * @param foodId
      * @param ingredientId
      * @param model
      * @return
      */
     @GetMapping("/{ingredientId}")
-    public String editIngredientsForm(@PathVariable("recipeId") Long recipeId,
+    public String editIngredientsForm(@PathVariable("foodId") Long foodId,
                                       @PathVariable("ingredientId") Long ingredientId,
-                                      Model model) {
-        Ingredient ingredient = ingredientService.findIngredient(ingredientId);
-        model.addAttribute("editIngredientDTO", new EditIngredientDTO(ingredient));
+                                      Model model,
+                                      HttpServletRequest request) {
+
+        Optional<Ingredient> ingredient = ingredientService.findIngredient(ingredientId);
+        if(ingredient.isEmpty()) {
+            request.getSession(false).invalidate();
+            return "home";
+        }
+
+        model.addAttribute("editIngredientDTO", new EditIngredientDTO(ingredient.get()));
         model.addAttribute("items", itemService.findItems());
         return "ingredients/editIngredientForm";
     }
 
     @PostMapping("/{ingredientId}")
-    public String editIngredients(@PathVariable("recipeId") Long recipeId,
+    public String editIngredients(@PathVariable("foodId") Long foodId,
                                   @PathVariable("ingredientId") Long ingredientId,
                                   @Valid @ModelAttribute("editIngredientDTO") EditIngredientDTO editIngredientDTO,
                                   BindingResult bindingResult,
@@ -121,30 +131,16 @@ public class IngredientController {
             return "ingredients/editIngredientForm";
         }
 
-        Item item = itemService.findItem(editIngredientDTO.getItemId());
-
-        // 수정 시 변경하기 위해 선택한 재고(editIngredientDTO.getItem())가
-        // 이미 존재하는 경우 변경할 수 없어야 한다.
-        Ingredient duplicateIngredient = recipeService.findRecipe(recipeId).getIngredients().stream()
-                .filter(ingredient -> ingredient.getItem().equals(item) && !ingredient.getId().equals(ingredientId))
-                .findAny()
-                .orElse(null);
-
-        if(duplicateIngredient != null) {
+        Optional<Item> item = itemService.findItem(editIngredientDTO.getItemId());
+        if(item.isEmpty()) {
             model.addAttribute("items", itemService.findItems());
             return "ingredients/editIngredientForm";
         }
 
-        ingredientService.changeItem(ingredientId, item);
-        ingredientService.changeName(ingredientId, item.getName());
-
         ingredientService.changeQuantity(ingredientId, editIngredientDTO.getQuantity());
         ingredientService.changeUnitType(ingredientId, editIngredientDTO.getUnitType());
-        ingredientService.changeUnitPrice(ingredientId, editIngredientDTO.getUnitPrice());
-        ingredientService.changeLoss(ingredientId, editIngredientDTO.getLoss());
-        ingredientService.updateCost(ingredientId);
 
-        redirectAttributes.addAttribute("recipeId", recipeId);
-        return "redirect:/recipes/{recipeId}";
+        redirectAttributes.addAttribute("foodId", foodId);
+        return "redirect:/foods/{foodId}";
     }
 }

@@ -25,10 +25,10 @@ public class EditOrderDTO {
     private Long customerId;
 
     @NotBlank
-    private String nameOfOrderMenu;
+    private String nameOfOrderFood;
 
     @NotNull
-    private int numberOfOrderMenu;
+    private int numberOfOrderFood;
 
     @NotNull
     private LocalDateTime orderDateTime;
@@ -41,8 +41,8 @@ public class EditOrderDTO {
         this.customerName = orderMenu.getOrder().getCustomer().getUserName();
         this.customerId = orderMenu.getOrder().getCustomer().getId();
 
-        this.nameOfOrderMenu = orderMenu.getMenu().getName();
-        this.numberOfOrderMenu = orderMenu.getOrderCount();
+        this.nameOfOrderFood = orderMenu.getFood().getFoodName();
+        this.numberOfOrderFood = orderMenu.getOrderCount();
         this.orderDateTime = orderMenu.getOrder().getOrderDateTime();
         this.orderStatus = orderMenu.getOrder().getOrderStatus();
     }

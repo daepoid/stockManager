@@ -7,8 +7,5 @@ public class CreateOrderRequestDTO {
 
     private Long customerId;
 
-    private Long menuId;
-
-    private int orderCount;
-
+    private Long foodId;
 }

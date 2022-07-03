@@ -18,12 +18,10 @@ public class CreateIngredientRequestDTO {
     private UnitType unitType;
 
     @NotNull
-    private double unitPrice;
+    private Double unitPrice;
 
     private double loss;
 
-    private double cost;
-
     @NotNull
-    private Long recipeId;
+    private Long foodId;
 }

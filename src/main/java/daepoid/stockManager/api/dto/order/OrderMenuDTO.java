@@ -9,12 +9,12 @@ public class OrderMenuDTO {
 
     private String menuName;
 
-    private int orderPrice;
+    private double orderPrice;
 
     private int orderCount;
 
     public OrderMenuDTO(OrderMenu orderMenu) {
-        this.menuName = orderMenu.getMenu().getName();
+        this.menuName = orderMenu.getFood().getFoodName();
         this.orderPrice = orderMenu.getOrderPrice();
         this.orderCount = orderMenu.getOrderCount();
     }

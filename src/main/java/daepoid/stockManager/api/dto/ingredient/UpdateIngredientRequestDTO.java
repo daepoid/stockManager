@@ -6,11 +6,11 @@ import lombok.Data;
 @Data
 public class UpdateIngredientRequestDTO {
 
-    private int quantity;
+    private Integer quantity;
 
     private UnitType unitType;
 
-    private double unitPrice;
+    private Double unitPrice;
 
-    private double loss;
+    private Double loss;
 }

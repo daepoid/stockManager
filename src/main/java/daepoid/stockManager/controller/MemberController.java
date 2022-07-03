@@ -1,10 +1,10 @@
 package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.domain.search.MemberSearch;
-import daepoid.stockManager.domain.member.MemberStatus;
+import daepoid.stockManager.domain.users.MemberStatus;
 import daepoid.stockManager.controller.dto.member.EditMemberDTO;
 import daepoid.stockManager.controller.dto.member.JoinMemberDTO;
 import daepoid.stockManager.service.MemberService;
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -41,7 +42,6 @@ public class MemberController {
     public String memberList(@ModelAttribute("memberSearch") MemberSearch memberSearch,
                              Model model) {
         model.addAttribute("members", memberService.findByMemberSearch(memberSearch));
-//        model.addAttribute("members", memberService.findMembers());
         return "members/memberList";
     }
 
@@ -69,7 +69,7 @@ public class MemberController {
         }
 
         // 이미 동일한 로그인 아이디가 존재하는 경우
-        if(memberService.findMemberByLoginId(joinMemberDTO.getLoginId()) != null) {
+        if(memberService.findMemberByLoginId(joinMemberDTO.getLoginId()).isPresent()) {
             return "members/joinMemberForm";
         }
 
@@ -84,7 +84,6 @@ public class MemberController {
                 .phoneNumber(joinMemberDTO.getPhoneNumber())
                 .gradeType(GradeType.UNDEFINED)
                 .memberStatus(MemberStatus.UNDEFINED)
-                .duties(new ArrayList<Duty>())
                 .build();
 
         Long memberId = memberService.join(member);
@@ -127,10 +126,10 @@ public class MemberController {
                                         HttpServletRequest request) {
 
         String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        Member findMember = memberService.findMemberByLoginId(loginId);
+        Optional<Member> member = memberService.findMemberByLoginId(loginId);
 
-        if (findMember != null && findMember.getGradeType().equals(GradeType.CEO) || findMember.getId().equals(memberId)) {
-            model.addAttribute("editMemberDTO", new EditMemberDTO(findMember));
+        if (member.isPresent() && member.get().getGradeType().equals(GradeType.CEO) || member.get().getId().equals(memberId)) {
+            model.addAttribute("editMemberDTO", new EditMemberDTO(member.get()));
             return "members/editMemberForm";
         }
 
@@ -144,7 +143,6 @@ public class MemberController {
                                     Model model,
                                     BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            model.addAttribute("duties", memberService.findMember(memberId).getDuties());
             log.info("bindingResult = {}", bindingResult);
             return "members/editMemberForm";
         }
@@ -152,13 +150,13 @@ public class MemberController {
         // 어차피 SecurityConfig 부분에서 관리자인지 체크해야한다.
         // 왜냐? 관리자는 비밀번호 없이 회원의 정보를 변경할 수 있도록 만든다.
         // 모든 변경기록이 로그로 남아야하고, 로그는 파일로 따로 저장되어야 한다.
-        Member member = memberService.findMember(memberId);
+        Optional<Member> member = memberService.findMember(memberId);
         log.info("관리자 페이지에서 {}님 정보 수정 \n{} => {}\n{} => {}\n{} => {}\n{} => {}",
-                member.getUserName(),
-                member.getUserName(), editMemberDTO.getUserName(),
-                member.getPhoneNumber(), editMemberDTO.getPhoneNumber(),
-                member.getGradeType(), editMemberDTO.getGradeType(),
-                member.getMemberStatus(), editMemberDTO.getMemberStatus());
+                member.get().getUserName(),
+                member.get().getUserName(), editMemberDTO.getUserName(),
+                member.get().getPhoneNumber(), editMemberDTO.getPhoneNumber(),
+                member.get().getGradeType(), editMemberDTO.getGradeType(),
+                member.get().getMemberStatus(), editMemberDTO.getMemberStatus());
 
         memberService.changeUserName(memberId, editMemberDTO.getUserName());
         memberService.changePhoneNumber(memberId, editMemberDTO.getPhoneNumber());

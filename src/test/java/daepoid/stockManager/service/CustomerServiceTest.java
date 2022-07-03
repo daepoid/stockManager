@@ -1,6 +1,6 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.food.Menu;
 import daepoid.stockManager.domain.food.FoodStatus;

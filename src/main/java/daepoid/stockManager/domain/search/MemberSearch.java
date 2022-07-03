@@ -1,7 +1,7 @@
 package daepoid.stockManager.domain.search;
 
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.MemberStatus;
+import daepoid.stockManager.domain.users.GradeType;
+import daepoid.stockManager.domain.users.MemberStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -28,6 +28,12 @@ public class ItemDTO {
     // 패키지 수량 (개, 박스, 통)
     private int packageCount;
 
+    // 원산지
+    private String countryOfOrigin;
+
+    // 주의 사항
+    private String notice;
+
     public ItemDTO(Item item) {
         this.itemId = item.getId();
         this.name = item.getName();
@@ -36,5 +42,7 @@ public class ItemDTO {
         this.quantity = item.getQuantity();
         this.unitType = item.getUnitType();
         this.packageCount = item.getPackageCount();
+        this.countryOfOrigin = item.getCountryOfOrigin();
+        this.notice = item.getNotice();
     }
 }

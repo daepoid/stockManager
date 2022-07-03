@@ -1,6 +1,6 @@
 package daepoid.stockManager.service;
 
-import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.domain.search.CustomerSearch;
 import daepoid.stockManager.repository.jpa.JpaCustomerRepository;
@@ -24,7 +24,7 @@ public class CustomerService {
 
     private final JpaCustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
-    private final PasswordService passwordService;
+    private final LoginUtilService loginUtilService;
 
     //==생성 로직==//
     @Transactional
@@ -68,7 +68,7 @@ public class CustomerService {
     //==수정 로직==//
     @Transactional
     public boolean changePassword(Long customerId, String password) {
-        if(passwordService.createPasswordValid(password)) {
+        if(loginUtilService.createPasswordValid(password)) {
             Optional<Customer> customer = customerRepository.findById(customerId);
             if(customer.isPresent()) {
                 customer.get().changePassword(passwordEncoder.encode(password));

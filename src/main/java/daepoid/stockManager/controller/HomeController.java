@@ -2,8 +2,10 @@ package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
 
+import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.service.CustomerService;
+import daepoid.stockManager.service.FoodService;
 import daepoid.stockManager.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -21,8 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 public class HomeController {
 
     private final MemberService memberService;
-    private final CustomerService customererService;
-    private final MenuService menuService;
+    private final CustomerService customerService;
+    private final FoodService foodService;
 
     /**
      * 스프링 시큐리티 이용시 보여줄 홈 화면
@@ -33,7 +36,7 @@ public class HomeController {
     @GetMapping("/")
     public String newHome(Model model, HttpServletRequest request) {
 
-        model.addAttribute("menus", menuService.findMenus());
+        model.addAttribute("foods", foodService.findFoods());
 
         if(request.getSession(false) == null) {
             request.getSession();
@@ -46,16 +49,19 @@ public class HomeController {
             return "home";
         }
 
-        Member member = memberService.findMemberByLoginId(loginId);
-        log.info("member = {}", member);
-        if(member != null) {
-            log.info("직원 {}님 로그인", loginId);
+        Optional<Member> loginMember = memberService.findMemberByLoginId(loginId);
+        if(loginMember.isPresent()) {
+            log.info("직원 {}님 로그인", loginMember.get().getUserName());
+            model.addAttribute("memberId", loginMember.get().getId());
+            return "loginHome";
         }
-        else {
+        Optional<Customer> loginCustomer = customerService.findCustomerByLoginId(loginId);
+        if(loginCustomer.isPresent()) {
             log.info("손님 {}님 로그인", loginId);
-            model.addAttribute("customerId", customererService.findCustomerByLoginId(loginId).getId());
+            model.addAttribute("customerId", loginCustomer.get().getId());
+            return "loginHome";
         }
-        model.addAttribute("loginId", loginId);
-        return "loginHome";
+        request.getSession().invalidate();
+        return "home";
     }
 }

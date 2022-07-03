@@ -1,6 +1,5 @@
 package daepoid.stockManager.domain.users;
 
-import daepoid.stockManager.domain.member.GradeType;
 import lombok.Getter;
 
 import javax.persistence.*;

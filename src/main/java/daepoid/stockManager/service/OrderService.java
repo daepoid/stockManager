@@ -99,15 +99,19 @@ public class OrderService {
         return orderRepository.findAll(firstResult, maxResult);
     }
 
-    public List<Order> findByCustomer(Long customerId) {
+    public List<Order> findOrdersByCustomer(Long customerId) {
         return orderRepository.findByCustomer(customerId);
     }
 
-    public List<Order> findByOrderStatus(OrderStatus orderStatus) {
+    public List<Order> findOrdersByOrderStatus(OrderStatus orderStatus) {
         return orderRepository.findByOrderStatus(orderStatus);
     }
 
-    public List<Order> findByManagerOrderSearch(ManagerOrderSearch orderSearch) {
+    public List<Order> findOrdersByCustomerId(Long customerId) {
+        return orderRepository.findByCustomerId(customerId);
+    }
+
+    public List<Order> findOrdersByManagerOrderSearch(ManagerOrderSearch orderSearch) {
         return orderRepository.findByManagerOrderSearch(orderSearch);
     }
 

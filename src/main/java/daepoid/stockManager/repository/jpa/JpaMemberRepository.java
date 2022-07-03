@@ -1,8 +1,9 @@
 package daepoid.stockManager.repository.jpa;
 
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.users.Member;
+import daepoid.stockManager.domain.users.MemberStatus;
 import daepoid.stockManager.domain.users.StoreUser;
-import daepoid.stockManager.domain.member.*;
 import daepoid.stockManager.domain.search.MemberSearch;
 import daepoid.stockManager.repository.MemberRepository;
 
@@ -16,7 +17,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Repository

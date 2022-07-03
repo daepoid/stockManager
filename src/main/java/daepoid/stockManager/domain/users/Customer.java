@@ -1,7 +1,5 @@
 package daepoid.stockManager.domain.users;
 
-import daepoid.stockManager.domain.member.GradeType;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +15,7 @@ import java.time.LocalDateTime;
 public class Customer extends StoreUser {
 
     @NotNull
-    @Column(unique=true)
+//    @Column(unique=true)
     private String tableNumber;
 
     private LocalDateTime expirationTime;

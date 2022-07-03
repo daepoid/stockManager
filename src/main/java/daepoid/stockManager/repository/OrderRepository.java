@@ -23,6 +23,7 @@ public interface OrderRepository {
     List<Order> findByOrderStatus(OrderStatus orderStatus);
     List<Order> findByOrderDateTimeAfterThanEqual(LocalDateTime orderDateTime);
     List<Order> findByOrderDateTimeBeforeThanEqual(LocalDateTime orderDateTime);
+    List<Order> findByCustomerId(Long customerId);
     List<Order> findByManagerOrderSearch(ManagerOrderSearch orderSearch);
     List<Order> findByTotalOrderPriceGreaterThanEqual(Double totalOrderPrice);
     List<Order> findByTotalOrderPriceLessThanEqual(Double totalOrderPrice);

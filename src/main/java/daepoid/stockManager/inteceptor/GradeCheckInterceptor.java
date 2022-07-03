@@ -1,7 +1,7 @@
 package daepoid.stockManager.inteceptor;
 
 import daepoid.stockManager.SessionConst;
-import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.users.Member;
 import daepoid.stockManager.controller.dto.member.LoginMemberDTO;
 import daepoid.stockManager.service.MemberService;
@@ -14,6 +14,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,7 +40,11 @@ public class GradeCheckInterceptor implements HandlerInterceptor {
         }
 
         LoginMemberDTO loginMemberDTO = (LoginMemberDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        Member member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
-        return member.getGradeType().equals(GradeType.MANAGER) || member.getGradeType().equals(GradeType.CEO);
+        Optional<Member> member = memberService.findMemberByLoginId(loginMemberDTO.getLoginId());
+        if(member.isEmpty()) {
+            response.sendRedirect("/");
+            return false;
+        }
+        return member.get().getGradeType().equals(GradeType.MANAGER) || member.get().getGradeType().equals(GradeType.CEO);
     }
 }

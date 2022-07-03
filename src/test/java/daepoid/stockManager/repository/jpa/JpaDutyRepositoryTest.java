@@ -1,8 +1,8 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.users.Member;
-import daepoid.stockManager.domain.member.MemberStatus;
+import daepoid.stockManager.domain.users.MemberStatus;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

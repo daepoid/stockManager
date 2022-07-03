@@ -81,11 +81,11 @@ public class Item {
         this.name = name;
     }
 
-    public void changePrice(Integer price) {
+    public void changePrice(int price) {
         this.price = price;
     }
 
-    public void changeQuantity(Double quantity) {
+    public void changeQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -93,7 +93,7 @@ public class Item {
         this.unitType = unitType;
     }
 
-    public void changePackageCount(Integer packageCount) {
+    public void changePackageCount(int packageCount) {
         this.packageCount = packageCount;
     }
 

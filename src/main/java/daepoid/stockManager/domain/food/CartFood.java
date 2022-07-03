@@ -35,7 +35,15 @@ public class CartFood {
         this.count = count;
     }
 
-    public void changeCount(Integer count) {
+    public void changeCount(int count) {
         this.count = count;
+    }
+
+    public void addCount(int count) {
+        if(this.count != null) {
+            this.count += count;
+        } else {
+            this.count = count;
+        }
     }
 }

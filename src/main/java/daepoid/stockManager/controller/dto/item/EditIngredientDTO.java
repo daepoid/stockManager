@@ -23,31 +23,16 @@ public class EditIngredientDTO {
 
     // 재료 양
     @NotNull
-    private int quantity;
+    private Double quantity;
 
     // 재료 양 단위
     @NotNull
     private UnitType unitType;
-
-    // 단위 가격
-    @NotNull
-    private double unitPrice;
-
-    // 로스율
-    @NotNull
-    private double loss;
-
-    @NotNull
-    private double cost;
 
     public EditIngredientDTO(Ingredient ingredient) {
         this.itemId = ingredient.getItem().getId();
 
         this.quantity = ingredient.getQuantity();
         this.unitType = ingredient.getUnitType();
-        this.unitPrice = ingredient.getUnitPrice();
-
-        this.loss = ingredient.getLoss();
-        this.cost = ingredient.getCost();
     }
 }

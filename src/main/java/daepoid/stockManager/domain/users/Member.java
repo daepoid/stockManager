@@ -1,8 +1,5 @@
 package daepoid.stockManager.domain.users;
 
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.MemberStatus;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

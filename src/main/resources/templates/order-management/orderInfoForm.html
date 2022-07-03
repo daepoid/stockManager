@@ -25,8 +25,8 @@
             <tr th:each="editOrderDTO : ${editOrderDTOs}">
                 <td th:text="${editOrderDTO.customerName}"></td>
                 <td th:text="${editOrderDTO.customerId}"></td>
-                <td th:text="${editOrderDTO.nameOfOrderMenu}"></td>
-                <td th:text="${editOrderDTO.numberOfOrderMenu}"></td>
+                <td th:text="${editOrderDTO.getNameOfOrderFood}"></td>
+                <td th:text="${editOrderDTO.getNumberOfOrderFood}"></td>
                 <td th:text="${editOrderDTO.orderDateTime}"></td>
                 <td th:text="${editOrderDTO.orderStatus}"></td>
             </tr>

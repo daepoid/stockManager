@@ -42,7 +42,7 @@ public class OrderMenu {
     private Integer orderCount;
 
     @Builder
-    public OrderMenu(Order order, Food food, Double orderPrice, Integer orderCount) {
+    public OrderMenu(Order order, Food food, double orderPrice, int orderCount) {
         this.order = order;
         this.food = food;
         this.orderPrice = orderPrice;
@@ -55,7 +55,7 @@ public class OrderMenu {
         food.addSalesCount(orderCount);
     }
 
-    public void changeOrderPrice(Double orderPrice) {
+    public void changeOrderPrice(double orderPrice) {
         this.order.updateOrderPriceByChangeOrderMenu(
                 this.orderPrice * this.orderCount,
                 orderPrice * this.orderCount
@@ -63,7 +63,7 @@ public class OrderMenu {
         this.orderPrice = orderPrice;
     }
 
-    public void changeOrderCount(Integer orderCount) {
+    public void changeOrderCount(int orderCount) {
         this.order.updateOrderPriceByChangeOrderMenu(
                 this.orderPrice * this.orderCount,
                 this.orderPrice * orderCount
@@ -71,7 +71,7 @@ public class OrderMenu {
         this.orderCount = orderCount;
     }
 
-    public void orderFood(Integer orderCount) {
+    public void orderFood(int orderCount) {
         this.food.addSalesCount(orderCount);
     }
 
@@ -79,7 +79,7 @@ public class OrderMenu {
         food.cancelSalesCount(orderCount);
     }
 
-    public Double getOrderMenuPrice() {
+    public double getOrderMenuPrice() {
         return this.orderPrice * this.orderCount;
     }
 }

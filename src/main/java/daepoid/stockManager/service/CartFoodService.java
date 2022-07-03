@@ -42,6 +42,7 @@ public class CartFoodService {
         return cartFoodRepository.findAllByFood(foodId);
     }
 
+
     //==수정 메서드==//
     public boolean changeCount(Long cartFoodId, Integer count) {
         Optional<CartFood> cartFood = cartFoodRepository.findById(cartFoodId);

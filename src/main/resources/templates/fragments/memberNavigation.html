@@ -20,10 +20,10 @@
           <li class="nav-item dropdown" th:classappend="${tab == 'shop'} ? active">
             <a class="nav-link dropdown-toggle" id="shopNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
             <ul class="dropdown-menu" aria-labelledby="shopNavbarDropdown">
-              <li><a class="dropdown-item" href="#!" th:href="@{/menus}">All Products</a></li>
+              <li><a class="dropdown-item" href="#!" th:href="@{/foods}">All Products</a></li>
               <li><hr class="dropdown-divider"/></li>
-              <li><a class="dropdown-item" href="#!" th:href="@{/menus/popular}">Popular Items</a></li>
-              <li><a class="dropdown-item" href="#!" th:href="@{/menus/new-arrivals}">New Arrivals</a></li>
+              <li><a class="dropdown-item" href="#!" th:href="@{/foods/popular}">Popular Items</a></li>
+              <li><a class="dropdown-item" href="#!" th:href="@{/foods/new-arrivals}">New Arrivals</a></li>
             </ul>
           </li>
 
@@ -34,7 +34,7 @@
             <a class="nav-link dropdown-toggle" id="memberNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">직원</a>
             <ul class="dropdown-menu" aria-labelledby="memberNavbarDropdown">
               <li><a class="dropdown-item" href="#!" th:href="@{/items}">재고 관리</a></li>
-              <li><a class="dropdown-item" href="#!" th:href="@{/recipes}">레시피</a></li>
+              <li><a class="dropdown-item" href="#!" th:href="@{/foods}">레시피</a></li>
             </ul>
           </li>
 
@@ -47,7 +47,6 @@
               <li><a class="dropdown-item" href="#!" th:href="@{/menu-management}">메뉴 관리</a></li>
               <li><a class="dropdown-item" href="#!" th:href="@{/customer-management}">고객 관리</a></li>
               <li><hr class="dropdown-divider"/></li>
-              <li><a class="dropdown-item" href="#!" th:href="@{/duties}">직무 관리</a></li>
               <li><a class="dropdown-item" href="#!" th:href="@{/members}">직원 관리</a></li>
             </ul>
           </li>

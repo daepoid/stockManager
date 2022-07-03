@@ -1,6 +1,6 @@
 package daepoid.stockManager.repository.jpa;
 
-import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.domain.search.CustomerSearch;
 import daepoid.stockManager.repository.CustomerRepository;

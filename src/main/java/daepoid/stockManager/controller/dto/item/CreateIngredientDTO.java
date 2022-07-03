@@ -19,7 +19,7 @@ public class CreateIngredientDTO {
 
     // 재료 양
     @NotNull
-    private int quantity;
+    private Double quantity;
 
     // 재료 양 단위
     @NotNull
@@ -27,9 +27,9 @@ public class CreateIngredientDTO {
 
     // 로스율에 기반한 단위 가격
     @NotNull
-    private double unitPrice;
+    private Double unitPrice;
 
     // 로스율
     @NotNull
-    private double loss;
+    private Double loss;
 }

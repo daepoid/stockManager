@@ -82,7 +82,7 @@ public class Ingredient {
         this.name = item.getName();
     }
 
-    public void changeQuantity(Double quantity) {
+    public void changeQuantity(double quantity) {
         double temp = this.food.getFoodCost() - this.quantity * this.unitPrice;
         this.food.changeFoodCost(temp + quantity * this.unitPrice);
         this.quantity = quantity;
@@ -92,13 +92,13 @@ public class Ingredient {
         this.unitType = unitType;
     }
 
-    public void changeUnitPrice(Double unitPrice) {
+    public void changeUnitPrice(double unitPrice) {
         double temp = this.food.getFoodCost() - this.quantity * this.unitPrice;
         this.food.changeFoodCost(temp + this.quantity * unitPrice);
         this.unitPrice = unitPrice;
     }
 
-    public void changeLoss(Double loss) {
+    public void changeLoss(double loss) {
         this.loss = loss;
     }
 

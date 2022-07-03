@@ -2,16 +2,12 @@ package daepoid.stockManager.controller;
 
 import daepoid.stockManager.SessionConst;
 import daepoid.stockManager.controller.dto.CartFoodsDTO;
+import daepoid.stockManager.controller.dto.order.CustomerOrderDTO;
 import daepoid.stockManager.domain.food.CartFood;
 import daepoid.stockManager.domain.users.Customer;
 import daepoid.stockManager.domain.order.Order;
-import daepoid.stockManager.domain.order.OrderMenu;
 import daepoid.stockManager.domain.search.CustomerOrderSearch;
-import daepoid.stockManager.domain.food.Menu;
-import daepoid.stockManager.controller.dto.order.CustomerOrderMenuDTO;
-import daepoid.stockManager.service.CartFoodService;
-import daepoid.stockManager.service.CustomerService;
-import daepoid.stockManager.service.OrderService;
+import daepoid.stockManager.service.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +28,11 @@ import java.util.stream.Collectors;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final MenuService menuService;
+    private final FoodService foodService;
     private final OrderService orderService;
 
     private final CartFoodService cartFoodService;
+    private final LoginUtilService loginUtilService;
 
     /**
      * 주문 하기
@@ -93,47 +90,37 @@ public class CustomerController {
                                 Model model,
                                 HttpServletRequest request) {
 
-        String loginId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
-        if(!Objects.equals(customerService.findCustomerByLoginId(loginId).getId(), customerId)) {
+        if(!loginUtilService.customerLoginCheck(request, customerId)) {
             request.getSession(false).invalidate();
             return "redirect:/";
         }
 
-        Customer customer = customerService.findCustomer(customerId);
+        List<Order> orders = orderService.findOrdersByCustomerId(customerId);
+        List<CustomerOrderDTO> customerOrderDTOs = orders.stream().map(CustomerOrderDTO::new).collect(Collectors.toList());
 
-        String tableNumber = customer.getTableNumber();
-
-        List<CustomerOrderMenuDTO> customerOrderMenuDTOs = new ArrayList<>();
-
-        List<Order> customerOrders = customer.getOrders();
-        for (Order customerOrder : customerOrders) {
-            for (OrderMenu orderMenu : customerOrder.getOrderMenus()) {
-                customerOrderMenuDTOs.add(new CustomerOrderMenuDTO(orderMenu));
-            }
-        }
-
-        model.addAttribute("orderMenuDTOs", customerOrderMenuDTOs);
-        model.addAttribute("tableNumber", tableNumber);
+        model.addAttribute("customerOrderDTOs", customerOrderDTOs);
         return "orders/customerOrderListForm";
     }
 
-    /**
-     * 장바구니에 담긴 메뉴 취소
-     * 고객이 자신의 장바구니에 담긴 메뉴를 취소할 수 있다.
-     * @param customerId
-     * @param menuId
-     * @param redirectAttributes
-     * @return
-     */
-    @PostMapping("/{menuId}/cancel")
-    public String cancel(@PathVariable("customerId") Long customerId,
-                         @PathVariable("menuId") Long menuId,
-                         RedirectAttributes redirectAttributes) {
-
-        Customer customer = customerService.findCustomer(customerId);
-        customer.getCart().removeCart(menuId);
-
-        redirectAttributes.addAttribute("customerId", customerId);
-        return "redirect:/customers/{customerId}/order";
-    }
+//    /**
+//     * 장바구니에 담긴 메뉴 취소
+//     * 고객이 자신의 장바구니에 담긴 메뉴를 취소할 수 있다.
+//     * @param customerId
+//     * @param menuId
+//     * @param redirectAttributes
+//     * @return
+//     */
+//    @PostMapping("/{foodId}/cancel")
+//    public String cancel(@PathVariable("customerId") Long customerId,
+//                         @PathVariable("foodId") Long menuId,
+//                         RedirectAttributes redirectAttributes) {
+//
+//
+//
+//        Customer customer = customerService.findCustomer(customerId);
+//        customer.getCart().removeCart(menuId);
+//
+//        redirectAttributes.addAttribute("customerId", customerId);
+//        return "redirect:/customers/{customerId}/order";
+//    }
 }

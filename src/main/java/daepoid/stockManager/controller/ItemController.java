@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -81,7 +82,11 @@ public class ItemController {
      */
     @GetMapping("/{itemId}/edit")
     public String editItemForm(@PathVariable("itemId") Long itemId, Model model) {
-        model.addAttribute("editItemDTO", new EditItemDTO(itemService.findItem(itemId)));
+        Optional<Item> item = itemService.findItem(itemId);
+        if(item.isEmpty()) {
+            return "redirect:/home";
+        }
+        model.addAttribute("editItemDTO", new EditItemDTO(item.get()));
         return "items/editItemForm";
     }
 
@@ -96,7 +101,6 @@ public class ItemController {
 
         // 수정
         itemService.changeName(itemId, editItemDTO.getName());
-        itemService.changeItemType(itemId, editItemDTO.getItemType());
         itemService.changePrice(itemId, editItemDTO.getPrice());
         itemService.changePackageCount(itemId, editItemDTO.getPackageCount());
         itemService.changeQuantity(itemId, editItemDTO.getQuantity());

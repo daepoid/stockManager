@@ -88,6 +88,13 @@ public class JpaOrderRepository implements OrderRepository {
     }
 
     @Override
+    public List<Order> findByCustomerId(Long customerId) {
+        return em.createQuery("select o from Order o where o.customer.id = : customerId", Order.class)
+                .setParameter("customerId", customerId)
+                .getResultList();
+    }
+
+    @Override
     public List<Order> findByManagerOrderSearch(ManagerOrderSearch orderSearch) {
         // language=JPAQL
         String jpql = "select o From Order o";

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -36,14 +37,14 @@ public class LoginMemberController {
             return "redirect:/";
         }
 
-        Member findMember = memberService.findMemberByLoginId(loginId);
-        if(findMember == null) {
+        Optional<Member> member = memberService.findMemberByLoginId(loginId);
+        if(member.isEmpty()) {
             log.info("My Info Error loginId = {}", loginId);
             request.getSession(false).invalidate();
             return "redirect:/login";
         }
 
-        model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(findMember));
+        model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(member.get()));
         return "members/editMyInfoForm";
     }
 
@@ -57,34 +58,39 @@ public class LoginMemberController {
             request.getSession(false).invalidate();
             return "redirect:/";
         }
-        Member loginMember = memberService.findMemberByLoginId(loginId);
+
+        Optional<Member> member = memberService.findMemberByLoginId(loginId);
+        if(member.isEmpty()) {
+            request.getSession(false).invalidate();
+            return "redirect:/";
+        }
 
         if(bindingResult.hasErrors()) {
-            model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(loginMember));
+            model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(member.get()));
             return "members/editMyInfoForm";
         }
 
-        if(!passwordEncoder.matches(editMyInfoDTO.getPassword(), loginMember.getPassword())) {
-            model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(loginMember));
+        if(!passwordEncoder.matches(editMyInfoDTO.getPassword(), member.get().getPassword())) {
+            model.addAttribute("editMyInfoDTO", new EditMyInfoDTO(member.get()));
             log.info("정보 수정 실패");
             bindingResult.reject("passwordInvalid", "비밀번호가 틀렸습니다.");
             return "members/editMyInfoForm";
         }
 
-        if(!loginMember.getLoginId().equals(editMyInfoDTO.getLoginId())) {
-            if(memberService.findMemberByLoginId(editMyInfoDTO.getLoginId()) != null) {
+        if(!member.get().getLoginId().equals(editMyInfoDTO.getLoginId())) {
+            if(memberService.findMemberByLoginId(editMyInfoDTO.getLoginId()).isPresent()) {
                 log.info("중복된 아이디");
                 return "members/editMyInfoForm";
             }
         }
 
-        memberService.changeLoginId(loginMember.getId(), editMyInfoDTO.getLoginId());
-        memberService.changeUserName(loginMember.getId(), editMyInfoDTO.getUserName());
-        memberService.changePhoneNumber(loginMember.getId(), editMyInfoDTO.getPhoneNumber());
+        memberService.changeLoginId(member.get().getId(), editMyInfoDTO.getLoginId());
+        memberService.changeUserName(member.get().getId(), editMyInfoDTO.getUserName());
+        memberService.changePhoneNumber(member.get().getId(), editMyInfoDTO.getPhoneNumber());
 
         log.info("{}님이 정보를 수정하였습니다. => 이름: {} / 전화번호: {} -> 이름: {} / 전화번호: {}",
-                loginMember.getLoginId(),
-                loginMember.getUserName(), loginMember.getPhoneNumber(),
+                member.get().getLoginId(),
+                member.get().getUserName(), member.get().getPhoneNumber(),
                 editMyInfoDTO.getUserName(), editMyInfoDTO.getPhoneNumber());
         request.getSession(false).invalidate();
         return "redirect:/";
@@ -102,6 +108,7 @@ public class LoginMemberController {
 
         String sessionId = (String) request.getSession(false).getAttribute(SessionConst.SECURITY_LOGIN);
         if(!sessionId.equals(loginId)) {
+            request.getSession(false).invalidate();
             return "redirect:/";
         }
 
@@ -111,16 +118,17 @@ public class LoginMemberController {
     @PostMapping("/{loginId}/passwordChange")
     public String editMyPassword(@PathVariable("loginId") String loginId,
                                  @Valid @ModelAttribute("editMyPasswordDTO") EditMyPasswordDTO editMyPasswordDTO,
-                                 BindingResult bindingResult) {
+                                 BindingResult bindingResult,
+                                 HttpServletRequest request) {
 
-        Member loginMember = memberService.findMemberByLoginId(loginId);
-
-        if(bindingResult.hasErrors()) {
+        Optional<Member> member = memberService.findMemberByLoginId(loginId);
+        if(bindingResult.hasErrors() || member.isEmpty()) {
+            request.getSession(false).invalidate();
             return "members/editMyPasswordForm";
         }
 
         // 기존에 사용중인 비밀번호 확인
-        if(!passwordEncoder.matches(editMyPasswordDTO.getPassword(), loginMember.getPassword())) {
+        if(!passwordEncoder.matches(editMyPasswordDTO.getPassword(), member.get().getPassword())) {
             return "members/editMyPasswordForm";
         }
         
@@ -129,7 +137,7 @@ public class LoginMemberController {
             return "members/editMyPasswordForm";
         }
 
-        memberService.changePassword(loginMember.getId(), passwordEncoder.encode(editMyPasswordDTO.getNewPassword()));
+        memberService.changePassword(member.get().getId(), passwordEncoder.encode(editMyPasswordDTO.getNewPassword()));
         return "redirect:/myInfo";
     }
 }

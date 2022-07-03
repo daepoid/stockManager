@@ -1,16 +1,20 @@
 package daepoid.stockManager.api.dto.member;
 
-import daepoid.stockManager.domain.member.GradeType;
-import daepoid.stockManager.domain.member.MemberStatus;
+import daepoid.stockManager.domain.users.GradeType;
+import daepoid.stockManager.domain.users.MemberStatus;
 import lombok.Data;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
 
 @Data
 public class UpdateMemberRequestDTO {
 
-    private String name;
+    @NotBlank
+    private String password;
+
+    private String userName;
 
     private String phoneNumber;
 

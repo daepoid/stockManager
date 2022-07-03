@@ -1,8 +1,8 @@
 package daepoid.stockManager.testData;
 
-import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.users.Member;
-import daepoid.stockManager.domain.member.MemberStatus;
+import daepoid.stockManager.domain.users.MemberStatus;
 import daepoid.stockManager.service.MemberService;
 
 import lombok.RequiredArgsConstructor;

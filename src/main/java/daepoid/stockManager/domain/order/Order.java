@@ -11,6 +11,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="orders")
@@ -38,12 +40,19 @@ public class Order {
     @Positive
     private Double totalOrderPrice;
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<OrderMenu> orderMenus = new ArrayList<>();
+
     //==생성 메서드(빌더 방식)==//
     @Builder
-    public Order(Customer customer, LocalDateTime orderDateTime, OrderStatus orderStatus) {
+    public Order(Customer customer, LocalDateTime orderDateTime, OrderStatus orderStatus,
+                 Double totalOrderPrice, ArrayList<OrderMenu> orderMenus) {
         this.customer = customer;
         this.orderDateTime = orderDateTime;
         this.orderStatus = orderStatus;
+        this.totalOrderPrice = totalOrderPrice;
+        //FIXME: 수정
+        this.orderMenus = orderMenus;
     }
 
     //==연관 관계 메서드==//
@@ -55,13 +64,13 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public void changeTotalOrderPrice(Double totalOrderPrice) {
+    public void changeTotalOrderPrice(double totalOrderPrice) {
         this.totalOrderPrice = totalOrderPrice;
     }
 
     //==비즈니스 로직==//
-    public void updateOrderPriceByChangeOrderMenu(Double beforeOrderMenuPrice,
-                                                  Double newOrderMenuPrice) {
+    public void updateOrderPriceByChangeOrderMenu(double beforeOrderMenuPrice,
+                                                  double newOrderMenuPrice) {
         this.totalOrderPrice -= beforeOrderMenuPrice;
         this.totalOrderPrice += newOrderMenuPrice;
     }

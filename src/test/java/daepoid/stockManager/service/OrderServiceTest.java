@@ -1,7 +1,7 @@
 package daepoid.stockManager.service;
 
 import daepoid.stockManager.domain.food.Ingredient;
-import daepoid.stockManager.domain.member.GradeType;
+import daepoid.stockManager.domain.users.GradeType;
 import daepoid.stockManager.domain.order.*;
 import daepoid.stockManager.domain.food.DishType;
 import daepoid.stockManager.domain.food.Menu;
@@ -141,7 +141,7 @@ class OrderServiceTest {
 
         Long orderId = orderService.orders(customer.getId());
 
-        assertThat(orderService.findByCustomer(customer.getId()).stream()
+        assertThat(orderService.findOrdersByCustomer(customer.getId()).stream()
                 .anyMatch(o -> o.getId().equals(orderId))).isTrue();
     }
 
@@ -318,8 +318,8 @@ class OrderServiceTest {
 
         Long orderId = orderService.save(order);
 
-        assertThat(orderService.findByCustomer(customer.getId()).contains(order)).isTrue();
-        assertThat(orderService.findByCustomer(customer.getId()).stream()
+        assertThat(orderService.findOrdersByCustomer(customer.getId()).contains(order)).isTrue();
+        assertThat(orderService.findOrdersByCustomer(customer.getId()).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -396,8 +396,8 @@ class OrderServiceTest {
 
         Long orderId = orderService.save(order);
 
-        assertThat(orderService.findByOrderStatus(orderStatus).contains(order)).isTrue();
-        assertThat(orderService.findByOrderStatus(orderStatus).stream()
+        assertThat(orderService.findOrdersByOrderStatus(orderStatus).contains(order)).isTrue();
+        assertThat(orderService.findOrdersByOrderStatus(orderStatus).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -457,8 +457,8 @@ class OrderServiceTest {
 
         assertThat(order.getCustomer()).isEqualTo(newCustomer);
         assertThat(orderService.findOrder(orderId).getCustomer().getId()).isEqualTo(newCustomer.getId());
-        assertThat(orderService.findByCustomer(newCustomer.getId()).contains(order)).isTrue();
-        assertThat(orderService.findByCustomer(newCustomer.getId()).stream()
+        assertThat(orderService.findOrdersByCustomer(newCustomer.getId()).contains(order)).isTrue();
+        assertThat(orderService.findOrdersByCustomer(newCustomer.getId()).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
     }
@@ -644,13 +644,13 @@ class OrderServiceTest {
 
         assertThat(order.getOrderStatus()).isEqualTo(newOrderStatus);
         assertThat(orderService.findOrder(orderId).getOrderStatus()).isEqualTo(newOrderStatus);
-        assertThat(orderService.findByOrderStatus(newOrderStatus).contains(order)).isTrue();
-        assertThat(orderService.findByOrderStatus(newOrderStatus).stream()
+        assertThat(orderService.findOrdersByOrderStatus(newOrderStatus).contains(order)).isTrue();
+        assertThat(orderService.findOrdersByOrderStatus(newOrderStatus).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNotNull();
 
-        assertThat(orderService.findByOrderStatus(orderStatus).contains(order)).isFalse();
-        assertThat(orderService.findByOrderStatus(orderStatus).stream()
+        assertThat(orderService.findOrdersByOrderStatus(orderStatus).contains(order)).isFalse();
+        assertThat(orderService.findOrdersByOrderStatus(orderStatus).stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst().orElse(null)).isNull();
     }

@@ -23,21 +23,17 @@ public class EditItemDTO {
     @NotBlank
     private String name;
 
-    // 재료 특성
-    @NotNull
-    private ItemType itemType;
-
     // 재료 가격 평균
     @NotNull
-    private int price;
+    private Integer price;
 
     // 패키지 수량
     @NotNull
-    private int packageCount;
+    private Integer packageCount;
 
     // 재고 수량
     @NotNull
-    private double quantity;
+    private Double quantity;
 
     // 재고 수량 단위 (g, ml, ...)
     @NotNull
@@ -46,7 +42,6 @@ public class EditItemDTO {
     public EditItemDTO (Item item) {
         this.id = item.getId();
         this.name = item.getName();
-        this.itemType = item.getItemType();
         this.price = item.getPrice();
         this.packageCount = item.getPackageCount();
         this.quantity = item.getQuantity();

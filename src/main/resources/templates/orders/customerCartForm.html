@@ -28,11 +28,11 @@
             </thead>
             <tbody>
             <tr th:each="cartFoodsDTO : ${cartFoodsDTOs}">
-                <td><a th:href="@{/menus/{menuId} (menuId=${cartFoodsDTO.foodId})}" th:text="${selectedMenu.key.name}">메뉴 이름</a></td>
+                <td><a th:href="@{/templates/foods/{menuId} (menuId=${cartFoodsDTO.foodId})}" th:text="${selectedMenu.key.name}">메뉴 이름</a></td>
                 <td th:text="${cartFoodsDTO.getFoodPrice}"></td>
                 <td th:text="${cartFoodsDTO.count}"></td>
                 <td>
-                    <a href="#" th:href="@{/menus/{menuId} (menuId=${selectedMenu.key.id})}"
+                    <a href="#" th:href="@{/templates/foods/{menuId} (menuId=${selectedMenu.key.id})}"
                        class="w-100 btn btn-secondary btn-sm" role="button">수정</a>
                 </td>
                 <td>

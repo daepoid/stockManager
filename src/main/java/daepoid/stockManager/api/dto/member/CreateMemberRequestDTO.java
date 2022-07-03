@@ -16,7 +16,7 @@ public class CreateMemberRequestDTO {
 
     // 이름
     @NotBlank
-    private String name;
+    private String userName;
 
     // 전화번호 '01012341234' 형태로 저장됨
     @NotBlank

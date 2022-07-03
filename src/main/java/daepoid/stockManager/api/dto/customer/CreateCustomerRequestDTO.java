@@ -1,25 +1,20 @@
 package daepoid.stockManager.api.dto.customer;
 
-import daepoid.stockManager.domain.order.Order;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class CreateCustomerRequestDTO {
 
     @NotBlank
-    private String name;
+    private String userName;
 
     @NotBlank
     private String password;
 
     @NotBlank
     private String tableNumber;
-
-    private Cart cart;
-
-    private List<Order> orders = new ArrayList<>();
 }
